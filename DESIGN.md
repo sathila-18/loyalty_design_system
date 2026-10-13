@@ -561,7 +561,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 | # | Task | Output | Status |
 |---|---|---|---|
-| S1 | pnpm monorepo scaffold (`packages/tokens`, `packages/ui`, `apps/storybook`), TypeScript, Vite, ESLint, Stylelint | repo root | ⬜ |
+| S1 | pnpm monorepo scaffold (`packages/tokens`, `packages/ui`, `apps/storybook`), TypeScript, Vite, ESLint, Stylelint | repo root | ✅ |
 | S2 | Token build: `tokens/design.tokens.json` → CSS variables + TypeScript (handles the quirks in §3.9), with brand and theme scoping (§3.8) | `packages/tokens/dist/` | ⬜ |
 | S3 | Styles by hand from §4 (shadows, background blur, grid) and breakpoints (§3.7). Motion (§5) is deferred. | `packages/tokens/src/styles.css` | ⬜ |
 | S4 | Fonts: Inter (400, 500, 600, 700) and Material Symbols Rounded, self-hosted. CSS reset. | `packages/ui/src/styles/` | ⬜ |
@@ -741,3 +741,4 @@ Template:
 | 13 Oct 2026 | 0.2 | Input field page re-checked: three bases confirmed (Input field-base, Input field-textArea-base, Input-OTP-base). Added #52a `FinTextAreaBase` and #52b `FinTextArea`. §7.2 updated, §10 #18 decided, #16 and #17 updated. |
 | 13 Oct 2026 | 0.2 | §10 #16 decided: typography from another library isn't a blocker; mapped to Loyalty text styles with designer approval. #52a now ⚠️. |
 | 13 Oct 2026 | 0.2 | §7.2: List and Accordion are bases with no states yet; built ready for states to be added to the base later. |
+| 13 Oct 2026 | 0.2 | S1 done: pnpm 12 workspace (`packages/tokens`, `packages/ui`, `apps/storybook` stub), TypeScript 6.0, Vite 8 library build for `ui`, ESLint 9 (typescript-eslint, react-hooks, jsx-a11y), Stylelint 17 base config. TypeScript 7 and ESLint 10 held back until typescript-eslint and jsx-a11y support them. |
