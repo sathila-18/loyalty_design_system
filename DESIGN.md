@@ -1,0 +1,743 @@
+# Finspace Loyalty — Design System
+
+> **Status:** Draft v0.2 · Last synced with Figma: 13 Oct 2026
+> **Platform:** Web, React + TypeScript (desktop only)
+> **Owner:** Design (Sathila)
+
+This file is the **single source of truth** for the Finspace Loyalty design system. It describes **what** the system is: tokens, styles, icons and components. How Claude Code should work in this repo is in [`CLAUDE.md`](./CLAUDE.md).
+
+If this file and Figma disagree, **Figma wins**. Flag the difference so this file can be updated.
+
+---
+
+## Contents
+
+1. [Sources of truth](#1-sources-of-truth)
+2. [Core rules](#2-core-rules)
+3. [Foundations: tokens](#3-foundations-tokens)
+4. [Foundations: styles (not variables)](#4-foundations-styles-not-variables)
+5. [Motion](#5-motion)
+6. [Icons](#6-icons)
+7. [Component architecture](#7-component-architecture)
+8. [Component inventory and build status](#8-component-inventory-and-build-status)
+9. [Component specs](#9-component-specs)
+10. [Known issues and open decisions](#10-known-issues-and-open-decisions)
+11. [Changelog](#11-changelog)
+
+---
+
+## 1. Sources of truth
+
+| What | Where | Figma file key |
+|---|---|---|
+| Foundations (variables, text/effect/grid styles) | [Foundation – Loyalty](https://www.figma.com/design/q4UmuwbvxJng9Y0AKZ4IGW/Foundation---Loyalty) | `q4UmuwbvxJng9Y0AKZ4IGW` |
+| Components | [Component library – Loyalty](https://www.figma.com/design/vD9CL5tZQo4D26fUN3vKHT/Component-library---Loyalty) | `vD9CL5tZQo4D26fUN3vKHT` |
+| Icons | [Material Symbols Rounded](https://fonts.google.com/icons?icon.set=Material+Symbols&icon.style=Rounded), npm package `material-symbols` (self-hosted) | — |
+| Token values (exported) | `tokens/design.tokens.json` | — |
+
+**Token export:** Figma variables are exported with the **TokensBrücke** plugin (DTCG 2025.10 format, colors as hex). To update, re-export, replace `tokens/design.tokens.json`, and rerun the token build. Never edit the generated files by hand.
+
+**Out of scope:** In the component file, ignore every page below **🔒 Do not use** (Cards, Notes, Image ratios, Tabs). The **Overlay** `Mobile` variant is also out of scope.
+
+---
+
+## 2. Core rules
+
+1. **Tokens only.** Components never contain raw hex values, pixel numbers or font sizes. Every color, space, radius, text style and shadow comes from a token. The only exceptions are artwork colors inside logos, flags, payment icons and illustrations.
+2. **Use semantic colors in components.** Components use the `Color collection` tokens (`bg-*`, `text-*`, `border-*`, `fg-*`, `Alpha-*`). Primitive and alias colors exist only so semantic tokens can point to them.
+3. **Light, dark and brand.** Every semantic color has a Light and a Dark value. Components must look correct in both. Theme and brand are set on `<html>` with `data-theme="light|dark"` and `data-brand="finspace"`. Never branch on theme or brand inside a component; read the token.
+4. **Desktop layout.** The product is desktop only. No mobile layouts.
+
+   | Rule | Value | Token |
+   |---|---|---|
+   | Grid | 12 columns, stretch | — |
+   | Gutter | 24 | `Space-3XL` |
+   | Page margin (left and right) | 24 | `Space-3XL` |
+   | Narrowest supported width | 1024 | `Size-1024` |
+   | Side nav | Collapsed by default below 1280, expanded from 1280 | `Size-1280` |
+
+   - Below 1024 the page scrolls horizontally. Nothing reflows.
+   - 1440 and 1920 currently use the same layout. The breakpoints exist for later.
+   - **Spacing rules (page padding, section gap, card padding…) aren't defined yet.** Design will add them after the first UIs are built (§10). Until then, copy spacing from Figma using the spacing tokens (§3.5), and **report any value that isn't on the scale or isn't bound to a spacing variable** instead of copying it silently.
+5. **Slots take design-system components.** A slot (for example the body of a Side sheet) accepts any React node, so it must only be filled with design-system components, never one-off layouts. **The container owns the outer padding and scrolling**, and slot content must not add its own outer padding, so spacing stays correct when content is swapped. See [§7.3](#73-figma-properties--react-props).
+6. **Match Figma names.** Code names come from Figma names, converted to code style with the `Fin` prefix (see [§3.8](#38-figma--code-naming)). Don't invent new names.
+7. **Accessibility: WCAG 2.2 AA.** Full keyboard support, visible focus (`border-focused`), native elements first, labels on icon-only controls, pointer targets at least 24 × 24, and respect for `prefers-reduced-motion` (see [§5](#5-motion)).
+8. **Portable code.** Styles are CSS Modules that only use token variables, so the styling approach can change later without touching component logic. Components must also work under Next.js. The rules are in [`CLAUDE.md`](./CLAUDE.md) (Hard rules) and [§7.4](#74-code-conventions).
+
+---
+
+## 3. Foundations: tokens
+
+Source: `tokens/design.tokens.json`, with 431 variables in 5 collections.
+
+| Collection | Count | Modes | Purpose |
+|---|---|---|---|
+| `Primitives` | 151 | — | Raw color scales, type scale, sizes |
+| `Alias Typography` | 92 | `Finspace` (brand) | Text style building blocks (family, weight, size, line height) |
+| `Alias Colors` | 77 | `Finspace` (brand) | Role names for primitive scales. **This is the brand layer.** |
+| `Color collection` | 87 | **Light / Dark** | **Semantic colors that components use** |
+| `Alias Spacing & Radius` | 24 | — | Spacing and radius scales |
+
+### 3.0 How the layers work
+
+```
+Primitives (raw hex)  →  Alias Colors (brand mode: Finspace)  →  Color collection (Light / Dark)  →  components
+```
+
+| Layer | Figma collection | Modes | Code scoping |
+|---|---|---|---|
+| 1. Primitives | `Primitives` | none | `:root` |
+| 2. Alias (brand) | `Alias Colors` | **one mode per brand** (today: `Finspace`) | `[data-brand="…"]` |
+| 2. Alias typography (brand) | `Alias Typography` | **one mode per brand** (today: `Finspace`) | `[data-brand="…"]` |
+| 3. Semantic (theme) | `Color collection` | **Light / Dark** | `[data-theme="light|dark"]` |
+
+- **Brands live in the alias layer as modes.** Each brand mode points the same alias names (`Primary-500`, `Secondary-500`…) at that brand's primitives. Adding a brand = adding a mode in `Alias Colors` (and its primitives); semantic tokens and components don't change.
+- **Light and Dark live in the semantic layer as modes.** Semantic tokens point at alias names, so every brand gets Light and Dark automatically.
+- **In code** the two attributes combine freely on `<html>`: `data-brand` picks the alias values, `data-theme` picks the semantic mapping.
+- The token build reads the `Alias Colors` modes from the export and writes one `[data-brand]` block per mode. It does the same for `Alias Typography`, so a brand can also change fonts and type scale. Today there's one brand mode, `Finspace`, exported as `data-brand="finspace"`.
+
+### 3.1 Primitive colors
+
+_Collection `Primitives` → `Colors/Fintech`. Never use these directly in components; use the semantic tokens below._
+
+| Scale | 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Electric Indigo (`Electric-Indigo-*`) | `#efefff` | `#ceccff` | `#b7b4ff` | `#9691ff` | `#817cff` | `#625bff` | `#5953e8` | `#4641b5` | `#36328c` | `#29266b` |
+| Gray (`Gray-*`) | `#e8e8e8` | `#b8b8b8` | `#959596` | `#656566` | `#474748` | `#19191a` | `#171718` | `#121212` | `#0e0e0e` | `#0b0b0b` |
+| White (`White-*`) | — | — | — | — | — | `#ffffff` | `#e8e8e8` | `#b5b5b5` | `#8c8c8c` | `#6b6b6b` |
+| Graphite (`Graphite-*`) | `#efefef` | `#cecece` | `#b7b7b7` | `#969696` | `#818181` | `#626262` | `#595959` | `#464646` | `#363636` | `#292929` |
+| Platinum (`Platinum-*`) | `#fdfdfd` | `#f8f8f8` | `#f5f5f5` | `#f0f0f0` | `#ededed` | `#e9e9e9` | `#d4d4d4` | `#a5a5a5` | `#808080` | `#626262` |
+| Blue (`Blue-*`) — not used | `#e9e9fd` | `#bbbaf8` | `#9b99f4` | `#6d6bef` | `#514eec` | `#2522e7` | `#221fd2` | `#1a18a4` | `#14137f` | `#100e61` |
+| Green (`Success-*`) | `#eaf6ef` | `#bee4cc` | `#9fd7b3` | `#73c590` | `#58b97b` | `#2ea85a` | `#2a9952` | `#217740` | `#195c32` | `#134726` |
+| Yellow (`Warning-*`) | `#fdf3e7` | `#f8d9b3` | `#f5c68f` | `#f1ac5c` | `#ee9c3c` | `#ea830b` | `#d5770a` | `#a65d08` | `#814806` | `#623705` |
+| Red (`Error-*`) | `#f9e8e8` | `#edb7b9` | `#e49497` | `#d86468` | `#d1454a` | `#c5171d` | `#b3151a` | `#8c1015` | `#6c0d10` | `#530a0c` |
+
+Brand Key (hidden from publishing in Figma): `White` = `#ffffff`, `Black` = `#000000`
+
+### 3.2 Alias colors (brand layer)
+
+_Collection `Alias Colors` → `Colors/Fintech`. Role names that point 1:1 at a primitive scale (step for step)._
+
+| Alias group | Token pattern | Points to |
+|---|---|---|
+| Primary | `Primary-50 … -900` | Electric Indigo |
+| Secondary | `Secondary-50 … -900` | Gray (near-black) |
+| Tertiary | `Tertiary-50 … -900` | Graphite |
+| Tertiary1 | `Tertiary1-50 … -900` | Platinum |
+| Tertiary2 | `Tertiary2-500 … -900` | White |
+| Success | `Success-50 … -900` | Green |
+| Warning | `Warning-50 … -900` | Yellow |
+| Error | `Error-50 … -900` | Red |
+| Key | `White`, `Black` | Brand Key White, Black |
+
+### 3.3 Semantic colors (Light / Dark)
+
+_Collection `Color collection`, modes **Light** and **Dark**. **Components must only use these.** Hex values are resolved for reference; code must reference the token, not the hex._
+
+#### Background
+
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `bg-primary` | Tertiary2-500 `#ffffff` | Secondary-500 `#19191a` | Main background of screens, dialog boxes and side sheets |
+| `bg-secondary` | Tertiary1-200 `#f5f5f5` | Tertiary-900 `#292929` | Side nav |
+| `bg-tertiary` | Tertiary1-400 `#ededed` | Tertiary-800 `#363636` | Info callout notification backgrounds |
+| `bg-neutral` | Tertiary1-500 `#e9e9e9` | Tertiary-700 `#464646` | Badge neutral background |
+| `bg-brand` | Primary-500 `#625bff` | Primary-500 `#625bff` | Brand related backgrounds |
+| `bg-active` | Primary-50 `#efefff` | Primary-900 `#29266b` | Active or selected state backgrounds |
+| `bg-active-hover` | Primary-100 `#ceccff` | Primary-800 `#36328c` | Hover state of active or selected backgrounds |
+| `bg-action-primary` | Primary-500 `#625bff` | Primary-500 `#625bff` | Primary button backgrounds |
+| `bg-action-primary_hovered` | Primary-600 `#5953e8` | Primary-400 `#817cff` | Hover state of primary buttons |
+| `bg-action-primary_pressed` | Primary-700 `#4641b5` | Primary-300 `#9691ff` | Pressed state of primary buttons |
+| `bg-action-secondary` | Primary-50 `#efefff` | Primary-900 `#29266b` | Secondary button background (Figma description still says "swipe button", see §10) |
+| `bg-action-secondary_hovered` | Primary-100 `#ceccff` | Primary-800 `#36328c` | Hover state of secondary buttons |
+| `bg-action-secondary_pressed` | Primary-200 `#b7b4ff` | Primary-700 `#4641b5` | Pressed state of secondary buttons |
+| `bg-action-inverse` | White `#ffffff` | White `#ffffff` | White call to action on brand |
+| `bg-action-destructive` | Error-500 `#c5171d` | Error-400 `#d1454a` | Destructive buttons |
+| `bg-action-destructive_hovered` | Error-600 `#b3151a` | Error-300 `#d86468` | Hover state of destructive buttons |
+| `bg-action-destructive_pressed` | Error-700 `#8c1015` | Error-200 `#e49497` | Pressed state of destructive buttons |
+| `bg-action-destructive-secondary_hovered` | Error-50 `#f9e8e8` | Error-700 `#8c1015` | Hover state of secondary destructive buttons |
+| `bg-action-destructive-secondary_pressed` | Error-100 `#edb7b9` | Error-600 `#b3151a` | Pressed state of secondary destructive buttons |
+| `bg-disabled` | Tertiary1-500 `#e9e9e9` | Tertiary-800 `#363636` | Disabled backgrounds |
+| `bg-dark` | Secondary-500 `#19191a` | Secondary-500 `#19191a` | Toast/snackbar backgrounds |
+| `bg-success` | Success-600 `#2a9952` | Success-500 `#2ea85a` | Success backgrounds (notification, badge) |
+| `bg-success_secondary` | Success-50 `#eaf6ef` | Success-900 `#134726` | Secondary success backgrounds (notification, badge) |
+| `bg-error` | Error-500 `#c5171d` | Error-400 `#d1454a` | Error backgrounds (notification, badge) |
+| `bg-error_secondary` | Error-50 `#f9e8e8` | Error-900 `#530a0c` | Secondary error backgrounds (notification, badge) |
+| `bg-warning` | Warning-500 `#ea830b` | Warning-500 `#ea830b` | Warning backgrounds (notification, badge) |
+| `bg-warning_secondary` | Warning-50 `#fdf3e7` | Warning-900 `#623705` | Secondary warning backgrounds (notification, badge) |
+| `bg-info` | Primary-500 `#625bff` | Primary-400 `#817cff` | Info backgrounds (notification, badge) |
+| `bg-info_secondary` | Primary-50 `#efefff` | Primary-900 `#29266b` | Secondary info backgrounds (notification, badge) |
+| `bg-icons` | Tertiary1-400 `#ededed` | Tertiary-800 `#363636` | Icon or default avatar backgrounds |
+
+#### Text
+
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `text-primary` | Secondary-500 `#19191a` | Tertiary2-500 `#ffffff` | Titles and headings |
+| `text-secondary` | Secondary-300 `#656566` | Tertiary-200 `#b7b7b7` | **Body text** and descriptions |
+| `text-tertiary` | Secondary-400 `#474748` | Tertiary-300 `#969696` | Captions, overlines, hints |
+| `text-placeholder` | Tertiary-300 `#969696` | Tertiary-400 `#818181` | Input field placeholder text |
+| `text-disabled` | Tertiary-200 `#b7b7b7` | Tertiary-600 `#595959` | Disabled text |
+| `text-disabled-on_bg` | Tertiary-300 `#969696` | Tertiary-500 `#626262` | Disabled text on backgrounds (buttons, badge, chips) |
+| `text-inverse` | White `#ffffff` | White `#ffffff` | Text on brand backgrounds |
+| `text-inverse_subtle` | Tertiary1-600 `#d4d4d4` | Tertiary1-600 `#d4d4d4` | Secondary text on brand backgrounds |
+| `text-dark_both` | Secondary-500 `#19191a` | Secondary-500 `#19191a` | Dark text in both light and dark modes |
+| `text-action` | Primary-500 `#625bff` | Primary-400 `#817cff` | Text links, secondary buttons |
+| `text-pressed` | Primary-700 `#4641b5` | Primary-300 `#9691ff` | Pressed state for text links |
+| `text-hovered` | Primary-600 `#5953e8` | Primary-200 `#b7b4ff` | Hover state for text links |
+| `text-success` | Success-700 `#217740` | Success-300 `#73c590` | Success texts |
+| `text-error` | Error-500 `#c5171d` | Error-300 `#d86468` | Error texts |
+| `text-info` | Primary-700 `#4641b5` | Primary-300 `#9691ff` | Information texts |
+| `text-warning` | Warning-700 `#a65d08` | Warning-300 `#f1ac5c` | Warning texts |
+
+#### Border
+
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `border-default` | Tertiary1-600 `#d4d4d4` | Tertiary-700 `#464646` | Default border color. Also for dividers |
+| `border-subtle` | Tertiary1-400 `#ededed` | Tertiary-800 `#363636` | Subtle border |
+| `border-strong` | Tertiary-300 `#969696` | Tertiary-500 `#626262` | Strong border (radio buttons) |
+| `border-active` | Primary-500 `#625bff` | Primary-400 `#817cff` | Active or selected states; typing state of input fields |
+| `border-hovered` | Primary-600 `#5953e8` | Primary-300 `#9691ff` | Hover state for borders |
+| `border-pressed` | Primary-700 `#4641b5` | Primary-200 `#b7b4ff` | Pressed state for borders |
+| `border-focused` | Primary-400 `#817cff` | Primary-300 `#9691ff` | Focus ring and focused states |
+| `border-action-primary` | Primary-500 `#625bff` | Primary-500 `#625bff` | Outline (secondary) buttons |
+| `border-disabled` | Tertiary1-500 `#e9e9e9` | Tertiary-800 `#363636` | Disabled borders |
+| `border-inverse` | Tertiary2-500 `#ffffff` | Secondary-500 `#19191a` | Borders on brand color |
+| `border-success` | Success-500 `#2ea85a` | Success-400 `#58b97b` | Success border |
+| `border-error` | Error-500 `#c5171d` | Error-400 `#d1454a` | Error border |
+| `border-info` | Primary-500 `#625bff` | Primary-400 `#817cff` | Information border |
+| `border-warning` | Warning-500 `#ea830b` | Warning-400 `#ee9c3c` | Warning border |
+
+#### Foreground (icons)
+
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `fg-primary` | Secondary-500 `#19191a` | Tertiary2-500 `#ffffff` | Primary icon color |
+| `fg-secondary` | Tertiary-500 `#626262` | Tertiary-200 `#b7b7b7` | Secondary icons (input fields, close, chevron) |
+| `fg-brand` | Primary-500 `#625bff` | Primary-400 `#817cff` | Brand related icons |
+| `fg-placeholder` | Tertiary-300 `#969696` | Tertiary-400 `#818181` | Input field icons |
+| `fg-active` | Primary-600 `#5953e8` | Primary-300 `#9691ff` | Icons in active state |
+| `fg-disabled` | Tertiary-200 `#b7b7b7` | Tertiary-600 `#595959` | Disabled icons |
+| `fg-disabled-on_bg` | Tertiary-300 `#969696` | Tertiary-500 `#626262` | Disabled icons on a background |
+| `fg-inverse` | Tertiary2-500 `#ffffff` | Secondary-500 `#19191a` | Icons on brand color |
+| `fg-dark_both` | Secondary-500 `#19191a` | Secondary-500 `#19191a` | Dark icons in both light and dark modes |
+| `fg-white_both` | Tertiary2-500 `#ffffff` | Tertiary2-500 `#ffffff` | Light icons on brand color in both modes |
+| `fg-action` | Primary-500 `#625bff` | Primary-400 `#817cff` | Action icons |
+| `fg-hovered` | Primary-600 `#5953e8` | Primary-300 `#9691ff` | Hover state for action icons |
+| `fg-pressed` | Primary-700 `#4641b5` | Primary-200 `#b7b4ff` | Pressed state for action icons |
+| `fg-success` | Success-600 `#2a9952` | Success-400 `#58b97b` | Success icons |
+| `fg-error` | Error-500 `#c5171d` | Error-400 `#d1454a` | Error icons |
+| `fg-info` | Primary-600 `#5953e8` | Primary-400 `#817cff` | Information icons |
+| `fg-warning` | Warning-600 `#d5770a` | Warning-400 `#ee9c3c` | Warning icons |
+
+#### Alpha
+
+_Alpha tokens point at an alias color plus an opacity (Figma's color + opacity variable). The resolved value follows the brand._
+
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `Alpha-sm` | Secondary-900 @ 16% `#0b0b0b29` | Secondary-900 @ 16% `#0b0b0b29` | Small CTAs inside branded cards |
+| `Alpha-md` | Secondary-900 @ 40% `#0b0b0b66` | Secondary-900 @ 40% `#0b0b0b66` | — |
+| `Alpha-light` | White @ 12% `#ffffff1f` | White @ 12% `#ffffff1f` | More depth for elements on brand background |
+| `Alpha-nav` | White @ 75% `#ffffffbf` | White @ 6% `#ffffff0f` | Navigation backgrounds and loading overlay |
+| `Alpha-nav_background` | White @ 40% `#ffffff66` | Tertiary-900 @ 40% `#29292966` | — |
+| `Alpha-both` | Tertiary-900 @ 42% `#2929296b` | Tertiary-900 @ 42% `#2929296b` | Overlay backgrounds (scrim) |
+| `Alpha-border` | Tertiary-900 @ 8% `#29292914` | Tertiary-900 @ 2% `#29292905` | Subtle borders on icon circles |
+| `Alpha-success` | Success-500 @ 16% `#2ea85a29` | Success-500 @ 16% `#2ea85a29` | — |
+| `Alpha-brand` | Primary-500 @ 16% `#625bff29` | Primary-500 @ 16% `#625bff29` | — |
+| `Alpha-error` | Error-500 @ 16% `#c5171d29` | Error-500 @ 16% `#c5171d29` | — |
+
+### 3.4 Typography
+
+Font family: **Inter** (`Primitives/Typography/Font style/Primary`), self-hosted, weights 400, 500, 600, 700. Letter spacing 0 for all styles.
+
+| Text style (Figma) | Variable group | Weight | Size | Line height | Note |
+|---|---|---|---|---|---|
+| `Display/Large-H1` | `Display Large-H1` | 700 | 48 | 62.4 |  |
+| `Display/Medium-H2` | `Display Medium-H2` | 700 | 36 | 46.8 |  |
+| `Display/Small-H3` | `Display Small-H3` | 700 | 28 | 39.2 |  |
+| `Headline/Large-H4` | `Headline Large-H4` | 700 | 24 | 33.6 |  |
+| `Headline/Medium-H5` | `Headline Medium-H5` | 600 | 20 | 28 |  |
+| `Headline/Small-H6` | `Headline Small-H6` | 600 | 16 | 24 |  |
+| `Body/Large` | `Body L` | 400 | 16 | 24 |  |
+| `Body/Medium` | `Body M` | 400 | 14 | 21 |  |
+| `Body/Small` | `Body S` | 400 | 12 | 18 |  |
+| `Title/XLarge` | `Title XL` | 600 | 32 | 41.6 |  |
+| `Title/Large` | `Title L` | 600 | 18 | 25.2 |  |
+| `Title/Medium` | `Title M` | 600 | 16 | 24 |  |
+| `Title/Small` | `Title S` | 600 | 14 | 21 |  |
+| `Label/Large` | `Label L` | 600 | 16 | 24 |  |
+| `Label/Medium` | `Label M` | 600 | 14 | 21 |  |
+| `Label/Small` | `Label S` | 600 | 12 | 18 |  |
+| `Caption/Large` | `Caption L` | 500 | 12 | 18 |  |
+| `Caption/Medium` | `Caption M` | 500 | 11 | 16.5 |  |
+| `Caption/Small` | `Caption S` | 600 | 10 | 15 |  |
+| `Button/XLarge` | `Button XL` | 600 | 18 | 24 |  |
+| `Button/Large` | `Button L` | 600 | 16 | 24 |  |
+| `Button/Medium` | `Button M` | 600 | 14 | 24 |  |
+| `Button/Small` | `Button S` | 600 | 12 | 24 |  |
+
+- Line heights follow 1.3 (32 px and up), 1.4 (18–28 px) and 1.5 (16 px and below), except the Button styles, which use a fixed 24.
+- `ExtraBold-800` exists in Primitives but no style uses it, so weight 800 isn't bundled.
+
+### 3.5 Spacing
+
+_Collection `Alias Spacing & Radius` → `Spacing`._
+
+| Token | Value |
+|---|---|
+| `Space-none` | 0 |
+| `Space-XXS` | 2 |
+| `Space-XS` | 4 |
+| `Space-S` | 6 |
+| `Space-M` | 8 |
+| `Space-L` | 12 |
+| `Space-XL` | 16 |
+| `Space-2XL` | 20 |
+| `Space-3XL` | 24 |
+| `Space-4XL` | 32 |
+| `Space-5XL` | 40 |
+| `Space-6XL` | 48 |
+| `Space-7XL` | 56 |
+| `Space-8XL` | 64 |
+| `Space-9XL` | 80 |
+| `Space-10XL` | 96 |
+| `Space-11XL` | 120 |
+
+### 3.6 Radius
+
+| Token | Value |
+|---|---|
+| `Radius-none` | 0 |
+| `Radius-XS` | 4 |
+| `Radius-S` | 8 |
+| `Radius-M` | 12 |
+| `Radius-L` | 16 |
+| `Radius-XL` | 24 |
+| `Radius-Full` | 999999 (fully rounded / pill) |
+
+### 3.7 Breakpoints
+
+_From `Primitives/Sizes`. These are layout widths, not spacing, and are generated as breakpoint tokens only._
+
+| Token | Value | Use |
+|---|---|---|
+| `Size-1024` | 1024 | Narrowest supported width. Side nav collapsed. |
+| `Size-1280` | 1280 | Side nav expanded from here |
+| `Size-1440` | 1440 | Main design width (Figma frames). No layout change yet |
+| `Size-1920` | 1920 | Large desktop (Figma frames). No layout change yet |
+
+`Size-343` and `Size-375` are mobile widths and aren't exported to code.
+
+### 3.8 Figma → code naming
+
+All generated code lives in `packages/tokens/dist/` and is **generated from `tokens/design.tokens.json`**. Don't edit those files by hand.
+
+| Figma token | CSS | TypeScript | Rule |
+|---|---|---|---|
+| `bg-action-primary_hovered` | `var(--fin-bg-action-primary-hovered)` | `finColor.bgActionPrimaryHovered` | Semantic colors. Lowercase, `_` and spaces become `-` in CSS, camelCase in TS. The TS value is the `var(…)` reference, so it follows theme and brand. |
+| `Alpha-nav_background` | `var(--fin-alpha-nav-background)` | `finColor.alphaNavBackground` | Same as above |
+| `Space-XL`, `Space-2XL` | `var(--fin-space-xl)`, `var(--fin-space-2xl)` | `finSpace.xl`, `finSpace.x2l` | A number can't start a TS name, so `2XL` becomes `x2l` |
+| `Radius-M`, `Radius-Full` | `var(--fin-radius-m)`, `var(--fin-radius-full)` | `finRadius.m`, `finRadius.full` | `full` = 999999 px, a pill / circle |
+| Text style `Body/Large` | `font: var(--fin-font-body-large)` | `finFont.bodyLarge` | One `font` shorthand per **text style** (weight, size / line height, family). Use the text style name from §3.4. |
+| `Size-1280` | `@media (--fin-bp-lg)` | `finBreakpoint.lg` | Custom media queries: `md` = 1024, `lg` = 1280, `xl` = 1440, `xxl` = 1920 (min-width) |
+| Shadow style `Shadow/Resting_cards` | `var(--fin-shadow-resting-cards)` | — | Hand-written in `styles.css` (§4) |
+| `Primitives`, `Alias Colors` | `--fin-palette-electric-indigo-500`, `--fin-color-primary-500` | — | Generated so semantic tokens can point to them. **Components must not use them** (Stylelint blocks it). |
+
+**Theming in CSS:**
+
+```css
+:root                    { /* primitives */ }
+:root, [data-brand="finspace"] { /* alias colors + alias typography → primitives */ }
+:root, [data-theme="light"]   { /* semantic colors → alias colors */ }
+[data-theme="dark"]           { /* semantic colors → alias colors */ }
+```
+
+### 3.9 Export quirks the token build must handle
+
+- **Font weights** are exported as `{ "value": 800, "unit": "px" }`. Drop the unit; they are plain weights.
+- **Line heights** are exported as fractional px (`62.400002`). Round to one decimal (`62.4px`).
+- **Alpha colors** are exported as `{ "components": "{Alias Colors…}", "alpha": 0.16 }`. This isn't standard DTCG. Resolve the referenced alias **as a variable** and apply the alpha, for example `rgb(from var(--fin-color-primary-500) r g b / 0.16)`, so it follows the brand. If the target browsers don't support relative color syntax, fall back to `color-mix(in srgb, var(--fin-color-primary-500) 16%, transparent)`.
+- **Aliases** (`{Collection.Group.Token}`) are kept as `var()` references between layers (not flattened to hex) and resolved per mode (Light/Dark).
+- `LineHeight-64px 2` has a stray ` 2` in its name. Generate it as `line-height-64px`.
+- `Primitives/Sizes`: only `Size-1024` to `Size-1920` are exported, as breakpoints. The other sizes are only reached through the spacing and radius tokens.
+- `Font style/Primary` is the font family, not a style.
+- **Mode names aren't in the export when a collection has only one mode.** TokensBrücke writes `mode: {}` for `Alias Colors` and `Alias Typography` (one mode, `Finspace`), and only writes mode names for `Color collection` (Light/Dark). The token build therefore has a small config that names the single brand `finspace`. When a second brand mode is added, the export will list both modes and the build should read them from there.
+- **Styles aren't in the export** (shadows, text styles, grids). They're recorded in §4 and hand-written in `packages/tokens/src/styles.css`; text styles are built from the `Alias Typography` variables.
+
+---
+
+## 4. Foundations: styles (not variables)
+
+These are saved as Figma **styles**, not variables, so they are **not** in the token JSON. Their values are recorded here. Claude Code puts them in `packages/tokens/src/styles.css` by hand, and they must be updated here and in code whenever the Figma style changes.
+
+### 4.1 Text styles
+
+There are 23 text styles (re-checked 13 Oct 2026). Each one is linked to its `Alias Typography` group (family, weight, size and line height all bound), so in code a text style is just the `--fin-font-*` shorthand built from those variables (§3.8). Names and values are in [§3.4](#34-typography), and they match the styles exactly. Letter spacing is 0 for all.
+
+Designers use the text styles in Figma; Claude Code reads which style a text layer uses and applies the matching `--fin-font-*` token. A text layer with no text style is reported to the designer (§10 #22).
+
+### 4.2 Shadows (effect styles)
+
+_Re-checked 13 Oct 2026. Three styles, all neutral black, no background blur or inner shadow._
+
+| Style | Layer (x, y, blur, spread, color) | CSS variable | Use |
+|---|---|---|---|
+| `Shadow/Resting_cards` | Drop: 0, 1, 3, 0, `#000000` 5% | `--fin-shadow-resting-cards` | Cards and surfaces at rest |
+| `Shadow/Panel_sheets` | Drop: 0, 2, 10, 0, `#000000` 4% | `--fin-shadow-panel-sheets` | Panels, side sheets, dialogs, menus |
+| `Shadow/Sticky` | Drop: 0, **−2**, 16, 0, `#000000` 8% | `--fin-shadow-sticky` | Sticky bottom elements (the shadow falls upward) |
+
+- Figma's drop-shadow **blur** maps to the CSS `box-shadow` blur value directly.
+- Shadow colors are fixed values in Figma (not variables), so they're the same in Light and Dark (see §10 #5).
+- Use a shadow only where the Figma component uses that style. If a component has an effect that isn't one of these styles, report it.
+
+### 4.3 Layout grids (grid styles)
+
+| Style | Frame | Columns | Gutter | Margin | Alignment |
+|---|---|---|---|---|---|
+| `Desktop-sm` | 1440 × 1024 | 12 | 24 (`Space-3XL`) | 24 (`Space-3XL`) | Stretch |
+| `Desktop-lg` | 1920 × 1080 | 12 | 24 (`Space-3XL`) | 24 (`Space-3XL`) | Stretch |
+
+Both grids are the same today. Generated as `--fin-grid-columns`, `--fin-grid-gutter` and `--fin-grid-margin`.
+
+---
+
+## 5. Motion
+
+> **Status: deferred. Don't build yet.** Don't create motion tokens or add animations to components until design confirms this section. Simple state changes (hover, pressed, focus) switch instantly until then.
+>
+> **Planned direction:** use **Material 3 motion** ([how it works](https://m3.material.io/styles/motion/overview/how-it-works)): its easing and duration pairs, written as CSS custom properties. When this is picked up:
+> 1. Check the current M3 guidance first, since it has been updated over time.
+> 2. Map each use (enter, exit, hover color, expand/collapse, side nav collapse) to an M3 easing + duration pair.
+> 3. Agree the list with design.
+
+**Reduce motion:** every animation must respect `@media (prefers-reduced-motion: reduce)`. When it's on, elements appear instantly and loops stop.
+
+---
+
+## 6. Icons
+
+### 6.1 Rules
+
+| Type | Source | Style | Color |
+|---|---|---|---|
+| **Utility icons** | **Material Symbols Rounded**, npm package `material-symbols` (self-hosted variable font) | Outlined (`FILL 0`) by default, filled (`FILL 1`) for active/selected states | **Recolored per use** with an `fg-*` token. Changes in dark mode. |
+| **Flags, payment icons, logos** | Assets exported from Figma | Own artwork | **Never recolor, redraw or distort.** |
+
+- **Never draw, invent or approximate an icon.** If an icon in Figma isn't from Material Symbols Rounded, stop and ask design (see §10: some components still use icons from another set).
+- Icon names are the Material Symbols names in snake_case (`keyboard_arrow_down`, `perm_identity`), the same as in Figma.
+- The full variable font is large. Subsetting it to the icons in the registry is a later optimisation; don't do it without asking.
+
+### 6.2 One component for every icon
+
+Screens and components **never** render the icon font or an SVG directly. They always use:
+
+```tsx
+<FinIcon name="home" size={24} color="secondary" filled={isActive} label="Home" />
+```
+
+- `finIcons` is the single registry: a typed list of the icon names the system uses, so `name` is checked by TypeScript.
+- `filled` switches `FILL` 0 → 1. Use it for the active/selected state only.
+- Without `label`, the icon is decorative (`aria-hidden`). With `label`, it's announced.
+- The variation axes `wght`, `GRAD` and `opsz` must match the Figma icon library. **Read them from Figma when building `FinIcon`; don't guess.**
+
+### 6.3 Sizes
+
+_From the **Icon sizes** page (13 Oct 2026). Each set has a `State` variant: Primary / Secondary / Disabled / Success / Warning / Error / Info._
+
+| Figma set | Node | Size |
+|---|---|---|
+| `16px` | `3017:6258` | 16 |
+| `20px` | `3017:6323` | 20 |
+| `24px` | `3017:6352` | 24 (default) |
+| `36px` | `3017:6388` | 36 |
+| `48px` | `3017:6417` | 48 |
+| `64px` | `3017:7083` | 64 (its states are still named `Variant3` and `Errorr`, see §10) |
+
+Only these six sizes exist. Icon containers on the same page (`40px bg`, `48px bg`, `68px bg`, `Circle Icon`) are listed in §8.2.
+
+### 6.4 Icons used in the component file
+
+_Scan of all in-scope pages, 13 Oct 2026. `FinIcon`'s registry starts with these names. Check each one exists in Material Symbols Rounded when building `FinIcon` (§10)._
+
+`arrow_back`, `assignment`, `camera_alt`, `cancel`, `check`, `check_circle`, `chevron_right`, `close`, `cloud_upload`, `desktop_windows`, `dock_to_right`, `home`, `info`, `keyboard_arrow_down`, `keyboard_arrow_right`, `keyboard_arrow_up`, `loyalty`, `notifications`, `payment`, `perm_identity`, `plagiarism`, `remove`, `search`, `sports_esports`, `supervised_user_circle`, `visibility`, `visibility_off`, `warning`, `warning_amber`
+
+`perm_identity` is the placeholder icon inside most components; in use it gets swapped for the needed icon.
+
+---
+
+## 7. Component architecture
+
+### 7.1 Levels
+
+Components are built **bottom-up**. A component may only be built after everything it depends on is done.
+
+| Level | Meaning |
+|---|---|
+| **Atom (L0)** | Contains no other component |
+| **Atom (L1)** | Contains only icons or an L0 atom |
+| **Molecule** | Built from atoms |
+| **Organism** | Built from molecules |
+| **Asset** | Artwork, not a component (flags, payment icons, logos) |
+
+_Levels confirmed by design on 13 Oct 2026; each component's level is its section in §8. The first component to build is `Icon sizes` (L0)._
+
+### 7.2 Base → mapped pattern (important)
+
+Many components in Figma follow a **base → mapped** structure:
+
+- A **base** component (for example `Base-button`, `Input field-base`) holds **every** option as boolean properties, text properties and slots.
+- **Mapped** components are built from instances of the base, with some options fixed for a specific type, size or state.
+- Changing the base updates every mapped component.
+
+**Code must keep the same structure:**
+
+1. Build the **base component first**, with all options as props.
+2. Build each **mapped component** as a thin wrapper that only passes fixed props to the base. Mapped components must not copy the base's markup or CSS.
+3. A visual fix to a mapped component almost always belongs in the **base**.
+
+| Base | Mapped components |
+|---|---|
+| `Base-button` | `all-button` → used by Button dock, Dialog, Empty state, File uploads, Header, Notification, Side Menu, Side sheet, Snackbar, Pagination group, Table cell |
+| `Tag-base` | `Badge-primary` |
+| `Chips-base` | `Chips`, `Chips-group` |
+| `Base-Checkbox` | `Checkbox` |
+| `Segmented_button-base` | `Segmented button` |
+| `Input field-base` (`49:5734`) | `Input field-standard`, `Input field-password`, `Input field-select`, `Input field-Multi select`, `Search` |
+| `Input field-textArea-base` (`3094:26567`) | the text area set at `3097:27497` (still named `Input field-base` in Figma, §10 #17) |
+| `Input-OTP-base` | (base only; no mapped OTP component in the file) |
+| `Indicator` | `Indicator set` |
+| `Progress bar` | `Progress-progress bar` |
+| `Spinner` | `Progress-Spinner` |
+| `Avatar` | `Avatar Group`, `Profile image` |
+| `Pagination item` | `Pagination group` |
+| `List-base`, `List-fill-base` | (bases; used directly by Side Menu, no mapped components yet) |
+| `Accordion-frame-base`, `Accordion-bare-base` | (bases only; no mapped components yet) |
+
+**List and Accordion bases (design note, 13 Oct 2026).** These are bases even though nothing is mapped from them yet. They have no interaction states in Figma today (no hover, pressed or selected). Build them as bases with **no hover or selected styling** for now, but keep the structure ready for states: the root element must be able to take `data-selected` and be interactive later (as a `button` or link through the `as` prop) without changing the markup or slots. When design adds states, or a mapped list item needs them, they are added to the **base**, not to the mapped component. Don't invent states before design adds them.
+
+`white-button` and `Destructive-button` are **separate** from `Base-button` in Figma (they don't contain it).
+
+### 7.3 Figma properties → React props
+
+| Figma property | React |
+|---|---|
+| **Variant** (Type, Size, Style…) | String union prop, such as `type: 'primary' \| 'secondary' \| 'tertiary'`, rendered as a `data-*` attribute for CSS |
+| **Variant for interaction state** (`State=Enabled/Hovered/Pressed/Disabled`, `Focused`, `Typing`, `Complete`) | **Not a prop.** It's runtime state in CSS: `:hover`, `:active`, `:focus-visible`, `:disabled`. Only `disabled` itself is a prop (the native attribute). Only data states (`Error`, `Selected`, `Expanded`, `Indeterminate`) become props. |
+| **Boolean** (`Show Leading Icon`…) | `boolean` prop, or an optional node (for example `leadingIcon` undefined hides it) |
+| **Text** (`Button label`…) | `string` prop, or `children` for the main label |
+| **Slot** (`Leading accessory`, `Body content`…) | `ReactNode` prop |
+| **Instance swap** (icon) | `FinIconName` prop |
+
+- **Disabled controls are never focusable** and get no focus ring (native `disabled`). `Disabled + Focused` variants in Figma are ignored; don't build or style them (design decision, 13 Oct 2026).
+- Form controls are **controlled or uncontrolled** like native inputs (`value` + `onChange`, or `defaultValue`), and forward `ref` to the native element.
+- Every component accepts `className` and passes other native attributes to its root element.
+
+### 7.4 Code conventions
+
+- One folder per component: `Fin<Name>.tsx`, `Fin<Name>.module.css`, `Fin<Name>.stories.tsx`, `Fin<Name>.test.tsx`, `index.ts`.
+- Styles follow the CSS Modules rules in `CLAUDE.md`: token variables only, variants as `data-*` attributes, states with pseudo-classes, no `:global`, no style objects in TSX.
+- `'use client'` on interactive components only. No browser APIs at import time. No router imports.
+- Storybook: one story per variant, with controls, checked in Light and Dark.
+
+---
+
+## 8. Component inventory and build status
+
+**Build order:** top to bottom. Design says what to build next. Claude Code updates the **Status** column when a component is done.
+
+Status: ⬜ Not started · 🟨 In progress · ✅ Done (built, Storybook stories and tests added, checked against Figma)
+
+All node IDs are in the component file `vD9CL5tZQo4D26fUN3vKHT`. Where a Figma name has a typo, the **code name** uses the corrected spelling, and the Figma name is kept here so it can still be found.
+
+Inventory from the component file scan of 13 Oct 2026. Levels and scope confirmed by design.
+
+**Figma check** column: ✅ clean · ⚠️ some values are bound to another library or are raw values (see §10 #13). **This never blocks a build:** Figma doesn't need to be fixed first, Claude Code maps each value to a Finspace Loyalty token and tells the designer before building · 🔴 a structural problem in Figma (broken component set, missing main component, placeholder or duplicate name) that must be fixed first (see the §10 item). **Don't build a 🔴 component; tell the designer.** **Before building a ⚠️ component, list its other-library and raw values with the Finspace Loyalty token you plan to use for each, and wait for the designer's approval.**
+
+**Code names marked _(provisional)_** come from placeholder Figma names (`Frame …`). Confirm them with design before building.
+
+### 8.0 Setup: before any component
+
+| # | Task | Output | Status |
+|---|---|---|---|
+| S1 | pnpm monorepo scaffold (`packages/tokens`, `packages/ui`, `apps/storybook`), TypeScript, Vite, ESLint, Stylelint | repo root | ⬜ |
+| S2 | Token build: `tokens/design.tokens.json` → CSS variables + TypeScript (handles the quirks in §3.9), with brand and theme scoping (§3.8) | `packages/tokens/dist/` | ⬜ |
+| S3 | Styles by hand from §4 (shadows, background blur, grid) and breakpoints (§3.7). Motion (§5) is deferred. | `packages/tokens/src/styles.css` | ⬜ |
+| S4 | Fonts: Inter (400, 500, 600, 700) and Material Symbols Rounded, self-hosted. CSS reset. | `packages/ui/src/styles/` | ⬜ |
+| S5 | Storybook with a Light/Dark and brand switcher, plus a Foundations section (colors, typography, spacing, radius, shadows, grid and breakpoints) | `apps/storybook/` | ⬜ |
+| S6 | Tests and lint setup: Vitest + Testing Library, Storybook a11y addon, Stylelint rules that block raw colors and palette/alias variables in component CSS | repo root | ⬜ |
+
+### 8.1 Atoms, level 0: contain no other components
+
+| # | Figma component | Page | Node | Code name | Variants / properties | Figma check | Status |
+|---|---|---|---|---|---|---|---|
+| 1 | `16px`, `20px`, `24px`, `36px`, `48px`, `64px` | Icon sizes | `3017:6258`, `3017:6323`, `3017:6352`, `3017:6388`, `3017:6417`, `3017:7083` | `FinIcon` | State: Primary/Secondary/Disabled/Success/Warning/Error/Info · see §6 | 🔴 `64px` state names (§10 #21) | ⬜ |
+| 2 | `Divider` | Divider | `28:367` | `FinDivider` | Type: Divider / Section Divider | ✅ | ⬜ |
+| 3 | `Badge - indicator` | Badge | `30:1500` | `FinBadgeIndicator` | Size: Large/Small · Digits: None/Single/Double · Style: Red/Yellow/Green | ⚠️ | ⬜ |
+| 4 | `Online Indicator` | Avatar | `14:995` | `FinOnlineIndicator` | Size: XSmall…XXXLarge (7) | ✅ | ⬜ |
+| 5 | `Indicator` | Indicator | `98:3532` | `FinIndicatorDot` | Type: Default/Selected | ✅ | ⬜ |
+| 6 | `Caption` | List | `77:10172` | `FinCaption` | Size: Small/Medium/Large · Thickness: Heavy/Light | ⚠️ | ⬜ |
+| 7 | `Overlay` | Overlays | `111:2495` | `FinOverlay` | Type: **Desktop only** (Mobile is out of scope) | ✅ | ⬜ |
+| 8 | `Switch` | Toggle | `34:2545` | `FinSwitch` | Type: Selected/Unselected · Size: Small/Large · State, Focused (runtime) | ⚠️ | ⬜ |
+| 9 | `Base-Radio_box` | Radio button | `37:104` | `FinRadio` | Type: Selected/Unselected · State (runtime) | ⚠️ | ⬜ |
+| 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | Filled: 0–100% · Size: Large/Small · Steps: 4/5 | ⚠️ | ⬜ |
+| 11 | `Progress bar-portfolio` | Progress | `695:5418` | `FinProgressBarPortfolio` | Filled (`Fillted`): 0–100% | ⚠️ | ⬜ |
+| 12 | `dragger` | Progress | `645:3136` | `FinDragger` | Filled: 5–100% | ⚠️ | ⬜ |
+| 13 | `Spinner` | Progress | `33:2331` | `FinSpinner` | Progress (`Pregress`): 25/50/75%, Success, Error | ✅ | ⬜ |
+| 14 | `Input-OTP-base` | Input field | `49:5843` | `FinOtpCellBase` | **Base** for OTP. State (runtime) · Show number · Error | ⚠️ | ⬜ |
+| 15 | `Pagination item` | Table | `3144:14184` | `FinPaginationItem` | State: Default/Selected/Hovered/Dots | ✅ | ⬜ |
+
+### 8.2 Atoms, level 1: contain only icons or L0 atoms
+
+| # | Figma component | Page | Node | Code name | Depends on | Variants / properties | Figma check | Status |
+|---|---|---|---|---|---|---|---|---|
+| 16 | `40px bg` | Icon sizes | `3017:6944` | `FinIconContainer` (size 40) | `24px` | State (7) | ✅ | ⬜ |
+| 17 | `48px bg` | Icon sizes | `3017:6993` | `FinIconContainer` (size 48) | `24px` | State (7) | ✅ | ⬜ |
+| 18 | `68px bg` | Icon sizes | `3017:7023` | `FinIconContainer` (size 68) | `36px` | State (7) | ✅ | ⬜ |
+| 19 | `Circle Icon` | Icon sizes | `624:4882` | `FinCircleIcon` | `20px`, `36px` | Size: Small/Large | ⚠️ | ⬜ |
+| 20 | `Tag-base` | Badge | `30:1454` | `FinTagBase` | `16px`, `20px` | Size: Small/Large · Leading/Trailing icon · Label | ✅ | ⬜ |
+| 21 | `Label` | Text box | `28:968` | `FinLabel` | Badge - indicator | Size: Medium/Small · Show badge · Label | ⚠️ | ⬜ |
+| 22 | `Helper text content` | Text box | `28:973` | `FinHelperText` | `20px` | State: Default/Error/Success/Warning/Disabled · Show leading icon · Text | ⚠️ | ⬜ |
+| 23 | `Base-button` | Buttons | `45:405` | `FinButtonBase` | `20px`, `24px` | Type: Primary/Secondary/Tertiary · Size: Large/Medium/Small/XSmall · State, Focused (runtime) · Leading/Trailing icon · Label | ✅ | ⬜ |
+| 24 | `white-button` | Buttons | `349:5042` | `FinWhiteButton` | `20px`, `24px` | Size (4) · State, Focused (runtime) · icons · Label | ✅ | ⬜ |
+| 25 | `Destructive-button` | Buttons | `523:2813` | `FinDestructiveButton` | `20px`, `24px` | Type: Primary/Secondary · Size (4) · State, Focused (runtime) | ✅ | ⬜ |
+| 26 | `Base-Checkbox` | Checkbox | `42:185` | `FinCheckboxBase` | `16px` | Type: Unselected/Selected/Indeterminate · State, Focused (runtime) | ⚠️ | ⬜ |
+| 27 | `Chips-base` | Chips | `95:1811` | `FinChipBase` | `16px`, `20px` | Type: Unselected/Selected/Unselected-border · Size: XSmall/Small/Large · Leading slot · Trailing icon | ⚠️ | ⬜ |
+| 28 | `Segmented_button-base` | Segmented button | `117:4667` | `FinSegmentBase` | `20px` | Type: Unselected/Selected · State (runtime) · Leading slot | ⚠️ | ⬜ |
+| 29 | `Avatar` | Avatar | `932:1387` | `FinAvatar` | `16`–`64px` | Type: Image/Icon/Text · Size: XSmall…XXXLarge (7) | ⚠️ | ⬜ |
+| 30 | `Contry selecter` | Input field | `49:5731` | `FinCountrySelector` | Flag sizes, Flag icons, `24px` | Show icon | ✅ | ⬜ |
+| 31 | `Row count dropdown` | Table | `3151:14547` | `FinRowCountSelect` | `24px` | Default/Hovered (runtime) · `Property 1` name (§10 #21) | ✅ | ⬜ |
+| 32 | `24px` (side nav) | Side nav | `3138:10976` | `FinSideNavIcon` | `24px` icon | Type: Unselected/Selected | 🔴 name clashes with icon size (§10 #20) | ⬜ |
+| 33 | `sub selection` | Side nav | `3140:11076` | `FinSideNavSubItem` | — | Default/Hovered/Pressed/Selected (runtime; `Property 1`) | ✅ | ⬜ |
+
+### 8.3 Molecules
+
+| # | Figma component | Page | Node | Code name | Built on / depends on | Figma check | Status |
+|---|---|---|---|---|---|---|---|
+| 34 | `all-button` | Buttons | `47:1580` | `FinButton` | **Base-button** · Type (3) · Size (4) · Icon: None/Leading/Trailing/Only Icon | ⚠️ | ⬜ |
+| 35 | `Badge-primary` | Badge | `30:1465` | `FinBadge` | **Tag-base** · State: Primary/Secondary/Success/Error/Info/Warning/Disabled/Brand/Neutral | ✅ | ⬜ |
+| 36 | `Text Box` | Text box | `28:1001` | `FinTextBox` | Label · Type: H1–H6 · Alignment: Left/Center/Right | ✅ | ⬜ |
+| 37 | `Checkbox` | Checkbox | `42:220` | `FinCheckbox` | **Base-Checkbox**, Text Box | ⚠️ | ⬜ |
+| 38 | `Chips` | Chips | `95:1848` | `FinChip` | **Chips-base** | ✅ | ⬜ |
+| 39 | `Chips-group` | Chips | `922:6646` | `FinChipGroup` | **Chips-base** · Chip count 1–4 | ⚠️ | ⬜ |
+| 40 | `Segmented button` | Segmented button | `117:4688` | `FinSegmentedButton` | **Segmented_button-base** | ⚠️ | ⬜ |
+| 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number | ✅ | ⬜ |
+| 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 | ⚠️ | ⬜ |
+| 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image | ⚠️ | ⬜ |
+| 44 | `Progress-progress bar` | Progress | `31:2122` | `FinProgress` | **Progress bar**, Text Box | ⚠️ | ⬜ |
+| 45 | `Progress-Spinner` | Progress | `33:2348` | `FinProgressSpinner` | **Spinner**, Text Box | ⚠️ | ⬜ |
+| 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black/Basic | ⚠️ (§10 #16) | ⬜ |
+| 47 | `Pagination group` | Table | `3151:14607` | `FinPagination` | **Pagination item**, all-button | ⚠️ | ⬜ |
+| 48 | `Main Selection` | Side nav | `3140:10997` | `FinSideNavItem` | Side nav `24px`, sub selection, `24px` icon · State · Expanded · Type: Full/Minimized · Expanded slot | 🔴 depends on #32 | ⬜ |
+| 49 | `Header notification` | Header | `3178:24467` | `FinHeaderNotificationButton` | 48px bg, Badge - indicator, `24px` · State (runtime: Default/Hovered/Disabled) · Notification: Dot/Number | 🔴 broken set: duplicate variant `State=Hovered, Notification=Dot` (§10 #17) | ⬜ |
+| 50 | `Table header cell` | Table | `3151:14941` | `FinTableHeaderCell` | Base-Checkbox, Label · White/Grey (`Property 1`) · Slot · Show checkbox/title/trailing icon | ⚠️ | ⬜ |
+| 51 | `Table - Cell` | Table | `3151:14990` | `FinTableCell` | Base-Checkbox, Badge-primary, Tag-base, all-button · Default/Badge/Link (`Property 1`) · Leading accessories and content slots · Show action button | ⚠️ | ⬜ |
+
+### 8.4 Organisms
+
+| # | Figma component | Page | Node | Code name | Built on / depends on | Figma check | Status |
+|---|---|---|---|---|---|---|---|
+| 52 | `Input field-base` | Input field | `49:5734` | `FinInputBase` | **Base** for single-line fields. Type: Default/Payment/Mobile number/Select · Destructive (= error) · Label, Placeholder, Prefix, Suffix, Caret, Focus ring · Leading, Trailing, Placeholder and Helper text slots · Helper text, Country selector, Flags, Divider, icons | ⚠️ | ⬜ |
+| 52a | `Input field-textArea-base` | Input field | `3094:26567` | `FinTextAreaBase` | **Base** for multi-line fields. Type: Default/Destructive (`Distructive`) · Label, Helper text, Placeholder, Caret, Focus ring · Helper text and Placeholder slots | ⚠️ (§10 #16) | ⬜ |
+| 52b | `Input field-base` (text area) | Input field | `3097:27497` | _(provisional)_ `FinTextArea` | **Input field-textArea-base**, Helper text | 🔴 broken set and duplicate name (§10 #17) | ⬜ |
+| 53 | `Input field-standard` | Input field | `52:2629` | `FinTextField` | **Input field-base**, Payment Icons, Country selector · Type: Default/Mobile number/Payment · Error | ⚠️ (after #52) | ⬜ |
+| 54 | `Input field-password` | Input field | `60:7165` | `FinPasswordField` | **Input field-base** · Show password · Error | ⚠️ (after #52) | ⬜ |
+| 55 | `Input field-select` | Input field | `537:2736` | `FinSelectField` | **Input field-base** | ⚠️ (after #52) | ⬜ |
+| 56 | `Input field-Multi select` | Input field | `922:6170` | `FinMultiSelectField` | **Input field-base**, Chips-base | ⚠️ (after #52) | ⬜ |
+| 57 | `Search` | Search | `440:5164` | `FinSearchField` | **Input field-base** · State · Sticky | ⚠️ (after #52) | ⬜ |
+| 58 | `File uploads` | Input field | `775:4280` | `FinFileUpload` | 40px bg, 48px bg, Text Box, all-button · Size: Large/Small | ⚠️ | ⬜ |
+| 59 | `List-base` | List | `77:10185` | `FinListItem` | **Base.** 40px bg, Label, Text Box, Divider · slots | 🔴 missing `20px` main (§10 #19) | ⬜ |
+| 60 | `List-fill-base` | List | `3169:6327` | `FinListItemFilled` | **Base.** 40px bg, Label, Text Box · slots | 🔴 missing `20px` main (§10 #19) | ⬜ |
+| 61 | `Accordion-frame-base` | Accordion | `555:1767` | `FinAccordionFramed` | **Base.** Text Box, Badge-primary, Label · slots | ✅ | ⬜ |
+| 62 | `Accordion-bare-base` | Accordion | `555:1968` | `FinAccordion` | **Base.** Text Box, Badge-primary, Label, Divider · slots | 🔴 missing `20px` main (§10 #19) | ⬜ |
+| 63 | `Notification` | Notification banners | `77:10612` | `FinNotificationBanner` | all-button, icons · Type: Info/Success/Error/Warning/Neutral | ⚠️ (§10 #16) | ⬜ |
+| 64 | `Snackbar` | Snackbar | `268:992` | `FinSnackbar` | Text Box, all-button · State: Neutral/Success/Warning/Error · single/two lines | ⚠️ | ⬜ |
+| 65 | `Empty state` | Empty state | `71:4588` | `FinEmptyState` | 48px bg, 68px bg, Text Box, all-button · Size: Small/Medium/Large · Icon slot | ✅ | ⬜ |
+| 66 | `Button dock` | Button dock | `75:5858` | `FinButtonDock` | Text Box, all-button · Sticky · Accessory slot | ✅ | ⬜ |
+| 67 | `Side sheet` | Side sheet | `3120:30707` | `FinSideSheet` | Text Box, Badge-primary, all-button, Button dock · Body slot | 🔴 remote `Views / Dividers` (§10 #25) | ⬜ |
+| 68 | `Dialog box` | Dialog | `3234:11710` | `FinDialog` | Text Box, all-button, `24px` · Body slot · Leading button, Primary/Secondary buttons, Trailing buttons, Trailing icon | ✅ | ⬜ |
+| 69 | `Main header` | Header | `3178:24570` | `FinHeader` | all-button, Text Box, Header notification · Notification, Back button, Description | 🔴 depends on #49 | ⬜ |
+| 70 | `Side Menu` | Side nav | `3142:11871` | `FinSideNav` | Main Selection, List-base, Avatar, Text Box, all-button · Menu (8 sections) | 🔴 unstyled text, remote `Frame 3`/`image` (§10 #22, #25) | ⬜ |
+| 71 | `Table row` | Table | `3151:15248` | `FinTableRow` | Table - Cell, Base-Checkbox · Default/Hovered/Selected/Selected-Hovered (hover is runtime; Selected is a prop) | ⚠️ | ⬜ |
+| 72 | `Title row` | Table | `3151:15203` | `FinTableHeaderRow` | Table header cell, Base-Checkbox, Label | ⚠️ | ⬜ |
+| 73 | `Table footer` | Table | `3151:14830` | `FinTableFooter` | Row count dropdown, Pagination group | ⚠️ | ⬜ |
+| 74 | — (code only; in Figma the table is assembled on each screen) | Table | — | `FinTable` | **Code-only organism** composed from Title row, Table row, Table footer: columns and rows as data, row selection (select all / indeterminate), footer pagination. No Figma node, so it only uses the parts above and adds no new visuals. See §9 when built. | ✅ (after #50–73) | ⬜ |
+
+### 8.5 Assets (exported, not built as components)
+
+| Figma component | Page | Node | Export to |
+|---|---|---|---|
+| `Flag icons` (circle + rectangle) | Icon types | `49:6026` | `packages/ui/src/assets/flags/` |
+| `Flag sizes` | Icon types | `49:13408` | (size rules for flags: XSmall…XLarge, Default/Disabled) |
+| `Payment Icons` | Icon types | `58:14556` | `packages/ui/src/assets/payment/` |
+
+---
+
+## 9. Component specs
+
+Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
+
+Template:
+
+```
+### 9.x <Component> (<Figma page>)
+
+**Figma:** page, component set name and node.
+**Variants:** table of Figma variants → props.
+**Tokens used:** colors, spacing, radius, text style, shadow per part and state.
+**API:** TSX usage example.
+**Accessibility:** element, keyboard behaviour, ARIA.
+**Built (date).** Checked against Figma; any decisions or differences.
+```
+
+---
+
+## 10. Known issues and open decisions
+
+| # | Item | Where | Status |
+|---|---|---|---|
+| 1 | **Desktop spacing rules** (page padding, section gap, card padding, gap between buttons…) aren't defined. Until then, spacing is copied from Figma with spacing tokens and off-scale values are reported (§2). | Foundation | ❓ Decide (after the first UIs) |
+| 2 | `bg-action-secondary_hovered` and `_pressed` had the same value. Fixed 13 Oct 2026: pressed is now Primary-200 / Primary-700 (hovered stays Primary-100 / Primary-800), and the Secondary button in the component file uses both tokens. | Foundation › Color collection | ✅ Fixed |
+| 3 | Contrast (Light): white text on `bg-success` is 3.6:1 and on `bg-warning` 2.7:1 (fail for normal text; dark text on `bg-warning` is 6.5:1). `border-strong` and `text-placeholder` are about 2.96:1 against white (borders of controls need 3:1). | Foundation › Color collection | ❓ Decide |
+| 4 | Dark mode default: follow the OS setting (`prefers-color-scheme`) or only the app setting? | Theming | ❓ Decide |
+| 5 | Shadows are effect styles, not variables, so they're the same in Light and Dark. Now three neutral styles (Resting cards, Panel sheets, Sticky); the mobile-era Floating and Back styles were removed (13 Oct 2026). Does dark mode need different shadows? | Foundation › effect styles | ❓ Decide |
+| 6 | Focus ring: color is `border-focused`, but width and offset aren't tokens. Read them from the `Focused` variants in Figma when building; ask if components differ. | Foundation / Components | ⏳ Check per component |
+| 7 | Outdated Figma descriptions: Title XL/L "To show balance"; `bg-action-secondary` "swipe button"; `Alpha-nav` "bottom navigation"; `Alpha-border` "back icon circle"; `text-secondary` says "description texts" (it's used for body text). Typos: "boarders", "outine", "Desctructive", "cheveron". | Foundation | ⏳ Design to update later |
+| 8 | `LineHeight-64px 2` has a stray suffix. The token build handles it. | Foundation › Primitives | 🔧 Fix in Figma |
+| 9 | `Alias Typography` mode was named `Mobile`; now `Finspace`. | Foundation | ✅ Fixed (13 Oct 2026) |
+| 10 | Primitive naming: `Gray` is near-black; Green/Yellow/Red steps are named `Success-*`/`Warning-*`/`Error-*`; `Blue` isn't used. Code names follow Figma. | Foundation › Primitives | ⏳ Later |
+| 11 | Primitive colors and `Alias Colors` are published with all scopes, so they appear in every color picker and components can bind them directly. Recommend no scopes / hidden from publishing. | Foundation | 🔧 Fix in Figma |
+| 12 | Brands are modes in `Alias Colors` (§3.0). The mode is now named `Finspace` in `Alias Colors` and `Alias Typography` (13 Oct 2026). The variable paths still contain `Fintech` (`Colors/Fintech/Primary/…`, `Primitives/Colors/Fintech/…`). Before a second brand is added, remove `Fintech` from the paths (`Colors/Primary/…`) so every brand mode shares the same alias names. Code uses the mode name for `data-brand` and ignores the `Fintech` path segment in CSS variable names. | Foundation › Alias Colors | ⏳ Later: design will do this when a new brand is added |
+| 13 | **Spacing and radius bound to other libraries** (values are the same as Loyalty's): the Sampath Foundation, and unknown libraries with collections `Alias Spacing & Radius`, `Spacing, Radius & Widths` (`radius-xs`), `Spacing and Radius` (`Spacing 0px`, `Spacing 8px`) and `Tokens` (`Border/Radius 4px`). Affects the ⚠️ components in §8. **In code:** always use this system's tokens, never the other library's names or raw values. Before building, list each such value with the proposed token (for example `radius-xs` / `Radius 4px` → `Radius-XS`, `Spacing 8px` → `Space-M`, `Spacing 0px` → `Space-none`) and **ask the designer first**. If no token has the same value, say so and wait. | Components | ✅ Not a blocker: build with Loyalty tokens after telling the designer. Fixing Figma is optional cleanup. |
+| 14 | Material Symbols Rounded variable font is large. Subset to the registry later. | Icons | ⏳ Later |
+| 15 | Motion: plan is to adopt Material 3 easing and duration pairs (see §5). | §5 | ⏳ Deferred |
+| 16 | **Typography bound to another library** (the scan shows `Body L` in `Input field-textArea-base`, `Button M` in `Notification`, `Caption L` in `Plain Tooltip` coming from a non-Loyalty collection). **Decision (13 Oct 2026):** not a blocker. When building, use the Loyalty text style token with the same name (`--fin-font-body-large`, etc.) and list the mapping for the designer's approval first (§8 legend). | Components | ✅ Decided |
+| 17 | **Broken component sets** ("Component set has existing errors"): `Header notification` (`3178:24467`) has two variants named `State=Hovered, Notification=Dot` (the last one is probably meant to be `Hovered, Number`; `Disabled, Number` is also missing). The text area set `Input field-base` (`3097:27497`) has the same name as the real base `49:5734`; rename it (for example `Input field-textArea`). | Header, Input field | 🔧 Fix in Figma |
+| 18 | Input bases decided (13 Oct 2026): `Input field-base` (`49:5734`) for single-line fields, `Input field-textArea-base` (`3094:26567`) for text areas, `Input-OTP-base` (`49:5843`) for OTP. | Input field | ✅ Decided |
+| 19 | `Accordion-bare-base`, `List-base` and `List-fill-base` use a `20px` component whose main component isn't on any page (deleted or moved). | Accordion, List | 🔧 Fix in Figma |
+| 20 | **Clashing name:** `24px` on the Side nav page clashes with the icon size `24px`. (Renamed 13 Oct 2026: `Frame 5` → `sub selection`, Dialog `Frame 3` → `Dialog box`, Header `Frame 1707478998` → `Main header`, `Frame 1707478999` → `Header notification`, Table parts.) | Side nav | 🔧 Fix in Figma |
+| 21 | **Typos and inconsistent names:** `64px` states `Variant3` (should be Disabled) and `Errorr`; `Pregress` (Spinner); `Fillted` (Progress bar-portfolio); `SIze`/`Mediu` (Flag sizes); `Contry selecter`; `Distructive` (Input field-textArea-base); `brand` lowercase (Badge-primary); `Xsmall` vs `XSmall` (Avatar, Chips-base); `state` lowercase (Input field-select, Multi select); Snackbar has a property with no name; Empty state has both `Icon slot` and `Icon Slot`; Accordion-bare-base has `Trailing accessory` twice; several `Property 1` properties. Code uses the corrected spelling. | Components | 🔧 Fix in Figma |
+| 22 | `Side Menu`: 8 text layers have no text style. | Side nav | 🔧 Fix in Figma |
+| 23 | Icon names to verify against Material Symbols Rounded when building `FinIcon`: some may be from the older Material Icons set (for example `warning_amber`, `camera_alt`). If a name doesn't exist, ask design for the replacement. | Icons | ⏳ Check when building `FinIcon` |
+| 24 | Overlay `Mobile` variant is out of scope; only `Desktop` is built. | Overlays | ✅ Decided (13 Oct 2026) |
+| 25 | **Components from other libraries** used inside components: `Frame 3` and `image` (Side Menu), `Views / Dividers` (Side sheet), `gb-L` (Flag sizes). | Side nav, Side sheet, Icon types | 🔧 Fix in Figma |
+| 26 | **Table** page is complete and renamed (13 Oct 2026). Figma has the parts only; designers assemble tables on screens. **Decision:** code also gets a `FinTable` organism (§8 #74) built from those parts. Its API (columns/rows as data, selection, pagination) is written in §9 when built and agreed with design. `Property 1` on Table parts still needs naming (§10 #21). | Table | ✅ Decided |
+
+---
+
+## 11. Changelog
+
+| Date | Version | Change |
+|---|---|---|
+| 12 Oct 2026 | 0.1 | First draft: sources, core rules (desktop layout, theming, portability), all tokens from the 12 Oct export (431 variables), text styles, shadows, grids, breakpoints, icons (Material Symbols Rounded), architecture, setup tasks, known issues. Component inventory pending the component file review. |
+| 13 Oct 2026 | 0.2 | Component file reviewed: §8 inventory filled (73 components, 3 assets) with levels and scope confirmed by design, Figma check column, provisional names for placeholder components. §7.2 base → mapped table. §6.3 icon sizes corrected (16/20/24/36/48/64) and §6.4 icons used. §1: Cards now under 🔒 Do not use, Overlay `Mobile` out of scope. §10 #13 replaced, #16–26 added. |
+| 13 Oct 2026 | 0.2 | Table page marked complete. Table rows re-checked against Figma: Pagination group and Table footer ⚠️, placeholder-named parts still 🔴. §10 #26 now asks how `FinTable` is assembled. |
+| 13 Oct 2026 | 0.2 | Table parts renamed in Figma (`Table header cell`, `Table - Cell`, `Table row`); code names confirmed. Added #74 `FinTable` (code-only organism). |
+| 13 Oct 2026 | 0.2 | Rule: values bound to another library or raw values always become this system's tokens in code, and the mapping is approved by design before building (§8 legend, §10 #13). |
+| 13 Oct 2026 | 0.2 | §3.0: brands are modes in `Alias Colors`, Light/Dark are modes in `Color collection`; layer table added. §10 #12 updated. |
+| 13 Oct 2026 | 0.2 | Foundation re-checked: `Alias Colors` and `Alias Typography` modes renamed to `Finspace` (no more `Mobile`). Brand attribute is `data-brand="finspace"`; `Alias Typography` is also brand-scoped. §10 #9 fixed, #12 updated. |
+| 13 Oct 2026 | 0.2 | New token export saved to `tokens/design.tokens.json` (431 variables, matches Figma). §4 re-checked: 23 text styles unchanged; shadows now 3 neutral styles (Floating and Back removed, Sticky now black 8%). §3.9: single-mode names and styles aren't in the export. |
+| 13 Oct 2026 | 0.2 | Input field page re-checked: three bases confirmed (Input field-base, Input field-textArea-base, Input-OTP-base). Added #52a `FinTextAreaBase` and #52b `FinTextArea`. §7.2 updated, §10 #18 decided, #16 and #17 updated. |
+| 13 Oct 2026 | 0.2 | §10 #16 decided: typography from another library isn't a blocker; mapped to Loyalty text styles with designer approval. #52a now ⚠️. |
+| 13 Oct 2026 | 0.2 | §7.2: List and Accordion are bases with no states yet; built ready for states to be added to the base later. |

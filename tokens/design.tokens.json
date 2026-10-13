@@ -1,0 +1,4136 @@
+{
+  "Primitives": {
+    "Typography": {
+      "Font style": {
+        "Primary": {
+          "$type": "string",
+          "$value": "Inter",
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        }
+      },
+      "Font Weight": {
+        "ExtraBold-800": {
+          "$type": "dimension",
+          "$value": {
+            "value": 800,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "Bold-700": {
+          "$type": "dimension",
+          "$value": {
+            "value": 700,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "SemiBold-600": {
+          "$type": "dimension",
+          "$value": {
+            "value": 600,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "Medium-500": {
+          "$type": "dimension",
+          "$value": {
+            "value": 500,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "Regular-400": {
+          "$type": "dimension",
+          "$value": {
+            "value": 400,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        }
+      },
+      "Font Size": {
+        "FontSize-64px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 64,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-56px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 56,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-48px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 48,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-40px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 40,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-36px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 36,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-32px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 32,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-28px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 28,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-24px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-22px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 22,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-20px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 20,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-18px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 18,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-16px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 16,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-14px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 14,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-13px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 13,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-12px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 12,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-11px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 11,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "FontSize-10px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 10,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        }
+      },
+      "Line Height": {
+        "LineHeight-Label": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-64px 2": {
+          "$type": "dimension",
+          "$value": {
+            "value": 83.199997,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-56px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 72.800003,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-48px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 62.400002,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-40px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 52,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-36px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 46.799999,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-32px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 41.599998,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-28px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 39.200001,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-24px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 33.599998,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-22px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 30.799999,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-20px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 28,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-18px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 25.200001,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-16px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 24,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-14px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 21,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-13px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 19.5,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-12px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 18,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-11px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 16.5,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        },
+        "LineHeight-10px": {
+          "$type": "dimension",
+          "$value": {
+            "value": 15,
+            "unit": "px"
+          },
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
+        }
+      }
+    },
+    "Sizes": {
+      "Size-0": {
+        "$type": "dimension",
+        "$value": {
+          "value": 0,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-2": {
+        "$type": "dimension",
+        "$value": {
+          "value": 2,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-4": {
+        "$type": "dimension",
+        "$value": {
+          "value": 4,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-6": {
+        "$type": "dimension",
+        "$value": {
+          "value": 6,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-8": {
+        "$type": "dimension",
+        "$value": {
+          "value": 8,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-12": {
+        "$type": "dimension",
+        "$value": {
+          "value": 12,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-16": {
+        "$type": "dimension",
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-20": {
+        "$type": "dimension",
+        "$value": {
+          "value": 20,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-24": {
+        "$type": "dimension",
+        "$value": {
+          "value": 24,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-32": {
+        "$type": "dimension",
+        "$value": {
+          "value": 32,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-40": {
+        "$type": "dimension",
+        "$value": {
+          "value": 40,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-48": {
+        "$type": "dimension",
+        "$value": {
+          "value": 48,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-56": {
+        "$type": "dimension",
+        "$value": {
+          "value": 56,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-64": {
+        "$type": "dimension",
+        "$value": {
+          "value": 64,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-80": {
+        "$type": "dimension",
+        "$value": {
+          "value": 80,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-96": {
+        "$type": "dimension",
+        "$value": {
+          "value": 96,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-120": {
+        "$type": "dimension",
+        "$value": {
+          "value": 120,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-343": {
+        "$type": "dimension",
+        "$value": {
+          "value": 343,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-375": {
+        "$type": "dimension",
+        "$value": {
+          "value": 375,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-1024": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1024,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-1280": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1280,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-1440": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1440,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Size-1920": {
+        "$type": "dimension",
+        "$value": {
+          "value": 1920,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Colors": {
+      "Fintech": {
+        "Electric-Indigo": {
+          "Electric-Indigo-50": {
+            "$type": "color",
+            "$value": "#efefff",
+            "$description": "Dashboard palette #EFEFFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Electric-Indigo-100": {
+            "$type": "color",
+            "$value": "#ceccff",
+            "$description": "Dashboard palette #CECCFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Electric-Indigo-200": {
+            "$type": "color",
+            "$value": "#b7b4ff",
+            "$description": "Dashboard palette #B7B4FF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Electric-Indigo-300": {
+            "$type": "color",
+            "$value": "#9691ff",
+            "$description": "Dashboard palette #9691FF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Electric-Indigo-400": {
+            "$type": "color",
+            "$value": "#817cff",
+            "$description": "Dashboard palette #817CFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Electric-Indigo-500": {
+            "$type": "color",
+            "$value": "#625bff",
+            "$description": "Dashboard palette #625BFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Electric-Indigo-600": {
+            "$type": "color",
+            "$value": "#5953e8",
+            "$description": "Dashboard palette #5953E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Electric-Indigo-700": {
+            "$type": "color",
+            "$value": "#4641b5",
+            "$description": "Dashboard palette #4641B5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Electric-Indigo-800": {
+            "$type": "color",
+            "$value": "#36328c",
+            "$description": "Dashboard palette #36328C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Electric-Indigo-900": {
+            "$type": "color",
+            "$value": "#29266b",
+            "$description": "Dashboard palette #29266B",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Gray": {
+          "Gray-50": {
+            "$type": "color",
+            "$value": "#e8e8e8",
+            "$description": "Dashboard Black palette #E8E8E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-100": {
+            "$type": "color",
+            "$value": "#b8b8b8",
+            "$description": "Dashboard Black palette #B8B8B8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-200": {
+            "$type": "color",
+            "$value": "#959596",
+            "$description": "Dashboard Black palette #959596",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-300": {
+            "$type": "color",
+            "$value": "#656566",
+            "$description": "Dashboard Black palette #656566",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-400": {
+            "$type": "color",
+            "$value": "#474748",
+            "$description": "Dashboard Black palette #474748",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-500": {
+            "$type": "color",
+            "$value": "#19191a",
+            "$description": "Dashboard Black palette #19191A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-600": {
+            "$type": "color",
+            "$value": "#171718",
+            "$description": "Dashboard Black palette #171718",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-700": {
+            "$type": "color",
+            "$value": "#121212",
+            "$description": "Dashboard Black palette #121212",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-800": {
+            "$type": "color",
+            "$value": "#0e0e0e",
+            "$description": "Dashboard Black palette #0E0E0E",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-900": {
+            "$type": "color",
+            "$value": "#0b0b0b",
+            "$description": "Dashboard Black palette #0B0B0B",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "White": {
+          "White-500": {
+            "$type": "color",
+            "$value": "#ffffff",
+            "$description": "Dashboard palette #FFFFFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-600": {
+            "$type": "color",
+            "$value": "#e8e8e8",
+            "$description": "Dashboard palette #E8E8E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-700": {
+            "$type": "color",
+            "$value": "#b5b5b5",
+            "$description": "Dashboard palette #B5B5B5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-800": {
+            "$type": "color",
+            "$value": "#8c8c8c",
+            "$description": "Dashboard palette #8C8C8C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-900": {
+            "$type": "color",
+            "$value": "#6b6b6b",
+            "$description": "Dashboard palette #6B6B6B",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Graphite": {
+          "Graphite-50": {
+            "$type": "color",
+            "$value": "#efefef",
+            "$description": "Dashboard palette #EFEFEF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-100": {
+            "$type": "color",
+            "$value": "#cecece",
+            "$description": "Dashboard palette #CECECE",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-200": {
+            "$type": "color",
+            "$value": "#b7b7b7",
+            "$description": "Dashboard palette #B7B7B7",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-300": {
+            "$type": "color",
+            "$value": "#969696",
+            "$description": "Dashboard palette #969696",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-400": {
+            "$type": "color",
+            "$value": "#818181",
+            "$description": "Dashboard palette #818181",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-500": {
+            "$type": "color",
+            "$value": "#626262",
+            "$description": "Dashboard palette #626262",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-600": {
+            "$type": "color",
+            "$value": "#595959",
+            "$description": "Dashboard palette #595959",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-700": {
+            "$type": "color",
+            "$value": "#464646",
+            "$description": "Dashboard palette #464646",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-800": {
+            "$type": "color",
+            "$value": "#363636",
+            "$description": "Dashboard palette #363636",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-900": {
+            "$type": "color",
+            "$value": "#292929",
+            "$description": "Dashboard palette #292929",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Platinum": {
+          "Platinum-50": {
+            "$type": "color",
+            "$value": "#fdfdfd",
+            "$description": "Dashboard palette #FDFDFD",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-100": {
+            "$type": "color",
+            "$value": "#f8f8f8",
+            "$description": "Dashboard palette #F8F8F8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-200": {
+            "$type": "color",
+            "$value": "#f5f5f5",
+            "$description": "Dashboard palette #F5F5F5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-300": {
+            "$type": "color",
+            "$value": "#f0f0f0",
+            "$description": "Dashboard palette #F0F0F0",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-400": {
+            "$type": "color",
+            "$value": "#ededed",
+            "$description": "Dashboard palette #EDEDED",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-500": {
+            "$type": "color",
+            "$value": "#e9e9e9",
+            "$description": "Dashboard palette #E9E9E9",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-600": {
+            "$type": "color",
+            "$value": "#d4d4d4",
+            "$description": "Dashboard palette #D4D4D4",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-700": {
+            "$type": "color",
+            "$value": "#a5a5a5",
+            "$description": "Dashboard palette #A5A5A5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-800": {
+            "$type": "color",
+            "$value": "#808080",
+            "$description": "Dashboard palette #808080",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-900": {
+            "$type": "color",
+            "$value": "#626262",
+            "$description": "Dashboard palette #626262",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Blue": {
+          "Blue-50": {
+            "$type": "color",
+            "$value": "#e9e9fd",
+            "$description": "Dashboard palette #E9E9FD",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-100": {
+            "$type": "color",
+            "$value": "#bbbaf8",
+            "$description": "Dashboard palette #BBBAF8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-200": {
+            "$type": "color",
+            "$value": "#9b99f4",
+            "$description": "Dashboard palette #9B99F4",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-300": {
+            "$type": "color",
+            "$value": "#6d6bef",
+            "$description": "Dashboard palette #6D6BEF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-400": {
+            "$type": "color",
+            "$value": "#514eec",
+            "$description": "Dashboard palette #514EEC",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-500": {
+            "$type": "color",
+            "$value": "#2522e7",
+            "$description": "Dashboard palette #2522E7",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-600": {
+            "$type": "color",
+            "$value": "#221fd2",
+            "$description": "Dashboard palette #221FD2",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-700": {
+            "$type": "color",
+            "$value": "#1a18a4",
+            "$description": "Dashboard palette #1A18A4",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-800": {
+            "$type": "color",
+            "$value": "#14137f",
+            "$description": "Dashboard palette #14137F",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-900": {
+            "$type": "color",
+            "$value": "#100e61",
+            "$description": "Dashboard palette #100E61",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Green": {
+          "Success-50": {
+            "$type": "color",
+            "$value": "#eaf6ef",
+            "$description": "Dashboard palette #EAF6EF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-100": {
+            "$type": "color",
+            "$value": "#bee4cc",
+            "$description": "Dashboard palette #BEE4CC",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-200": {
+            "$type": "color",
+            "$value": "#9fd7b3",
+            "$description": "Dashboard palette #9FD7B3",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-300": {
+            "$type": "color",
+            "$value": "#73c590",
+            "$description": "Dashboard palette #73C590",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-400": {
+            "$type": "color",
+            "$value": "#58b97b",
+            "$description": "Dashboard palette #58B97B",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-500": {
+            "$type": "color",
+            "$value": "#2ea85a",
+            "$description": "Dashboard palette #2EA85A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-600": {
+            "$type": "color",
+            "$value": "#2a9952",
+            "$description": "Dashboard palette #2A9952",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-700": {
+            "$type": "color",
+            "$value": "#217740",
+            "$description": "Dashboard palette #217740",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-800": {
+            "$type": "color",
+            "$value": "#195c32",
+            "$description": "Dashboard palette #195C32",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-900": {
+            "$type": "color",
+            "$value": "#134726",
+            "$description": "Dashboard palette #134726",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Yellow": {
+          "Warning-50": {
+            "$type": "color",
+            "$value": "#fdf3e7",
+            "$description": "Dashboard palette #FDF3E7",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-100": {
+            "$type": "color",
+            "$value": "#f8d9b3",
+            "$description": "Dashboard palette #F8D9B3",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-200": {
+            "$type": "color",
+            "$value": "#f5c68f",
+            "$description": "Dashboard palette #F5C68F",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-300": {
+            "$type": "color",
+            "$value": "#f1ac5c",
+            "$description": "Dashboard palette #F1AC5C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-400": {
+            "$type": "color",
+            "$value": "#ee9c3c",
+            "$description": "Dashboard palette #EE9C3C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-500": {
+            "$type": "color",
+            "$value": "#ea830b",
+            "$description": "Dashboard palette #EA830B",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-600": {
+            "$type": "color",
+            "$value": "#d5770a",
+            "$description": "Dashboard palette #D5770A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-700": {
+            "$type": "color",
+            "$value": "#a65d08",
+            "$description": "Dashboard palette #A65D08",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-800": {
+            "$type": "color",
+            "$value": "#814806",
+            "$description": "Dashboard palette #814806",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-900": {
+            "$type": "color",
+            "$value": "#623705",
+            "$description": "Dashboard palette #623705",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Red": {
+          "Error-50": {
+            "$type": "color",
+            "$value": "#f9e8e8",
+            "$description": "Dashboard palette #F9E8E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-100": {
+            "$type": "color",
+            "$value": "#edb7b9",
+            "$description": "Dashboard palette #EDB7B9",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-200": {
+            "$type": "color",
+            "$value": "#e49497",
+            "$description": "Dashboard palette #E49497",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-300": {
+            "$type": "color",
+            "$value": "#d86468",
+            "$description": "Dashboard palette #D86468",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-400": {
+            "$type": "color",
+            "$value": "#d1454a",
+            "$description": "Dashboard palette #D1454A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-500": {
+            "$type": "color",
+            "$value": "#c5171d",
+            "$description": "Dashboard palette #C5171D",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-600": {
+            "$type": "color",
+            "$value": "#b3151a",
+            "$description": "Dashboard palette #B3151A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-700": {
+            "$type": "color",
+            "$value": "#8c1015",
+            "$description": "Dashboard palette #8C1015",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-800": {
+            "$type": "color",
+            "$value": "#6c0d10",
+            "$description": "Dashboard palette #6C0D10",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-900": {
+            "$type": "color",
+            "$value": "#530a0c",
+            "$description": "Dashboard palette #530A0C",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Brand Key": {
+          "White": {
+            "$type": "color",
+            "$value": "#ffffff",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Black": {
+            "$type": "color",
+            "$value": "#000000",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "Alias Typography": {
+    "Display Large-H1": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.Bold-700}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-48px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-48px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Display Medium-H2": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.Bold-700}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-36px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-36px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Display Small-H3": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.Bold-700}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-28px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-28px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Headline Large-H4": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.Bold-700}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-24px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-24px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Headline Medium-H5": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-20px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-20px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Headline Small-H6": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-16px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Body L": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.Regular-400}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-16px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Body M": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.Regular-400}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-14px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-14px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Body S": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.Regular-400}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-12px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-12px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Title XL": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-32px}",
+        "$description": "To show balance",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-32px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Title L": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-18px}",
+        "$description": "To show balance",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-18px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Title M": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-16px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Title S": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-14px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-14px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Label L": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-16px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Label M": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-14px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-14px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Label S": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-12px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-12px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Caption L": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.Medium-500}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-12px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-12px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Caption M": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.Medium-500}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-11px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-11px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Caption S": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-10px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-10px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Button XL": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-18px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-Label}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Button L": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-Label}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Button M": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-14px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-Label}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Button S": {
+      "Font family": {
+        "$type": "string",
+        "$value": "{Primitives.Typography.Font style.Primary}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font weight": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Font size": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Font Size.FontSize-12px}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Line height": {
+        "$type": "dimension",
+        "$value": "{Primitives.Typography.Line Height.LineHeight-Label}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    }
+  },
+  "Alias Colors": {
+    "Colors": {
+      "Fintech": {
+        "Primary": {
+          "Primary-50": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-50}",
+            "$description": "Electric-Indigo 50 — #EFEFFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Primary-100": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-100}",
+            "$description": "Electric-Indigo 100 — #CECCFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Primary-200": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-200}",
+            "$description": "Electric-Indigo 200 — #B7B4FF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Primary-300": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-300}",
+            "$description": "Electric-Indigo 300 — #9691FF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Primary-400": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-400}",
+            "$description": "Electric-Indigo 400 — #817CFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Primary-500": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-500}",
+            "$description": "Electric-Indigo 500 — #625BFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Primary-600": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-600}",
+            "$description": "Electric-Indigo 600 — #5953E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Primary-700": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-700}",
+            "$description": "Electric-Indigo 700 — #4641B5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Primary-800": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-800}",
+            "$description": "Electric-Indigo 800 — #36328C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Primary-900": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-900}",
+            "$description": "Electric-Indigo 900 — #29266B",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Secondary": {
+          "Secondary-50": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-50}",
+            "$description": "Black 50 — #E8E8E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Secondary-100": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-100}",
+            "$description": "Black 100 — #B8B8B8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Secondary-200": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-200}",
+            "$description": "Black 200 — #959596",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Secondary-300": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-300}",
+            "$description": "Black 300 — #656566",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Secondary-400": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-400}",
+            "$description": "Black 400 — #474748",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Secondary-500": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-500}",
+            "$description": "Black 500 — #19191A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Secondary-600": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-600}",
+            "$description": "Black 600 — #171718",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Secondary-700": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-700}",
+            "$description": "Black 700 — #121212",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Secondary-800": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-800}",
+            "$description": "Black 800 — #0E0E0E",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Secondary-900": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Gray.Gray-900}",
+            "$description": "Black 900 — #0B0B0B",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Tertiary": {
+          "Tertiary-50": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-50}",
+            "$description": "Graphite 50 — #EFEFEF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary-100": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-100}",
+            "$description": "Graphite 100 — #CECECE",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary-200": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
+            "$description": "Graphite 200 — #B7B7B7",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary-300": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-300}",
+            "$description": "Graphite 300 — #969696",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary-400": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
+            "$description": "Graphite 400 — #818181",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary-500": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
+            "$description": "Graphite 500 — #626262",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary-600": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-600}",
+            "$description": "Graphite 600 — #595959",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary-700": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
+            "$description": "Graphite 700 — #464646",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary-800": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+            "$description": "Graphite 800 — #363636",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary-900": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-900}",
+            "$description": "Graphite 900 — #292929",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Tertiary1": {
+          "Tertiary1-50": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-50}",
+            "$description": "Platinum 50 — #FDFDFD",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary1-100": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-100}",
+            "$description": "Platinum 100 — #F8F8F8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary1-200": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-200}",
+            "$description": "Platinum 200 — #F5F5F5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary1-300": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-300}",
+            "$description": "Platinum 300 — #F0F0F0",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary1-400": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-400}",
+            "$description": "Platinum 400 — #EDEDED",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary1-500": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-500}",
+            "$description": "Platinum 500 — #E9E9E9",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary1-600": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-600}",
+            "$description": "Platinum 600 — #D4D4D4",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary1-700": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-700}",
+            "$description": "Platinum 700 — #A5A5A5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary1-800": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-800}",
+            "$description": "Platinum 800 — #808080",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary1-900": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-900}",
+            "$description": "Platinum 900 — #626262",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Tertiary2": {
+          "Tertiary2-500": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.White.White-500}",
+            "$description": "White 500 — #FFFFFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary2-600": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.White.White-600}",
+            "$description": "White 600 — #E8E8E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary2-700": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.White.White-700}",
+            "$description": "White 700 — #B5B5B5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary2-800": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.White.White-800}",
+            "$description": "White 800 — #8C8C8C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Tertiary2-900": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.White.White-900}",
+            "$description": "White 900 — #6B6B6B",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Success": {
+          "Success-50": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-50}",
+            "$description": "Green 50 — #EAF6EF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-100": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-100}",
+            "$description": "Green 100 — #BEE4CC",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-200": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-200}",
+            "$description": "Green 200 — #9FD7B3",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-300": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-300}",
+            "$description": "Green 300 — #73C590",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-400": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-400}",
+            "$description": "Green 400 — #58B97B",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-500": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-500}",
+            "$description": "Green 500 — #2EA85A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-600": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-600}",
+            "$description": "Green 600 — #2A9952",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-700": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-700}",
+            "$description": "Green 700 — #217740",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-800": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-800}",
+            "$description": "Green 800 — #195C32",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-900": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Green.Success-900}",
+            "$description": "Green 900 — #134726",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Warning": {
+          "Warning-50": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-50}",
+            "$description": "Yellow 50 — #FDF3E7",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-100": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-100}",
+            "$description": "Yellow 100 — #F8D9B3",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-200": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-200}",
+            "$description": "Yellow 200 — #F5C68F",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-300": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-300}",
+            "$description": "Yellow 300 — #F1AC5C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-400": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-400}",
+            "$description": "Yellow 400 — #EE9C3C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-500": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-500}",
+            "$description": "Yellow 500 — #EA830B",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-600": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-600}",
+            "$description": "Yellow 600 — #D5770A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-700": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-700}",
+            "$description": "Yellow 700 — #A65D08",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-800": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-800}",
+            "$description": "Yellow 800 — #814806",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-900": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Yellow.Warning-900}",
+            "$description": "Yellow 900 — #623705",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Error": {
+          "Error-50": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-50}",
+            "$description": "Red 50 — #F9E8E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-100": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-100}",
+            "$description": "Red 100 — #EDB7B9",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-200": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-200}",
+            "$description": "Red 200 — #E49497",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-300": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-300}",
+            "$description": "Red 300 — #D86468",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-400": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-400}",
+            "$description": "Red 400 — #D1454A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-500": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-500}",
+            "$description": "Red 500 — #C5171D",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-600": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-600}",
+            "$description": "Red 600 — #B3151A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-700": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-700}",
+            "$description": "Red 700 — #8C1015",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-800": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-800}",
+            "$description": "Red 800 — #6C0D10",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-900": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Red.Error-900}",
+            "$description": "Red 900 — #530A0C",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Key": {
+          "White": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Brand Key.White}",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Black": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Brand Key.Black}",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "Color collection": {
+    "Background": {
+      "bg-primary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+        "$description": "Use this for main background of the screens, and dialog boxes, and side sheets",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}"
+          }
+        }
+      },
+      "bg-secondary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-200}",
+        "$description": "Use this color for side nav",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-200}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-900}"
+          }
+        }
+      },
+      "bg-tertiary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
+        "$description": "Use this for info callout notification backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+          }
+        }
+      },
+      "bg-neutral": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-500}",
+        "$description": "Use this for badge neutral background",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-700}"
+          }
+        }
+      },
+      "bg-brand": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+        "$description": "Use this for brand related backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-500}"
+          }
+        }
+      },
+      "bg-active": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-50}",
+        "$description": "Use this color for active or selected state backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-50}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-900}"
+          }
+        }
+      },
+      "bg-active-hover": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-100}",
+        "$description": "Use this color for hover state of active or selected backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-100}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-800}"
+          }
+        }
+      },
+      "bg-action-primary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+        "$description": "Mainly use for primary button backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-500}"
+          }
+        }
+      },
+      "bg-action-primary_hovered": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+        "$description": "Mainly use for pressed or hover states of primary button backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+          }
+        }
+      },
+      "bg-action-primary_pressed": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+        "$description": "Mainly use for pressed or hover states of primary button backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+          }
+        }
+      },
+      "bg-action-secondary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-50}",
+        "$description": "Use this for swipe button background",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-50}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-900}"
+          }
+        }
+      },
+      "bg-action-secondary_hovered": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-100}",
+        "$description": "Mainly use for pressed or hover states of secondary button backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-100}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-800}"
+          }
+        }
+      },
+      "bg-action-secondary_pressed": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-200}",
+        "$description": "Mainly use for pressed or hover states of secondary button backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-200}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-700}"
+          }
+        }
+      },
+      "bg-action-inverse": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Key.White}",
+        "$description": "White call to action on brand",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Key.White}",
+            "Dark": "{Alias Colors.Colors.Fintech.Key.White}"
+          }
+        }
+      },
+      "bg-action-destructive": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+        "$description": "Use this color for destructive buttons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-400}"
+          }
+        }
+      },
+      "bg-action-destructive_hovered": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-600}",
+        "$description": "Use this color for hover state of destructive buttons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-300}"
+          }
+        }
+      },
+      "bg-action-destructive_pressed": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-700}",
+        "$description": "Use this color for pressed state of destructive buttons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-700}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-200}"
+          }
+        }
+      },
+      "bg-action-destructive-secondary_hovered": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-50}",
+        "$description": "Desctructive secondary hover color",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-50}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-700}"
+          }
+        }
+      },
+      "bg-action-destructive-secondary_pressed": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-100}",
+        "$description": "Desctructive secondary pressed color",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-100}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-600}"
+          }
+        }
+      },
+      "bg-disabled": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-500}",
+        "$description": "Use this for disabled backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+          }
+        }
+      },
+      "bg-dark": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+        "$description": "Use this for toast/snackbar backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}"
+          }
+        }
+      },
+      "bg-success": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Success.Success-600}",
+        "$description": "Use this for success backgrounds. (notification, badge)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Success.Success-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Success.Success-500}"
+          }
+        }
+      },
+      "bg-success_secondary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Success.Success-50}",
+        "$description": "Use this for success backgrounds. (notification, badge)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Success.Success-50}",
+            "Dark": "{Alias Colors.Colors.Fintech.Success.Success-900}"
+          }
+        }
+      },
+      "bg-error": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+        "$description": "Use this for error backgrounds. (notification, badge)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-400}"
+          }
+        }
+      },
+      "bg-error_secondary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-50}",
+        "$description": "A secondary color for error backgrounds. (notification, badge)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-50}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-900}"
+          }
+        }
+      },
+      "bg-warning": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Warning.Warning-500}",
+        "$description": "Use this for warning backgrounds. (notification, badge)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Warning.Warning-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Warning.Warning-500}"
+          }
+        }
+      },
+      "bg-warning_secondary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Warning.Warning-50}",
+        "$description": "A secondary color for warning backgrounds. (notification, badge)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Warning.Warning-50}",
+            "Dark": "{Alias Colors.Colors.Fintech.Warning.Warning-900}"
+          }
+        }
+      },
+      "bg-info": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+        "$description": "Use this for info backgrounds. (notification, badge)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+          }
+        }
+      },
+      "bg-info_secondary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-50}",
+        "$description": "A secondary color for info backgrounds. (notification, badge)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-50}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-900}"
+          }
+        }
+      },
+      "bg-icons": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
+        "$description": "Use this for icon or default avatar backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+          }
+        }
+      }
+    },
+    "Text": {
+      "text-primary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+        "$description": "Use this for Titles and headings",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}"
+          }
+        }
+      },
+      "text-secondary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Secondary.Secondary-300}",
+        "$description": "Use this for description texts",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-300}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}"
+          }
+        }
+      },
+      "text-tertiary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Secondary.Secondary-400}",
+        "$description": "Use this for captions, overlines, hints",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-400}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}"
+          }
+        }
+      },
+      "text-placeholder": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+        "$description": "Use this for input field placeholder text",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-400}"
+          }
+        }
+      },
+      "text-disabled": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}",
+        "$description": "Use this for disabled text",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-600}"
+          }
+        }
+      },
+      "text-disabled-on_bg": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+        "$description": "Use this for disabled text on backgrounds. (buttons, badge, chips)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}"
+          }
+        }
+      },
+      "text-inverse": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Key.White}",
+        "$description": "Use this text color on brand  backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Key.White}",
+            "Dark": "{Alias Colors.Colors.Fintech.Key.White}"
+          }
+        }
+      },
+      "text-inverse_subtle": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-600}",
+        "$description": "A secondary text color on brand backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-600}"
+          }
+        }
+      },
+      "text-dark_both": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+        "$description": "Dark grey color for both light and dark modes",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}"
+          }
+        }
+      },
+      "text-action": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+        "$description": "Use this for text links, secondary buttons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+          }
+        }
+      },
+      "text-pressed": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+        "$description": "Pressed state color for text-link",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+          }
+        }
+      },
+      "text-hovered": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+        "$description": "Hover text color for text links",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-200}"
+          }
+        }
+      },
+      "text-success": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Success.Success-700}",
+        "$description": "Use this for success texts",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Success.Success-700}",
+            "Dark": "{Alias Colors.Colors.Fintech.Success.Success-300}"
+          }
+        }
+      },
+      "text-error": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+        "$description": "Use this for error texts",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-300}"
+          }
+        }
+      },
+      "text-info": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+        "$description": "Use this for information texts",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+          }
+        }
+      },
+      "text-warning": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Warning.Warning-700}",
+        "$description": "Use this for warning texts",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Warning.Warning-700}",
+            "Dark": "{Alias Colors.Colors.Fintech.Warning.Warning-300}"
+          }
+        }
+      }
+    },
+    "Border": {
+      "border-default": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-600}",
+        "$description": "default border color. Can use this for dividers as well",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-700}"
+          }
+        }
+      },
+      "border-subtle": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
+        "$description": "Subtle version of border color.",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+          }
+        }
+      },
+      "border-strong": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+        "$description": "Strong version of border color (radio buttons)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}"
+          }
+        }
+      },
+      "border-active": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+        "$description": "Use for active or selected states. Can use for typing state of input fields.",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+          }
+        }
+      },
+      "border-hovered": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+        "$description": "Hover state color for boarders",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+          }
+        }
+      },
+      "border-pressed": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+        "$description": "Pressed state color for borders",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-200}"
+          }
+        }
+      },
+      "border-focused": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-400}",
+        "$description": "Use this for focus ring, or focused states",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-400}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+          }
+        }
+      },
+      "border-action-primary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+        "$description": "Use this for outine (secondary) buttons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-500}"
+          }
+        }
+      },
+      "border-disabled": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-500}",
+        "$description": "Use for disabled borders",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+          }
+        }
+      },
+      "border-inverse": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+        "$description": "Borders on brand color",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}"
+          }
+        }
+      },
+      "border-success": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Success.Success-500}",
+        "$description": "Border for success color",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Success.Success-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Success.Success-400}"
+          }
+        }
+      },
+      "border-error": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+        "$description": "Border for error color",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-400}"
+          }
+        }
+      },
+      "border-info": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+        "$description": "Border for information color",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+          }
+        }
+      },
+      "border-warning": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Warning.Warning-500}",
+        "$description": "Border for warning color",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Warning.Warning-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Warning.Warning-400}"
+          }
+        }
+      }
+    },
+    "Foreground": {
+      "fg-primary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+        "$description": "Primary icon color",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}"
+          }
+        }
+      },
+      "fg-secondary": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}",
+        "$description": "Secondary icon color. (input fields, Close, cheveron)",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}"
+          }
+        }
+      },
+      "fg-brand": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+        "$description": "Brand related icons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+          }
+        }
+      },
+      "fg-placeholder": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+        "$description": "Icon color for input field icons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-400}"
+          }
+        }
+      },
+      "fg-active": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+        "$description": "Icons on active state",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+          }
+        }
+      },
+      "fg-disabled": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}",
+        "$description": "disabled icon",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-600}"
+          }
+        }
+      },
+      "fg-disabled-on_bg": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+        "$description": "Disabled icon color on background",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}"
+          }
+        }
+      },
+      "fg-inverse": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+        "$description": "Icons on brand color",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}"
+          }
+        }
+      },
+      "fg-dark_both": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+        "$description": "dark icon color for both light and dark modes",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}"
+          }
+        }
+      },
+      "fg-white_both": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+        "$description": "Icons on brand color for both light and dark modes",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}"
+          }
+        }
+      },
+      "fg-action": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+        "$description": "Color for action icons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+          }
+        }
+      },
+      "fg-hovered": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+        "$description": "Color for action icons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+          }
+        }
+      },
+      "fg-pressed": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+        "$description": "Pressed or hover state color for action icons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-200}"
+          }
+        }
+      },
+      "fg-success": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Success.Success-600}",
+        "$description": "Color for success icons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Success.Success-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Success.Success-400}"
+          }
+        }
+      },
+      "fg-error": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+        "$description": "Color for error icons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-400}"
+          }
+        }
+      },
+      "fg-info": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+        "$description": "Color for information icon",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+          }
+        }
+      },
+      "fg-warning": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Warning.Warning-600}",
+        "$description": "Color for warning icons",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Warning.Warning-600}",
+            "Dark": "{Alias Colors.Colors.Fintech.Warning.Warning-400}"
+          }
+        }
+      }
+    },
+    "Alpha": {
+      "Alpha-sm": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Secondary.Secondary-900}",
+          "alpha": 0.16
+        },
+        "$description": "mainly used in the small CTAs inside branded cards",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Secondary.Secondary-900}",
+              "alpha": 0.16
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Secondary.Secondary-900}",
+              "alpha": 0.16
+            }
+          }
+        }
+      },
+      "Alpha-md": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Secondary.Secondary-900}",
+          "alpha": 0.4
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Secondary.Secondary-900}",
+              "alpha": 0.4
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Secondary.Secondary-900}",
+              "alpha": 0.4
+            }
+          }
+        }
+      },
+      "Alpha-light": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Key.White}",
+          "alpha": 0.12
+        },
+        "$description": "Use this to show more depth to element's on brand background",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Key.White}",
+              "alpha": 0.12
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Key.White}",
+              "alpha": 0.12
+            }
+          }
+        }
+      },
+      "Alpha-nav": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Key.White}",
+          "alpha": 0.75
+        },
+        "$description": "Used this in bottom navigation backgrounds, and loading overlay",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Key.White}",
+              "alpha": 0.75
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Key.White}",
+              "alpha": 0.06
+            }
+          }
+        }
+      },
+      "Alpha-nav_background": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Key.White}",
+          "alpha": 0.4
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Key.White}",
+              "alpha": 0.4
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-900}",
+              "alpha": 0.4
+            }
+          }
+        }
+      },
+      "Alpha-both": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-900}",
+          "alpha": 0.42
+        },
+        "$description": "Used in overlay backgrounds",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-900}",
+              "alpha": 0.42
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-900}",
+              "alpha": 0.42
+            }
+          }
+        }
+      },
+      "Alpha-border": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-900}",
+          "alpha": 0.08
+        },
+        "$description": "used for borders of back icon circle",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-900}",
+              "alpha": 0.08
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-900}",
+              "alpha": 0.02
+            }
+          }
+        }
+      },
+      "Alpha-success": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Success.Success-500}",
+          "alpha": 0.16
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Success.Success-500}",
+              "alpha": 0.16
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Success.Success-500}",
+              "alpha": 0.16
+            }
+          }
+        }
+      },
+      "Alpha-brand": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+          "alpha": 0.16
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+              "alpha": 0.16
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+              "alpha": 0.16
+            }
+          }
+        }
+      },
+      "Alpha-error": {
+        "$type": "color",
+        "$value": {
+          "components": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+          "alpha": 0.16
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {
+            "Light": {
+              "components": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+              "alpha": 0.16
+            },
+            "Dark": {
+              "components": "{Alias Colors.Colors.Fintech.Error.Error-500}",
+              "alpha": 0.16
+            }
+          }
+        }
+      }
+    }
+  },
+  "Alias Spacing & Radius": {
+    "Radius": {
+      "Radius-none": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-0}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Radius-XS": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-4}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Radius-S": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-8}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Radius-M": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-12}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Radius-L": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-16}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Radius-XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-24}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Radius-Full": {
+        "$type": "dimension",
+        "$value": {
+          "value": 999999,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    },
+    "Spacing": {
+      "Space-none": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-0}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-XXS": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-2}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-XS": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-4}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-S": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-6}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-M": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-8}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-L": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-12}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-16}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-2XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-20}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-3XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-24}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-4XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-32}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-5XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-40}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-6XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-48}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-7XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-56}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-8XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-64}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-9XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-80}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-10XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-96}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-11XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-120}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      }
+    }
+  },
+  "$extensions": {
+    "tokens-bruecke-meta": {
+      "useDTCG": true,
+      "spec": "https://www.designtokens.org/tr/2025.10/format/",
+      "colorMode": "hex",
+      "variableCollections": [
+        "Primitives",
+        "Alias Typography",
+        "Alias Colors",
+        "Color collection",
+        "Alias Spacing & Radius"
+      ],
+      "createdAt": "2026-10-13T09:48:03.300Z"
+    }
+  }
+}
