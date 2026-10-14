@@ -389,7 +389,7 @@ _Re-checked 13 Oct 2026. Three styles, all neutral black, no background blur or 
 | Style | Layer (x, y, blur, spread, color) | CSS variable | Use |
 |---|---|---|---|
 | `Shadow/Resting_cards` | Drop: 0, 1, 3, 0, `#000000` 5% | `--fin-shadow-resting-cards` | Cards and surfaces at rest |
-| `Shadow/Panel_sheets` | Drop: 0, 2, 10, 0, `#000000` 4% | `--fin-shadow-panel-sheets` | Panels, side sheets, dialogs, menus |
+| `Shadow/Panel_sheets` | Drop: 0, 2, 10, 0, `#000000` 4% | `--fin-shadow-panel-sheets` | Panels and menus that sit directly on the page. **Not** Dialog box or Side sheet: they have no shadow on purpose, because they render on top of `FinOverlay` (the scrim), which separates them from the page. Their §9 specs must say so when they're built. |
 | `Shadow/Sticky` | Drop: 0, **−2**, 16, 0, `#000000` 8% | `--fin-shadow-sticky` | Sticky bottom elements (the shadow falls upward) |
 
 - Figma's drop-shadow **blur** maps to the CSS `box-shadow` blur value directly.
@@ -403,7 +403,7 @@ _Re-checked 13 Oct 2026. Three styles, all neutral black, no background blur or 
 | `Desktop-sm` | 1440 × 1024 | 12 | 24 (`Space-3XL`) | 24 (`Space-3XL`) | Stretch |
 | `Desktop-lg` | 1920 × 1080 | 12 | 24 (`Space-3XL`) | 24 (`Space-3XL`) | Stretch |
 
-Both grids are the same today. Generated as `--fin-grid-columns`, `--fin-grid-gutter` and `--fin-grid-margin`.
+Both grids are the same today. Hand-written in `styles.css` as `--fin-grid-columns`, `--fin-grid-gutter` and `--fin-grid-margin` (gutter and margin use `var(--fin-space-3xl)`).
 
 ---
 
@@ -567,7 +567,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 |---|---|---|---|
 | S1 | pnpm monorepo scaffold (`packages/tokens`, `packages/ui`, `apps/storybook`), TypeScript, Vite, ESLint, Stylelint | repo root | ✅ |
 | S2 | Token build: `tokens/design.tokens.json` → CSS variables + TypeScript (handles the quirks in §3.9), with brand and theme scoping (§3.8), and breakpoints (§3.7) | `packages/tokens/dist/` | ✅ |
-| S3 | Styles by hand from §4 (shadows, background blur, grid). Breakpoints are generated in S2. Motion (§5) is deferred. | `packages/tokens/src/styles.css` | ⬜ |
+| S3 | Styles by hand from §4 (shadows, grid). Breakpoints are generated in S2. Motion (§5) is deferred. | `packages/tokens/src/styles.css` | ✅ |
 | S4 | Fonts: Inter (400, 500, 600, 700) and Material Symbols Rounded, self-hosted, with the fallback stack `Inter, system-ui, sans-serif` (§3.4). CSS reset. | `packages/ui/src/styles/` | ⬜ |
 | S5 | Storybook with a Light/Dark and brand switcher, plus a Foundations section (colors, typography, spacing, radius, shadows, grid and breakpoints) | `apps/storybook/` | ⬜ |
 | S6 | Tests and lint setup: Vitest + Testing Library, Storybook a11y addon, Stylelint rules that block raw colors and palette/alias variables in component CSS | repo root | ⬜ |
@@ -748,3 +748,4 @@ Template:
 | 13 Oct 2026 | 0.2 | S1 done: pnpm 12 workspace (`packages/tokens`, `packages/ui`, `apps/storybook` stub), TypeScript 6.0, Vite 8 library build for `ui`, ESLint 9 (typescript-eslint, react-hooks, jsx-a11y), Stylelint 17 base config. TypeScript 7 and ESLint 10 held back until typescript-eslint and jsx-a11y support them. |
 | 14 Oct 2026 | 0.2 | S2 done: token build (`packages/tokens/build.ts`, Style Dictionary 5.5.5). 429 variables (431 exported, minus `Size-343` and `Size-375`) in four scoped blocks, 23 `--fin-font-*` text styles, TS maps, and breakpoints as custom media. Resolved values checked against §3.3–3.6 (all match). Decisions: alpha uses `color-mix` only (§3.9); every primitive is `--fin-palette-*` (§3.8); components use the text style shorthand only, and Stylelint in S6 blocks the parts (§3.8); breakpoints moved from S3 to S2 (§8.0). |
 | 14 Oct 2026 | 0.2 | Design decisions: font fallback stack `Inter, system-ui, sans-serif`, added in S4 (§3.4, §8.0); `data-brand` on `<html>` only (§3.0). |
+| 14 Oct 2026 | 0.2 | S3 done: `packages/tokens/src/styles.css` (exported as `@finspace-loyalty/tokens/styles.css`) with the three §4.2 shadows and the §4.3 grid variables. Background blur removed from the S3 row (there are no blur styles). All three re-checked in Figma on the Foundation Shadow page (`16027:179`); they match. Dialog box and Side sheet have no shadow on purpose (they sit on `FinOverlay`); §4.2 `Shadow/Panel_sheets` Use updated. |

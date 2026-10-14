@@ -16,10 +16,12 @@
       "import": "./dist/breakpoints.js"
     },
     "./tokens.css": "./dist/tokens.css",
-    "./breakpoints.css": "./dist/breakpoints.css"
+    "./breakpoints.css": "./dist/breakpoints.css",
+    "./styles.css": "./src/styles.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "src/styles.css"
   ],
   "scripts": {
     "build": "node build.ts && tsc -p tsconfig.build.json",
