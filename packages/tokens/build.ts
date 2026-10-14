@@ -231,6 +231,10 @@ StyleDictionary.registerFormat({
       group('finSpace', 'space'),
       group('finRadius', 'radius'),
       group('finFont', 'font', (key) => styles.includes(key)),
+      `export const finBrands = ${JSON.stringify(brands.map(brandName))} as const;`,
+      `export type FinBrand = (typeof finBrands)[number];\n`,
+      `export const finThemes = ${JSON.stringify(themes.map((t) => themeName(t!)))} as const;`,
+      `export type FinTheme = (typeof finThemes)[number];\n`,
     ].join('\n');
   },
 });
@@ -271,6 +275,34 @@ async function render(tokens: Tree, files: { format: string; filter?: Layer[]; s
   return outputs.map((o) => String(o.output));
 }
 
+/**
+ * Palette and alias colors for the Storybook "Palette (reference only)" page.
+ * A separate entry point (`@finspace-loyalty/tokens/reference`) so components never import them.
+ */
+function referenceFile(): string {
+  const cssName = (l: Layer, key: string) => `--${PREFIX}-${l}-${key}`;
+  const colors = [...placed.values()].filter((t) => t.source.path[0] === 'Primitives' && t.source.path[1] === 'Colors');
+  const palette = colors.map((t) => ({ name: cssName('palette', t.key), group: t.source.path.at(-2)! }));
+  const alias = Object.fromEntries(
+    brands.map((brand) => [
+      brandName(brand),
+      [...placed.values()]
+        .filter((t) => t.layer === 'color')
+        .map((t) => {
+          const value = String(normalise(brand ? t.source.token.$extensions!.mode![brand]! : t.source.token.$value, t.source));
+          const ref = /^\{palette\.(.+)\}$/.exec(value);
+          return { name: cssName('color', t.key), group: t.source.path.at(-2)!, value: ref ? `var(${cssName('palette', ref[1]!)})` : value };
+        }),
+    ]),
+  );
+  const json = (v: unknown) => JSON.stringify(v, null, 2);
+  return (
+    HEADER.replace(' */', ' *\n * REFERENCE ONLY: do not use in components. Components use semantic colors (finColor).\n */') +
+    `\nexport const finPaletteReference = ${json(palette)} as const;\n` +
+    `\nexport const finAliasReference = ${json(alias)} as const;\n`
+  );
+}
+
 // ---------------------------------------------------------------------------
 // 5. Write dist/
 // ---------------------------------------------------------------------------
@@ -308,5 +340,6 @@ write('tokens.css', HEADER + '\n' + blocks.join('\n'));
 write('tokens.ts', ts!);
 write('breakpoints.css', customMedia!);
 write('breakpoints.ts', tsBreakpoints!);
+write('reference.ts', referenceFile());
 
 console.log(`tokens: ${placed.size} variables, ${styles.length} text styles, brands [${brands.map(brandName)}], themes [${themes.map((t) => themeName(t!))}]`);

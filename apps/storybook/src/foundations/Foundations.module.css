@@ -1,0 +1,172 @@
+/* Layout for the Foundations pages. Same rules as components: semantic tokens and text styles only. */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-5xl);
+  padding: var(--fin-space-3xl);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+}
+
+.title {
+  font: var(--fin-font-display-small-h3);
+  color: var(--fin-text-primary);
+}
+
+.intro {
+  font: var(--fin-font-body-large);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.sectionTitle {
+  font: var(--fin-font-headline-medium-h5);
+  color: var(--fin-text-primary);
+}
+
+.notice {
+  padding: var(--fin-space-l) var(--fin-space-xl);
+  font: var(--fin-font-label-large);
+  color: var(--fin-text-error);
+  background-color: var(--fin-bg-error-secondary);
+  border: 1px solid var(--fin-border-error);
+  border-radius: var(--fin-radius-s);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--fin-space-11xl) * 2.5), 1fr));
+  gap: var(--fin-space-xl);
+}
+
+.swatch {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: center;
+  min-width: 0;
+}
+
+.chip {
+  flex: none;
+  width: var(--fin-space-6xl);
+  height: var(--fin-space-6xl);
+  background-color: var(--swatch);
+  border: 1px solid var(--fin-border-subtle);
+  border-radius: var(--fin-radius-s);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xxs);
+  min-width: 0;
+}
+
+.name {
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.detail {
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-tertiary);
+  overflow-wrap: anywhere;
+}
+
+/* Tables (typography, spacing, radius, shadows, breakpoints) */
+
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: calc(var(--fin-space-11xl) * 2) 1fr;
+  gap: var(--fin-space-3xl);
+  align-items: center;
+  padding-block: var(--fin-space-l);
+  border-bottom: 1px solid var(--fin-border-subtle);
+}
+
+.sample {
+  min-width: 0;
+  color: var(--fin-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.textSample {
+  min-width: 0;
+  font: var(--font);
+  color: var(--fin-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.bar {
+  width: var(--size);
+  height: var(--fin-space-xl);
+  background-color: var(--fin-bg-action-primary);
+  border-radius: var(--fin-radius-xs);
+}
+
+.box {
+  width: var(--fin-space-10xl);
+  height: var(--fin-space-10xl);
+  background-color: var(--fin-bg-active);
+  border: 1px solid var(--fin-border-active);
+  border-radius: var(--radius);
+}
+
+.canvas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-5xl);
+  padding: var(--fin-space-5xl);
+  background-color: var(--fin-bg-secondary);
+  border-radius: var(--fin-radius-m);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+  width: calc(var(--fin-space-11xl) * 2.5);
+  padding: var(--fin-space-xl);
+  background-color: var(--fin-bg-primary);
+  border-radius: var(--fin-radius-m);
+  box-shadow: var(--shadow);
+}
+
+.cardTitle {
+  font: var(--fin-font-title-small);
+  color: var(--fin-text-primary);
+}
+
+.status[data-match="true"] {
+  color: var(--fin-text-success);
+}
+
+/* Grid page: the real 12-column grid at full width */
+
+.gridOverlay {
+  display: grid;
+  grid-template-columns: repeat(var(--fin-grid-columns), 1fr);
+  column-gap: var(--fin-grid-gutter);
+  padding-inline: var(--fin-grid-margin);
+  background-color: var(--fin-bg-secondary);
+}
+
+.column {
+  height: calc(var(--fin-space-11xl) * 2);
+  background-color: var(--fin-alpha-error);
+}

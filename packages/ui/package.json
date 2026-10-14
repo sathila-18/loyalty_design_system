@@ -33,6 +33,8 @@
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.1.2",
     "material-symbols": "0.47.5",
+    "postcss": "8.5.28",
+    "postcss-custom-media": "12.0.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "typescript": "6.0.3",

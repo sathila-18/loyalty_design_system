@@ -1,0 +1,35 @@
+/* Uses the custom media queries the way component CSS will, so this page also checks the PostCSS setup. */
+@import url("@finspace-loyalty/tokens/breakpoints.css");
+
+.cssReadout {
+  font: var(--fin-font-title-medium);
+  color: var(--fin-text-primary);
+}
+
+.cssReadout::after {
+  content: "below md";
+}
+
+@media (--fin-bp-md) {
+  .cssReadout::after {
+    content: "md";
+  }
+}
+
+@media (--fin-bp-lg) {
+  .cssReadout::after {
+    content: "lg";
+  }
+}
+
+@media (--fin-bp-xl) {
+  .cssReadout::after {
+    content: "xl";
+  }
+}
+
+@media (--fin-bp-xxl) {
+  .cssReadout::after {
+    content: "xxl";
+  }
+}

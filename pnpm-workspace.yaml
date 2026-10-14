@@ -13,3 +13,6 @@ minimumReleaseAgeExclude:
   - '@typescript-eslint/utils@8.71.2'
   - '@typescript-eslint/visitor-keys@8.71.2'
   - typescript-eslint@8.71.2
+# esbuild's install script only re-checks its binary, which comes from @esbuild/<platform>. Keep it off.
+allowBuilds:
+  esbuild: false

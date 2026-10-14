@@ -15,6 +15,10 @@
       "types": "./dist/breakpoints.d.ts",
       "import": "./dist/breakpoints.js"
     },
+    "./reference": {
+      "types": "./dist/reference.d.ts",
+      "import": "./dist/reference.js"
+    },
     "./tokens.css": "./dist/tokens.css",
     "./breakpoints.css": "./dist/breakpoints.css",
     "./styles.css": "./src/styles.css"

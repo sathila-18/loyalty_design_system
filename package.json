@@ -8,6 +8,8 @@
   },
   "scripts": {
     "build": "pnpm -r --if-present build",
+    "storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/storybook storybook",
+    "build-storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/storybook build-storybook",
     "typecheck": "pnpm -r --if-present typecheck",
     "lint": "eslint .",
     "lint:css": "stylelint \"**/*.css\" --allow-empty-input"

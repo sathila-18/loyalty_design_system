@@ -1,0 +1,11 @@
+.sideBySide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.panel {
+  min-width: 0;
+  color: var(--fin-text-secondary);
+  background-color: var(--fin-bg-primary);
+}
