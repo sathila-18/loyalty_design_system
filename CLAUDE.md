@@ -95,7 +95,8 @@ packages/tokens/                     ← @finspace-loyalty/tokens
 packages/ui/                         ← @finspace-loyalty/ui
   src/styles/                        ← index.css (app stylesheet), reset.css, fonts.css (Inter, Material Symbols Rounded)
   test/                              ← tests that don't belong to one component (setup example, Stylelint rules)
-  src/icons/                         ← FinIcon, finIcons registry
+  src/icons/                         ← FinIcon, finIcons registry (the icon font is subset from it)
+  scripts/subset-icons.ts            ← builds src/styles/generated/ (icon font subset, not committed)
   src/components/<Name>/             ← one folder per component:
     Fin<Name>.tsx
     Fin<Name>.module.css
@@ -120,7 +121,7 @@ CLAUDE.md                            ← this file
 | Vitest + Testing Library | Behaviour tests |
 | ESLint + Stylelint | Lint. Stylelint (`stylelint.config.js`) blocks raw colors, `color-mix()`, palette/alias variables and typography parts in every CSS Module |
 
-Commands (repo root): `pnpm storybook`, `pnpm test` (Vitest, incl. the Stylelint rules test), `pnpm test:a11y` (every story, Light and Dark), `pnpm lint`, `pnpm lint:css`, `pnpm typecheck`, `pnpm build`, `pnpm build-storybook`. Before saying a component is done, all of them pass.
+Commands (repo root): `pnpm storybook`, `pnpm icons` (regenerate the icon font after editing `finIcons`), `pnpm test` (Vitest, incl. the Stylelint rules test), `pnpm test:a11y` (every story, Light and Dark), `pnpm lint`, `pnpm lint:css`, `pnpm typecheck`, `pnpm build`, `pnpm build-storybook`. Before saying a component is done, all of them pass.
 | PostCSS (`postcss-custom-media`) | Breakpoint custom media queries |
 
 ## Git

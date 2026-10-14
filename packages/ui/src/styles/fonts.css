@@ -78,15 +78,15 @@
 }
 
 /*
- * Material Symbols Rounded, full variable font from material-symbols (§6.1).
- * The weight-300 build in @material-symbols/font-300 is fixed at optical size 48, so it can't
- * give the opsz 24 the design uses (§6.2). FinIcon sets the axes; nothing else uses this font.
+ * Material Symbols Rounded: the subset generated from the finIcons registry by
+ * scripts/subset-icons.ts (DESIGN.md §6, §10 #14). wght 300, opsz 24 and GRAD 0 are fixed in the
+ * file; only FILL is variable, so the face has a single weight. Only FinIcon uses this font.
  * `block` so icon names never flash as text while the font loads.
  */
 @font-face {
   font-family: "Material Symbols Rounded";
   font-style: normal;
-  font-weight: 100 700;
+  font-weight: normal;
   font-display: block;
-  src: url("material-symbols/material-symbols-rounded.woff2") format("woff2");
+  src: url("./generated/material-symbols-rounded.woff2") format("woff2");
 }

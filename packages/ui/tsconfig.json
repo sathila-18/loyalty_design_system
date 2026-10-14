@@ -5,11 +5,13 @@
     "types": [
       "vite/client",
       "node"
-    ]
+    ],
+    "allowImportingTsExtensions": true
   },
   "include": [
     "src",
     "test",
+    "scripts",
     "vite.config.ts",
     "vite.styles.config.ts",
     "vitest.config.ts"

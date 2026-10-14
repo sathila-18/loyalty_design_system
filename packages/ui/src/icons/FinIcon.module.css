@@ -1,0 +1,50 @@
+/* FinIcon (DESIGN.md §6, §9). Sizes are the Size-* primitives, not spacing, so they never move with the spacing scale. */
+
+.icon {
+  display: inline-block;
+  flex: none;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  overflow: hidden;
+  font-family: "Material Symbols Rounded";
+  font-size: var(--icon-size);
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  color: var(--icon-color, currentcolor);
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  direction: ltr;
+  font-variation-settings: "FILL" 0;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.icon[data-filled] {
+  font-variation-settings: "FILL" 1;
+}
+
+.icon[data-size="16"] {
+  --icon-size: var(--fin-size-16);
+}
+
+.icon[data-size="20"] {
+  --icon-size: var(--fin-size-20);
+}
+
+.icon[data-size="24"] {
+  --icon-size: var(--fin-size-24);
+}
+
+.icon[data-size="36"] {
+  --icon-size: var(--fin-size-36);
+}
+
+.icon[data-size="48"] {
+  --icon-size: var(--fin-size-48);
+}
+
+.icon[data-size="64"] {
+  --icon-size: var(--fin-size-64);
+}

@@ -1,0 +1,37 @@
+/* Layout for the FinIcon stories only (not part of the component). */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--fin-space-12xl), 1fr));
+  gap: var(--fin-space-xl);
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+  align-items: center;
+  font: var(--fin-font-caption-medium);
+  color: var(--fin-text-secondary);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.pair {
+  display: flex;
+  gap: var(--fin-space-m);
+  color: var(--fin-fg-primary);
+}
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(7, 1fr);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}

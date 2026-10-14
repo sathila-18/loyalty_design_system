@@ -8,13 +8,14 @@
   },
   "scripts": {
     "build": "pnpm -r --if-present build",
-    "storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/storybook storybook",
-    "build-storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/storybook build-storybook",
+    "storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui icons && pnpm --filter @finspace-loyalty/storybook storybook",
+    "build-storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui icons && pnpm --filter @finspace-loyalty/storybook build-storybook",
     "typecheck": "pnpm -r --if-present typecheck",
     "test": "pnpm --filter @finspace-loyalty/tokens build && pnpm -r --if-present test",
-    "test:a11y": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/storybook test:a11y",
+    "test:a11y": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui icons && pnpm --filter @finspace-loyalty/storybook test:a11y",
     "lint": "eslint .",
-    "lint:css": "stylelint \"**/*.css\" --allow-empty-input"
+    "lint:css": "stylelint \"**/*.css\" --allow-empty-input",
+    "icons": "pnpm --filter @finspace-loyalty/ui icons"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

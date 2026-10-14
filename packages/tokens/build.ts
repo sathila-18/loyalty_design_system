@@ -71,7 +71,7 @@ if (sources.length !== EXPECTED.tokens) {
 // 2. Name every variable: layer + key → `--fin-<layer>-<key>` (§3.8)
 // ---------------------------------------------------------------------------
 
-type Layer = 'palette' | 'color' | 'font' | 'space' | 'radius' | 'semantic' | 'breakpoint';
+type Layer = 'palette' | 'color' | 'font' | 'space' | 'radius' | 'size' | 'semantic' | 'breakpoint';
 
 const kebab = (s: string) => s.trim().replace(/[\s_]+/g, '-').toLowerCase();
 const textStyle = (group: string) => {
@@ -171,6 +171,10 @@ function tree(brand: string | undefined, theme: string | undefined): Tree {
     const mode = collection === 'Color collection' ? theme : layer === 'color' || layer === 'font' ? brand : undefined;
     const raw = mode ? source.token.$extensions!.mode![mode]! : source.token.$value;
     (out[layer] ??= {})[key] = { $type: source.token.$type, $value: normalise(raw, source) };
+    // Fixed sizes (§3.8): every Primitives/Sizes value is also exposed as --fin-size-<n>, for
+    // dimensions that must not follow the spacing scale (icon sizes). Spacing uses --fin-space-*.
+    const size = layer === 'palette' && /^size-(\d+)$/.exec(key);
+    if (size) (out.size ??= {})[size[1]!] = { $type: 'dimension', $value: `{palette.${key}}` };
   }
   return out;
 }
@@ -230,6 +234,7 @@ StyleDictionary.registerFormat({
       group('finColor', 'semantic'),
       group('finSpace', 'space'),
       group('finRadius', 'radius'),
+      group('finSize', 'size'),
       group('finFont', 'font', (key) => styles.includes(key)),
       `export const finBrands = ${JSON.stringify(brands.map(brandName))} as const;`,
       `export type FinBrand = (typeof finBrands)[number];\n`,
@@ -313,7 +318,7 @@ const css = 'css/variables';
 
 const blocks: string[] = [];
 const [primitives, ts, customMedia, tsBreakpoints] = await render(withTextStyles(tree(brands[0], themes[0])), [
-  { format: css, filter: ['palette', 'space', 'radius'], selector: ':root' },
+  { format: css, filter: ['palette', 'space', 'radius', 'size'], selector: ':root' },
   { format: 'fin/ts' },
   { format: 'fin/custom-media', filter: ['breakpoint'] },
   { format: 'fin/ts-breakpoints', filter: ['breakpoint'] },

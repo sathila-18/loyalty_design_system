@@ -11,6 +11,8 @@ export default {
   extends: ['stylelint-config-standard', 'stylelint-config-css-modules'],
   ignoreFiles: ['**/dist/**', '**/node_modules/**', '**/storybook-static/**', 'packages/ui/test/stylelint/**'],
   rules: {
+    // The icon font must not fall back to a text font: the ligature names would show as words.
+    'font-family-no-missing-generic-family-keyword': [true, { ignoreFontFamilies: ['Material Symbols Rounded'] }],
     'selector-class-pattern': [
       '^[a-z][a-zA-Z0-9]*$',
       { message: 'Use camelCase class names (CSS Modules: styles.sectionTitle)' },
