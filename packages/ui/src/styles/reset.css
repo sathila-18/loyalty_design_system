@@ -1,0 +1,64 @@
+/*
+ * Minimal reset and page defaults (DESIGN.md §8.0 S4).
+ * Body text: Body/Medium in text-secondary on bg-primary (decided 14 Oct 2026).
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  text-size-adjust: none;
+}
+
+body {
+  min-height: 100vh;
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-secondary);
+  background-color: var(--fin-bg-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+  }
+}

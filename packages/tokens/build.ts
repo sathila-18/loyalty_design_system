@@ -36,6 +36,8 @@ const TYPE_PARTS: Record<string, string> = {
   'Font size': 'size',
   'Line height': 'line-height',
 };
+/** Added after every font family so text never falls back to the browser's serif (§3.4). Figma only has the family. */
+const FONT_FALLBACK = 'system-ui, sans-serif';
 const EXPECTED = { tokens: 431, textStyles: 23 };
 
 // ---------------------------------------------------------------------------
@@ -137,7 +139,10 @@ function reference(ref: string): string {
 }
 
 function normalise(value: RawValue, source: Source): string | number {
-  if (typeof value === 'string') return value.startsWith('{') ? reference(value) : value;
+  if (typeof value === 'string') {
+    if (value.startsWith('{')) return reference(value);
+    return source.path.at(-2) === 'Font style' ? `${value}, ${FONT_FALLBACK}` : value;
+  }
   if (typeof value === 'number') return value;
   if ('alpha' in value) {
     // Decided 14 Oct 2026: color-mix only (§3.9). Keeps the alias as a variable so it follows the brand.

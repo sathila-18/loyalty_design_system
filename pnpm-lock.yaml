@@ -212,7 +212,14 @@ importers:
         version: 5.5.5
 
   packages/ui:
+    dependencies:
+      '@finspace-loyalty/tokens':
+        specifier: workspace:*
+        version: link:../tokens
     devDependencies:
+      '@fontsource/inter':
+        specifier: 5.3.0
+        version: 5.3.0
       '@types/react':
         specifier: 19.3.0
         version: 19.3.0
@@ -221,7 +228,10 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react':
         specifier: 6.1.2
-        version: 6.1.2(vite@8.3.4)
+        version: 6.1.2(vite@8.3.4(@types/node@24.19.2))
+      material-symbols:
+        specifier: 0.47.5
+        version: 0.47.5
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -233,7 +243,7 @@ importers:
         version: 6.0.3
       vite:
         specifier: 8.3.4
-        version: 8.3.4
+        version: 8.3.4(@types/node@24.19.2)
 
 packages:
 
@@ -400,6 +410,9 @@ packages:
   '@eslint/plugin-kit@0.4.1':
     resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@fontsource/inter@5.3.0':
+    resolution: {integrity: sha512-RofMylZmjlJEfELXeNHFWBRcSs75rGU/6bV2S2jfnvv/3rPXPGe0LgUJTklcHZ9lM4OZmAVFhcJPnACfb91A3g==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -1681,6 +1694,9 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
+  material-symbols@0.47.5:
+    resolution: {integrity: sha512-bry9rHVqF7HewbSK9Yb77obFoDvQsEot8IrW9+F179iEkcg7P/zYv2zuwBRU1oFkA5Ez0MpDAintffdtqL70Eg==}
+
   math-intrinsics@1.1.0:
     resolution: {integrity: sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g==}
     engines: {node: '>= 0.4'}
@@ -2486,6 +2502,8 @@ snapshots:
       '@eslint/core': 0.17.0
       levn: 0.4.1
 
+  '@fontsource/inter@5.3.0': {}
+
   '@humanfs/core@0.19.2':
     dependencies:
       '@humanfs/types': 0.15.0
@@ -2827,10 +2845,10 @@ snapshots:
       '@typescript-eslint/types': 8.71.2
       eslint-visitor-keys: 5.0.1
 
-  '@vitejs/plugin-react@6.1.2(vite@8.3.4)':
+  '@vitejs/plugin-react@6.1.2(vite@8.3.4(@types/node@24.19.2))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
-      vite: 8.3.4
+      vite: 8.3.4(@types/node@24.19.2)
 
   '@zip.js/zip.js@2.23.0': {}
 
@@ -3784,6 +3802,8 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
+  material-symbols@0.47.5: {}
+
   math-intrinsics@1.1.0: {}
 
   mathml-tag-names@4.0.0: {}
@@ -4411,7 +4431,7 @@ snapshots:
       is-typed-array: 1.1.15
       which-typed-array: 1.1.24
 
-  vite@8.3.4:
+  vite@8.3.4(@types/node@24.19.2):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
@@ -4419,6 +4439,7 @@ snapshots:
       rolldown: 1.2.13
       tinyglobby: 0.2.17
     optionalDependencies:
+      '@types/node': 24.19.2
       fsevents: 2.3.3
 
   which-boxed-primitive@1.1.1:

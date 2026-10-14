@@ -253,7 +253,7 @@ _Alpha tokens point at an alias color plus an opacity (Figma's color + opacity v
 
 Font family: **Inter** (`Primitives/Typography/Font style/Primary`), self-hosted, weights 400, 500, 600, 700. Letter spacing 0 for all styles.
 
-**Fallback stack (design decision, 14 Oct 2026):** `Inter, system-ui, sans-serif`. Figma only has `Inter`, so the token value stays `Inter`; S4 adds the fallbacks in code so text never falls back to the browser's default serif font if Inter fails to load.
+**Fallback stack (design decision, 14 Oct 2026):** `Inter, system-ui, sans-serif`. Figma only has `Inter`, so the token value stays `Inter`; The token build appends the fallbacks to every font family value (`--fin-palette-font-family-primary: Inter, system-ui, sans-serif`), so all `--fin-font-*` shorthands get them and a future brand font would too. Text never falls back to the browser's default serif font if Inter fails to load.
 
 | Text style (Figma) | Variable group | Weight | Size | Line height | Note |
 |---|---|---|---|---|---|
@@ -444,7 +444,9 @@ Screens and components **never** render the icon font or an SVG directly. They a
 - `finIcons` is the single registry: a typed list of the icon names the system uses, so `name` is checked by TypeScript.
 - `filled` switches `FILL` 0 → 1. Use it for the active/selected state only.
 - Without `label`, the icon is decorative (`aria-hidden`). With `label`, it's announced.
-- The variation axes `wght`, `GRAD` and `opsz` must match the Figma icon library. **Read them from Figma when building `FinIcon`; don't guess.**
+- **Font settings (design decision, 14 Oct 2026):** Material Symbols Rounded at **weight 300, optical size 24, grade 0**, with `FILL 0` by default and `FILL 1` for active/selected. `FinIcon` sets these with `font-variation-settings`; they're the same at every size.
+- **The icon size comes from `FinIcon`'s `size` prop** (the Icon sizes component, §6.3), not from the font. The optical size stays 24 at every size.
+- The full variable font from `material-symbols` is used (S4). The smaller weight-300 build (`@material-symbols/font-300`) keeps `FILL` but is fixed at optical size 48, so it can't give optical size 24.
 
 ### 6.3 Sizes
 
@@ -568,7 +570,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | S1 | pnpm monorepo scaffold (`packages/tokens`, `packages/ui`, `apps/storybook`), TypeScript, Vite, ESLint, Stylelint | repo root | ✅ |
 | S2 | Token build: `tokens/design.tokens.json` → CSS variables + TypeScript (handles the quirks in §3.9), with brand and theme scoping (§3.8), and breakpoints (§3.7) | `packages/tokens/dist/` | ✅ |
 | S3 | Styles by hand from §4 (shadows, grid). Breakpoints are generated in S2. Motion (§5) is deferred. | `packages/tokens/src/styles.css` | ✅ |
-| S4 | Fonts: Inter (400, 500, 600, 700) and Material Symbols Rounded, self-hosted, with the fallback stack `Inter, system-ui, sans-serif` (§3.4). CSS reset. | `packages/ui/src/styles/` | ⬜ |
+| S4 | Fonts: Inter (400, 500, 600, 700; Latin + Latin Extended) and Material Symbols Rounded, self-hosted, with the fallback stack `Inter, system-ui, sans-serif` (§3.4). CSS reset with page defaults: `Body/Medium`, `--fin-text-secondary`, `--fin-bg-primary`. One app stylesheet, `@finspace-loyalty/ui/styles.css`. | `packages/ui/src/styles/` | ✅ |
 | S5 | Storybook with a Light/Dark and brand switcher, plus a Foundations section (colors, typography, spacing, radius, shadows, grid and breakpoints) | `apps/storybook/` | ⬜ |
 | S6 | Tests and lint setup: Vitest + Testing Library, Storybook a11y addon, Stylelint rules that block raw colors and palette/alias variables in component CSS | repo root | ⬜ |
 
@@ -749,3 +751,4 @@ Template:
 | 14 Oct 2026 | 0.2 | S2 done: token build (`packages/tokens/build.ts`, Style Dictionary 5.5.5). 429 variables (431 exported, minus `Size-343` and `Size-375`) in four scoped blocks, 23 `--fin-font-*` text styles, TS maps, and breakpoints as custom media. Resolved values checked against §3.3–3.6 (all match). Decisions: alpha uses `color-mix` only (§3.9); every primitive is `--fin-palette-*` (§3.8); components use the text style shorthand only, and Stylelint in S6 blocks the parts (§3.8); breakpoints moved from S3 to S2 (§8.0). |
 | 14 Oct 2026 | 0.2 | Design decisions: font fallback stack `Inter, system-ui, sans-serif`, added in S4 (§3.4, §8.0); `data-brand` on `<html>` only (§3.0). |
 | 14 Oct 2026 | 0.2 | S3 done: `packages/tokens/src/styles.css` (exported as `@finspace-loyalty/tokens/styles.css`) with the three §4.2 shadows and the §4.3 grid variables. Background blur removed from the S3 row (there are no blur styles). All three re-checked in Figma on the Foundation Shadow page (`16027:179`); they match. Dialog box and Side sheet have no shadow on purpose (they sit on `FinOverlay`); §4.2 `Shadow/Panel_sheets` Use updated. |
+| 14 Oct 2026 | 0.2 | S4 done: fallback stack added by the token build (§3.4). Inter 400–700 (Latin + Latin Extended, `@fontsource/inter` 5.3.0) and Material Symbols Rounded (`material-symbols` 0.47.5, full variable font) self-hosted in `packages/ui/src/styles/fonts.css`; reset with body defaults `Body/Medium`, `--fin-text-secondary`, `--fin-bg-primary`, plus reduced-motion. App stylesheet `@finspace-loyalty/ui/styles.css` built by a separate Vite pass (`vite.styles.config.ts`) because library mode inlines fonts as base64. Icon font settings recorded in §6.2 (weight 300, optical size 24, grade 0, FILL 0/1). Checked in headless Chrome: all fonts load, body text 14/21 `#656566` on white. |
