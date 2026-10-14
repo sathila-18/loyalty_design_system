@@ -853,6 +853,11 @@ Template:
 
 ## 11. Changelog
 
+> **Where we are (14 Oct 2026, end of day)**
+> - **Done:** setup S1–S6, `FinIcon` (§9.1) and `FinIconContainer` (§9.2). Everything is merged into `main`.
+> - **Next:** wait for the designer to name the next component. Don't start one before that.
+> - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator), §10 #5 (Dark-mode shadows), and §10 #29 (Dark: Icon container Primary and Disabled share the `#363636` background).
+
 | Date | Version | Change |
 |---|---|---|
 | 12 Oct 2026 | 0.1 | First draft: sources, core rules (desktop layout, theming, portability), all tokens from the 12 Oct export (431 variables), text styles, shadows, grids, breakpoints, icons (Material Symbols Rounded), architecture, setup tasks, known issues. Component inventory pending the component file review. |
@@ -881,3 +886,4 @@ Template:
 | 14 Oct 2026 | 0.2 | **`FinIconContainer` done** (§8 #16–18, §9.2): sizes 40/48/64 (`68px bg` changed to `64px bg` in Figma) via `--fin-size-*`, FinIcon inside (24/24/36), `tone` for Figma's color-only `State`, `fg-disabled-on_bg` for Disabled at every size. §7.3: a Figma `State` that only changes colors is `tone` in code. §3.8: widths and heights are unbound in Figma by convention and map to `--fin-size-*`. |
 | 14 Oct 2026 | 0.2 | `FinIconContainer`: `filled` added (passes straight to FinIcon). Storybook: icon stories grouped under Components/Icons (§9). §10 #3 notes the Light warning icon container (2.96:1); §10 #29 added (Dark Primary and Disabled containers share `#363636`). |
 | 14 Oct 2026 | 0.2 | Circle Icon removed from Figma; FinCircleIcon dropped. |
+| 14 Oct 2026 | 0.2 | Status note added at the top of §11: done S1–S6, FinIcon, FinIconContainer; next component to be named by design; open §10 #3, #5, #29. |
