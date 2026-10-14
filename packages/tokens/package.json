@@ -3,5 +3,30 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "files": ["dist"]
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/tokens.d.ts",
+      "import": "./dist/tokens.js"
+    },
+    "./breakpoints": {
+      "types": "./dist/breakpoints.d.ts",
+      "import": "./dist/breakpoints.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./breakpoints.css": "./dist/breakpoints.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node build.ts && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "style-dictionary": "5.5.5"
+  }
 }

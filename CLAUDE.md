@@ -90,7 +90,7 @@ Stop and ask the designer, rather than deciding yourself, when:
 tokens/design.tokens.json            ← Figma variables (TokensBrücke export). Source of truth for values.
 packages/tokens/                     ← @finspace-loyalty/tokens
   build.ts                           ← Style Dictionary config + custom transforms (DESIGN.md §3.9)
-  src/styles.css                     ← hand-written: shadows, grid, breakpoints (DESIGN.md §4)
+  src/styles.css                     ← hand-written: shadows, grid (DESIGN.md §4). Breakpoints are generated into dist/
   dist/                              ← GENERATED: tokens.css, tokens.ts, breakpoints.css, breakpoints.ts
 packages/ui/                         ← @finspace-loyalty/ui
   src/styles/                        ← reset.css, fonts.css (Inter, Material Symbols Rounded)
