@@ -3,7 +3,7 @@
 .page {
   display: flex;
   flex-direction: column;
-  gap: var(--fin-space-5xl);
+  gap: var(--fin-space-6xl);
   padding: var(--fin-space-3xl);
 }
 
@@ -44,7 +44,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(calc(var(--fin-space-11xl) * 2.5), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--fin-space-12xl) * 2.5), 1fr));
   gap: var(--fin-space-xl);
 }
 
@@ -57,8 +57,8 @@
 
 .chip {
   flex: none;
-  width: var(--fin-space-6xl);
-  height: var(--fin-space-6xl);
+  width: var(--fin-space-7xl);
+  height: var(--fin-space-7xl);
   background-color: var(--swatch);
   border: 1px solid var(--fin-border-subtle);
   border-radius: var(--fin-radius-s);
@@ -92,7 +92,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: calc(var(--fin-space-11xl) * 2) 1fr;
+  grid-template-columns: calc(var(--fin-space-12xl) * 2) 1fr;
   gap: var(--fin-space-3xl);
   align-items: center;
   padding-block: var(--fin-space-l);
@@ -120,8 +120,8 @@
 }
 
 .box {
-  width: var(--fin-space-10xl);
-  height: var(--fin-space-10xl);
+  width: var(--fin-space-11xl);
+  height: var(--fin-space-11xl);
   background-color: var(--fin-bg-active);
   border: 1px solid var(--fin-border-active);
   border-radius: var(--radius);
@@ -130,8 +130,8 @@
 .canvas {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--fin-space-5xl);
-  padding: var(--fin-space-5xl);
+  gap: var(--fin-space-6xl);
+  padding: var(--fin-space-6xl);
   background-color: var(--fin-bg-secondary);
   border-radius: var(--fin-radius-m);
 }
@@ -140,7 +140,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--fin-space-xs);
-  width: calc(var(--fin-space-11xl) * 2.5);
+  width: calc(var(--fin-space-12xl) * 2.5);
   padding: var(--fin-space-xl);
   background-color: var(--fin-bg-primary);
   border-radius: var(--fin-radius-m);
@@ -167,6 +167,6 @@
 }
 
 .column {
-  height: calc(var(--fin-space-11xl) * 2);
+  height: calc(var(--fin-space-12xl) * 2);
   background-color: var(--fin-alpha-error);
 }

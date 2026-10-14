@@ -569,6 +569,17 @@
           "mode": {}
         }
       },
+      "Size-36": {
+        "$type": "dimension",
+        "$value": {
+          "value": 36,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
       "Size-40": {
         "$type": "dimension",
         "$value": {
@@ -4073,7 +4084,7 @@
       },
       "Space-5XL": {
         "$type": "dimension",
-        "$value": "{Primitives.Sizes.Size-40}",
+        "$value": "{Primitives.Sizes.Size-36}",
         "$description": "",
         "$extensions": {
           "mode": {}
@@ -4081,7 +4092,7 @@
       },
       "Space-6XL": {
         "$type": "dimension",
-        "$value": "{Primitives.Sizes.Size-48}",
+        "$value": "{Primitives.Sizes.Size-40}",
         "$description": "",
         "$extensions": {
           "mode": {}
@@ -4089,7 +4100,7 @@
       },
       "Space-7XL": {
         "$type": "dimension",
-        "$value": "{Primitives.Sizes.Size-56}",
+        "$value": "{Primitives.Sizes.Size-48}",
         "$description": "",
         "$extensions": {
           "mode": {}
@@ -4097,7 +4108,7 @@
       },
       "Space-8XL": {
         "$type": "dimension",
-        "$value": "{Primitives.Sizes.Size-64}",
+        "$value": "{Primitives.Sizes.Size-56}",
         "$description": "",
         "$extensions": {
           "mode": {}
@@ -4105,7 +4116,7 @@
       },
       "Space-9XL": {
         "$type": "dimension",
-        "$value": "{Primitives.Sizes.Size-80}",
+        "$value": "{Primitives.Sizes.Size-64}",
         "$description": "",
         "$extensions": {
           "mode": {}
@@ -4113,13 +4124,21 @@
       },
       "Space-10XL": {
         "$type": "dimension",
-        "$value": "{Primitives.Sizes.Size-96}",
+        "$value": "{Primitives.Sizes.Size-80}",
         "$description": "",
         "$extensions": {
           "mode": {}
         }
       },
       "Space-11XL": {
+        "$type": "dimension",
+        "$value": "{Primitives.Sizes.Size-96}",
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
+      "Space-12XL": {
         "$type": "dimension",
         "$value": "{Primitives.Sizes.Size-120}",
         "$description": "",
@@ -4141,7 +4160,7 @@
         "Color collection",
         "Alias Spacing & Radius"
       ],
-      "createdAt": "2026-10-14T08:50:00.715Z"
+      "createdAt": "2026-10-14T09:22:37.661Z"
     }
   }
 }

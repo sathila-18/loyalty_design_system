@@ -68,7 +68,7 @@ If this file and Figma disagree, **Figma wins**. Flag the difference so this fil
 
 ## 3. Foundations: tokens
 
-Source: `tokens/design.tokens.json`, with 432 variables in 5 collections.
+Source: `tokens/design.tokens.json`, with 434 variables in 5 collections.
 
 | Collection | Count | Modes | Purpose |
 |---|---|---|---|
@@ -301,13 +301,16 @@ _Collection `Alias Spacing & Radius` → `Spacing`._
 | `Space-2XL` | 20 |
 | `Space-3XL` | 24 |
 | `Space-4XL` | 32 |
-| `Space-5XL` | 40 |
-| `Space-6XL` | 48 |
-| `Space-7XL` | 56 |
-| `Space-8XL` | 64 |
-| `Space-9XL` | 80 |
-| `Space-10XL` | 96 |
-| `Space-11XL` | 120 |
+| `Space-5XL` | 36 |
+| `Space-6XL` | 40 |
+| `Space-7XL` | 48 |
+| `Space-8XL` | 56 |
+| `Space-9XL` | 64 |
+| `Space-10XL` | 80 |
+| `Space-11XL` | 96 |
+| `Space-12XL` | 120 |
+
+_14 Oct 2026: `Size-36` added and `Space-5XL`…`Space-11XL` moved down one step, with `Space-12XL` = 120 added. Before that date, `5XL` was 40 … `11XL` was 120._
 
 ### 3.6 Radius
 
@@ -758,3 +761,4 @@ Template:
 | 14 Oct 2026 | 0.2 | S5 done: Storybook 10.6.1 (`@storybook/react-vite`, `addon-docs`), local only; publishing (GitHub Pages or Chromatic) to be decided after the first components. Toolbar: Theme (Light, Dark, Side by side) and Brand, both from new token exports `finBrands`/`finThemes`, set on `<html>` (side by side sets `data-theme` on two panels). Foundations pages are stories (MDX doc pages hide the toolbar): Colors (87 semantic colors), Typography, Spacing, Radius, Shadows, Grid, Breakpoints, and Palette (reference only) with primitives and alias colors per brand from the new `@finspace-loyalty/tokens/reference` entry point, labelled "do not use in components". `postcss-custom-media` 12.0.2 in Storybook and `ui` (the Breakpoints page uses it). Stylelint: camelCase class names. pnpm: esbuild install script denied (`allowBuilds`). Checked in headless Chrome: all 87 semantic colors match §3.3 in Light and Dark. |
 | 14 Oct 2026 | 0.2 | S6 done: Vitest 5.0.2 + Testing Library in `packages/ui` (jsdom; example test in `packages/ui/test/`). Storybook `addon-a11y` and `addon-vitest` 10.6.1: `pnpm test:a11y` runs every story in Chrome with WCAG 2.2 AA checks, once in Light and once in Dark (16 runs, all pass). Stylelint moved to `stylelint.config.js`; component CSS rules apply to every `*.module.css` and block raw colors, `color-mix()`, palette/alias variables and typography parts, with messages naming the token to use. `bad.css`/`good.css` samples and a test prove each rule. No exceptions needed: the Palette page sets palette variables from TSX, and Typography uses only the shorthands. §10 #27 added (Dark `text-error` on `bg-error-secondary` contrast). |
 | 14 Oct 2026 | 0.2 | Dark status colors and inverse tokens (new export, 432 variables). Dark only: `text-success/error/info/warning` → `*-100`, `fg-success/error/info/warning` → `*-200`. `bg-dark` renamed `bg-direct`, Dark now Tertiary1-50 `#fdfdfd` (Snackbar and Plain Tooltip are light in Dark). `text-inverse` Dark now Secondary-400 `#474748` (text on `bg-direct`). New `text-white_both` (white in both themes, text on purple/red). `text-inverse_subtle` renamed `text-white_subtle`. Code: `--fin-bg-direct`/`finColor.bgDirect`, `--fin-text-white-both`/`textWhiteBoth`, `--fin-text-white-subtle`/`textWhiteSubtle`; token build expects 432. Contrast checked in both themes: §10 #27 decided; failures recorded in §10 #3. Palette page notice back to `text-error`. Badge indicator text rebound to `text-inverse` in Figma (binding only); §10 #3 updated. |
+| 14 Oct 2026 | 0.2 | Spacing: new primitive `Size-36`; `Space-5XL`…`Space-11XL` move down one step (5XL = 36, 6XL = 40, 7XL = 48, 8XL = 56, 9XL = 64, 10XL = 80, 11XL = 96); new `Space-12XL` = 120 (`--fin-space-12xl`, `finSpace.x12l`). Token build expects 434. Storybook Foundations pages moved up one step to keep their sizes. No components used the shifted steps. |
