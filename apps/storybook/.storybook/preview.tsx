@@ -54,6 +54,11 @@ const preview: Preview = {
   },
   initialGlobals: { theme: finThemes[0], brand: finBrands[0] },
   parameters: {
+    // WCAG 2.2 AA (CLAUDE.md). 'error' fails the story's test in pnpm test:a11y.
+    a11y: {
+      test: 'error',
+      options: { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } },
+    },
     // Page background comes from the theme (reset.css), not Storybook's backgrounds tool.
     backgrounds: { disable: true },
     options: {

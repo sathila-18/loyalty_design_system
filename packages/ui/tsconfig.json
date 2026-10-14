@@ -3,12 +3,15 @@
   "compilerOptions": {
     "noEmit": true,
     "types": [
-      "vite/client"
+      "vite/client",
+      "node"
     ]
   },
   "include": [
     "src",
+    "test",
     "vite.config.ts",
-    "vite.styles.config.ts"
+    "vite.styles.config.ts",
+    "vitest.config.ts"
   ]
 }

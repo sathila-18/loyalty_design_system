@@ -33,10 +33,11 @@
   color: var(--fin-text-primary);
 }
 
+/* text-error on bg-error-secondary is 4.19:1 in Dark (fails AA), so the text uses text-primary. */
 .notice {
   padding: var(--fin-space-l) var(--fin-space-xl);
   font: var(--fin-font-label-large);
-  color: var(--fin-text-error);
+  color: var(--fin-text-primary);
   background-color: var(--fin-bg-error-secondary);
   border: 1px solid var(--fin-border-error);
   border-radius: var(--fin-radius-s);

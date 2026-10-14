@@ -11,6 +11,8 @@
     "storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/storybook storybook",
     "build-storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/storybook build-storybook",
     "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm --filter @finspace-loyalty/tokens build && pnpm -r --if-present test",
+    "test:a11y": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/storybook test:a11y",
     "lint": "eslint .",
     "lint:css": "stylelint \"**/*.css\" --allow-empty-input"
   },

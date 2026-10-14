@@ -1,0 +1,53 @@
+/* Breaks every component CSS rule once. Linted as a CSS Module by stylelint.test.ts. */
+
+.hex {
+  color: #625bff;
+}
+
+.named {
+  color: red;
+}
+
+.functions {
+  color: rgb(0 0 0);
+  background-color: rgba(0 0 0 / 50%);
+  border-color: hsl(240deg 100% 68%);
+  outline-color: hwb(240deg 36% 0%);
+  caret-color: lab(50% 40 -60);
+  column-rule-color: lch(50% 70 290deg);
+  text-decoration-color: oklab(60% 0.05 -0.2);
+  accent-color: oklch(60% 0.2 280deg);
+  fill: color(srgb 0.4 0.4 1);
+}
+
+.colorMix {
+  background-color: color-mix(in srgb, var(--fin-bg-brand) 16%, transparent);
+}
+
+.palette {
+  color: var(--fin-palette-electric-indigo-500);
+}
+
+.alias {
+  background-color: var(--fin-color-primary-500);
+}
+
+.customProperty {
+  --accent: var(--fin-palette-gray-500);
+}
+
+.fontSize {
+  font-size: var(--fin-font-body-large-size);
+}
+
+.fontWeight {
+  font-weight: var(--fin-font-body-large-weight);
+}
+
+.lineHeight {
+  line-height: var(--fin-font-body-large-line-height);
+}
+
+.fontFamily {
+  font-family: var(--fin-font-body-large-family);
+}

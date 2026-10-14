@@ -1,0 +1,31 @@
+/* Follows every component CSS rule. Linted as a CSS Module by stylelint.test.ts. */
+
+.card {
+  display: flex;
+  gap: var(--fin-space-m);
+  padding: var(--fin-space-xl);
+  font: var(--fin-font-body-large);
+  color: var(--fin-text-secondary);
+  background-color: var(--fin-bg-primary);
+  border: 1px solid var(--fin-border-subtle);
+  border-radius: var(--fin-radius-m);
+  box-shadow: var(--fin-shadow-resting-cards);
+}
+
+.card:hover {
+  background-color: var(--fin-alpha-brand);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+}
+
+.card[data-disabled="true"] {
+  color: var(--fin-text-disabled);
+  background-color: transparent;
+}
+
+.title {
+  font: var(--fin-font-title-medium);
+  color: var(--fin-text-primary);
+}

@@ -93,7 +93,8 @@ packages/tokens/                     ← @finspace-loyalty/tokens
   src/styles.css                     ← hand-written: shadows, grid (DESIGN.md §4). Breakpoints are generated into dist/
   dist/                              ← GENERATED: tokens.css, tokens.ts, breakpoints.css, breakpoints.ts
 packages/ui/                         ← @finspace-loyalty/ui
-  src/styles/                        ← reset.css, fonts.css (Inter, Material Symbols Rounded)
+  src/styles/                        ← index.css (app stylesheet), reset.css, fonts.css (Inter, Material Symbols Rounded)
+  test/                              ← tests that don't belong to one component (setup example, Stylelint rules)
   src/icons/                         ← FinIcon, finIcons registry
   src/components/<Name>/             ← one folder per component:
     Fin<Name>.tsx
@@ -117,7 +118,9 @@ CLAUDE.md                            ← this file
 | Vite | Library build and Storybook |
 | Storybook (`@storybook/react-vite`) | Catalogue, with the a11y addon |
 | Vitest + Testing Library | Behaviour tests |
-| ESLint + Stylelint | Lint. Stylelint blocks raw colors and palette/alias variables in component CSS |
+| ESLint + Stylelint | Lint. Stylelint (`stylelint.config.js`) blocks raw colors, `color-mix()`, palette/alias variables and typography parts in every CSS Module |
+
+Commands (repo root): `pnpm storybook`, `pnpm test` (Vitest, incl. the Stylelint rules test), `pnpm test:a11y` (every story, Light and Dark), `pnpm lint`, `pnpm lint:css`, `pnpm typecheck`, `pnpm build`, `pnpm build-storybook`. Before saying a component is done, all of them pass.
 | PostCSS (`postcss-custom-media`) | Breakpoint custom media queries |
 
 ## Git
