@@ -3080,14 +3080,14 @@
           }
         }
       },
-      "bg-dark": {
+      "bg-direct": {
         "$type": "color",
         "$value": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
         "$description": "Use this for toast/snackbar backgrounds",
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}"
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-50}"
           }
         }
       },
@@ -3261,6 +3261,17 @@
       "text-inverse": {
         "$type": "color",
         "$value": "{Alias Colors.Colors.Fintech.Key.White}",
+        "$description": "Use this text color for snackbars and tooltips",
+        "$extensions": {
+          "mode": {
+            "Light": "{Alias Colors.Colors.Fintech.Key.White}",
+            "Dark": "{Alias Colors.Colors.Fintech.Secondary.Secondary-400}"
+          }
+        }
+      },
+      "text-white_both": {
+        "$type": "color",
+        "$value": "{Alias Colors.Colors.Fintech.Key.White}",
         "$description": "Use this text color on brand  backgrounds",
         "$extensions": {
           "mode": {
@@ -3269,7 +3280,7 @@
           }
         }
       },
-      "text-inverse_subtle": {
+      "text-white_subtle": {
         "$type": "color",
         "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-600}",
         "$description": "A secondary text color on brand backgrounds",
@@ -3331,7 +3342,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Success.Success-700}",
-            "Dark": "{Alias Colors.Colors.Fintech.Success.Success-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Success.Success-100}"
           }
         }
       },
@@ -3342,7 +3353,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Error.Error-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-100}"
           }
         }
       },
@@ -3353,7 +3364,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-100}"
           }
         }
       },
@@ -3364,7 +3375,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Warning.Warning-700}",
-            "Dark": "{Alias Colors.Colors.Fintech.Warning.Warning-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Warning.Warning-100}"
           }
         }
       }
@@ -3676,7 +3687,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Success.Success-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Success.Success-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Success.Success-200}"
           }
         }
       },
@@ -3687,7 +3698,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Error.Error-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Error.Error-200}"
           }
         }
       },
@@ -3698,7 +3709,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-200}"
           }
         }
       },
@@ -3709,7 +3720,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Warning.Warning-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Warning.Warning-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Warning.Warning-200}"
           }
         }
       }
@@ -4130,7 +4141,7 @@
         "Color collection",
         "Alias Spacing & Radius"
       ],
-      "createdAt": "2026-10-13T09:48:03.300Z"
+      "createdAt": "2026-10-14T08:50:00.715Z"
     }
   }
 }

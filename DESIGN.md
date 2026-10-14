@@ -68,7 +68,7 @@ If this file and Figma disagree, **Figma wins**. Flag the difference so this fil
 
 ## 3. Foundations: tokens
 
-Source: `tokens/design.tokens.json`, with 431 variables in 5 collections.
+Source: `tokens/design.tokens.json`, with 432 variables in 5 collections.
 
 | Collection | Count | Modes | Purpose |
 |---|---|---|---|
@@ -159,7 +159,7 @@ _Collection `Color collection`, modes **Light** and **Dark**. **Components must 
 | `bg-action-destructive-secondary_hovered` | Error-50 `#f9e8e8` | Error-700 `#8c1015` | Hover state of secondary destructive buttons |
 | `bg-action-destructive-secondary_pressed` | Error-100 `#edb7b9` | Error-600 `#b3151a` | Pressed state of secondary destructive buttons |
 | `bg-disabled` | Tertiary1-500 `#e9e9e9` | Tertiary-800 `#363636` | Disabled backgrounds |
-| `bg-dark` | Secondary-500 `#19191a` | Secondary-500 `#19191a` | Toast/snackbar backgrounds |
+| `bg-direct` | Secondary-500 `#19191a` | Tertiary1-50 `#fdfdfd` | Snackbar and Plain Tooltip backgrounds: dark in Light, light in Dark. Text on it uses `text-inverse`, icons `fg-inverse`. Renamed from `bg-dark` (14 Oct 2026). |
 | `bg-success` | Success-600 `#2a9952` | Success-500 `#2ea85a` | Success backgrounds (notification, badge) |
 | `bg-success_secondary` | Success-50 `#eaf6ef` | Success-900 `#134726` | Secondary success backgrounds (notification, badge) |
 | `bg-error` | Error-500 `#c5171d` | Error-400 `#d1454a` | Error backgrounds (notification, badge) |
@@ -180,16 +180,17 @@ _Collection `Color collection`, modes **Light** and **Dark**. **Components must 
 | `text-placeholder` | Tertiary-300 `#969696` | Tertiary-400 `#818181` | Input field placeholder text |
 | `text-disabled` | Tertiary-200 `#b7b7b7` | Tertiary-600 `#595959` | Disabled text |
 | `text-disabled-on_bg` | Tertiary-300 `#969696` | Tertiary-500 `#626262` | Disabled text on backgrounds (buttons, badge, chips) |
-| `text-inverse` | White `#ffffff` | White `#ffffff` | Text on brand backgrounds |
-| `text-inverse_subtle` | Tertiary1-600 `#d4d4d4` | Tertiary1-600 `#d4d4d4` | Secondary text on brand backgrounds |
+| `text-inverse` | White `#ffffff` | Secondary-400 `#474748` | Text on `bg-direct` (Snackbar, Plain Tooltip). Flips with the theme (changed 14 Oct 2026). |
+| `text-white_both` | White `#ffffff` | White `#ffffff` | Text on purple or red in both themes: primary and destructive buttons, Brand badge, badge indicator. Matches `fg-white_both`. New 14 Oct 2026. |
+| `text-white_subtle` | Tertiary1-600 `#d4d4d4` | Tertiary1-600 `#d4d4d4` | Secondary text on brand backgrounds. Renamed from `text-inverse_subtle` (14 Oct 2026). |
 | `text-dark_both` | Secondary-500 `#19191a` | Secondary-500 `#19191a` | Dark text in both light and dark modes |
 | `text-action` | Primary-500 `#625bff` | Primary-400 `#817cff` | Text links, secondary buttons |
 | `text-pressed` | Primary-700 `#4641b5` | Primary-300 `#9691ff` | Pressed state for text links |
 | `text-hovered` | Primary-600 `#5953e8` | Primary-200 `#b7b4ff` | Hover state for text links |
-| `text-success` | Success-700 `#217740` | Success-300 `#73c590` | Success texts |
-| `text-error` | Error-500 `#c5171d` | Error-300 `#d86468` | Error texts |
-| `text-info` | Primary-700 `#4641b5` | Primary-300 `#9691ff` | Information texts |
-| `text-warning` | Warning-700 `#a65d08` | Warning-300 `#f1ac5c` | Warning texts |
+| `text-success` | Success-700 `#217740` | Success-100 `#bee4cc` | Success texts |
+| `text-error` | Error-500 `#c5171d` | Error-100 `#edb7b9` | Error texts |
+| `text-info` | Primary-700 `#4641b5` | Primary-100 `#ceccff` | Information texts |
+| `text-warning` | Warning-700 `#a65d08` | Warning-100 `#f8d9b3` | Warning texts |
 
 #### Border
 
@@ -227,10 +228,10 @@ _Collection `Color collection`, modes **Light** and **Dark**. **Components must 
 | `fg-action` | Primary-500 `#625bff` | Primary-400 `#817cff` | Action icons |
 | `fg-hovered` | Primary-600 `#5953e8` | Primary-300 `#9691ff` | Hover state for action icons |
 | `fg-pressed` | Primary-700 `#4641b5` | Primary-200 `#b7b4ff` | Pressed state for action icons |
-| `fg-success` | Success-600 `#2a9952` | Success-400 `#58b97b` | Success icons |
-| `fg-error` | Error-500 `#c5171d` | Error-400 `#d1454a` | Error icons |
-| `fg-info` | Primary-600 `#5953e8` | Primary-400 `#817cff` | Information icons |
-| `fg-warning` | Warning-600 `#d5770a` | Warning-400 `#ee9c3c` | Warning icons |
+| `fg-success` | Success-600 `#2a9952` | Success-200 `#9fd7b3` | Success icons |
+| `fg-error` | Error-500 `#c5171d` | Error-200 `#e49497` | Error icons |
+| `fg-info` | Primary-600 `#5953e8` | Primary-200 `#b7b4ff` | Information icons |
+| `fg-warning` | Warning-600 `#d5770a` | Warning-200 `#f5c68f` | Warning icons |
 
 #### Alpha
 
@@ -609,7 +610,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 24 | `white-button` | Buttons | `349:5042` | `FinWhiteButton` | `20px`, `24px` | Size (4) · State, Focused (runtime) · icons · Label | ✅ | ⬜ |
 | 25 | `Destructive-button` | Buttons | `523:2813` | `FinDestructiveButton` | `20px`, `24px` | Type: Primary/Secondary · Size (4) · State, Focused (runtime) | ✅ | ⬜ |
 | 26 | `Base-Checkbox` | Checkbox | `42:185` | `FinCheckboxBase` | `16px` | Type: Unselected/Selected/Indeterminate · State, Focused (runtime) | ⚠️ | ⬜ |
-| 27 | **Dark-mode contrast: `text-error` on `bg-error-secondary`** is 4.19:1 (`#d86468` on `#530a0c`), below AA's 4.5:1 for normal text. Light is fine. Found by the S6 a11y check on a Storybook page (fixed there by using `text-primary`). Matters for error callouts, alerts and badges that put error text on the error background. | Foundation › Color collection (Dark) | ❓ Decide |
+| 27 | **Dark-mode contrast: `text-error` on `bg-error-secondary`** was 4.19:1. Design updated the Dark status colors (14 Oct 2026): now 8.52:1, and every status text and icon color passes on `bg-primary`, `bg-secondary`, `bg-tertiary` and its own `bg-*_secondary` in Dark. | Foundation › Color collection (Dark) | ✅ Decided (14 Oct 2026) |
 | 27 | `Chips-base` | Chips | `95:1811` | `FinChipBase` | `16px`, `20px` | Type: Unselected/Selected/Unselected-border · Size: XSmall/Small/Large · Leading slot · Trailing icon | ⚠️ | ⬜ |
 | 28 | `Segmented_button-base` | Segmented button | `117:4667` | `FinSegmentBase` | `20px` | Type: Unselected/Selected · State (runtime) · Leading slot | ⚠️ | ⬜ |
 | 29 | `Avatar` | Avatar | `932:1387` | `FinAvatar` | `16`–`64px` | Type: Image/Icon/Text · Size: XSmall…XXXLarge (7) | ⚠️ | ⬜ |
@@ -706,7 +707,7 @@ Template:
 |---|---|---|---|
 | 1 | **Desktop spacing rules** (page padding, section gap, card padding, gap between buttons…) aren't defined. Until then, spacing is copied from Figma with spacing tokens and off-scale values are reported (§2). | Foundation | ❓ Decide (after the first UIs) |
 | 2 | `bg-action-secondary_hovered` and `_pressed` had the same value. Fixed 13 Oct 2026: pressed is now Primary-200 / Primary-700 (hovered stays Primary-100 / Primary-800), and the Secondary button in the component file uses both tokens. | Foundation › Color collection | ✅ Fixed |
-| 3 | Contrast (Light): white text on `bg-success` is 3.6:1 and on `bg-warning` 2.7:1 (fail for normal text; dark text on `bg-warning` is 6.5:1). `border-strong` and `text-placeholder` are about 2.96:1 against white (borders of controls need 3:1). | Foundation › Color collection | ❓ Decide |
+| 3 | **Contrast failures** (checked 14 Oct 2026 after the Dark status-color update). **Light:** white text on `bg-success` 3.6:1 and on `bg-warning` 2.7:1 (dark text on `bg-warning` is 6.5:1); `border-strong` and `text-placeholder` about 2.96:1 on white (control borders need 3:1); `text-warning` on `bg-tertiary` 4.28:1; `fg-warning` on `bg-secondary` 2.98:1, `bg-tertiary` 2.77:1 and `bg-warning-secondary` 2.96:1 (icons need 3:1). **Dark:** `text-white_both` on `bg-action-primary-hovered` 3.35:1, `-pressed` 2.70:1, `bg-action-destructive-hovered` 3.53:1, `-pressed` 2.34:1 (`fg-white_both` fails on both pressed states). **Both:** `text-white_subtle` fails on `bg-brand`/`bg-action-primary` (3.18:1) and `bg-action-destructive` (4.03:1 Light, 3.04:1 Dark). **Badge indicator** (`text-white_both` on `fg-*`): Dark fails on `fg-error` 2.34:1, `fg-warning` 1.57:1, `fg-success` 1.63:1 (known, open); Light also fails on `fg-warning` 3.24:1 and `fg-success` 3.64:1. | Foundation › Color collection | ❓ Decide (not blocking) |
 | 4 | Dark mode default: follow the OS setting (`prefers-color-scheme`) or only the app setting? | Theming | ❓ Decide |
 | 5 | Shadows are effect styles, not variables, so they're the same in Light and Dark. Now three neutral styles (Resting cards, Panel sheets, Sticky); the mobile-era Floating and Back styles were removed (13 Oct 2026). Does dark mode need different shadows? | Foundation › effect styles | ❓ Decide after the first components are built and checked in Dark (not a blocker) |
 | 6 | Focus ring: color is `border-focused`, but width and offset aren't tokens. Read them from the `Focused` variants in Figma when building; ask if components differ. | Foundation / Components | ⏳ Check per component |
@@ -756,3 +757,4 @@ Template:
 | 14 Oct 2026 | 0.2 | §10 #14 decided: the icon font subset is generated automatically from the `finIcons` registry as part of building `FinIcon`, not later. §6.1 and §6.2 updated. |
 | 14 Oct 2026 | 0.2 | S5 done: Storybook 10.6.1 (`@storybook/react-vite`, `addon-docs`), local only; publishing (GitHub Pages or Chromatic) to be decided after the first components. Toolbar: Theme (Light, Dark, Side by side) and Brand, both from new token exports `finBrands`/`finThemes`, set on `<html>` (side by side sets `data-theme` on two panels). Foundations pages are stories (MDX doc pages hide the toolbar): Colors (87 semantic colors), Typography, Spacing, Radius, Shadows, Grid, Breakpoints, and Palette (reference only) with primitives and alias colors per brand from the new `@finspace-loyalty/tokens/reference` entry point, labelled "do not use in components". `postcss-custom-media` 12.0.2 in Storybook and `ui` (the Breakpoints page uses it). Stylelint: camelCase class names. pnpm: esbuild install script denied (`allowBuilds`). Checked in headless Chrome: all 87 semantic colors match §3.3 in Light and Dark. |
 | 14 Oct 2026 | 0.2 | S6 done: Vitest 5.0.2 + Testing Library in `packages/ui` (jsdom; example test in `packages/ui/test/`). Storybook `addon-a11y` and `addon-vitest` 10.6.1: `pnpm test:a11y` runs every story in Chrome with WCAG 2.2 AA checks, once in Light and once in Dark (16 runs, all pass). Stylelint moved to `stylelint.config.js`; component CSS rules apply to every `*.module.css` and block raw colors, `color-mix()`, palette/alias variables and typography parts, with messages naming the token to use. `bad.css`/`good.css` samples and a test prove each rule. No exceptions needed: the Palette page sets palette variables from TSX, and Typography uses only the shorthands. §10 #27 added (Dark `text-error` on `bg-error-secondary` contrast). |
+| 14 Oct 2026 | 0.2 | Dark status colors and inverse tokens (new export, 432 variables). Dark only: `text-success/error/info/warning` → `*-100`, `fg-success/error/info/warning` → `*-200`. `bg-dark` renamed `bg-direct`, Dark now Tertiary1-50 `#fdfdfd` (Snackbar and Plain Tooltip are light in Dark). `text-inverse` Dark now Secondary-400 `#474748` (text on `bg-direct`). New `text-white_both` (white in both themes, text on purple/red). `text-inverse_subtle` renamed `text-white_subtle`. Code: `--fin-bg-direct`/`finColor.bgDirect`, `--fin-text-white-both`/`textWhiteBoth`, `--fin-text-white-subtle`/`textWhiteSubtle`; token build expects 432. Contrast checked in both themes: §10 #27 decided; failures recorded in §10 #3. Palette page notice back to `text-error`. |

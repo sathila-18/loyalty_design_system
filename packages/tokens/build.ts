@@ -38,7 +38,7 @@ const TYPE_PARTS: Record<string, string> = {
 };
 /** Added after every font family so text never falls back to the browser's serif (§3.4). Figma only has the family. */
 const FONT_FALLBACK = 'system-ui, sans-serif';
-const EXPECTED = { tokens: 431, textStyles: 23 };
+const EXPECTED = { tokens: 432, textStyles: 23 };
 
 // ---------------------------------------------------------------------------
 // 1. Read the export
