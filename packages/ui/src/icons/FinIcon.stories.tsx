@@ -20,7 +20,7 @@ const FIGMA_STATES: [string, FinFgColor][] = [
 ];
 
 const meta: Meta<typeof FinIcon> = {
-  title: 'Components/Icon',
+  title: 'Components/Icons/Icon',
   component: FinIcon,
   args: { name: 'person', size: 24, filled: false },
   argTypes: {

@@ -35,6 +35,15 @@ describe('FinIconContainer', () => {
     expect((icon(root) as HTMLElement).style.getPropertyValue('--icon-color')).toBe(token);
   });
 
+  it('passes filled straight to the icon', () => {
+    const { container, rerender } = render(<FinIconContainer name="person" />);
+    expect(icon(container.firstElementChild!)).not.toHaveAttribute('data-filled');
+    expect(container.firstElementChild).not.toHaveAttribute('data-filled');
+    rerender(<FinIconContainer name="person" filled />);
+    expect(icon(container.firstElementChild!)).toHaveAttribute('data-filled', 'true');
+    expect(container.firstElementChild).not.toHaveAttribute('data-filled');
+  });
+
   it('is decorative by default', () => {
     const { container } = render(<FinIconContainer name="person" />);
     expect(icon(container.firstElementChild!)).toHaveAttribute('aria-hidden', 'true');

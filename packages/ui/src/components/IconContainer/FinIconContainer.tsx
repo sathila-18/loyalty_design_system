@@ -13,6 +13,8 @@ export interface FinIconContainerProps extends Omit<HTMLAttributes<HTMLSpanEleme
   size?: FinIconContainerSize;
   /** Background and icon colors (Figma `State`, DESIGN.md §7.3). */
   tone?: FinIconContainerTone;
+  /** Filled icon style (`FILL 1`), passed straight to FinIcon. */
+  filled?: boolean;
   /** Accessible name for an icon that carries meaning, passed to FinIcon. Without it, the icon is decorative. */
   label?: string;
 }
@@ -29,7 +31,15 @@ const ICON_COLOR: Record<FinIconContainerTone, FinFgColor> = {
 };
 
 /** An icon on a colored circle (Figma Icon sizes: `40px bg`, `48px bg`, `64px bg`; DESIGN.md §9). */
-export function FinIconContainer({ name, size = 40, tone = 'primary', label, className, ...rest }: FinIconContainerProps) {
+export function FinIconContainer({
+  name,
+  size = 40,
+  tone = 'primary',
+  filled = false,
+  label,
+  className,
+  ...rest
+}: FinIconContainerProps) {
   return (
     <span
       {...rest}
@@ -37,7 +47,13 @@ export function FinIconContainer({ name, size = 40, tone = 'primary', label, cla
       data-size={size}
       data-tone={tone}
     >
-      <FinIcon name={name} size={ICON_SIZE[size]} color={ICON_COLOR[tone]} {...(label ? { label } : {})} />
+      <FinIcon
+        name={name}
+        size={ICON_SIZE[size]}
+        color={ICON_COLOR[tone]}
+        filled={filled}
+        {...(label ? { label } : {})}
+      />
     </span>
   );
 }

@@ -8,13 +8,14 @@ const TONES: FinIconContainerTone[] = ['primary', 'secondary', 'disabled', 'succ
 const title = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const meta: Meta<typeof FinIconContainer> = {
-  title: 'Components/Icon container',
+  title: 'Components/Icons/Icon container',
   component: FinIconContainer,
-  args: { name: 'person', size: 40, tone: 'primary' },
+  args: { name: 'person', size: 40, tone: 'primary', filled: false },
   argTypes: {
     name: { control: 'select', options: finIcons },
     size: { control: 'select', options: SIZES },
     tone: { control: 'select', options: TONES },
+    filled: { control: 'boolean' },
     label: { control: 'text' },
   },
 };
@@ -37,7 +38,7 @@ export const SizesAndTones: Story = {
         <span key={size} className={styles.rowLabel}>
           {size}px bg
         </span>,
-        ...TONES.map((tone) => <FinIconContainer key={`${size}-${tone}`} name={args.name} size={size} tone={tone} />),
+        ...TONES.map((tone) => <FinIconContainer key={`${size}-${tone}`} name={args.name} size={size} tone={tone} filled={args.filled ?? false} />),
       ])}
     </div>
   ),
