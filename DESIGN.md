@@ -468,7 +468,7 @@ _From the **Icon sizes** page (13 Oct 2026). Each set has a `State` variant: Pri
 | `48px` | `3017:6417` | 48 (`Size-48` → `--fin-size-48`) |
 | `64px` | `3017:7083` | 64 (`Size-64` → `--fin-size-64`) |
 
-Only these six sizes exist (`size` prop: `16 | 20 | 24 | 36 | 48 | 64`). In Figma the frame sizes are **raw values** (not bound to a variable), which is fine; no Figma change is needed. **Design decision (14 Oct 2026):** code maps them to the `Size-*` primitives through `--fin-size-*` (§3.8), **not** to spacing tokens, so icon sizes never move when the spacing scale changes. Icon containers on the same page (`40px bg`, `48px bg`, `68px bg`, `Circle Icon`) are listed in §8.2.
+Only these six sizes exist (`size` prop: `16 | 20 | 24 | 36 | 48 | 64`). In Figma the frame sizes are **raw values** (not bound to a variable), which is fine; no Figma change is needed. **Design decision (14 Oct 2026):** code maps them to the `Size-*` primitives through `--fin-size-*` (§3.8), **not** to spacing tokens, so icon sizes never move when the spacing scale changes. Icon containers on the same page (`40px bg`, `48px bg`, `64px bg`) are `FinIconContainer`, §8.2 and §9.2.
 
 ### 6.4 Icons used in the component file
 
@@ -616,7 +616,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 16 | `40px bg` | Icon sizes | `3017:6944` | `FinIconContainer` (size 40) | `24px` | State (7) → `tone` | ✅ | ✅ |
 | 17 | `48px bg` | Icon sizes | `3017:6993` | `FinIconContainer` (size 48) | `24px` | State (7) → `tone` | ✅ | ✅ |
 | 18 | `64px bg` (was `68px bg`, 68 → 64 on 14 Oct 2026) | Icon sizes | `3017:7023` | `FinIconContainer` (size 64) | `36px` | State (7) → `tone` | ✅ | ✅ |
-| 19 | `Circle Icon` | Icon sizes | `624:4882` | `FinCircleIcon` | `20px`, `36px` | Size: Small/Large | ⚠️ | ⬜ |
+| 19 | ~~`Circle Icon`~~ | Icon sizes | ~~`624:4882`~~ | ~~`FinCircleIcon`~~ | — | **Removed from Figma (14 Oct 2026); not built.** | — | — |
 | 20 | `Tag-base` | Badge | `30:1454` | `FinTagBase` | `16px`, `20px` | Size: Small/Large · Leading/Trailing icon · Label | ✅ | ⬜ |
 | 21 | `Label` | Text box | `28:968` | `FinLabel` | Badge - indicator | Size: Medium/Small · Show badge · Label | ⚠️ | ⬜ |
 | 22 | `Helper text content` | Text box | `28:973` | `FinHelperText` | `20px` | State: Default/Error/Success/Warning/Disabled · Show leading icon · Text | ⚠️ | ⬜ |
@@ -699,7 +699,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`), Icon container (`FinIconContainer`), and later Circle icon (`FinCircleIcon`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -880,3 +880,4 @@ Template:
 | 14 Oct 2026 | 0.2 | **`FinIcon` done** (§8 #1, §9.1): registry `finIcons` (28 current Material Symbols names; four old names swapped, §6.4), `color` accepts every `fg-*` token, sizes 16–64 mapped to `--fin-size-*` (not spacing), `filled`, `label`. Icon font subset generated at build time (`packages/ui/scripts/subset-icons.ts`, `harfbuzzjs` 1.6.2 + `wawoff2` 2.0.1): 6.2 KB instead of 5.4 MB, keeps the filled `.fill` glyphs. Stylelint lets the icon font have no generic fallback. §6, §10 #14, #21, #23 updated. |
 | 14 Oct 2026 | 0.2 | **`FinIconContainer` done** (§8 #16–18, §9.2): sizes 40/48/64 (`68px bg` changed to `64px bg` in Figma) via `--fin-size-*`, FinIcon inside (24/24/36), `tone` for Figma's color-only `State`, `fg-disabled-on_bg` for Disabled at every size. §7.3: a Figma `State` that only changes colors is `tone` in code. §3.8: widths and heights are unbound in Figma by convention and map to `--fin-size-*`. |
 | 14 Oct 2026 | 0.2 | `FinIconContainer`: `filled` added (passes straight to FinIcon). Storybook: icon stories grouped under Components/Icons (§9). §10 #3 notes the Light warning icon container (2.96:1); §10 #29 added (Dark Primary and Disabled containers share `#363636`). |
+| 14 Oct 2026 | 0.2 | Circle Icon removed from Figma; FinCircleIcon dropped. |
