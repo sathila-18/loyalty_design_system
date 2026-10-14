@@ -1,0 +1,52 @@
+/* FinIconContainer (DESIGN.md §9). The icon is FinIcon; this file only styles the circle. */
+
+.container {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--container-size);
+  height: var(--container-size);
+  background-color: var(--container-bg);
+  border-radius: var(--fin-radius-full);
+}
+
+.container[data-size="40"] {
+  --container-size: var(--fin-size-40);
+}
+
+.container[data-size="48"] {
+  --container-size: var(--fin-size-48);
+}
+
+.container[data-size="64"] {
+  --container-size: var(--fin-size-64);
+}
+
+.container[data-tone="primary"] {
+  --container-bg: var(--fin-bg-icons);
+}
+
+.container[data-tone="secondary"] {
+  --container-bg: var(--fin-bg-secondary);
+}
+
+.container[data-tone="disabled"] {
+  --container-bg: var(--fin-bg-disabled);
+}
+
+.container[data-tone="success"] {
+  --container-bg: var(--fin-bg-success-secondary);
+}
+
+.container[data-tone="warning"] {
+  --container-bg: var(--fin-bg-warning-secondary);
+}
+
+.container[data-tone="error"] {
+  --container-bg: var(--fin-bg-error-secondary);
+}
+
+.container[data-tone="info"] {
+  --container-bg: var(--fin-bg-info-secondary);
+}
