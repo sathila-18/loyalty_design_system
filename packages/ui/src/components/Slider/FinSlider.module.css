@@ -1,0 +1,87 @@
+/*
+ * FinSlider (DESIGN.md §9). A native range input, restyled. Standard slider geometry (decided 15 Oct 2026): the
+ * handle's centre travels from 12px to (width - 12px) so it never leaves the track, and the fill runs to its
+ * centre. The fill is part of the track background, driven by --fraction (0-1) set on the element.
+ * Hover and pressed have no design yet: cursor only. No animation (motion is deferred, §5).
+ */
+
+.slider {
+  --slider-fill: var(--fin-fg-brand);
+  --slider-track: var(--fin-bg-active-hover);
+  --slider-stop: calc(var(--fin-size-12) + var(--fraction, 0) * (100% - var(--fin-size-24)));
+
+  display: block;
+  width: 100%;
+  height: var(--fin-size-24);
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+}
+
+.slider:disabled {
+  --slider-fill: var(--fin-fg-disabled);
+  --slider-track: var(--fin-border-disabled);
+
+  cursor: default;
+}
+
+.slider:focus-visible {
+  outline: none;
+}
+
+/* Track (8 tall, Radius-XS) with the fill up to the handle's centre. */
+.slider::-webkit-slider-runnable-track {
+  height: var(--fin-size-8);
+  border-radius: var(--fin-radius-xs);
+  background: linear-gradient(to right, var(--slider-fill) var(--slider-stop), var(--slider-track) var(--slider-stop));
+}
+
+.slider::-moz-range-track {
+  height: var(--fin-size-8);
+  border-radius: var(--fin-radius-xs);
+  background: linear-gradient(to right, var(--slider-fill) var(--slider-stop), var(--slider-track) var(--slider-stop));
+}
+
+/* Handle: 24px fg-brand circle, 2px border-inverse ring inside, the Resting cards shadow. */
+.slider::-webkit-slider-thumb {
+  box-sizing: border-box;
+  width: var(--fin-size-24);
+  height: var(--fin-size-24);
+  margin-top: calc((var(--fin-size-8) - var(--fin-size-24)) / 2);
+  border: 2px solid var(--fin-border-inverse);
+  border-radius: var(--fin-radius-full);
+  background-color: var(--slider-fill);
+  box-shadow: var(--fin-shadow-resting-cards);
+  appearance: none;
+}
+
+.slider::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--fin-size-24);
+  height: var(--fin-size-24);
+  border: 2px solid var(--fin-border-inverse);
+  border-radius: var(--fin-radius-full);
+  background-color: var(--slider-fill);
+  box-shadow: var(--fin-shadow-resting-cards);
+}
+
+/* Focus: the default ring (2px border-focused, 2px offset, §10 #6) around the handle. */
+.slider:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+.slider:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+/* Disabled: no shadow on the handle (decided 15 Oct 2026). */
+.slider:disabled::-webkit-slider-thumb {
+  box-shadow: none;
+}
+
+.slider:disabled::-moz-range-thumb {
+  box-shadow: none;
+}

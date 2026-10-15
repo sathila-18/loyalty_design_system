@@ -607,7 +607,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 9 | `Base-Radio_box` | Radio button | `37:104` | `FinRadio` | Type: Selected/Unselected · State (runtime) · **public** (§7.2 rule 4 exception) · visually hidden `label` (§9.15) | ⚠️ (radius from another library → `Radius-Full`, approved 15 Oct 2026) | ✅ |
 | 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | **Base** of Progress-full, **public** (§7.2 rule 4 exception, §9.16) · code: any `value`, `max`, fills its container · Filled: 0/25/50/75/100% (Steps=4, Large and Small) and 0/20/40/60/80/100% (Steps=5, Small only) · Size: Large (8 tall) / Small (4 tall) · 16 variants (checked 15 Oct 2026) | ⚠️ (fill radius from the `Tokens` library → `Radius-XS`, approved 15 Oct 2026) | ✅ |
 | 11 | ~~`Progress bar-portfolio`~~ | Progress | ~~`695:5418`~~ | — | **Removed from Figma (15 Oct 2026); not built.** | — | — |
-| 12 | `dragger` | Progress | `645:3136` | `FinDragger` | Filled: 5–100% | ⚠️ | ⬜ |
+| 12 | `slider` (renamed from `dragger` in Figma, 15 Oct 2026) | Progress | `645:3136` | `FinSlider` | Filled: 5–100% · code: `value`/`defaultValue`, `min` 0, `max` 100, `step`, visually hidden `label`, disabled (§9.18) | ⚠️ (radius and padding from another library → `Radius-XS`, `Space-none`, approved 15 Oct 2026) | ✅ |
 | 13 | `Spinner` | Progress | `33:2331` | `FinSpinner` | Progress (`Pregress`): 25/50/75%, Success, Error · **public** (§7.2 rule 4 exception) · code: `value` (still ring) or none (spinning loader), `status` success/error (§9.17) | ✅ | ✅ |
 | 14 | `Input-OTP-base` | Input field | `49:5843` | `FinOtpCellBase` | **Base** for OTP. State (runtime) · Show number · Error | ⚠️ | ⬜ |
 | 15 | `Pagination item` | Table | `3144:14184` | `FinPaginationItem` | State: Default/Selected/Hovered/Dots | ✅ | ⬜ |
@@ -702,7 +702,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar and Spinner are under **Components/Progress**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner and Slider are under **Components/Progress** (the Figma page they're on). Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1429,6 +1429,51 @@ Presentational: no `'use client'`. `className`, `style` (merged with `--arc`) an
 
 **Built (15 Oct 2026).** Storybook (Components/Progress): Playground, States (Figma), Loading, Any value. Checked against Figma: box 48, ring 40 at (4, 4), stroke 4, arcs 90° / 180° / 270° from 12 o'clock, flat ends; Success / Error 48 circles with 24px icons at (12, 12); Light colors equal Figma (Dark uses the Dark tokens). The loader spins (1s, linear) and stays still with reduced motion. a11y: no violations in Light or Dark.
 
+### 9.18 FinSlider (slider)
+
+**Figma:** page **Progress**, component set `slider` `645:3136` (renamed from `dragger` 15 Oct 2026): `Filled` = 5 / 25 / 50 / 75 / 100% (5 variants). A 311 × 8 track (`bg-active-hover`, radius 4) with an `fg-brand` fill and a 24px `fg-brand` handle with a 2px white **inside** stroke (`border-inverse`) and `Shadow/Resting_cards`. No hover, pressed, focus or disabled variants; no instances. Figma's fills are hand-placed (its 25% is drawn at 33%, 5% at 11%, 75% at 72%).
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Filled` | `value` (controlled, with `onChange`) or `defaultValue` (uncontrolled, default `min`) |
+| — | `min` (default **0**), `max` (default 100), `step` (default 1): the screen sets the range for its scenario (decided 15 Oct 2026) |
+| — | `label` (required, **visually hidden**), `valueText` (optional spoken value, for example "1500 points"), `disabled` |
+
+**Geometry (decided 15 Oct 2026):** standard slider positions. The handle's centre travels from 12px to (width − 12px), so it never leaves the track, and the fill runs to its centre. Values are exact. Fills the width of its container (Figma's 311 is a mobile-era frame width).
+
+**Structure:** a native `<input type="range">`, restyled: dragging, clicking the track, the keyboard (arrows step, Page Up / Down jump, Home / End go to the ends) and screen readers come from the browser. The fill is a two-colour track background stopped at `calc(12px + fraction × (100% − 24px))`, with `--fraction` set on the element. `ref` and native attributes go to the input.
+
+**Tokens used:**
+
+| Part | Token |
+|---|---|
+| Input (hit area) | width 100%, height `--fin-size-24` |
+| Track | height `--fin-size-8`, `--fin-radius-xs` (Figma's radius is bound to another library, `Alias Spacing & Radius`), `--fin-bg-active-hover` |
+| Fill | `--fin-fg-brand` |
+| Handle | `--fin-size-24`, `--fin-radius-full`, `--fin-fg-brand`, 2px `--fin-border-inverse` border inside (`box-sizing: border-box`), `--fin-shadow-resting-cards` |
+| Disabled (decided 15 Oct 2026; no Figma design) | track `--fin-border-disabled`, fill and handle `--fin-fg-disabled`, no shadow |
+| Focus | on the handle: `outline: 2px solid var(--fin-border-focused)`, `outline-offset: 2px` (§10 #6) |
+| Hover, pressed | none yet: cursor only |
+
+Raw values: the 2px handle ring and focus ring. No animation (§5).
+
+**API:**
+
+```tsx
+import { FinSlider } from '@finspace-loyalty/ui';
+
+<FinSlider label="Points to redeem" min={500} max={5000} step={100} value={points}
+  valueText={`${points} points`} onChange={(e) => setPoints(Number(e.target.value))} />
+```
+
+`'use client'` (keeps the uncontrolled value to draw the fill).
+
+**Accessibility:** announced as a slider with its name, value (or `valueText`), minimum and maximum. Handle 24 × 24, input 24 tall. Contrast (non-text, 3:1): fill on track 3.07 Light / 3.14 Dark, handle on the page 4.71 / 5.24. Keyboard behaviour is the browser's own, so it's checked in a real browser (jsdom doesn't simulate range keys).
+
+**Built (15 Oct 2026).** Storybook (Components/Progress): Playground, Values (Figma) with 5 / 25 / 50 / 75 / 100% and disabled, Controlled (500–5000, step 100), Fills its container. Checked in Chrome: input 24 tall, handle 24 with its ring centred on the track; handle centre at exactly 12 + v × (width − 24) for every value; fill, track and handle colors equal Figma (Dark uses the Dark tokens; the handle ring is `border-inverse`, dark in Dark); Tab, →, Page Up, End, Home, clicking the track and dragging all work; the focus ring shows around the handle. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1489,7 +1534,7 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) and `FinSpinner` (§9.17). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) and `FinSlider` (§9.18, on `feat/slider`, waiting for approval). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers) and §10 #35 (Indicator selected width 22 → 24 in Figma). Fixed 15 Oct 2026: §10 #29, #30.
 
@@ -1542,3 +1587,4 @@ Template:
 | 15 Oct 2026 | 0.2 | Progress page re-checked: `Progress bar-portfolio` removed from Figma (§8 #11 marked removed; `Fillted` dropped from §10 #21); `Progress-progress bar` renamed `Progress-full` (§8 #44, code name `FinProgress` → `FinProgressFull`, §7.2 updated); Progress bar's exact Filled values recorded (§8 #10). dragger, Spinner and Progress-Spinner unchanged. |
 | 15 Oct 2026 | 0.2 | **`FinProgressBar` done** (§8 #10, §9.16): public base (§7.2 exception), `value` (any, clamped) with `max` (default 100), `size` large/small, required `label`; fills its container; `role="progressbar"`. Fill radius from the `Tokens` library mapped to `Radius-XS`. |
 | 15 Oct 2026 | 0.2 | **`FinSpinner` done** (§8 #13, §9.17): public base; `value` → still ring (clockwise from 12 o'clock, exact), no value → spinning loader (1s linear, still with reduced motion; first animation, §5 exception), `status` success/error with FinIcon; Figma sizes kept. Progress-Spinner (§8 #45) waits for Text Box. |
+| 15 Oct 2026 | 0.2 | `dragger` renamed `slider` in Figma; code name `FinDragger` → `FinSlider` (§8 #12). **`FinSlider` done** (§9.18): native range input restyled, `min`/`max`/`step` (0–100 by default, set by the screen), standard slider geometry, fills its container, visually hidden `label`, disabled with the disabled tokens. |

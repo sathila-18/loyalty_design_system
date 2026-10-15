@@ -1,0 +1,31 @@
+/* Layout for the FinSlider stories only (not part of the component). */
+
+.frame {
+  width: calc(var(--fin-size-80) * 4);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--fin-size-64) 1fr;
+  gap: var(--fin-space-m);
+  align-items: center;
+}
+
+.value {
+  font: var(--fin-font-caption-large);
+  color: var(--fin-text-secondary);
+}
+
+.narrow {
+  width: var(--fin-size-120);
+}
+
+.wide {
+  width: calc(var(--fin-size-120) * 4);
+}

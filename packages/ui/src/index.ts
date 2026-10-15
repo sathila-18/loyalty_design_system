@@ -14,3 +14,4 @@ export * from './components/Toggle';
 export * from './components/Radio';
 export * from './components/ProgressBar';
 export * from './components/Spinner';
+export * from './components/Slider';
