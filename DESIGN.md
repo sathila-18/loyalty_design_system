@@ -659,7 +659,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number (code: `active`, `count`, no maximum) · clickable with `onChange` (§9.12) | ✅ | ✅ |
 | 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 (code: 2–6 shown, then "+N", §9.5) | ⚠️ (overlaps mapped to spacing, approved 15 Oct 2026) | ✅ |
 | 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image (code: from `src`) · badge button: camera / edit (§9.6) | ⚠️ (frame 100 = `Size-96` + `Space-XS`, approved 15 Oct 2026) | ✅ |
-| 44 | `bar-with-text` (renamed in Figma 15 Oct 2026: `Progress-progress bar` → `Progress-full` → `bar-with-text`) | Progress | `31:2122` | `FinBarWithText` | **Progress bar** (Large, Steps=4), **Text Box** (Center, Display Small-H3) · Progress: 25/50/75/100% · Description: True/False · 375 wide (a mobile-era width), gap `Space-XL` · Progress bar (§9.16) and Text Box (§9.21) are built: ready to build | ⚠️ | ⬜ |
+| 44 | `bar-with-text` (renamed in Figma 15 Oct 2026: `Progress-progress bar` → `Progress-full` → `bar-with-text`) | Progress | `31:2122` | `FinBarWithText` | **Progress bar** (Large, Steps=4), **Text Box** (Center, Display Small-H3) · Progress: 25/50/75/100% · Description: True/False · 375 wide (a mobile-era width), gap `Space-XL` · built from FinProgressBar and FinTextBox; spans the middle 6 grid columns (§9.22) | ⚠️ | ✅ |
 | 45 | `spinner-with-text` (renamed from `Progress-Spinner` in Figma, 15 Oct 2026) | Progress | `33:2348` | `FinSpinnerWithText` | **Spinner**, Text Box · Spinner (§9.17) and Text Box (§9.21) are built: ready to build | ⚠️ | ⬜ |
 | 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black/Basic | ⚠️ (§10 #16) | ⬜ |
 | 47 | `Pagination group` | Table | `3151:14607` | `FinPagination` | **Pagination item**, all-button | ⚠️ | ⬜ |
@@ -712,7 +712,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner and Slider are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider and Bar with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1647,6 +1647,37 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 
 **Built (15 Oct 2026).** Storybook (Components/Text box): Playground (type, alignment, each part, the label's badge), Types and alignments (Figma) at 342px, Parts on and off, Heading level. Checked against Figma at 342px: total heights 399 / 290 / 192 / 181 / 165 / 133 (within Figma's line-height rounding), label 21, the same number of heading and description lines, gaps 0 / 8 (H1–H4) and 0 / 4 (H5–H6), Figma's text styles and Light colors (Dark uses the Dark tokens), `<h1>`–`<h6>` by default; Center and Right align the label and both texts. a11y: no violations in Light or Dark.
 
+### 9.22 FinBarWithText (bar-with-text)
+
+**Figma:** page **Progress**, component set `bar-with-text` `31:2122` (was `Progress-full`, before that `Progress-progress bar`): `Progress` = 25 / 50 / 75 / 100% × `Description` = True / False (8 variants). A Progress bar (Large, 311 inset 32 in a 375 frame) above a Text Box (Center, Display Small-H3, label off, heading on, description per `Description`), gap 16 (`Space-XL`). No exposed nested instances; no instances. Mapped from the public FinProgressBar and FinTextBox.
+
+**Figma → code:**
+
+| Figma property | Prop | Notes |
+|---|---|---|
+| `Progress` = 25 / 50 / 75 / 100% | `value` (any number from 0 to `max`) | Outside the §7.3 patterns (decided 15 Oct 2026, option (b)); listed in §10 #37 |
+| `Description` = True / False | `description` (text; shown when passed) | As Text Box's `Show Description` |
+| Heading text (instance text) | `heading` (required) | Also the bar's accessible name |
+| — | `max` (default 100), `headingLevel` (default 3) | Code-only: behaviour and structure, no change to the look |
+
+**Width (decided 15 Oct 2026):** spans the **middle 6 of the 12 grid columns** of its container, from the grid tokens: `calc((100% − 11 × gutter) / 12 × 6 + 5 × gutter)`, centred. In a 1240-wide content area that's **608**; on a full 1440 page (1392 content) 684. The bar fills that width (Figma's 32px inset comes from the mobile frame).
+
+**Tokens used:** gap `--fin-space-xl`, items centred; `--fin-grid-columns`, `--fin-grid-gutter` for the width. The bar and the Text Box keep their own styles (FinProgressBar `size="large"`, FinTextBox `type="h3" align="center"`). No raw values except the column counts (6 of 12, 5 gutters).
+
+**API:**
+
+```tsx
+import { FinBarWithText } from '@finspace-loyalty/ui';
+
+<FinBarWithText value={uploaded} max={total} heading="Uploading members" description="You can keep working." />
+```
+
+Presentational: no `'use client'`. `className` and other `<div>` attributes go to the root.
+
+**Accessibility:** the bar is a progressbar named by `heading` (with its value); the heading is a real `<h3>` (or `headingLevel`). Contrast as FinProgressBar and FinTextBox.
+
+**Built (15 Oct 2026).** Storybook (Components/Progress): Playground, Variants (Figma) with 25 / 50 / 75 / 100% and the description on and off, in a 1240-wide content area. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1702,14 +1733,14 @@ Template:
 | 34 | **Off-canvas Badge leftovers:** `Badge-primary/brand` (`70:10326`, with 3 instances in an off-canvas `Placeholder-text` frame) and `Badge-primary/Gold` (`421:1316`) still reference Badge-base but aren't on any page. Nothing live depends on them. Is `Gold` planned (for example a loyalty tier)? | Badge | ❓ Design to confirm |
 | 35 | **Indicator `Type=Selected` is 22 wide in Figma**, but there's no `Size-22`. Decided 15 Oct 2026: 24 (`Size-24`) in code. Update the Figma Indicator (and the Indicator set widths become 44 / 54 / 64). | Indicator | 🔧 Fix in Figma |
 | 36 | **Helper text content `State=Success`:** its icon isn't linked to `Show Leading Icon`, so it can't be hidden in Figma (the other four states are linked). Code hides it in every tone. | Text box | 🔧 Fix in Figma |
-| 37 | **Built components whose names or options differ from Figma beyond the §7.3 patterns** (found when the parity rule was added, 15 Oct 2026): FinIcon `State` → `color`; FinBadgeIndicator `Style` Red/Yellow/Green → `tone` error/warning/success and `Digits` → `count`; FinAvatarGroup `Count` → from `people`; FinProfileImage `Type` → from `src`; FinIndicatorDot `Type` → `selected`; FinPageIndicator `Number` / `Active` → `count` / `active`; FinToggle / FinRadio `Type` → `checked`; FinProgressBar / FinSlider `Filled` → `value`; FinSpinner `Pregress` → `status` + `value`; FinHelperText `Show Leading Icon` → `showIcon`; FinTextBox `Alignment` → `align` and `Type` values → `h1`…`h6`. Visual options not in Figma: FinDivider `orientation`, FinAvatar `online`. | Components | ⏸ Deferred to the end of the build (decided 15 Oct 2026): keep building with the current names; review all of them together then |
+| 37 | **Built components whose names or options differ from Figma beyond the §7.3 patterns** (found when the parity rule was added, 15 Oct 2026): FinIcon `State` → `color`; FinBadgeIndicator `Style` Red/Yellow/Green → `tone` error/warning/success and `Digits` → `count`; FinAvatarGroup `Count` → from `people`; FinProfileImage `Type` → from `src`; FinIndicatorDot `Type` → `selected`; FinPageIndicator `Number` / `Active` → `count` / `active`; FinToggle / FinRadio `Type` → `checked`; FinProgressBar / FinSlider `Filled` → `value`; FinSpinner `Pregress` → `status` + `value`; FinHelperText `Show Leading Icon` → `showIcon`; FinTextBox `Alignment` → `align` and `Type` values → `h1`…`h6`; FinBarWithText `Progress` → `value`. Visual options not in Figma: FinDivider `orientation`, FinAvatar `online`. | Components | ⏸ Deferred to the end of the build (decided 15 Oct 2026): keep building with the current names; review all of them together then |
 
 ---
 
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) and `FinTextBox` (§9.21). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) and `FinBarWithText` (§9.22, on `feat/bar-with-text`, waiting for approval). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -1772,3 +1803,4 @@ Template:
 | 15 Oct 2026 | 0.2 | §7.3 **Figma ↔ code parity rules** added (every Figma control, including exposed nested ones, has a matching prop; names differ only by the listed patterns; option values keep Figma's names in lower case; code-only props only for behaviour/accessibility; anything else flagged first). One-line "Figma → code names" notes added to §9.1–9.21; §9 template now asks for a full Figma → code table. Differences outside the patterns listed in §10 #37 for a decision. |
 | 15 Oct 2026 | 0.2 | §10 #37 deferred to the end of the build at design's request. |
 | 15 Oct 2026 | 0.2 | Figma renames: `Progress-full` → `bar-with-text` (§8 #44, code name `FinBarWithText`), `Progress-Spinner` → `spinner-with-text` (§8 #45, `FinSpinnerWithText`); §7.2, §9.16, §9.17, §9.21 updated. |
+| 15 Oct 2026 | 0.2 | **`FinBarWithText` done** (§8 #44, §9.22): FinProgressBar (large) + FinTextBox (H3, centre); `value` (any, §10 #37), `heading`, `description`, `headingLevel`; spans the middle 6 of 12 grid columns of its container (608 in a 1240 content area). First spec with a full Figma → code table. |

@@ -1,0 +1,16 @@
+/*
+ * FinBarWithText (DESIGN.md §9). The parts are FinProgressBar and FinTextBox; this file only lays them out.
+ * Width (decided 15 Oct 2026): the middle 6 of the 12 grid columns of its container, from the grid tokens
+ * (608 in a 1240-wide content area). Figma's 375 frame is a mobile-era width.
+ */
+
+.withText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+  align-items: center;
+  width: calc(
+    (100% - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns) * 6 + 5 * var(--fin-grid-gutter)
+  );
+  margin-inline: auto;
+}
