@@ -45,12 +45,18 @@ export const States: Story = {
   ),
 };
 
-/** Figma `Focused=True`: Tab to a toggle to see the ring (the story focuses the first one). Space toggles it. */
+/**
+ * Figma `Focused=True`. The ring is `:focus-visible`, so it shows for keyboard focus only (not after a mouse
+ * click), and only while the preview has focus: click an empty part of the preview, then press Tab.
+ */
 export const Focused: Story = {
   render: () => (
-    <div className={styles.row}>
-      <FinToggle label="Small, focused" defaultChecked />
-      <FinToggle label="Large, focused" size="large" />
+    <div className={styles.focusStory}>
+      <p className={styles.hint}>Click an empty area here, then press Tab (Shift+Tab to go back). Space toggles.</p>
+      <div className={styles.row}>
+        <FinToggle label="Small, focused" defaultChecked />
+        <FinToggle label="Large, focused" size="large" />
+      </div>
     </div>
   ),
   play: async () => {

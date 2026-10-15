@@ -18,3 +18,14 @@
   gap: var(--fin-space-3xl);
   align-items: center;
 }
+
+.focusStory {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.hint {
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-secondary);
+}
