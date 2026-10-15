@@ -19,3 +19,4 @@ export * from './components/Label';
 export * from './components/HelperText';
 export * from './components/TextBox';
 export * from './components/BarWithText';
+export * from './components/SpinnerWithText';

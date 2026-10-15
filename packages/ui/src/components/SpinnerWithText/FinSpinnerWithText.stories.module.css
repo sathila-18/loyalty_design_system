@@ -1,0 +1,15 @@
+/* Layout for the FinSpinnerWithText stories only (not part of the component). */
+
+/* A 1240-wide page content area (a 1288 page minus its 24px margins), outlined so the 6-column span is visible. */
+.contentArea {
+  width: calc(var(--fin-size-120) * 10 + var(--fin-size-40));
+  margin: var(--fin-space-3xl);
+  padding-block: var(--fin-space-3xl);
+  outline: 1px dashed var(--fin-border-default);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-6xl);
+}
