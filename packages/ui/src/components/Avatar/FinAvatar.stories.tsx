@@ -17,7 +17,7 @@ const SIZE_LABEL: Record<FinAvatarSize, string> = {
 const title = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const meta: Meta<typeof FinAvatar> = {
-  title: 'Components/Avatar',
+  title: 'Components/Avatar/Avatar',
   component: FinAvatar,
   args: { type: 'image', size: 'medium', src: sample, initials: 'SD', label: 'Sample person' },
   argTypes: {

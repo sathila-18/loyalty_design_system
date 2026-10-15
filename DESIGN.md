@@ -699,7 +699,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`) and Profile image (`FinProfileImage`) (15 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 

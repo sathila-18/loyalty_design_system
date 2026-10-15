@@ -22,7 +22,7 @@ const COUNTS = [2, 3, 4, 5, 6, 10];
 type Args = { size: FinAvatarGroupSize; people: number };
 
 const meta: Meta<Args> = {
-  title: 'Components/Avatar group',
+  title: 'Components/Avatar/Avatar group',
   args: { size: 'medium', people: 10 },
   argTypes: {
     size: { control: 'select', options: SIZES },
