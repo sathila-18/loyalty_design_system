@@ -902,7 +902,7 @@ import { FinAvatar } from '@finspace-loyalty/ui';
 | Indicator `size` | xsmall 6 | small 8 | medium 12 | medium 12 | large 16 | large 16 | xlarge 24 |
 | Inset from the bottom-right | 0 | 0 | 0 | 0 | 0 | `--fin-space-xxs` | `--fin-space-xxs` |
 
-- **Position:** `position: absolute` at the bottom-right corner of the avatar's padding box, on top of the content. Because the avatar has a 1px border, the indicator's ring is flush with the avatar's outer corner. 64 and 96 move in by `Space-XXS` (2px) so the dot stays on the circle, like Atlassian's larger avatar sizes (`@atlaskit/avatar` presence offsets, checked 15 Oct 2026). Measured: every dot center is within 2.3px of the circle edge.
+- **Position:** `position: absolute` at the bottom-right corner of the avatar's padding box, on top of the content. Because the avatar has a 1px border, the indicator's ring is flush with the avatar's outer corner. 64 and 96 move in by `Space-XXS` (2px) so the dot stays on the circle, like Atlassian's larger avatar sizes (`@atlaskit/avatar` presence offsets, checked 15 Oct 2026). Measured: every dot center is within 2.3px of the circle edge (2.3px inside at 64, 1.3px at 96). Inset kept after review (15 Oct 2026).
 - **Clipping:** the avatar no longer clips its content (so the dot isn't cut off); the photo is rounded itself (`--fin-radius-full`, as in Figma). No visual change to the 21 variants (re-measured).
 - **Screen readers** (decided 15 Oct 2026): with `label`, the status joins the name ("Sathila De Silva, Online", also the photo's alt) and the dot is decorative, like Atlassian. Without `label`, the avatar stays hidden but the dot is announced ("Online"), so the status isn't lost.
 - Avatar Group and Profile image don't show the indicator (decided 15 Oct 2026).
