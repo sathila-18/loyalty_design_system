@@ -520,7 +520,7 @@ Many components in Figma follow a **base → mapped** structure:
 | Base | Mapped components |
 |---|---|
 | `Base-button` | `all-button` → used by Button dock, Dialog, Empty state, File uploads, Header, Notification, Side Menu, Side sheet, Snackbar, Pagination group, Table cell |
-| `Tag-base` | `Badge-primary` |
+| `Badge-base` (was `Tag-base`) | `Badge-primary` |
 | `Chips-base` | `Chips`, `Chips-group` |
 | `Base-Checkbox` | `Checkbox` |
 | `Segmented_button-base` | `Segmented button` |
@@ -617,7 +617,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 17 | `48px bg` | Icon sizes | `3017:6993` | `FinIconContainer` (size 48) | `24px` | State (7) → `tone` | ✅ | ✅ |
 | 18 | `64px bg` (was `68px bg`, 68 → 64 on 14 Oct 2026) | Icon sizes | `3017:7023` | `FinIconContainer` (size 64) | `36px` | State (7) → `tone` | ✅ | ✅ |
 | 19 | ~~`Circle Icon`~~ | Icon sizes | ~~`624:4882`~~ | ~~`FinCircleIcon`~~ | — | **Removed from Figma (14 Oct 2026); not built.** | — | — |
-| 20 | `Tag-base` | Badge | `30:1454` | `FinTagBase` | `16px`, `20px` | Size: Small/Large · Leading/Trailing icon · Label | ✅ | ⬜ |
+| 20 | `Badge-base` (renamed from `Tag-base` in Figma, 15 Oct 2026) | Badge | `30:1454` | `FinBadgeBase` | `16px`, `20px` | Size: Small/Large · Leading/Trailing icon · Label | ✅ | ⬜ |
 | 21 | `Label` | Text box | `28:968` | `FinLabel` | Badge - indicator | Size: Medium/Small · Show badge · Label | ⚠️ | ⬜ |
 | 22 | `Helper text content` | Text box | `28:973` | `FinHelperText` | `20px` | State: Default/Error/Success/Warning/Disabled · Show leading icon · Text | ⚠️ | ⬜ |
 | 23 | `Base-button` | Buttons | `45:405` | `FinButtonBase` | `20px`, `24px` | Type: Primary/Secondary/Tertiary · Size: Large/Medium/Small/XSmall · State, Focused (runtime) · Leading/Trailing icon · Label | ✅ | ⬜ |
@@ -637,7 +637,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | # | Figma component | Page | Node | Code name | Built on / depends on | Figma check | Status |
 |---|---|---|---|---|---|---|---|
 | 34 | `all-button` | Buttons | `47:1580` | `FinButton` | **Base-button** · Type (3) · Size (4) · Icon: None/Leading/Trailing/Only Icon | ⚠️ | ⬜ |
-| 35 | `Badge-primary` | Badge | `30:1465` | `FinBadge` | **Tag-base** · State: Primary/Secondary/Success/Error/Info/Warning/Disabled/Brand/Neutral | ✅ | ⬜ |
+| 35 | `Badge-primary` | Badge | `30:1465` | `FinBadge` | **Badge-base** · State: Primary/Secondary/Success/Error/Info/Warning/Disabled/Brand/Neutral | ✅ | ⬜ |
 | 36 | `Text Box` | Text box | `28:1001` | `FinTextBox` | Label · Type: H1–H6 · Alignment: Left/Center/Right | ✅ | ⬜ |
 | 37 | `Checkbox` | Checkbox | `42:220` | `FinCheckbox` | **Base-Checkbox**, Text Box | ⚠️ | ⬜ |
 | 38 | `Chips` | Chips | `95:1848` | `FinChip` | **Chips-base** | ✅ | ⬜ |
@@ -653,7 +653,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 48 | `Main Selection` | Side nav | `3140:10997` | `FinSideNavItem` | Side nav `24px`, sub selection, `24px` icon · State · Expanded · Type: Full/Minimized · Expanded slot | 🔴 depends on #32 | ⬜ |
 | 49 | `Header notification` | Header | `3178:24467` | `FinHeaderNotificationButton` | 48px bg, Badge - indicator, `24px` · State (runtime: Default/Hovered/Disabled) · Notification: Dot/Number | 🔴 broken set: duplicate variant `State=Hovered, Notification=Dot` (§10 #17) | ⬜ |
 | 50 | `Table header cell` | Table | `3151:14941` | `FinTableHeaderCell` | Base-Checkbox, Label · White/Grey (`Property 1`) · Slot · Show checkbox/title/trailing icon | ⚠️ | ⬜ |
-| 51 | `Table - Cell` | Table | `3151:14990` | `FinTableCell` | Base-Checkbox, Badge-primary, Tag-base, all-button · Default/Badge/Link (`Property 1`) · Leading accessories and content slots · Show action button | ⚠️ | ⬜ |
+| 51 | `Table - Cell` | Table | `3151:14990` | `FinTableCell` | Base-Checkbox, Badge-primary, Badge-base, all-button · Default/Badge/Link (`Property 1`) · Leading accessories and content slots · Show action button | ⚠️ | ⬜ |
 
 ### 8.4 Organisms
 
@@ -1168,3 +1168,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinOnlineIndicator` done** (§8 #4, §9.7): 5 sizes (Figma updated from 7), `fg-success` dot with a 1px `fg-inverse` ring outside, `label` "Online" by default. **FinAvatar `online`** (§9.4): indicator at the bottom-right corner, 2px in at 64/96 (after checking Atlassian's avatar presence), size mapped per avatar size; status added to the avatar's name. FinAvatar no longer clips; the photo is rounded instead. §10 #32 (white frame fill) and #33 (placement not in Figma) added. |
 | 15 Oct 2026 | 0.2 | DESIGN.md review: §9.4 updated for `online` (variants row, circle no longer clipped, photo rounded, API example, accessibility); §9 Storybook grouping includes Online indicator; §8 #29 mentions `online`; §10 #6 records the 2px/2px focus ring; status note lists open §10 #31–#33. |
 | 15 Oct 2026 | 0.2 | **`FinBadgeIndicator` done** (§8 #3, §9.8): `count` → dot / circle (1–9) / pill (10+, "99+" over `max`), hidden at 0; `tone` error/warning/success; `size` small/large; `label`. Small Single 16 (Figma updated from 14). Figma heights kept. Known contrast failures (Light Yellow, Light Green, Dark Red) built as Figma and excluded from the a11y check only for those badges and themes (§10 #3). |
+| 15 Oct 2026 | 0.2 | `Tag-base` renamed `Badge-base` in Figma (`30:1454`); code name `FinTagBase` → `FinBadgeBase`. §7.2 and §8 #20, #35, #51 updated. |
