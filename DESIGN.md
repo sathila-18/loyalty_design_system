@@ -558,6 +558,16 @@ Many components in Figma follow a **base → mapped** structure:
 - Form controls are **controlled or uncontrolled** like native inputs (`value` + `onChange`, or `defaultValue`), and forward `ref` to the native element.
 - Every component accepts `className` and passes other native attributes to its root element.
 
+#### Figma ↔ code parity (design rule, 15 Oct 2026)
+
+A component does the same things in Figma and in code.
+
+1. **Every Figma control has a matching prop**, with the same options and meaning, including the controls of nested components that Figma exposes (for example Text Box's Label: `labelSize`, `labelBadge`).
+2. **Names differ only by these patterns:** a colour-only `State` becomes `tone`; interaction states (Hovered, Pressed, Focused…) become CSS, not props; typos get the corrected spelling; `Property 1` and unnamed properties get a meaningful name; booleans like `Show X` become `x`; a text property for the main content becomes `children` (see the table above). **Option values stay the same**, in lower case (`Display Large-H1` → `'display-large-h1'`, `Red` → `'red'`).
+3. **Each §9 spec has a short "Figma → code" table** listing every Figma property and its prop. Components built before this rule have a one-line **"Figma → code names"** note instead, listing only the names that differ.
+4. **Code may add props Figma can't express** only when they don't change the look and have sensible defaults: accessibility and behaviour (`label`, `htmlFor`, `headingLevel`, `onChange`, `valueText`…).
+5. **Anything else** (a missing control, an extra visual option, or a rename outside these patterns) is **flagged to the designer before building**.
+
 ### 7.4 Code conventions
 
 - One folder per component: `Fin<Name>.tsx`, `Fin<Name>.module.css`, `Fin<Name>.stories.tsx`, `Fin<Name>.test.tsx`, `index.ts`.
@@ -708,6 +718,8 @@ Each component gets a full spec here **when it's built**. Exact measurements (pa
 
 **Figma:** page **Icon sizes**, component sets `16px` `3017:6258`, `20px` `3017:6323`, `24px` `3017:6352`, `36px` `3017:6388`, `48px` `3017:6417`, `64px` `3017:7083`. Each has `State` = Primary / Secondary / Disabled / Success / Warning / Error / Info. The icon in Figma is a flattened vector of the old Material Icons `perm_identity`; **for icons the code is the source of truth** (§6.1), so only size and color were compared.
 
+**Figma → code names:** component sets `16px`…`64px` → `size` (16…64); `State` → `color` (accepts every `fg-*` token, not only Figma's 7; pre-rule decision 14 Oct 2026); icon instance → `name`.
+
 **Variants:**
 
 | Figma | Prop |
@@ -753,6 +765,8 @@ import { FinIcon } from '@finspace-loyalty/ui';
 ### 9.2 FinIconContainer (Icon sizes)
 
 **Figma:** page **Icon sizes**, component sets `40px bg` `3017:6944`, `48px bg` `3017:6993`, `64px bg` `3017:7023` (was `68px bg`, 68 × 68; changed to 64 on 14 Oct 2026). Each has `State` = Primary / Secondary / Disabled / Success / Warning / Error / Info. Icon shapes in Figma are ignored (§6.1).
+
+**Figma → code names:** component sets `40px bg` / `48px bg` / `64px bg` → `size` (40 / 48 / 64); `State` → `tone`; icon instance → `name`.
 
 **Variants:**
 
@@ -807,6 +821,8 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 
 **Figma:** page **Divider**, component set `Divider` `28:367`: `Type=Divider` (`28:368`, 375 × 1) and `Type=Section Divider` (`28:370`, 375 × 8). Both fill with `border-default`.
 
+**Figma → code names:** `Type` → `type` (`divider`, `section-divider`). Code-only: `orientation` (vertical, a visual option added at design's request 15 Oct 2026, before this rule), `decorative` (accessibility).
+
 **Variants:**
 
 | Figma | Prop |
@@ -844,6 +860,8 @@ Presentational: no `'use client'`. `className` and other `<hr>` attributes go to
 ### 9.4 FinAvatar (Avatar)
 
 **Figma:** page **Avatar**, component set `Avatar` `932:1387`: `Type` = Image / Icon / Text × `Size` = Xsmall / Small / Medium / Large / XLarge / XXLarge / XXXLarge (21 variants). The icon in Figma is the old `perm_identity`; code uses `person` (§6.4).
+
+**Figma → code names:** `Size` → `size` (`Xsmall` → `xsmall`, typo); image fill → `src`; text `SD` → `initials`. Code-only: `label` (accessibility), `online` / `onlineLabel` (a visual option not in Figma, approved 15 Oct 2026 before this rule).
 
 **Variants:**
 
@@ -916,6 +934,8 @@ import { FinAvatar } from '@finspace-loyalty/ui';
 
 **Figma:** page **Avatar**, component set `Avatar Group` `14:1155`: `Size` = XSmall / Medium / XLarge × `Count` = 2 / 3 / 5 / 7 (12 variants). Every circle is an `Avatar` instance (Image, and Text for the "+4").
 
+**Figma → code names:** `Count` (2/3/5/7) → no prop: the number of avatars comes from `people` (2–6 shown, then "+N"; pre-rule decision 15 Oct 2026). `Size` → `size`.
+
 **Variants:**
 
 | Figma | Prop |
@@ -959,6 +979,8 @@ Presentational: no `'use client'` of its own (FinAvatar is a client component). 
 
 **Figma:** page **Avatar**, component set `Profile image` `432:1610`: `Type=Image` (`432:1609`) and `Type=Icon` (`432:1608`), 100 × 100. Each is an `Avatar` XXXLarge (96) and an **add image** badge (`432:1578`): a 32 circle at (68, 68) with a 16px camera.
 
+**Figma → code names:** `Type` (Image / Icon) → no prop: it follows `src` (pre-rule decision 15 Oct 2026). Code-only: `label`, `onClick`, `buttonLabel`.
+
 **Variants:**
 
 | Figma | Prop |
@@ -1001,6 +1023,8 @@ import { FinProfileImage } from '@finspace-loyalty/ui';
 
 **Figma:** page **Avatar**, component set `Online Indicator` `14:995` (updated by design 15 Oct 2026: 5 sizes, was 7 with two 14px sizes). Each is a dot (`fg-success`) with a 1px **outside** stroke (`fg-inverse`). Not placed on any Avatar in Figma (0 instances); placement is a code decision (§9.4 Online, §10 #33).
 
+**Figma → code names:** `Size` → `size`. Code-only: `label`, `decorative` (accessibility).
+
 **Variants:**
 
 | Figma `Size` | Prop `size` | Dot | Token |
@@ -1034,6 +1058,8 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 ### 9.8 FinBadgeIndicator (Badge - indicator)
 
 **Figma:** page **Badge**, component set `Badge - indicator` `30:1500`: `Size` = Small / Large × `Digits` = None / Single / Double × `Style` = Red / Yellow / Green (18 variants). Small Single changed from 14 to 16 in Figma (15 Oct 2026).
+
+**Figma → code names:** `Style` (Red / Yellow / Green) → `tone` with values `error` / `warning` / `success` (pre-rule decision 15 Oct 2026; values renamed); `Digits` (None / Single / Double) → no prop: the shape comes from `count`.
 
 **Variants:**
 
@@ -1075,6 +1101,8 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 ### 9.9 FinBadgeBase (Badge-base)
 
 **Figma:** page **Badge**, component set `Badge-base` `30:1454` (renamed from `Tag-base` 15 Oct 2026): `Size` = Small (`30:1455`) / Large (`3027:12293`), with `Show Leading Icon`, `Show Trailing Icon` and `Label`. Icons in Figma are the placeholder `perm_identity` with no swap property. **Base** of `Badge-primary` (§7.2). **Internal** (decided 15 Oct 2026): not exported from the package; FinBadge is the public badge. Checked 15 Oct 2026: in Figma only the 8 Badge-primary states use Badge-base directly (Table cell uses Badge-primary); the only other references are off-canvas leftovers (`Badge-primary/brand`, `Badge-primary/Gold`, not on any page).
+
+**Figma → code names:** `Show Leading Icon` / `Show Trailing Icon` + the icon → `leadingIcon` / `trailingIcon` (an icon name; none = hidden); `Label` → `children`. Code-only: `tone` (Badge-primary's colours, held in the base).
 
 **Variants:**
 
@@ -1122,6 +1150,8 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 
 **Figma:** page **Badge**, component set `Badge-primary` `30:1465`: `State` = Primary / Secondary / Success / Error / Info / Warning / Disabled / Neutral (8 variants; `brand` removed by design 15 Oct 2026, and the Error variant's stray outer green stroke fixed). Each is a `Badge-base` instance with **Size=Small and both icons hidden**; only the colors change. **Mapped** from `Badge-base` (§7.2).
 
+**Figma → code names:** `State` → `tone` (values lower case). Code-only: `leadingIcon` / `trailingIcon` (pass-through to the base; Figma hides them, approved 15 Oct 2026 before this rule).
+
 **Variants:**
 
 | Figma | Prop |
@@ -1168,6 +1198,8 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 
 **Figma:** page **Indicator**, component set `Indicator` `98:3532`: `Type` = Default (6 × 6, `fg-placeholder`) / Selected (22 × 6, `fg-brand`), raw radius 8. Used only inside `Indicator set` (all 50 instances). **Internal base** (§7.2 rule 4): not exported; FinPageIndicator is the public component.
 
+**Figma → code names:** `Type` (Default / Selected) → `selected` (boolean). Code-only: `interactive`.
+
 **Variants:**
 
 | Figma | Prop |
@@ -1193,6 +1225,8 @@ All styles live here (§7.2); FinPageIndicator only lays the dots out. Internal 
 ### 9.12 FinPageIndicator (Indicator set)
 
 **Figma:** page **Indicator**, component set `Indicator set` `98:3541`: `Active` = 1–5 × `Number` = 3 / 4 / 5 × `Size` = Small (12 variants): a row of `Indicator` instances with a 4px gap (`Space-XS`), one Selected. No instances yet. **Mapped** from the internal FinIndicatorDot.
+
+**Figma → code names:** `Number` → `count`; `Active` → `active`; `Size` (Small only) → no prop. Code-only: `onChange`, `label`, `dotLabel` (behaviour, accessibility).
 
 **Variants:**
 
@@ -1229,6 +1263,8 @@ import { FinPageIndicator } from '@finspace-loyalty/ui';
 
 **Figma:** page **Overlays**, component set `Overlay` `111:2495`, `Type=Desktop` only (`Type=Mobile` is kept in Figma for possible future mobile use and is out of scope, §10 #24): one 1920 × 1080 rectangle, fill `Alpha-md` (`#0b0b0b` @ 40%, Light and Dark), constraints Scale × Scale, no blur, radius or shadow. No instances yet; Dialog box and Side sheet sit on it (§4.2).
 
+**Figma → code names:** `Type` → no prop (only `Desktop` is in scope).
+
 **Size: responsive** (design rule, 15 Oct 2026). No fixed size: `position: fixed; inset: 0`, so it fills the browser window at any width and height and follows resizing. Figma's 1920 × 1080 is only the frame, so there's no `Size-*` token.
 
 **Tokens used:** background `--fin-alpha-md` (the scrim, §3.3). No raw values.
@@ -1252,6 +1288,8 @@ Presentational: no `'use client'`, no props of its own. `className` and other `<
 ### 9.14 FinToggle (Toggle)
 
 **Figma:** page **Toggle**, component set `Toggle` `34:2545` (renamed from `Switch` 15 Oct 2026): `State` = Enabled / Disabled × `Type` = Selected / Unselected × `Size` = Small / Large × `Focused` = True / False (16 variants). Updated by design 15 Oct 2026: Large track 52 → 56, handle `White` (alias) → `fg-white_both`, off track `border-default` → `fg-placeholder`, disabled on-track → `bg-disabled`. No hover or pressed variants; no instances yet.
+
+**Figma → code names:** `Type` (Selected / Unselected) → `checked` / `defaultChecked` (native input); `State` (Enabled / Disabled) → `disabled`; `Focused` → CSS. Code-only: `label`.
 
 **Variants:**
 
@@ -1304,6 +1342,8 @@ import { FinToggle } from '@finspace-loyalty/ui';
 
 **Figma:** page **Radio button**, component set `Base-Radio_box` `37:104`: `State` = Enabled / Hovered / Pressed / Disabled × `Type` = Unselected / Selected (8 variants), no `Focused` variant, no label, no instances. Hover and Pressed fills swapped by design on 15 Oct 2026 (Hovered = `bg-active`, Pressed = `bg-active-hover`). **Public despite the "Base" name** (decided 15 Oct 2026): nothing in Figma is mapped from it, so it's the exception to §7.2 rule 4.
 
+**Figma → code names:** `Type` (Selected / Unselected) → `checked` / `defaultChecked` (native input); `State` Hovered / Pressed → CSS, Disabled → `disabled`. Code-only: `label`, `name`, `value`.
+
 **Variants:**
 
 | Figma | Prop / state |
@@ -1350,6 +1390,8 @@ import { FinRadio } from '@finspace-loyalty/ui';
 
 **Figma:** page **Progress**, component set `Progress bar` `31:2113`: `Filled` × `Size` = Large / Small × `Steps` = 4 / 5 (16 variants): a `bg-active-hover` track with an `fg-brand` fill, both `Radius-XS`, 311 wide (fixed). Base of `Progress-full` (§8 #44; its 8 instances are all there). **Public** (decided 15 Oct 2026): §7.2 rule 4 exception, because it will also be used on its own, for example in layouts.
 
+**Figma → code names:** `Filled` → `value` (any number, not only Figma's steps); `Steps` → no prop. Code-only: `max`, `label`.
+
 **Variants:**
 
 | Figma | Prop |
@@ -1386,6 +1428,8 @@ Presentational: no `'use client'`. `className`, `style` and other `<div>` attrib
 ### 9.17 FinSpinner (Spinner)
 
 **Figma:** page **Progress**, component set `Spinner` `33:2331`: `Pregress` (typo for Progress, §10 #21) = 25% / 50% / 75% / Success / Error. Progress: a 48 box with a 40 ring (`bg-active-hover` track, 4px inside stroke) and an `fg-brand` arc (4px, flat ends). Success / Error: a 48 circle, `bg-success_secondary` / `bg-error_secondary`, with a 24px `check` (`fg-success`) / `warning_amber` (`fg-error`; current name `warning`, §6.4). Base of `Progress-Spinner` (§8 #45; all 10 instances are there). **Public** (decided 15 Oct 2026): §7.2 rule 4 exception, used on its own.
+
+**Figma → code names:** `Pregress` (typo for Progress) → `status` (`progress` / `success` / `error`) plus `value` for the 25 / 50 / 75% options. Code-only: `max`, `label`; no `value` gives the spinning loader.
 
 **Variants:**
 
@@ -1433,6 +1477,8 @@ Presentational: no `'use client'`. `className`, `style` (merged with `--arc`) an
 
 **Figma:** page **Progress**, component set `slider` `645:3136` (renamed from `dragger` 15 Oct 2026): `Filled` = 5 / 25 / 50 / 75 / 100% (5 variants). A 311 × 8 track (`bg-active-hover`, radius 4) with an `fg-brand` fill and a 24px `fg-brand` handle with a 2px white **inside** stroke (`border-inverse`) and `Shadow/Resting_cards`. No hover, pressed, focus or disabled variants; no instances. Figma's fills are hand-placed (its 25% is drawn at 33%, 5% at 11%, 75% at 72%).
 
+**Figma → code names:** `Filled` → `value` / `defaultValue`. Code-only: `min`, `max`, `step`, `label`, `valueText`, `disabled`.
+
 **Variants:**
 
 | Figma | Prop |
@@ -1478,6 +1524,8 @@ import { FinSlider } from '@finspace-loyalty/ui';
 
 **Figma:** page **Text box**, component set `Label` `28:968`: `Size` = Medium / Small, `Show badge` (default off), `Label` (text, default "Label text"). Text `text-tertiary`, Label/Medium (14/21) or Label/Small (12/18); with `Show badge`, a `Badge - indicator` (Small, Digits=None, Red) **before** the text, 8px gap (`Space-M`), centred. Used 61 times (Text Box, Table header cell, List, Accordion, Snackbar, Quick action), so it's mostly a caption or small heading, not only a form label.
 
+**Figma → code names:** `Show badge` → `badge`; `Label` → `children`. Code-only: `badgeLabel`, `htmlFor`.
+
 **Variants:**
 
 | Figma | Prop |
@@ -1511,6 +1559,8 @@ Presentational: no `'use client'`. `className` and other attributes go to the ro
 ### 9.20 FinHelperText (Helper text content)
 
 **Figma:** page **Text box**, component set `Helper text content` `28:973`: `State` = Default / Success / Warning / Error / Disabled, `Show Leading Icon` (default on), `Text`. A 20px icon (Icon sizes `20px`), 8px gap (`Space-M`), Body/Small text; fills its container. Icons updated by design 15 Oct 2026 (were placeholders). Used 78 times, in Input field-base, Input field-textArea-base and OTP. The Success variant's icon isn't linked to `Show Leading Icon` (§10 #36).
+
+**Figma → code names:** `State` → `tone`; `Show Leading Icon` → `showIcon` (pattern would give `leadingIcon`, §10 #37); `Text` → `children`. Code-only: `icon`, `announce`.
 
 **Variants:**
 
@@ -1552,6 +1602,8 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 ### 9.21 FinTextBox (Text Box)
 
 **Figma:** page **Text box**, component set `Text Box` `28:1001`: `Type` = Display Large-H1 / Display Medium-H2 / Display Small-H3 / Headline Large-H4 / Headline Medium-H5 / Headline Small-H6 × `Alignment` = Left / Center / Right (18 variants), with `Show Label`, `Show Heading`, `Show Description` (all on by default). Its `Label` instance is **exposed**, so the Label's `Show badge` can be set from the Text Box in Figma. Used 113 times (Dialog box, Side sheet, Snackbar, Empty state, Button dock, Main header, Checkbox, OTP, File uploads, Tooltip, Accordion, List, Progress-Spinner, Progress-full…).
+
+**Figma → code names:** `Alignment` → `align` and `Type` values `Display Large-H1` … `Headline Small-H6` → `h1` … `h6` (both outside the patterns, §10 #37); `Show Label` / `Show Heading` / `Show Description` → `label` / `heading` / `description` (shown when passed); exposed Label `Size` / `Show badge` → `labelSize` / `labelBadge`. Code-only: `headingLevel`, `labelBadgeLabel`.
 
 **Variants:**
 
@@ -1601,7 +1653,7 @@ Template:
 ### 9.x <Component> (<Figma page>)
 
 **Figma:** page, component set name and node.
-**Variants:** table of Figma variants → props.
+**Figma → code:** every Figma property (including exposed nested ones) → its prop, with the same option values (§7.3 parity rules); code-only props listed separately.
 **Tokens used:** colors, spacing, radius, text style, shadow per part and state.
 **API:** TSX usage example.
 **Accessibility:** element, keyboard behaviour, ARIA.
@@ -1650,6 +1702,7 @@ Template:
 | 34 | **Off-canvas Badge leftovers:** `Badge-primary/brand` (`70:10326`, with 3 instances in an off-canvas `Placeholder-text` frame) and `Badge-primary/Gold` (`421:1316`) still reference Badge-base but aren't on any page. Nothing live depends on them. Is `Gold` planned (for example a loyalty tier)? | Badge | ❓ Design to confirm |
 | 35 | **Indicator `Type=Selected` is 22 wide in Figma**, but there's no `Size-22`. Decided 15 Oct 2026: 24 (`Size-24`) in code. Update the Figma Indicator (and the Indicator set widths become 44 / 54 / 64). | Indicator | 🔧 Fix in Figma |
 | 36 | **Helper text content `State=Success`:** its icon isn't linked to `Show Leading Icon`, so it can't be hidden in Figma (the other four states are linked). Code hides it in every tone. | Text box | 🔧 Fix in Figma |
+| 37 | **Built components whose names or options differ from Figma beyond the §7.3 patterns** (found when the parity rule was added, 15 Oct 2026): FinIcon `State` → `color`; FinBadgeIndicator `Style` Red/Yellow/Green → `tone` error/warning/success and `Digits` → `count`; FinAvatarGroup `Count` → from `people`; FinProfileImage `Type` → from `src`; FinIndicatorDot `Type` → `selected`; FinPageIndicator `Number` / `Active` → `count` / `active`; FinToggle / FinRadio `Type` → `checked`; FinProgressBar / FinSlider `Filled` → `value`; FinSpinner `Pregress` → `status` + `value`; FinHelperText `Show Leading Icon` → `showIcon`; FinTextBox `Alignment` → `align` and `Type` values → `h1`…`h6`. Visual options not in Figma: FinDivider `orientation`, FinAvatar `online`. | Components | ❓ Decide: keep (document as exceptions) or rename |
 
 ---
 
@@ -1715,3 +1768,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinHelperText` done** (§8 #22, §9.20): `tone` (Figma `State`), Figma icons per tone (`info`, `check_circle`, `warning`, `warning`, `info`), `showIcon`, wrapping text, `announce` (`role="alert"`, off by default; `aria-describedby` is the default link). `disabled` tone a documented a11y exception. §10 #36 added (Success icon not linked to Show Leading Icon). |
 | 15 Oct 2026 | 0.2 | **`FinTextBox` done** (§8 #36, §9.21): `type` h1–h6 (look), `align`, `label` (FinLabel Medium) / `heading` / `description` shown when passed, `headingLevel` (structure only, defaults to `type`), label badge exposed as in Figma (`labelBadge` + required `labelBadgeLabel`). No gap under the label, as Figma. Progress-Spinner (§8 #45) and Progress-full (§8 #44) are now unblocked. |
 | 15 Oct 2026 | 0.2 | `FinTextBox`: `labelSize` (medium/small, default medium) added, following Figma's exposed Label (§9.21). |
+| 15 Oct 2026 | 0.2 | §7.3 **Figma ↔ code parity rules** added (every Figma control, including exposed nested ones, has a matching prop; names differ only by the listed patterns; option values keep Figma's names in lower case; code-only props only for behaviour/accessibility; anything else flagged first). One-line "Figma → code names" notes added to §9.1–9.21; §9 template now asks for a full Figma → code table. Differences outside the patterns listed in §10 #37 for a decision. |
