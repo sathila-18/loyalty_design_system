@@ -1,0 +1,29 @@
+/* FinDivider (DESIGN.md §9). A native <hr>, so the browser's own margins and inset border are cleared. */
+
+.divider {
+  flex: none;
+  align-self: stretch;
+  margin: 0;
+  border: 0;
+}
+
+/* 1px line: a hairline border, not a size (there's no Size-1; decided 15 Oct 2026). */
+.divider[data-type="divider"][data-orientation="horizontal"] {
+  border-block-start: 1px solid var(--fin-border-default);
+}
+
+.divider[data-type="divider"][data-orientation="vertical"] {
+  border-inline-start: 1px solid var(--fin-border-default);
+}
+
+.divider[data-type="section-divider"] {
+  background-color: var(--fin-border-default);
+}
+
+.divider[data-type="section-divider"][data-orientation="horizontal"] {
+  block-size: var(--fin-size-8);
+}
+
+.divider[data-type="section-divider"][data-orientation="vertical"] {
+  inline-size: var(--fin-size-8);
+}

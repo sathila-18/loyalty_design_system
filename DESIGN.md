@@ -594,7 +594,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | # | Figma component | Page | Node | Code name | Variants / properties | Figma check | Status |
 |---|---|---|---|---|---|---|---|
 | 1 | `16px`, `20px`, `24px`, `36px`, `48px`, `64px` | Icon sizes | `3017:6258`, `3017:6323`, `3017:6352`, `3017:6388`, `3017:6417`, `3017:7083` | `FinIcon` | State: Primary/Secondary/Disabled/Success/Warning/Error/Info · see §6. Sizes are raw values in Figma, mapped to `Size-*` (`--fin-size-*`), approved 14 Oct 2026 | ✅ (64px state names fixed 14 Oct 2026) | ✅ |
-| 2 | `Divider` | Divider | `28:367` | `FinDivider` | Type: Divider / Section Divider | ✅ | ⬜ |
+| 2 | `Divider` | Divider | `28:367` | `FinDivider` | Type: Divider / Section Divider · plus `orientation` (vertical, code only, 15 Oct 2026) | ✅ | ✅ |
 | 3 | `Badge - indicator` | Badge | `30:1500` | `FinBadgeIndicator` | Size: Large/Small · Digits: None/Single/Double · Style: Red/Yellow/Green | ⚠️ | ⬜ |
 | 4 | `Online Indicator` | Avatar | `14:995` | `FinOnlineIndicator` | Size: XSmall…XXXLarge (7) | ✅ | ⬜ |
 | 5 | `Indicator` | Indicator | `98:3532` | `FinIndicatorDot` | Type: Default/Selected | ✅ | ⬜ |
@@ -800,6 +800,44 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 
 **Built (14 Oct 2026).** Storybook: Playground (controls), Sizes and tones (Figma). Checked against Figma: all 21 size × tone combinations have the exact circle size (40/48/64), icon size (24/24/36), centered icon, full radius, and in Light the exact Figma background and icon colors; Dark uses the current Dark tokens. a11y: no violations in Light or Dark.
 
+### 9.3 FinDivider (Divider)
+
+**Figma:** page **Divider**, component set `Divider` `28:367`: `Type=Divider` (`28:368`, 375 × 1) and `Type=Section Divider` (`28:370`, 375 × 8). Both fill with `border-default`.
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Type` = Divider / Section Divider | `type: 'divider' \| 'section-divider'` (default `'divider'`), rendered as `data-type` |
+| — (not in Figma) | `orientation: 'horizontal' \| 'vertical'` (default `'horizontal'`), rendered as `data-orientation`. Added at design's request (15 Oct 2026). |
+| — | `decorative` (default `false`) |
+
+**Tokens used:**
+
+| Part | Horizontal | Vertical |
+|---|---|---|
+| `divider` line | `border-block-start: 1px solid var(--fin-border-default)` | `border-inline-start: 1px solid var(--fin-border-default)` |
+| `section-divider` band | `block-size: var(--fin-size-8)`, `background-color: var(--fin-border-default)` | `inline-size: var(--fin-size-8)`, same color |
+| Length | full width of the container | stretches to the height of its flex row (`align-self: stretch`) |
+
+Decisions (15 Oct 2026): the 1px line is a border width, not a size (there's no `Size-1`); the Section Divider is full width in code (375 in Figma is a mobile width); no margins, the container owns the spacing (§2 rule 5). The only raw value is the `1px` border width.
+
+**API:**
+
+```tsx
+import { FinDivider } from '@finspace-loyalty/ui';
+
+<FinDivider />                                   // 1px line, announced as a separator
+<FinDivider type="section-divider" />            // 8px band between sections
+<FinDivider orientation="vertical" decorative /> // 1px vertical line in a flex row, hidden from screen readers
+```
+
+Presentational: no `'use client'`. `className` and other `<hr>` attributes go to the root.
+
+**Accessibility:** a native `<hr>` (role `separator`), not focusable. Vertical adds `aria-orientation="vertical"`. With `decorative`, it gets `aria-hidden="true"` and no orientation. Contrast: a divider is decorative and has no 3:1 requirement.
+
+**Built (15 Oct 2026).** Storybook: Playground (controls), Types (Figma), Vertical. Checked against Figma: 1px and 8px high at full width, Light color `#d4d4d4` equals Figma `border-default`; Dark uses the Dark token (`#464646`). a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -853,8 +891,8 @@ Template:
 
 ## 11. Changelog
 
-> **Where we are (14 Oct 2026, end of day)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1) and `FinIconContainer` (§9.2). Everything is merged into `main`.
+> **Where we are (15 Oct 2026)**
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2) and `FinDivider` (§9.3). Everything is merged into `main`.
 > - **Next:** wait for the designer to name the next component. Don't start one before that.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator) and §10 #5 (Dark-mode shadows). §10 #29 fixed 15 Oct 2026.
 
@@ -888,3 +926,4 @@ Template:
 | 14 Oct 2026 | 0.2 | Circle Icon removed from Figma; FinCircleIcon dropped. |
 | 14 Oct 2026 | 0.2 | Status note added at the top of §11: done S1–S6, FinIcon, FinIconContainer; next component to be named by design; open §10 #3, #5, #29. |
 | 15 Oct 2026 | 0.2 | §10 #29 fixed: new export, Dark `bg-icons` Tertiary-800 → Tertiary-700 `#464646` (Light unchanged), so the Dark Primary and Disabled icon containers differ. Token build still 432 variables; Storybook a11y checks pass in Light and Dark. §3.3, §9.2 and the status note updated. |
+| 15 Oct 2026 | 0.2 | **`FinDivider` done** (§8 #2, §9.3): native `<hr>`, `type` `divider` (1px `border-default` border) / `section-divider` (`--fin-size-8` band), full width; `orientation="vertical"` added at design's request (not in Figma); `decorative` hides it from screen readers. Decisions: 1px is a border width (no `Size-1`), Section Divider full width instead of Figma's 375. |

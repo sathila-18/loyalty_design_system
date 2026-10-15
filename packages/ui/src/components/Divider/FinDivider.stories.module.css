@@ -1,0 +1,31 @@
+/* Layout for the FinDivider stories only (not part of the component). */
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-l);
+}
+
+.row {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: center;
+  min-block-size: var(--fin-size-40);
+}
+
+.types {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}
+
+.type {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-s);
+}
+
+.label {
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
