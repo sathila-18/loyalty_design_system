@@ -1,0 +1,14 @@
+/* Layout for the FinBadgeIndicator stories only (not part of the component). */
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(3, 1fr);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}

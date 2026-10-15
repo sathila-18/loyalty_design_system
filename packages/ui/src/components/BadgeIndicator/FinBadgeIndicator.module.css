@@ -1,0 +1,59 @@
+/* FinBadgeIndicator (DESIGN.md §9). */
+
+.badge {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--fin-radius-full);
+  background-color: var(--badge-bg);
+  color: var(--fin-text-inverse);
+  white-space: nowrap;
+}
+
+.badge[data-tone="error"] {
+  --badge-bg: var(--fin-fg-error);
+}
+
+.badge[data-tone="warning"] {
+  --badge-bg: var(--fin-fg-warning);
+}
+
+.badge[data-tone="success"] {
+  --badge-bg: var(--fin-fg-success);
+}
+
+.badge[data-size="small"] {
+  font: var(--fin-font-caption-small);
+}
+
+.badge[data-size="large"] {
+  font: var(--fin-font-caption-large);
+}
+
+/* Digits=None: a dot. */
+.badge[data-shape="dot"][data-size="small"] {
+  width: var(--fin-size-6);
+  height: var(--fin-size-6);
+}
+
+.badge[data-shape="dot"][data-size="large"] {
+  width: var(--fin-size-12);
+  height: var(--fin-size-12);
+}
+
+/* Digits=Single: a fixed circle, number centered. */
+.badge[data-shape="circle"][data-size="small"] {
+  width: var(--fin-size-16);
+  height: var(--fin-size-16);
+}
+
+.badge[data-shape="circle"][data-size="large"] {
+  width: var(--fin-size-20);
+  height: var(--fin-size-20);
+}
+
+/* Digits=Double: a pill that fits the number (Figma padding 2/4, raw, mapped to spacing). */
+.badge[data-shape="pill"] {
+  padding: var(--fin-space-xxs) var(--fin-space-xs);
+}

@@ -595,7 +595,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 |---|---|---|---|---|---|---|---|
 | 1 | `16px`, `20px`, `24px`, `36px`, `48px`, `64px` | Icon sizes | `3017:6258`, `3017:6323`, `3017:6352`, `3017:6388`, `3017:6417`, `3017:7083` | `FinIcon` | State: Primary/Secondary/Disabled/Success/Warning/Error/Info · see §6. Sizes are raw values in Figma, mapped to `Size-*` (`--fin-size-*`), approved 14 Oct 2026 | ✅ (64px state names fixed 14 Oct 2026) | ✅ |
 | 2 | `Divider` | Divider | `28:367` | `FinDivider` | Type: Divider / Section Divider · plus `orientation` (vertical, code only, 15 Oct 2026) | ✅ | ✅ |
-| 3 | `Badge - indicator` | Badge | `30:1500` | `FinBadgeIndicator` | Size: Large/Small · Digits: None/Single/Double · Style: Red/Yellow/Green | ⚠️ | ⬜ |
+| 3 | `Badge - indicator` | Badge | `30:1500` | `FinBadgeIndicator` | Size: Large/Small · Digits: None/Single/Double (code: from `count`) · Style: Red/Yellow/Green (code: `tone`) | ⚠️ (other-library spacing dropped, padding mapped, approved 15 Oct 2026) | ✅ (contrast exceptions, §10 #3) |
 | 4 | `Online Indicator` | Avatar | `14:995` | `FinOnlineIndicator` | Size: XSmall/Small/Medium/Large/XLarge (5, updated in Figma 15 Oct 2026) · on an avatar: FinAvatar `online` (§9.4) | ✅ (white frame fill, §10 #32) | ✅ |
 | 5 | `Indicator` | Indicator | `98:3532` | `FinIndicatorDot` | Type: Default/Selected | ✅ | ⬜ |
 | 6 | `Caption` | List | `77:10172` | `FinCaption` | Size: Small/Medium/Large · Thickness: Heavy/Light | ⚠️ | ⬜ |
@@ -699,7 +699,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1028,6 +1028,47 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 
 **Built (15 Oct 2026).** Storybook (under Components/Avatar): Playground, Sizes (Figma). Checked against Figma: all 5 sizes exact (6/8/12/16/24), 1px ring outside, Light fill `#2a9952` and ring `#ffffff` equal Figma; Dark uses the Dark tokens (`#9fd7b3` on a `#19191a` ring). a11y: no violations in Light or Dark.
 
+### 9.8 FinBadgeIndicator (Badge - indicator)
+
+**Figma:** page **Badge**, component set `Badge - indicator` `30:1500`: `Size` = Small / Large × `Digits` = None / Single / Double × `Style` = Red / Yellow / Green (18 variants). Small Single changed from 14 to 16 in Figma (15 Oct 2026).
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Size` = Small / Large | `size: 'small' \| 'large'` (default `'small'`) |
+| `Style` = Red / Yellow / Green | `tone: 'error' \| 'warning' \| 'success'` (default `'error'`), rendered as `data-tone` (only changes colors, §7.3) |
+| `Digits` = None / Single / Double | From `count`: none → dot; 1–9 → circle; 10 and up → pill, capped at `max` (default 99) as "99+". `count` 0 or less hides the badge (decided 15 Oct 2026). Rendered as `data-shape` (`dot`, `circle`, `pill`). |
+| — | `label`: accessible text |
+
+**Tokens used:**
+
+| Part | Small | Large |
+|---|---|---|
+| Dot (None) | `--fin-size-6` | `--fin-size-12` |
+| Circle (Single) | `--fin-size-16` | `--fin-size-20` |
+| Pill (Double) | padding `--fin-space-xxs` / `--fin-space-xs` (Figma 2/4, raw) → 19 tall | same → 22 tall |
+| Number | `--fin-font-caption-small` | `--fin-font-caption-large` |
+
+Fill `--fin-fg-error` / `-warning` / `-success`; number `--fin-text-inverse`; `--fin-radius-full`. Heights are kept as in Figma (Small circle 16 vs pill 19, Large 20 vs 22; decided 15 Oct 2026). Dropped: the `Spacing and Radius` library bindings (padding 0, gap 8) on variants without auto layout, the raw 0/3 padding on Large Single (no effect on a fixed, centered circle), and the `"case"` font feature. No raw values in the CSS.
+
+**API:**
+
+```tsx
+import { FinBadgeIndicator } from '@finspace-loyalty/ui';
+
+<FinBadgeIndicator count={3} label="3 unread notifications" />   // circle
+<FinBadgeIndicator count={120} size="large" />                   // pill "99+", read as "99+"
+<FinBadgeIndicator tone="success" />                             // dot, decorative
+```
+
+Presentational: no `'use client'`. `className` and other `<span>` attributes go to the badge.
+
+**Accessibility:** with `label`, `role="img"` and that name (the number isn't read separately). Without `label`, a count is read as its text and a dot is `aria-hidden`. Not interactive.
+- **Known contrast failures (§10 #3, decided 15 Oct 2026: build as Figma, document them):** the number on Light Yellow 3.24:1 and Light Green 3.64:1 (white), and on Dark Red 3.97:1 (`text-inverse` `#474748`); 4.5:1 needed. The Storybook a11y check leaves out only those badges, in that theme (`KNOWN_CONTRAST_ISSUES` in the stories); dots and every other combination are checked. Remove the exceptions when §10 #3 is decided. Dots pass (3:1): 3.24:1 or more on the page.
+
+**Built (15 Oct 2026).** Storybook (Components/Badge): Playground, Sizes, digits and tones (Figma). Checked against Figma: all 18 variants, dot 6/12, circle 16/20, pill height 19/22 with 2/4 padding, centered number in the Figma text style, Light colors equal Figma, Dark uses the Dark tokens. Pill widths are 27.5 and 31.1 against Figma's 28 and 32: Figma rounds the text box width up to whole pixels. a11y: no violations in Light or Dark apart from the three documented exceptions (checked: without them, exactly those fail).
+
 Template:
 
 ```
@@ -1049,7 +1090,7 @@ Template:
 |---|---|---|---|
 | 1 | **Desktop spacing rules** (page padding, section gap, card padding, gap between buttons…) aren't defined. Until then, spacing is copied from Figma with spacing tokens and off-scale values are reported (§2). | Foundation | ❓ Decide (after the first UIs) |
 | 2 | `bg-action-secondary_hovered` and `_pressed` had the same value. Fixed 13 Oct 2026: pressed is now Primary-200 / Primary-700 (hovered stays Primary-100 / Primary-800), and the Secondary button in the component file uses both tokens. | Foundation › Color collection | ✅ Fixed |
-| 3 | **Contrast failures** (checked 14 Oct 2026 after the Dark status-color update). **Light:** white text on `bg-success` 3.6:1 and on `bg-warning` 2.7:1 (dark text on `bg-warning` is 6.5:1); `border-strong` and `text-placeholder` about 2.96:1 on white (control borders need 3:1); `text-warning` on `bg-tertiary` 4.28:1; `fg-warning` on `bg-secondary` 2.98:1, `bg-tertiary` 2.77:1 and `bg-warning-secondary` 2.96:1 (icons need 3:1). **Dark, button hover/pressed:** `text-white_both` on `bg-action-primary-hovered` 3.35:1, `-pressed` 2.70:1, `bg-action-destructive-hovered` 3.53:1, `-pressed` 2.34:1 (`fg-white_both` fails on both pressed states). **Decide before `FinButtonBase` is built.** **Both:** `text-white_subtle` fails on `bg-brand`/`bg-action-primary` (3.18:1) and `bg-action-destructive` (4.03:1 Light, 3.04:1 Dark). **Badge indicator** (text is `text-inverse` on `fg-*`, rebound in Figma 14 Oct 2026): Light fails on `fg-warning` 3.24:1 and `fg-success` 3.64:1; Dark fails on `fg-error` 3.97:1 (the other four pass). **Icon container** (`FinIconContainer` `tone="warning"`, Light): `fg-warning` on `bg-warning-secondary` 2.96:1 (icons need 3:1). | Foundation › Color collection | ❓ Decide (not blocking) |
+| 3 | **Contrast failures** (checked 14 Oct 2026 after the Dark status-color update). **Light:** white text on `bg-success` 3.6:1 and on `bg-warning` 2.7:1 (dark text on `bg-warning` is 6.5:1); `border-strong` and `text-placeholder` about 2.96:1 on white (control borders need 3:1); `text-warning` on `bg-tertiary` 4.28:1; `fg-warning` on `bg-secondary` 2.98:1, `bg-tertiary` 2.77:1 and `bg-warning-secondary` 2.96:1 (icons need 3:1). **Dark, button hover/pressed:** `text-white_both` on `bg-action-primary-hovered` 3.35:1, `-pressed` 2.70:1, `bg-action-destructive-hovered` 3.53:1, `-pressed` 2.34:1 (`fg-white_both` fails on both pressed states). **Decide before `FinButtonBase` is built.** **Both:** `text-white_subtle` fails on `bg-brand`/`bg-action-primary` (3.18:1) and `bg-action-destructive` (4.03:1 Light, 3.04:1 Dark). **Badge indicator** (text is `text-inverse` on `fg-*`, rebound in Figma 14 Oct 2026): Light fails on `fg-warning` 3.24:1 and `fg-success` 3.64:1; Dark fails on `fg-error` 3.97:1 (the other four pass). **Icon container** (`FinIconContainer` `tone="warning"`, Light): `fg-warning` on `bg-warning-secondary` 2.96:1 (icons need 3:1). **`FinBadgeIndicator` built with these failures as documented exceptions (15 Oct 2026, §9.8):** Light Yellow 3.24 and Green 3.64, Dark Red 3.97; the a11y check skips only those badges in that theme. | Foundation › Color collection | ❓ Decide (not blocking) |
 | 4 | Dark mode default: follow the OS setting (`prefers-color-scheme`) or only the app setting? | Theming | ❓ Decide |
 | 5 | Shadows are effect styles, not variables, so they're the same in Light and Dark. Now three neutral styles (Resting cards, Panel sheets, Sticky); the mobile-era Floating and Back styles were removed (13 Oct 2026). Does dark mode need different shadows? | Foundation › effect styles | ❓ Decide after the first components are built and checked in Dark (not a blocker) |
 | 6 | Focus ring: color is `border-focused`, but width and offset aren't tokens. Read them from the `Focused` variants in Figma when building; ask if components differ. **Profile image badge** (no Focused variant in Figma): 2px ring, 2px offset (decided 15 Oct 2026); use this unless a component's Figma says otherwise. | Foundation / Components | ⏳ Check per component |
@@ -1086,9 +1127,9 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6) and `FinOnlineIndicator` (§9.7). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7) and `FinBadgeIndicator` (§9.8, on `feat/badge-indicator`, not merged yet). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Don't start one before that.
-> - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma) and §10 #33 (online indicator placement to add in Figma). Fixed 15 Oct 2026: §10 #29, #30.
+> - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma) and §10 #33 (online indicator placement to add in Figma). Fixed 15 Oct 2026: §10 #29, #30.
 
 | Date | Version | Change |
 |---|---|---|
@@ -1126,3 +1167,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinProfileImage` done** (§8 #43, §9.6): FinAvatar XXXLarge plus a badge button (camera without a photo, edit with one), only the badge clickable, cursor only for hover/pressed (§10 #31), 2px focus ring with 2px offset. `edit` added to `finIcons` (29 icons, 6.4 KB). §10 #30 fixed in Figma. Storybook: stories now wait for the Inter and icon fonts before rendering, so the a11y check no longer reads an unloaded glyph as text (this caused the intermittent §10 #3 warning failure). |
 | 15 Oct 2026 | 0.2 | **`FinOnlineIndicator` done** (§8 #4, §9.7): 5 sizes (Figma updated from 7), `fg-success` dot with a 1px `fg-inverse` ring outside, `label` "Online" by default. **FinAvatar `online`** (§9.4): indicator at the bottom-right corner, 2px in at 64/96 (after checking Atlassian's avatar presence), size mapped per avatar size; status added to the avatar's name. FinAvatar no longer clips; the photo is rounded instead. §10 #32 (white frame fill) and #33 (placement not in Figma) added. |
 | 15 Oct 2026 | 0.2 | DESIGN.md review: §9.4 updated for `online` (variants row, circle no longer clipped, photo rounded, API example, accessibility); §9 Storybook grouping includes Online indicator; §8 #29 mentions `online`; §10 #6 records the 2px/2px focus ring; status note lists open §10 #31–#33. |
+| 15 Oct 2026 | 0.2 | **`FinBadgeIndicator` done** (§8 #3, §9.8): `count` → dot / circle (1–9) / pill (10+, "99+" over `max`), hidden at 0; `tone` error/warning/success; `size` small/large; `label`. Small Single 16 (Figma updated from 14). Figma heights kept. Known contrast failures (Light Yellow, Light Green, Dark Red) built as Figma and excluded from the a11y check only for those badges and themes (§10 #3). |
