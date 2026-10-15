@@ -1,0 +1,10 @@
+/*
+ * FinOverlay (DESIGN.md §9). Responsive: no fixed size, it fills the browser window at any width and height
+ * (Figma's 1920 × 1080 is only the frame). No z-index: dialogs put it in the top layer (decided 15 Oct 2026).
+ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--fin-alpha-md);
+}

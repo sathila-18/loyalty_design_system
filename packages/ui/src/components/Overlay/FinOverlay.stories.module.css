@@ -1,0 +1,35 @@
+/* A sample page for the FinOverlay stories only (not part of the component). */
+
+.page {
+  min-height: 100vh;
+  background-color: var(--fin-bg-secondary);
+}
+
+.header {
+  padding: var(--fin-space-xl) var(--fin-space-3xl);
+  background-color: var(--fin-bg-primary);
+  font: var(--fin-font-title-large);
+  color: var(--fin-text-primary);
+}
+
+.main {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--fin-space-3xl);
+  padding: var(--fin-space-3xl);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-s);
+  padding: var(--fin-space-xl);
+  border-radius: var(--fin-radius-m);
+  background-color: var(--fin-bg-primary);
+  box-shadow: var(--fin-shadow-resting-cards);
+}
+
+.cardTitle {
+  font: var(--fin-font-label-large);
+  color: var(--fin-text-primary);
+}

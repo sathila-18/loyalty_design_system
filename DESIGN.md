@@ -240,11 +240,11 @@ _Alpha tokens point at an alias color plus an opacity (Figma's color + opacity v
 | Token | Light | Dark | Use |
 |---|---|---|---|
 | `Alpha-sm` | Secondary-900 @ 16% `#0b0b0b29` | Secondary-900 @ 16% `#0b0b0b29` | Small CTAs inside branded cards |
-| `Alpha-md` | Secondary-900 @ 40% `#0b0b0b66` | Secondary-900 @ 40% `#0b0b0b66` | — |
+| `Alpha-md` | Secondary-900 @ 40% `#0b0b0b66` | Secondary-900 @ 40% `#0b0b0b66` | Overlay backgrounds (scrim): `FinOverlay`, as in Figma (corrected 15 Oct 2026) |
 | `Alpha-light` | White @ 12% `#ffffff1f` | White @ 12% `#ffffff1f` | More depth for elements on brand background |
 | `Alpha-nav` | White @ 75% `#ffffffbf` | White @ 6% `#ffffff0f` | Navigation backgrounds and loading overlay |
 | `Alpha-nav_background` | White @ 40% `#ffffff66` | Tertiary-900 @ 40% `#29292966` | — |
-| `Alpha-both` | Tertiary-900 @ 42% `#2929296b` | Tertiary-900 @ 42% `#2929296b` | Overlay backgrounds (scrim) |
+| `Alpha-both` | Tertiary-900 @ 42% `#2929296b` | Tertiary-900 @ 42% `#2929296b` | — (was listed as the scrim; Figma's Overlay uses `Alpha-md`, corrected 15 Oct 2026) |
 | `Alpha-border` | Tertiary-900 @ 8% `#29292914` | Tertiary-900 @ 2% `#29292905` | Subtle borders on icon circles |
 | `Alpha-success` | Success-500 @ 16% `#2ea85a29` | Success-500 @ 16% `#2ea85a29` | — |
 | `Alpha-brand` | Primary-500 @ 16% `#625bff29` | Primary-500 @ 16% `#625bff29` | — |
@@ -600,7 +600,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 4 | `Online Indicator` | Avatar | `14:995` | `FinOnlineIndicator` | Size: XSmall/Small/Medium/Large/XLarge (5, updated in Figma 15 Oct 2026) · on an avatar: FinAvatar `online` (§9.4) | ✅ (white frame fill, §10 #32) | ✅ |
 | 5 | `Indicator` | Indicator | `98:3532` | `FinIndicatorDot` (**internal**, §9.11) | Type: Default/Selected (code: `selected`) · clickable option | ✅ (raw radius 8 → `Radius-Full`; selected 22 → 24, §10 #35) | ✅ |
 | 6 | `Caption` | List | `77:10172` | `FinCaption` | Size: Small/Medium/Large · Thickness: Heavy/Light | ⚠️ | ⬜ |
-| 7 | `Overlay` | Overlays | `111:2495` | `FinOverlay` | Type: **Desktop only** (Mobile is out of scope) | ✅ | ⬜ |
+| 7 | `Overlay` | Overlays | `111:2495` | `FinOverlay` | Type: **Desktop only** (Mobile is out of scope) · responsive: fills the window · `Alpha-md` | ✅ | ✅ |
 | 8 | `Switch` | Toggle | `34:2545` | `FinSwitch` | Type: Selected/Unselected · Size: Small/Large · State, Focused (runtime) | ⚠️ | ⬜ |
 | 9 | `Base-Radio_box` | Radio button | `37:104` | `FinRadio` | Type: Selected/Unselected · State (runtime) | ⚠️ | ⬜ |
 | 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | Filled: 0–100% · Size: Large/Small · Steps: 4/5 | ⚠️ | ⬜ |
@@ -677,8 +677,8 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 64 | `Snackbar` | Snackbar | `268:992` | `FinSnackbar` | Text Box, all-button · State: Neutral/Success/Warning/Error · single/two lines | ⚠️ | ⬜ |
 | 65 | `Empty state` | Empty state | `71:4588` | `FinEmptyState` | 48px bg, 68px bg, Text Box, all-button · Size: Small/Medium/Large · Icon slot | ✅ | ⬜ |
 | 66 | `Button dock` | Button dock | `75:5858` | `FinButtonDock` | Text Box, all-button · Sticky · Accessory slot | ✅ | ⬜ |
-| 67 | `Side sheet` | Side sheet | `3120:30707` | `FinSideSheet` | Text Box, Badge-primary, all-button, Button dock · Body slot | 🔴 remote `Views / Dividers` (§10 #25) | ⬜ |
-| 68 | `Dialog box` | Dialog | `3234:11710` | `FinDialog` | Text Box, all-button, `24px` · Body slot · Leading button, Primary/Secondary buttons, Trailing buttons, Trailing icon | ✅ | ⬜ |
+| 67 | `Side sheet` | Side sheet | `3120:30707` | `FinSideSheet` | Text Box, Badge-primary, all-button, Button dock · Body slot · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13) | 🔴 remote `Views / Dividers` (§10 #25) | ⬜ |
+| 68 | `Dialog box` | Dialog | `3234:11710` | `FinDialog` | Text Box, all-button, `24px` · Body slot · Leading button, Primary/Secondary buttons, Trailing buttons, Trailing icon · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13) | ✅ | ⬜ |
 | 69 | `Main header` | Header | `3178:24570` | `FinHeader` | all-button, Text Box, Header notification · Notification, Back button, Description | 🔴 depends on #49 | ⬜ |
 | 70 | `Side Menu` | Side nav | `3142:11871` | `FinSideNav` | Main Selection, List-base, Avatar, Text Box, all-button · Menu (8 sections) | 🔴 unstyled text, remote `Frame 3`/`image` (§10 #22, #25) | ⬜ |
 | 71 | `Table row` | Table | `3151:15248` | `FinTableRow` | Table - Cell, Base-Checkbox · Default/Hovered/Selected/Selected-Hovered (hover is runtime; Selected is a prop) | ⚠️ | ⬜ |
@@ -700,7 +700,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1223,6 +1223,30 @@ import { FinPageIndicator } from '@finspace-loyalty/ui';
 
 **Built (15 Oct 2026).** Storybook (Components/Indicator): Playground (count, active, clickable), Active and number (Figma) with all 12, Clickable (3, 5 and 8 dots, keyboard). Checked against Figma: dots 6 × 6, selected 24 × 6, gap 4, full radius, Light colors `#625bff` / `#969696` equal Figma (Dark uses the Dark tokens), widths 44 / 54 / 64; clickable dots look the same, with 24px-tall hit areas side by side; Tab then → moves to and checks the next dot, with the focus ring on it. a11y: no violations in Light or Dark.
 
+### 9.13 FinOverlay (Overlay)
+
+**Figma:** page **Overlays**, component set `Overlay` `111:2495`, `Type=Desktop` only (`Type=Mobile` is kept in Figma for possible future mobile use and is out of scope, §10 #24): one 1920 × 1080 rectangle, fill `Alpha-md` (`#0b0b0b` @ 40%, Light and Dark), constraints Scale × Scale, no blur, radius or shadow. No instances yet; Dialog box and Side sheet sit on it (§4.2).
+
+**Size: responsive** (design rule, 15 Oct 2026). No fixed size: `position: fixed; inset: 0`, so it fills the browser window at any width and height and follows resizing. Figma's 1920 × 1080 is only the frame, so there's no `Size-*` token.
+
+**Tokens used:** background `--fin-alpha-md` (the scrim, §3.3). No raw values.
+
+**Stacking and scrolling (decided 15 Oct 2026):** FinOverlay has **no z-index**. Dialog box and Side sheet add the stacking when they're built (planned: a native `<dialog>` with `showModal()`, which uses the browser's top layer, with FinOverlay inside it and the panel on top). **While a Dialog box or Side sheet is open, the page behind doesn't scroll**; that belongs to those components, not to FinOverlay.
+
+**API:**
+
+```tsx
+import { FinOverlay } from '@finspace-loyalty/ui';
+
+<FinOverlay onClick={onClose} />   // "click outside"; the component on top decides what it does
+```
+
+Presentational: no `'use client'`, no props of its own. `className` and other `<div>` attributes (including `onClick`) go to the overlay. No animation (motion is deferred, §5).
+
+**Accessibility:** decorative: `aria-hidden="true"`, not focusable, no content; the dialog on top owns focus, Esc and labels. Not a control, so it isn't part of the tab order (`onClick` is a pointer shortcut; the dialog must also offer a close button and Esc).
+
+**Built (15 Oct 2026).** Storybook (Components/Overlay): Over page content (full screen, sample page behind). Checked against Figma: `#0b0b0b` @ 40% in Light and Dark; covers the window exactly at 1024 × 768, 1280 × 800, 1440 × 900, 1920 × 1080, 2560 × 1440 and 1100 × 600, and stays in place when the page scrolls. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1283,7 +1307,7 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal) and `FinPageIndicator` (§9.12). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) and `FinOverlay` (§9.13, on `feat/overlay`, waiting for approval). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers) and §10 #35 (Indicator selected width 22 → 24 in Figma). Fixed 15 Oct 2026: §10 #29, #30.
 
@@ -1329,3 +1353,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinBadge` done** (§8 #35, §9.10): mapped from FinBadgeBase (always Small, passes `tone`, label and optional leading/trailing icons; no CSS of its own). FinBadgeBase gets `tone` and the 8 tone styles (fill, text, 1px inside border as an inset shadow), §9.9 updated. Figma: `brand` state removed and the Error variant's outer stroke fixed by design; `brand` dropped from §10 #21. `disabled` tone kept as designed, a documented a11y exception. |
 | 15 Oct 2026 | 0.2 | §7.2 rule 4: **bases are internal unless DESIGN.md says otherwise**. FinBadgeBase no longer exported from `@finspace-loyalty/ui`; its stories moved to **Internal/Badge base** (Playground removed); FinBadge is the public badge. Tone list defined once (`FIN_BADGE_TONES`, `FinBadgeTone`), re-exported by FinBadge. New `test/public-api.test.ts`. Figma check: only Badge-primary uses Badge-base; Table cell uses Badge-primary (§8 #51 corrected). |
 | 15 Oct 2026 | 0.2 | **`FinIndicatorDot` (internal) and `FinPageIndicator` done** (§8 #5, #41, §9.11, §9.12): `count` (no maximum), `active`; clickable with `onChange` as a radio group (one tab stop, arrows/Home/End), Figma spacing kept with the WCAG 2.5.8 equivalent-control exception documented. Selected pill 24 (Figma 22, §10 #35); raw radius 8 → `Radius-Full`. Light dot contrast added to §10 #3. Badge tone list moved to its own file (`badgeTones.ts`). §10 #34 added. |
+| 15 Oct 2026 | 0.2 | **`FinOverlay` done** (§8 #7, §9.13): Desktop only, responsive (`position: fixed; inset: 0`, fills the window at any size), `--fin-alpha-md` as in Figma, decorative, optional `onClick`; no z-index. §3.3: `Alpha-md` is the scrim (was wrongly `Alpha-both`). Rule for Dialog box and Side sheet (§8 #67, #68): stacking added when built; the page behind doesn't scroll while they're open. |

@@ -9,3 +9,4 @@ export * from './components/OnlineIndicator';
 export * from './components/BadgeIndicator';
 export * from './components/Badge';
 export * from './components/PageIndicator';
+export * from './components/Overlay';
