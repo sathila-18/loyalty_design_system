@@ -1,0 +1,27 @@
+/*
+ * FinProgressBar (DESIGN.md §9). Fills its container's width (Figma's fixed 311 is a mobile-era frame width).
+ * The fill width comes from --progress, set on the element. No animation: motion is deferred (§5).
+ */
+
+.track {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--fin-radius-xs);
+  background-color: var(--fin-bg-active-hover);
+}
+
+.track[data-size="large"] {
+  height: var(--fin-size-8);
+}
+
+.track[data-size="small"] {
+  height: var(--fin-size-4);
+}
+
+/* Figma's fill radius is bound to another library ("Radius 4px", Tokens); mapped to Radius-XS. */
+.fill {
+  width: var(--progress, 0%);
+  height: 100%;
+  border-radius: var(--fin-radius-xs);
+  background-color: var(--fin-fg-brand);
+}

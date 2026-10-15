@@ -1,0 +1,46 @@
+/* Layout for the FinProgressBar stories only (not part of the component). */
+
+.frame {
+  width: calc(var(--fin-size-80) * 4);
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+}
+
+.groupLabel {
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--fin-size-40) 1fr;
+  gap: var(--fin-space-m);
+  align-items: center;
+}
+
+.value {
+  font: var(--fin-font-caption-large);
+  color: var(--fin-text-secondary);
+}
+
+.narrow {
+  width: var(--fin-size-120);
+}
+
+.medium {
+  width: calc(var(--fin-size-120) * 2);
+}
+
+.wide {
+  width: calc(var(--fin-size-120) * 4);
+}
