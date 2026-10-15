@@ -601,7 +601,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 5 | `Indicator` | Indicator | `98:3532` | `FinIndicatorDot` (**internal**, §9.11) | Type: Default/Selected (code: `selected`) · clickable option | ✅ (raw radius 8 → `Radius-Full`; selected 22 → 24, §10 #35) | ✅ |
 | 6 | `Caption` | List | `77:10172` | `FinCaption` | Size: Small/Medium/Large · Thickness: Heavy/Light | ⚠️ | ⬜ |
 | 7 | `Overlay` | Overlays | `111:2495` | `FinOverlay` | Type: **Desktop only** (Mobile is out of scope) · responsive: fills the window · `Alpha-md` | ✅ | ✅ |
-| 8 | `Toggle` (renamed from `Switch` in Figma, 15 Oct 2026) | Toggle | `34:2545` | `FinToggle` | Type: Selected/Unselected · Size: Small/Large · State, Focused (runtime) | ⚠️ | ⬜ |
+| 8 | `Toggle` (renamed from `Switch` in Figma, 15 Oct 2026) | Toggle | `34:2545` | `FinToggle` | Type: Selected/Unselected · Size: Small/Large · State, Focused (runtime) · visually hidden `label` (§9.14) | ⚠️ (focus-ring radius from another library → `Radius-Full`; raw radii → `Radius-Full`; approved 15 Oct 2026) | ✅ |
 | 9 | `Base-Radio_box` | Radio button | `37:104` | `FinRadio` | Type: Selected/Unselected · State (runtime) | ⚠️ | ⬜ |
 | 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | Filled: 0–100% · Size: Large/Small · Steps: 4/5 | ⚠️ | ⬜ |
 | 11 | `Progress bar-portfolio` | Progress | `695:5418` | `FinProgressBarPortfolio` | Filled (`Fillted`): 0–100% | ⚠️ | ⬜ |
@@ -700,7 +700,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1247,6 +1247,57 @@ Presentational: no `'use client'`, no props of its own. `className` and other `<
 
 **Built (15 Oct 2026).** Storybook (Components/Overlay): Over page content (full screen, sample page behind). Checked against Figma: `#0b0b0b` @ 40% in Light and Dark; covers the window exactly at 1024 × 768, 1280 × 800, 1440 × 900, 1920 × 1080, 2560 × 1440 and 1100 × 600, and stays in place when the page scrolls. a11y: no violations in Light or Dark.
 
+### 9.14 FinToggle (Toggle)
+
+**Figma:** page **Toggle**, component set `Toggle` `34:2545` (renamed from `Switch` 15 Oct 2026): `State` = Enabled / Disabled × `Type` = Selected / Unselected × `Size` = Small / Large × `Focused` = True / False (16 variants). Updated by design 15 Oct 2026: Large track 52 → 56, handle `White` (alias) → `fg-white_both`, off track `border-default` → `fg-placeholder`, disabled on-track → `bg-disabled`. No hover or pressed variants; no instances yet.
+
+**Variants:**
+
+| Figma | Prop / state |
+|---|---|
+| `Type` = Selected / Unselected | `checked` / `defaultChecked` + `onChange` (native checkbox) |
+| `Size` = Small / Large | `size: 'small' \| 'large'` (default `'small'`) |
+| `State=Disabled` | `disabled` (native; never focusable, so Disabled + Focused is ignored, §7.3) |
+| `Focused` | `:focus-visible` |
+| — | `label` (required): the accessible name, **visually hidden** (decided 15 Oct 2026; Figma shows no label) |
+
+**Structure:** a `<label>` holding a native `<input type="checkbox" role="switch">` laid invisibly over the track (it gets clicks, keyboard and focus), the track with its handle (`aria-hidden`), and the visually hidden label text. `ref` goes to the input; other input attributes (`name`, `value`, `checked`…) go to it too; `className` goes to the wrapper.
+
+**Tokens used:**
+
+| Part | Small | Large |
+|---|---|---|
+| Track | `--fin-size-40` × `--fin-size-24` | `--fin-size-56` × `--fin-size-32` |
+| Handle | `--fin-size-16` | `--fin-size-24` |
+| Handle inset | `--fin-space-xs` (track padding) | same |
+| Radius | `--fin-radius-full` (Figma raw 100 and 23) | same |
+
+| State | Track | Handle |
+|---|---|---|
+| Unselected | `--fin-fg-placeholder` | `--fin-fg-white-both`, left |
+| Selected | `--fin-fg-brand` | `--fin-fg-white-both`, right |
+| Unselected, disabled | `--fin-border-disabled` | `--fin-fg-disabled` |
+| Selected, disabled | `--fin-bg-disabled` | `--fin-fg-disabled-on-bg` |
+| Focused | `outline: 2px solid var(--fin-border-focused)`, `outline-offset: 1px` (as Figma: 2px ring 1px outside the track; Figma's ring radius is bound to another library, mapped to `Radius-Full`) | |
+| Hover, pressed | none yet: cursor only (no design) | |
+
+Raw values: the 2px / 1px focus ring and the 1px visually hidden label box. No animation: the handle moves instantly (motion is deferred, §5).
+
+**API:**
+
+```tsx
+import { FinToggle } from '@finspace-loyalty/ui';
+
+<FinToggle label="Email notifications" defaultChecked />
+<FinToggle label="Auto-renew" size="large" checked={autoRenew} onChange={(e) => setAutoRenew(e.target.checked)} />
+```
+
+`'use client'` (interactive).
+
+**Accessibility:** announced as a switch, on or off, with its label; Tab reaches it, Space toggles it; clicking anywhere on it toggles it. Disabled toggles are skipped. Pointer target 40 × 24 / 56 × 32 (≥ 24). Contrast (non-text, 3:1): selected track 4.71 Light / 5.24 Dark, handle on it 4.71 / 3.35. **Unselected track (decided 15 Oct 2026: build as Figma, logged in §10 #3):** `fg-placeholder` is 2.96:1 on `bg-primary` and 2.71:1 on `bg-secondary` in Light, handle on it 2.96:1 (Dark 4.51 / 3.73, handle 3.90). The a11y check doesn't measure non-text contrast.
+
+**Built (15 Oct 2026).** Storybook (Components/Toggle): Playground, States (Figma) with both sizes, on/off, enabled/disabled, Focused (Tab). Checked against Figma: tracks 40 × 24 and 56 × 32, handles 16 and 24 at (4, 4) off and (20, 4) / (28, 4) on, full radius, Light colors equal Figma for all 8 states (Dark uses the Dark tokens), focus ring 2px 1px out; Space switches it on. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1268,10 +1319,10 @@ Template:
 |---|---|---|---|
 | 1 | **Desktop spacing rules** (page padding, section gap, card padding, gap between buttons…) aren't defined. Until then, spacing is copied from Figma with spacing tokens and off-scale values are reported (§2). | Foundation | ❓ Decide (after the first UIs) |
 | 2 | `bg-action-secondary_hovered` and `_pressed` had the same value. Fixed 13 Oct 2026: pressed is now Primary-200 / Primary-700 (hovered stays Primary-100 / Primary-800), and the Secondary button in the component file uses both tokens. | Foundation › Color collection | ✅ Fixed |
-| 3 | **Contrast failures** (checked 14 Oct 2026 after the Dark status-color update). **Light:** white text on `bg-success` 3.6:1 and on `bg-warning` 2.7:1 (dark text on `bg-warning` is 6.5:1); `border-strong` and `text-placeholder` about 2.96:1 on white (control borders need 3:1); `text-warning` on `bg-tertiary` 4.28:1; `fg-warning` on `bg-secondary` 2.98:1, `bg-tertiary` 2.77:1 and `bg-warning-secondary` 2.96:1 (icons need 3:1). **Dark, button hover/pressed:** `text-white_both` on `bg-action-primary-hovered` 3.35:1, `-pressed` 2.70:1, `bg-action-destructive-hovered` 3.53:1, `-pressed` 2.34:1 (`fg-white_both` fails on both pressed states). **Decide before `FinButtonBase` is built.** **Both:** `text-white_subtle` fails on `bg-brand`/`bg-action-primary` (3.18:1) and `bg-action-destructive` (4.03:1 Light, 3.04:1 Dark). **Badge indicator** (text is `text-inverse` on `fg-*`, rebound in Figma 14 Oct 2026): Light fails on `fg-warning` 3.24:1 and `fg-success` 3.64:1; Dark fails on `fg-error` 3.97:1 (the other four pass). **Icon container** (`FinIconContainer` `tone="warning"`, Light): `fg-warning` on `bg-warning-secondary` 2.96:1 (icons need 3:1). **`FinBadgeIndicator` built with these failures as documented exceptions (15 Oct 2026, §9.8):** Light Yellow 3.24 and Green 3.64, Dark Red 3.97; the a11y check skips only those badges in that theme. **Page indicator dots** (`fg-placeholder`, Light): 2.96:1 on `bg-primary`, 2.71:1 on `bg-secondary` (non-text needs 3:1; §9.12). | Foundation › Color collection | ❓ Decide (not blocking) |
+| 3 | **Contrast failures** (checked 14 Oct 2026 after the Dark status-color update). **Light:** white text on `bg-success` 3.6:1 and on `bg-warning` 2.7:1 (dark text on `bg-warning` is 6.5:1); `border-strong` and `text-placeholder` about 2.96:1 on white (control borders need 3:1); `text-warning` on `bg-tertiary` 4.28:1; `fg-warning` on `bg-secondary` 2.98:1, `bg-tertiary` 2.77:1 and `bg-warning-secondary` 2.96:1 (icons need 3:1). **Dark, button hover/pressed:** `text-white_both` on `bg-action-primary-hovered` 3.35:1, `-pressed` 2.70:1, `bg-action-destructive-hovered` 3.53:1, `-pressed` 2.34:1 (`fg-white_both` fails on both pressed states). **Decide before `FinButtonBase` is built.** **Both:** `text-white_subtle` fails on `bg-brand`/`bg-action-primary` (3.18:1) and `bg-action-destructive` (4.03:1 Light, 3.04:1 Dark). **Badge indicator** (text is `text-inverse` on `fg-*`, rebound in Figma 14 Oct 2026): Light fails on `fg-warning` 3.24:1 and `fg-success` 3.64:1; Dark fails on `fg-error` 3.97:1 (the other four pass). **Icon container** (`FinIconContainer` `tone="warning"`, Light): `fg-warning` on `bg-warning-secondary` 2.96:1 (icons need 3:1). **`FinBadgeIndicator` built with these failures as documented exceptions (15 Oct 2026, §9.8):** Light Yellow 3.24 and Green 3.64, Dark Red 3.97; the a11y check skips only those badges in that theme. **Page indicator dots** (`fg-placeholder`, Light): 2.96:1 on `bg-primary`, 2.71:1 on `bg-secondary` (non-text needs 3:1; §9.12). **Toggle off track** (`fg-placeholder`, Light; decided 15 Oct 2026: build as Figma): 2.96:1 on `bg-primary`, 2.71:1 on `bg-secondary`, handle on it 2.96:1 (non-text needs 3:1; §9.14). | Foundation › Color collection | ❓ Decide (not blocking) |
 | 4 | Dark mode default: follow the OS setting (`prefers-color-scheme`) or only the app setting? | Theming | ❓ Decide |
 | 5 | Shadows are effect styles, not variables, so they're the same in Light and Dark. Now three neutral styles (Resting cards, Panel sheets, Sticky); the mobile-era Floating and Back styles were removed (13 Oct 2026). Does dark mode need different shadows? | Foundation › effect styles | ❓ Decide after the first components are built and checked in Dark (not a blocker) |
-| 6 | Focus ring: color is `border-focused`, but width and offset aren't tokens. Read them from the `Focused` variants in Figma when building; ask if components differ. **Profile image badge** (no Focused variant in Figma): 2px ring, 2px offset (decided 15 Oct 2026); use this unless a component's Figma says otherwise. | Foundation / Components | ⏳ Check per component |
+| 6 | Focus ring: color is `border-focused`, but width and offset aren't tokens. Read them from the `Focused` variants in Figma when building; ask if components differ. **Profile image badge** (no Focused variant in Figma): 2px ring, 2px offset (decided 15 Oct 2026); use this unless a component's Figma says otherwise. **Toggle** (Figma `Focused`): 2px, 1px offset (§9.14). | Foundation / Components | ⏳ Check per component |
 | 7 | Outdated Figma descriptions: Title XL/L "To show balance"; `bg-action-secondary` "swipe button"; `Alpha-nav` "bottom navigation"; `Alpha-border` "back icon circle"; `text-secondary` says "description texts" (it's used for body text). Typos: "boarders", "outine", "Desctructive", "cheveron". | Foundation | ⏳ Design to update later |
 | 8 | `LineHeight-64px 2` has a stray suffix. The token build handles it. | Foundation › Primitives | 🔧 Fix in Figma |
 | 9 | `Alias Typography` mode was named `Mobile`; now `Finspace`. | Foundation | ✅ Fixed (13 Oct 2026) |
@@ -1307,8 +1358,8 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) and `FinOverlay` (§9.13). Everything is merged into `main`.
-> - **Next:** `FinToggle` (§8 #8, `Toggle`, named by design 15 Oct 2026). Plan first, then wait for the go-ahead.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) and `FinToggle` (§9.14, on `feat/toggle`, waiting for approval). The rest is on `main`.
+> - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers) and §10 #35 (Indicator selected width 22 → 24 in Figma). Fixed 15 Oct 2026: §10 #29, #30.
 
 | Date | Version | Change |
@@ -1355,3 +1406,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinIndicatorDot` (internal) and `FinPageIndicator` done** (§8 #5, #41, §9.11, §9.12): `count` (no maximum), `active`; clickable with `onChange` as a radio group (one tab stop, arrows/Home/End), Figma spacing kept with the WCAG 2.5.8 equivalent-control exception documented. Selected pill 24 (Figma 22, §10 #35); raw radius 8 → `Radius-Full`. Light dot contrast added to §10 #3. Badge tone list moved to its own file (`badgeTones.ts`). §10 #34 added. |
 | 15 Oct 2026 | 0.2 | **`FinOverlay` done** (§8 #7, §9.13): Desktop only, responsive (`position: fixed; inset: 0`, fills the window at any size), `--fin-alpha-md` as in Figma, decorative, optional `onClick`; no z-index. §3.3: `Alpha-md` is the scrim (was wrongly `Alpha-both`). Rule for Dialog box and Side sheet (§8 #67, #68): stacking added when built; the page behind doesn't scroll while they're open. |
 | 15 Oct 2026 | 0.2 | `Switch` renamed `Toggle` in Figma (`34:2545`); code name `FinSwitch` → `FinToggle` (§8 #8). |
+| 15 Oct 2026 | 0.2 | **`FinToggle` done** (§8 #8, §9.14): native checkbox with `role="switch"`, `checked`/`defaultChecked`/`onChange`/`disabled`, `size` small/large, required visually hidden `label`. Figma updated by design (Large 56, handle `fg-white_both`, off track `fg-placeholder`, disabled on-track `bg-disabled`). Off-track Light contrast logged in §10 #3; Toggle focus ring 2px/1px noted in §10 #6. |

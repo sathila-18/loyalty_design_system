@@ -1,0 +1,96 @@
+/*
+ * FinToggle (DESIGN.md §9). The native checkbox sits invisibly over the track (it gets the clicks, keyboard and
+ * focus); the track and handle are drawn here and follow its state. No hover/pressed design yet: cursor only.
+ * No animation: motion is deferred (§5), so the handle moves instantly.
+ */
+
+.toggle {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  cursor: pointer;
+}
+
+.toggle[data-size="small"] {
+  --toggle-width: var(--fin-size-40);
+  --toggle-height: var(--fin-size-24);
+  --toggle-handle: var(--fin-size-16);
+}
+
+.toggle[data-size="large"] {
+  --toggle-width: var(--fin-size-56);
+  --toggle-height: var(--fin-size-32);
+  --toggle-handle: var(--fin-size-24);
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+/* Unselected, enabled: fg-placeholder track (Light 2.96:1 on white, logged in §10 #3), white handle on the left. */
+.track {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  padding: var(--fin-space-xs);
+  border-radius: var(--fin-radius-full);
+  background-color: var(--fin-fg-placeholder);
+}
+
+.handle {
+  width: var(--toggle-handle);
+  height: var(--toggle-handle);
+  border-radius: var(--fin-radius-full);
+  background-color: var(--fin-fg-white-both);
+}
+
+/* Selected: brand track, handle on the right. */
+.input:checked + .track {
+  justify-content: flex-end;
+  background-color: var(--fin-fg-brand);
+}
+
+/* Figma Focused: a 2px border-focused ring, 1px outside the track. */
+.input:focus-visible + .track {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 1px;
+}
+
+/* Disabled (never focusable, so Figma's Disabled + Focused variants don't apply, §7.3). */
+.toggle:has(.input:disabled) {
+  cursor: default;
+}
+
+.input:disabled + .track {
+  background-color: var(--fin-border-disabled);
+}
+
+.input:disabled + .track .handle {
+  background-color: var(--fin-fg-disabled);
+}
+
+.input:disabled:checked + .track {
+  background-color: var(--fin-bg-disabled);
+}
+
+.input:disabled:checked + .track .handle {
+  background-color: var(--fin-fg-disabled-on-bg);
+}
+
+/* The visually hidden label: read by screen readers, not shown. */
+.label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}

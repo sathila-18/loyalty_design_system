@@ -1,0 +1,20 @@
+/* Layout for the FinToggle stories only (not part of the component). */
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(4, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
+
+.row {
+  display: flex;
+  gap: var(--fin-space-3xl);
+  align-items: center;
+}
