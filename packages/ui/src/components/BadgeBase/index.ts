@@ -1,1 +1,1 @@
-export { FinBadgeBase, type FinBadgeBaseProps, type FinBadgeBaseSize } from './FinBadgeBase';
+export { FinBadgeBase, type FinBadgeBaseProps, type FinBadgeBaseSize, type FinBadgeTone } from './FinBadgeBase';

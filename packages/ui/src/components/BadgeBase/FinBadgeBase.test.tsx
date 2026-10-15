@@ -9,6 +9,7 @@ describe('FinBadgeBase', () => {
     const { container } = render(<FinBadgeBase>Text here</FinBadgeBase>);
     const root = container.firstElementChild!;
     expect(root).toHaveAttribute('data-size', 'small');
+    expect(root).toHaveAttribute('data-tone', 'primary');
     expect(root).toHaveTextContent('Text here');
     expect(icons(root)).toHaveLength(0);
   });

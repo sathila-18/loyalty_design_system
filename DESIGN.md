@@ -637,7 +637,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | # | Figma component | Page | Node | Code name | Built on / depends on | Figma check | Status |
 |---|---|---|---|---|---|---|---|
 | 34 | `all-button` | Buttons | `47:1580` | `FinButton` | **Base-button** · Type (3) · Size (4) · Icon: None/Leading/Trailing/Only Icon | ⚠️ | ⬜ |
-| 35 | `Badge-primary` | Badge | `30:1465` | `FinBadge` | **Badge-base** · State: Primary/Secondary/Success/Error/Info/Warning/Disabled/Brand/Neutral | ✅ | ⬜ |
+| 35 | `Badge-primary` | Badge | `30:1465` | `FinBadge` | **Badge-base** · State: Primary/Secondary/Success/Error/Info/Warning/Disabled/Neutral (`brand` removed 15 Oct 2026) → `tone` · optional icons (code) | ✅ (Error outer stroke fixed 15 Oct 2026) | ✅ |
 | 36 | `Text Box` | Text box | `28:1001` | `FinTextBox` | Label · Type: H1–H6 · Alignment: Left/Center/Right | ✅ | ⬜ |
 | 37 | `Checkbox` | Checkbox | `42:220` | `FinCheckbox` | **Base-Checkbox**, Text Box | ⚠️ | ⬜ |
 | 38 | `Chips` | Chips | `95:1848` | `FinChip` | **Chips-base** | ✅ | ⬜ |
@@ -699,7 +699,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge base (`FinBadgeBase`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`), Badge base (`FinBadgeBase`) and Badge (`FinBadge`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1081,6 +1081,7 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 | `Label` | `children`: one line, no wrapping, no fixed max width; `max-width: 100%` with "…" in narrower containers such as table cells (decided 15 Oct 2026) |
 | `Show Leading Icon` + the icon | `leadingIcon?: FinIconName`: shown when set. **None by default** (decided 15 Oct 2026; Figma shows both placeholders by default) |
 | `Show Trailing Icon` + the icon | `trailingIcon?: FinIconName`. Decorative, not a dismiss button |
+| — (Badge-primary `State` colors) | `tone: 'primary' \| 'secondary' \| 'success' \| 'error' \| 'info' \| 'warning' \| 'disabled' \| 'neutral'` (default `'primary'`, Badge-base's own colors), rendered as `data-tone` (added 15 Oct 2026 with FinBadge, §9.10) |
 
 **Structure:** a `<span>` with the leading `FinIcon`, the label `<span>` and the trailing `FinIcon`. Icons are decorative and have no color of their own, so they inherit the label color (decided 15 Oct 2026; Figma's `fg-white_both` is the same white as `text-white_both`).
 
@@ -1094,9 +1095,9 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 | Label | `--fin-font-label-small` | `--fin-font-label-medium` |
 | Icons (FinIcon `size`) | 16 | 20 |
 
-Background `--fin-bg-brand`, label `--fin-text-white-both`, `--fin-radius-s` (8). All Figma bindings are Foundation – Loyalty; no raw values except the fixed Large height (a size). The `"case"` font feature is dropped.
+Colors come from `tone` (table in §9.10; `primary` = `--fin-bg-brand` and `--fin-text-white-both`); `--fin-radius-s` (8). All Figma bindings are Foundation – Loyalty; no raw values except the fixed Large height (a size). The `"case"` font feature is dropped.
 
-**Colors and tones (decided 15 Oct 2026):** built with Figma's base colors only (`bg-brand`, white). The 9 `Badge-primary` tones are added **to this file's CSS** (as `tone`, `data-tone`) when Badge-primary is built; Badge-primary only passes `tone` and has no CSS of its own.
+**Colors and tones (decided 15 Oct 2026):** the base was built with Figma's base colors only; the 8 Badge-primary tones were then added **to this file's CSS** with FinBadge (§9.10). Each tone sets `--badge-bg`, `--badge-text` (icons follow it) and `--badge-border`. The border is Figma's 1px *inside* stroke, drawn as `box-shadow: inset 0 0 0 1px` so it never changes the size (Small stays 26). FinBadge only passes `tone` and has no CSS of its own.
 
 **API:**
 
@@ -1105,6 +1106,7 @@ import { FinBadgeBase } from '@finspace-loyalty/ui';
 
 <FinBadgeBase>Active</FinBadgeBase>
 <FinBadgeBase size="large" leadingIcon="check_circle">Approved</FinBadgeBase>
+<FinBadgeBase size="large" tone="success">Paid</FinBadgeBase>          // a large badge in a tone (FinBadge is always small)
 ```
 
 Presentational: no `'use client'`. `className` and other `<span>` attributes go to the badge (for example `title` with the full text when it may be cut off).
@@ -1112,6 +1114,52 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 **Accessibility:** read as its label; icons are `aria-hidden`. Not interactive. Contrast: white on `bg-brand` 4.71:1 in Light and Dark (text and icons pass). A cut-off label is still read in full by screen readers.
 
 **Built (15 Oct 2026).** Storybook (Components/Badge): Playground (size, label, each icon or none), Sizes (Figma) with both icons, one, or none, Long label (240, 160 and 96 px containers). Checked against Figma: height 26 / 32, padding 4/8, gap 4, radius 8, `bg-brand`, Label/Small and Label/Medium in white, icons 16 / 20 in the label color; widths with both icons 110.2 / 127.2 against Figma's 111 / 128 (Figma rounds text widths up). Long labels end in "…" and stay inside the container. a11y: no violations in Light or Dark.
+
+### 9.10 FinBadge (Badge-primary)
+
+**Figma:** page **Badge**, component set `Badge-primary` `30:1465`: `State` = Primary / Secondary / Success / Error / Info / Warning / Disabled / Neutral (8 variants; `brand` removed by design 15 Oct 2026, and the Error variant's stray outer green stroke fixed). Each is a `Badge-base` instance with **Size=Small and both icons hidden**; only the colors change. **Mapped** from `Badge-base` (§7.2).
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `State` | `tone` (default `'primary'`), passed to FinBadgeBase (`FinBadgeTone`) |
+| Badge-base `Label` | `children` |
+| Badge-base icons (hidden in Figma) | `leadingIcon`, `trailingIcon`: optional for any tone, in the tone's text color (decided 15 Oct 2026) |
+| Badge-base `Size` | Always `small` (fixed in Figma); use FinBadgeBase for a large badge |
+
+**Structure:** `<FinBadgeBase {...props} size="small" />`. No markup or CSS of its own; the tone styles live in FinBadgeBase (§9.9).
+
+**Tones (FinBadgeBase CSS):**
+
+| `tone` | Fill | Border (1px, inside) | Text and icons | Text contrast Light / Dark |
+|---|---|---|---|---|
+| `primary` | `--fin-bg-brand` | none | `--fin-text-white-both` | 4.71 / 4.71 |
+| `secondary` | none | `--fin-border-strong` | `--fin-text-secondary` | 5.82 / 8.76 |
+| `success` | `--fin-bg-success-secondary` | `--fin-border-success` | `--fin-text-success` | 5.01 / 7.75 |
+| `error` | `--fin-bg-error-secondary` | `--fin-border-error` | `--fin-text-error` | 5.05 / 8.52 |
+| `info` | `--fin-bg-info-secondary` | `--fin-border-info` | `--fin-text-info` | 6.88 / 8.65 |
+| `warning` | `--fin-bg-warning-secondary` | `--fin-border-warning` | `--fin-text-warning` | 4.57 / 7.53 |
+| `disabled` | `--fin-bg-disabled` | none | `--fin-text-disabled-on-bg` | **2.44 / 1.98** (exception) |
+| `neutral` | `--fin-bg-neutral` | none | `--fin-text-secondary` | 4.80 / 4.71 |
+
+All Figma bindings are Foundation – Loyalty; no raw values.
+
+**API:**
+
+```tsx
+import { FinBadge } from '@finspace-loyalty/ui';
+
+<FinBadge>Active</FinBadge>
+<FinBadge tone="success" leadingIcon="check_circle">Paid</FinBadge>
+<FinBadge tone="warning" trailingIcon="keyboard_arrow_down">Pending</FinBadge>
+```
+
+Presentational: no `'use client'`. `className` and other `<span>` attributes go to the badge.
+
+**Accessibility:** read as its label; icons are decorative. Not interactive. **`disabled` tone (decided 15 Oct 2026: keep as designed):** a disabled look, 2.44:1 Light / 1.98:1 Dark; the Storybook a11y check leaves out only `[data-tone="disabled"]` badges (FinBadge and FinBadgeBase stories); every other tone is checked (verified: without the exception, only the disabled badges fail). Borders are decorative (the text carries the meaning), so they have no 3:1 requirement.
+
+**Built (15 Oct 2026).** Storybook (Components/Badge): Playground (tone, label, each icon or none), States (Figma) with each tone plain, with a leading and with a trailing icon; FinBadgeBase's Playground also has `tone`. Checked against Figma: all 8 tones have the exact Light fill, border and text colors, 26 tall (also with icons), icons in the text color; width 70.2 against Figma's 71 (text rounding). Dark uses the Dark tokens. a11y: no violations in Light or Dark apart from the documented `disabled` exception.
 
 Template:
 
@@ -1152,7 +1200,7 @@ Template:
 | 18 | Input bases decided (13 Oct 2026): `Input field-base` (`49:5734`) for single-line fields, `Input field-textArea-base` (`3094:26567`) for text areas, `Input-OTP-base` (`49:5843`) for OTP. | Input field | ✅ Decided |
 | 19 | `Accordion-bare-base`, `List-base` and `List-fill-base` use a `20px` component whose main component isn't on any page (deleted or moved). | Accordion, List | 🔧 Fix in Figma |
 | 20 | **Clashing name:** `24px` on the Side nav page clashes with the icon size `24px`. (Renamed 13 Oct 2026: `Frame 5` → `sub selection`, Dialog `Frame 3` → `Dialog box`, Header `Frame 1707478998` → `Main header`, `Frame 1707478999` → `Header notification`, Table parts.) | Side nav | 🔧 Fix in Figma |
-| 21 | **Typos and inconsistent names:** `Pregress` (Spinner); `Fillted` (Progress bar-portfolio); `SIze`/`Mediu` (Flag sizes); `Contry selecter`; `Distructive` (Input field-textArea-base); `brand` lowercase (Badge-primary); `Xsmall` vs `XSmall` (Avatar, Chips-base); `state` lowercase (Input field-select, Multi select); Snackbar has a property with no name; Empty state has both `Icon slot` and `Icon Slot`; Accordion-bare-base has `Trailing accessory` twice; several `Property 1` properties. Code uses the corrected spelling. The `64px` icon state names (`Variant3`, `Errorr`) were fixed in Figma on 14 Oct 2026. | Components | 🔧 Fix in Figma |
+| 21 | **Typos and inconsistent names:** `Pregress` (Spinner); `Fillted` (Progress bar-portfolio); `SIze`/`Mediu` (Flag sizes); `Contry selecter`; `Distructive` (Input field-textArea-base); `Xsmall` vs `XSmall` (Avatar, Chips-base); `state` lowercase (Input field-select, Multi select); Snackbar has a property with no name; Empty state has both `Icon slot` and `Icon Slot`; Accordion-bare-base has `Trailing accessory` twice; several `Property 1` properties. Code uses the corrected spelling. The `64px` icon state names (`Variant3`, `Errorr`) were fixed in Figma on 14 Oct 2026. | Components | 🔧 Fix in Figma |
 | 22 | `Side Menu`: 8 text layers have no text style. | Side nav | 🔧 Fix in Figma |
 | 23 | Icon names checked against Material Symbols Rounded (14 Oct 2026): all 29 §6.4 names render, but four are old Material Icons names. **Decided:** code uses the current names: `camera_alt` → `photo_camera`, `payment` → `credit_card`, `perm_identity` → `person`, `warning_amber` → `warning` (same glyph as `warning`, so one registry entry). List in §6.4. Figma icons will be updated by design later; for icons, code is the source of truth (§6.1). | Icons | ✅ Decided (14 Oct 2026) |
 | 24 | Overlay `Mobile` variant is out of scope; only `Desktop` is built. | Overlays | ✅ Decided (13 Oct 2026) |
@@ -1171,8 +1219,8 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8) and `FinBadgeBase` (§9.9). Everything is merged into `main`.
-> - **Next:** `FinBadge` (§8 #35, `Badge-primary`): add the 9 tones to the FinBadgeBase CSS; FinBadge only passes `tone`. Plan first, then wait for the go-ahead.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase; on `feat/badge`, waiting for approval). The rest is on `main`.
+> - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma) and §10 #33 (online indicator placement to add in Figma). Fixed 15 Oct 2026: §10 #29, #30.
 
 | Date | Version | Change |
@@ -1214,3 +1262,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinBadgeIndicator` done** (§8 #3, §9.8): `count` → dot / circle (1–9) / pill (10+, "99+" over `max`), hidden at 0; `tone` error/warning/success; `size` small/large; `label`. Small Single 16 (Figma updated from 14). Figma heights kept. Known contrast failures (Light Yellow, Light Green, Dark Red) built as Figma and excluded from the a11y check only for those badges and themes (§10 #3). |
 | 15 Oct 2026 | 0.2 | `Tag-base` renamed `Badge-base` in Figma (`30:1454`); code name `FinTagBase` → `FinBadgeBase`. §7.2 and §8 #20, #35, #51 updated. |
 | 15 Oct 2026 | 0.2 | **`FinBadgeBase` done** (§8 #20, §9.9): `size` small/large, label as `children` (one line, "…" in narrow containers), `leadingIcon`/`trailingIcon` (none by default, decorative, inherit the label color). Figma base colors only; the Badge-primary tones go into this base's CSS when FinBadge is built. |
+| 15 Oct 2026 | 0.2 | **`FinBadge` done** (§8 #35, §9.10): mapped from FinBadgeBase (always Small, passes `tone`, label and optional leading/trailing icons; no CSS of its own). FinBadgeBase gets `tone` and the 8 tone styles (fill, text, 1px inside border as an inset shadow), §9.9 updated. Figma: `brand` state removed and the Error variant's outer stroke fixed by design; `brand` dropped from §10 #21. `disabled` tone kept as designed, a documented a11y exception. |

@@ -1,6 +1,6 @@
 /*
  * FinBadgeBase (DESIGN.md §9). Icons are FinIcon with no color, so they inherit the label color.
- * Colors are Figma's base (bg-brand, white); the Badge-primary tones are added here when it's built.
+ * Tones are the Badge-primary `State` colors (§9.10); FinBadge only passes `tone` and has no CSS of its own.
  */
 
 .badge {
@@ -12,8 +12,58 @@
   max-width: 100%;
   padding: var(--fin-space-xs) var(--fin-space-m);
   border-radius: var(--fin-radius-s);
-  background-color: var(--fin-bg-brand);
-  color: var(--fin-text-white-both);
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
+
+  /* Figma's inside stroke: drawn inside the box, so it never changes the size (no border on toneless fills). */
+  box-shadow: inset 0 0 0 1px var(--badge-border, transparent);
+}
+
+/* Tones: fill, text (icons follow it) and the 1px inside border. Primary is Badge-base's own color. */
+.badge[data-tone="primary"] {
+  --badge-bg: var(--fin-bg-brand);
+  --badge-text: var(--fin-text-white-both);
+}
+
+.badge[data-tone="secondary"] {
+  --badge-bg: transparent;
+  --badge-text: var(--fin-text-secondary);
+  --badge-border: var(--fin-border-strong);
+}
+
+.badge[data-tone="success"] {
+  --badge-bg: var(--fin-bg-success-secondary);
+  --badge-text: var(--fin-text-success);
+  --badge-border: var(--fin-border-success);
+}
+
+.badge[data-tone="error"] {
+  --badge-bg: var(--fin-bg-error-secondary);
+  --badge-text: var(--fin-text-error);
+  --badge-border: var(--fin-border-error);
+}
+
+.badge[data-tone="info"] {
+  --badge-bg: var(--fin-bg-info-secondary);
+  --badge-text: var(--fin-text-info);
+  --badge-border: var(--fin-border-info);
+}
+
+.badge[data-tone="warning"] {
+  --badge-bg: var(--fin-bg-warning-secondary);
+  --badge-text: var(--fin-text-warning);
+  --badge-border: var(--fin-border-warning);
+}
+
+/* A disabled look only (a badge isn't a control); its contrast is a documented exception (§9.10). */
+.badge[data-tone="disabled"] {
+  --badge-bg: var(--fin-bg-disabled);
+  --badge-text: var(--fin-text-disabled-on-bg);
+}
+
+.badge[data-tone="neutral"] {
+  --badge-bg: var(--fin-bg-neutral);
+  --badge-text: var(--fin-text-secondary);
 }
 
 .badge[data-size="small"] {
