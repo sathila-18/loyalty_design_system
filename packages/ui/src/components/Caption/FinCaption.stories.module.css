@@ -1,0 +1,20 @@
+/* Layout for the FinCaption stories only (not part of the component). */
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(2, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  font: var(--fin-font-caption-large);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
+
+.narrow {
+  width: calc(var(--fin-size-120) * 2);
+  padding: var(--fin-space-s);
+  border: 1px dashed var(--fin-border-default);
+}

@@ -1,0 +1,31 @@
+/* FinCaption (DESIGN.md §9). Heavy uses the Label text styles, Light the Body text styles; always text-tertiary. */
+
+.caption {
+  color: var(--fin-text-tertiary);
+  font: var(--caption-font);
+  overflow-wrap: break-word;
+}
+
+.caption[data-thickness="heavy"][data-size="small"] {
+  --caption-font: var(--fin-font-label-small);
+}
+
+.caption[data-thickness="heavy"][data-size="medium"] {
+  --caption-font: var(--fin-font-label-medium);
+}
+
+.caption[data-thickness="heavy"][data-size="large"] {
+  --caption-font: var(--fin-font-label-large);
+}
+
+.caption[data-thickness="light"][data-size="small"] {
+  --caption-font: var(--fin-font-body-small);
+}
+
+.caption[data-thickness="light"][data-size="medium"] {
+  --caption-font: var(--fin-font-body-medium);
+}
+
+.caption[data-thickness="light"][data-size="large"] {
+  --caption-font: var(--fin-font-body-large);
+}

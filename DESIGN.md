@@ -611,7 +611,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 3 | `Badge - indicator` | Badge | `30:1500` | `FinBadgeIndicator` | Size: Large/Small · Digits: None/Single/Double (code: from `count`) · Style: Red/Yellow/Green (code: `tone`) | ⚠️ (other-library spacing dropped, padding mapped, approved 15 Oct 2026) | ✅ (contrast exceptions, §10 #3) |
 | 4 | `Online Indicator` | Avatar | `14:995` | `FinOnlineIndicator` | Size: XSmall/Small/Medium/Large/XLarge (5, updated in Figma 15 Oct 2026) · on an avatar: FinAvatar `online` (§9.4) | ✅ (white frame fill, §10 #32) | ✅ |
 | 5 | `Indicator` | Indicator | `98:3532` | `FinIndicatorDot` (**internal**, §9.11) | Type: Default/Selected (code: `selected`) · clickable option | ✅ (raw radius 8 → `Radius-Full`; selected 22 → 24, §10 #35) | ✅ |
-| 6 | `Caption` | List | `77:10172` | `FinCaption` | Size: Small/Medium/Large · Thickness: Heavy/Light | ⚠️ | ⬜ |
+| 6 | `Caption` | List | `77:10172` | `FinCaption` | Size: Small/Medium/Large · Thickness: Heavy/Light · code: `size`, `thickness`, wraps (§9.24) | ⚠️ (zero padding from another library) | ✅ |
 | 7 | `Overlay` | Overlays | `111:2495` | `FinOverlay` | Type: **Desktop only** (Mobile is out of scope) · responsive: fills the window · `Alpha-md` | ✅ | ✅ |
 | 8 | `Toggle` (renamed from `Switch` in Figma, 15 Oct 2026) | Toggle | `34:2545` | `FinToggle` | Type: Selected/Unselected · Size: Small/Large · State, Focused (runtime) · visually hidden `label` (§9.14) | ⚠️ (focus-ring radius from another library → `Radius-Full`; raw radii → `Radius-Full`; approved 15 Oct 2026) | ✅ |
 | 9 | `Base-Radio_box` | Radio button | `37:104` | `FinRadio` | Type: Selected/Unselected · State (runtime) · **public** (§7.2 rule 4 exception) · visually hidden `label` (§9.15) | ⚠️ (radius from another library → `Radius-Full`, approved 15 Oct 2026) | ✅ |
@@ -712,7 +712,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**; Caption is under **Components/List**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1712,6 +1712,43 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 
 **Built (15 Oct 2026).** Storybook (Components/Progress): Playground (status, loading or value, description), Variants (Figma) with all 10, Loading. Measured at window widths 1024 / 1288 / 1440 / 1920: 476 / **608** / 684 / 924 wide, centred; spinner 48 centred, gap 16, heading Display Small-H3 centred. a11y: no violations in Light or Dark.
 
+### 9.24 FinCaption (Caption)
+
+**Figma:** page **List**, component set `Caption` `77:10172`: `Size` = Small / Medium / Large × `Thickness` = Heavy / Light (6 variants). One text layer, `text-tertiary`, single line that grows; the text is typed over the layer (not a component property). Zero padding bound to another library (`Alias Spacing & Radius`, `Space-none`). Used twice (List-base/Notification-base, Face scan). Heavy Small/Medium look the same as Label Small/Medium (§9.19); kept as its own component, as in Figma (decided 15 Oct 2026).
+
+**Figma → code:**
+
+| Figma property | Prop | Notes |
+|---|---|---|
+| `Size` = Small / Medium / Large | `size: 'small' \| 'medium' \| 'large'` (default `'small'`) | Same options |
+| `Thickness` = Heavy / Light | `thickness: 'heavy' \| 'light'` (default `'heavy'`) | Same options |
+| Text layer (typed over) | `children` | Main content; **wraps** when long (decided 15 Oct 2026) |
+
+**Tokens used:**
+
+| `size` | `heavy` | `light` |
+|---|---|---|
+| `small` | `--fin-font-label-small` | `--fin-font-body-small` |
+| `medium` | `--fin-font-label-medium` | `--fin-font-body-medium` |
+| `large` | `--fin-font-label-large` | `--fin-font-body-large` |
+
+Color `--fin-text-tertiary`. No raw values; Figma's other-library zero padding needs nothing in code.
+
+**API:**
+
+```tsx
+import { FinCaption } from '@finspace-loyalty/ui';
+
+<FinCaption>Last updated today</FinCaption>
+<FinCaption size="medium" thickness="light">Points expire after 12 months.</FinCaption>
+```
+
+Presentational: no `'use client'`. A `<span>`; `className` and other attributes go to it.
+
+**Accessibility:** plain text. Contrast `text-tertiary` 9.28:1 Light / 5.94:1 Dark on `bg-primary` (8.51 / 4.92 on `bg-secondary`).
+
+**Built (15 Oct 2026).** Storybook (Components/List): Playground, Sizes and thickness (Figma), Long text. Checked against Figma: heights 18 / 21 / 24, weights 600 (Heavy) and 400 (Light), sizes 12 / 14 / 16, `#474748` (Dark uses the Dark token); widths within 1px (Figma rounds text widths up); long text wraps. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1774,7 +1811,7 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) and `FinSpinnerWithText` (§9.23). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23) and `FinCaption` (§9.24, on `feat/caption`, waiting for approval). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -1840,3 +1877,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinBarWithText` done** (§8 #44, §9.22): FinProgressBar (large) + FinTextBox (H3, centre); `value` (any, §10 #37), `heading`, `description`, `headingLevel`; spans the middle 6 of 12 grid columns of its container (608 in a 1240 content area). First spec with a full Figma → code table. |
 | 15 Oct 2026 | 0.2 | **`FinSpinnerWithText` done** (§8 #45, §9.23): FinSpinner + FinTextBox (H3, centre); `status` / `value` (§10 #37), loader added at design's request, `heading`, `description`, `headingLevel`; spans the middle 6 grid columns. |
 | 15 Oct 2026 | 0.2 | Bar with text / Spinner with text stories: the demo content area is now the full window minus the grid margins (it was a fixed 1240 box on the left), so the components show centred and responsive in Storybook. |
+| 15 Oct 2026 | 0.2 | **`FinCaption` done** (§8 #6, §9.24): `size` small/medium/large, `thickness` heavy (Label styles) / light (Body styles), `text-tertiary`, wraps. Storybook under Components/List. Figma → code: same names and options, nothing flagged. |
