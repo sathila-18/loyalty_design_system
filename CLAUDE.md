@@ -18,15 +18,16 @@ Instructions for Claude Code in this repo. Read them fully at the start of every
 
 **Build only what the designer asks for, one component at a time.** Don't build ahead. When a component is done, **stop and wait for the designer's go-ahead** before starting the next one.
 
+0. **Plan first.** Read the component in Figma, compare it with `DESIGN.md`, and give the designer a build plan with a **Figma → code** table (§7.3 parity rules) and any questions. Flag anything outside the §7.3 patterns (a missing control, an extra visual option, a rename) **before** building. Wait for the go-ahead.
 1. **Read the component in Figma** with the Figma tools, using the node ID from `DESIGN.md` §8. Get the exact layout, padding, gaps, sizes, radius, borders, shadows and which token each value uses. Take a screenshot to compare against. **Never guess a measurement.**
 2. **If something can't be expressed with existing tokens**, stop and ask. Don't add new values.
    - **Other libraries and raw values:** if any value in the component is bound to a variable from another library (not Foundation – Loyalty) or is a raw value, this is **not** a reason to wait for a Figma fix. List each one with the Finspace Loyalty token you plan to use, **tell the designer before building**, then build with those tokens. In code, always use this system's tokens.
 3. **Base → mapped:** if the component has a base (§7.2), build or extend the base first. Mapped components are thin wrappers that pass fixed props to the base and never copy its markup or styles.
-4. **Map Figma properties as in §7.3.** Interaction states (Enabled/Hovered/Pressed/Disabled/Focused/Typing) are runtime state handled in CSS and the DOM, not props.
-5. **Add Storybook stories** for every variant, with controls for its main props. Check them in **Light and Dark**.
+4. **Map Figma properties as in §7.3**, following its **Figma ↔ code parity rules**: every Figma control (including exposed nested ones) has a matching prop with the same options; names differ only by the listed patterns. Interaction states (Enabled/Hovered/Pressed/Disabled/Focused/Typing) are runtime state handled in CSS and the DOM, not props. **Bases are internal** (not exported) unless `DESIGN.md` says otherwise (§7.2 rule 4).
+5. **Add Storybook stories** for every variant, with controls for its main props, grouped under `Components/<Figma page>/` (internal bases under `Internal/`). Check them in **Light and Dark**.
 6. **Write tests:** behaviour with Vitest + Testing Library (keyboard, disabled, ARIA), and no violations in the Storybook a11y addon in either theme.
 7. **Compare with Figma:** check the Storybook result against the Figma screenshot, variant by variant. Fix any differences before saying it's done.
-8. **Write a short component spec** in `DESIGN.md` §9 (API, variants, tokens used, any decisions).
+8. **Write a short component spec** in `DESIGN.md` §9 (Figma → code table, tokens used, API, accessibility, any decisions).
 9. **Update the Status** in `DESIGN.md` §8 to ✅, and add a line to §11 Changelog.
 10. **Summarize for the designer:** what was built, anything that didn't match Figma, and any questions. Then wait.
 
@@ -127,7 +128,7 @@ Commands (repo root): `pnpm storybook`, `pnpm icons` (regenerate the icon font a
 ## Git
 
 - `main` always builds, its tests pass and its Storybook runs.
-- Use one short-lived branch per component (`feat/<component>`), and merge back when it's done and checked.
+- Use one short-lived branch per component (`feat/<component>`). **Merge into `main` and push only after the designer approves it, and only if every check passes** (`lint`, `lint:css`, `typecheck`, `test`, `test:a11y`, `build`, `build-storybook`); stop on the first failure. Then delete the branch and update the `DESIGN.md` §11 status note.
 - Write commit messages in the present tense, naming the component (for example `Add FinIcon and icon registry`).
 
 ## Figma files
