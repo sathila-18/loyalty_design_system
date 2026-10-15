@@ -529,7 +529,7 @@ Many components in Figma follow a **base → mapped** structure:
 | `Input field-textArea-base` (`3094:26567`) | the text area set at `3097:27497` (still named `Input field-base` in Figma, §10 #17) |
 | `Input-OTP-base` | (base only; no mapped OTP component in the file) |
 | `Indicator` | `Indicator set` |
-| `Progress bar` | `Progress-progress bar` |
+| `Progress bar` | `Progress-full` (was `Progress-progress bar`) |
 | `Spinner` | `Progress-Spinner` |
 | `Avatar` | `Avatar Group`, `Profile image` |
 | `Pagination item` | `Pagination group` |
@@ -603,8 +603,8 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 7 | `Overlay` | Overlays | `111:2495` | `FinOverlay` | Type: **Desktop only** (Mobile is out of scope) · responsive: fills the window · `Alpha-md` | ✅ | ✅ |
 | 8 | `Toggle` (renamed from `Switch` in Figma, 15 Oct 2026) | Toggle | `34:2545` | `FinToggle` | Type: Selected/Unselected · Size: Small/Large · State, Focused (runtime) · visually hidden `label` (§9.14) | ⚠️ (focus-ring radius from another library → `Radius-Full`; raw radii → `Radius-Full`; approved 15 Oct 2026) | ✅ |
 | 9 | `Base-Radio_box` | Radio button | `37:104` | `FinRadio` | Type: Selected/Unselected · State (runtime) · **public** (§7.2 rule 4 exception) · visually hidden `label` (§9.15) | ⚠️ (radius from another library → `Radius-Full`, approved 15 Oct 2026) | ✅ |
-| 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | Filled: 0–100% · Size: Large/Small · Steps: 4/5 | ⚠️ | ⬜ |
-| 11 | `Progress bar-portfolio` | Progress | `695:5418` | `FinProgressBarPortfolio` | Filled (`Fillted`): 0–100% | ⚠️ | ⬜ |
+| 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | **Base** of Progress-full · Filled: 0/25/50/75/100% (Steps=4, Large and Small) and 0/20/40/60/80/100% (Steps=5, Small only) · Size: Large (8 tall) / Small (4 tall) · 16 variants (checked 15 Oct 2026) | ⚠️ (fill radius from the `Tokens` library) | ⬜ |
+| 11 | ~~`Progress bar-portfolio`~~ | Progress | ~~`695:5418`~~ | — | **Removed from Figma (15 Oct 2026); not built.** | — | — |
 | 12 | `dragger` | Progress | `645:3136` | `FinDragger` | Filled: 5–100% | ⚠️ | ⬜ |
 | 13 | `Spinner` | Progress | `33:2331` | `FinSpinner` | Progress (`Pregress`): 25/50/75%, Success, Error | ✅ | ⬜ |
 | 14 | `Input-OTP-base` | Input field | `49:5843` | `FinOtpCellBase` | **Base** for OTP. State (runtime) · Show number · Error | ⚠️ | ⬜ |
@@ -647,7 +647,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number (code: `active`, `count`, no maximum) · clickable with `onChange` (§9.12) | ✅ | ✅ |
 | 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 (code: 2–6 shown, then "+N", §9.5) | ⚠️ (overlaps mapped to spacing, approved 15 Oct 2026) | ✅ |
 | 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image (code: from `src`) · badge button: camera / edit (§9.6) | ⚠️ (frame 100 = `Size-96` + `Space-XS`, approved 15 Oct 2026) | ✅ |
-| 44 | `Progress-progress bar` | Progress | `31:2122` | `FinProgress` | **Progress bar**, Text Box | ⚠️ | ⬜ |
+| 44 | `Progress-full` (renamed from `Progress-progress bar` in Figma, 15 Oct 2026) | Progress | `31:2122` | `FinProgressFull` | **Progress bar** (Large, Steps=4), **Text Box** (Center, Display Small-H3) · Progress: 25/50/75/100% · Description: True/False · 375 wide (a mobile-era width), gap `Space-XL` | ⚠️ | ⬜ |
 | 45 | `Progress-Spinner` | Progress | `33:2348` | `FinProgressSpinner` | **Spinner**, Text Box | ⚠️ | ⬜ |
 | 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black/Basic | ⚠️ (§10 #16) | ⬜ |
 | 47 | `Pagination group` | Table | `3151:14607` | `FinPagination` | **Pagination item**, all-button | ⚠️ | ⬜ |
@@ -1383,7 +1383,7 @@ Template:
 | 18 | Input bases decided (13 Oct 2026): `Input field-base` (`49:5734`) for single-line fields, `Input field-textArea-base` (`3094:26567`) for text areas, `Input-OTP-base` (`49:5843`) for OTP. | Input field | ✅ Decided |
 | 19 | `Accordion-bare-base`, `List-base` and `List-fill-base` use a `20px` component whose main component isn't on any page (deleted or moved). | Accordion, List | 🔧 Fix in Figma |
 | 20 | **Clashing name:** `24px` on the Side nav page clashes with the icon size `24px`. (Renamed 13 Oct 2026: `Frame 5` → `sub selection`, Dialog `Frame 3` → `Dialog box`, Header `Frame 1707478998` → `Main header`, `Frame 1707478999` → `Header notification`, Table parts.) | Side nav | 🔧 Fix in Figma |
-| 21 | **Typos and inconsistent names:** `Pregress` (Spinner); `Fillted` (Progress bar-portfolio); `SIze`/`Mediu` (Flag sizes); `Contry selecter`; `Distructive` (Input field-textArea-base); `Xsmall` vs `XSmall` (Avatar, Chips-base); `state` lowercase (Input field-select, Multi select); Snackbar has a property with no name; Empty state has both `Icon slot` and `Icon Slot`; Accordion-bare-base has `Trailing accessory` twice; several `Property 1` properties. Code uses the corrected spelling. The `64px` icon state names (`Variant3`, `Errorr`) were fixed in Figma on 14 Oct 2026. | Components | 🔧 Fix in Figma |
+| 21 | **Typos and inconsistent names:** `Pregress` (Spinner); `SIze`/`Mediu` (Flag sizes); `Contry selecter`; `Distructive` (Input field-textArea-base); `Xsmall` vs `XSmall` (Avatar, Chips-base); `state` lowercase (Input field-select, Multi select); Snackbar has a property with no name; Empty state has both `Icon slot` and `Icon Slot`; Accordion-bare-base has `Trailing accessory` twice; several `Property 1` properties. Code uses the corrected spelling. The `64px` icon state names (`Variant3`, `Errorr`) were fixed in Figma on 14 Oct 2026. | Components | 🔧 Fix in Figma |
 | 22 | `Side Menu`: 8 text layers have no text style. | Side nav | 🔧 Fix in Figma |
 | 23 | Icon names checked against Material Symbols Rounded (14 Oct 2026): all 29 §6.4 names render, but four are old Material Icons names. **Decided:** code uses the current names: `camera_alt` → `photo_camera`, `payment` → `credit_card`, `perm_identity` → `person`, `warning_amber` → `warning` (same glyph as `warning`, so one registry entry). List in §6.4. Figma icons will be updated by design later; for icons, code is the source of truth (§6.1). | Icons | ✅ Decided (14 Oct 2026) |
 | 24 | Overlay `Mobile` variant is out of scope; only `Desktop` is built. | Overlays | ✅ Decided (13 Oct 2026) |
@@ -1454,3 +1454,4 @@ Template:
 | 15 Oct 2026 | 0.2 | `Switch` renamed `Toggle` in Figma (`34:2545`); code name `FinSwitch` → `FinToggle` (§8 #8). |
 | 15 Oct 2026 | 0.2 | **`FinToggle` done** (§8 #8, §9.14): native checkbox with `role="switch"`, `checked`/`defaultChecked`/`onChange`/`disabled`, `size` small/large, required visually hidden `label`. Figma updated by design (Large 56, handle `fg-white_both`, off track `fg-placeholder`, disabled on-track `bg-disabled`). Off-track Light contrast logged in §10 #3; Toggle focus ring 2px/1px noted in §10 #6. |
 | 15 Oct 2026 | 0.2 | **`FinRadio` done** (§8 #9, §9.15): native radio, public despite the Figma "Base" name (§7.2 exception), visually hidden `label`, Hovered/Pressed via `:hover`/`:active` (Figma updated: Hovered `bg-active`, Pressed `bg-active-hover`), default focus ring 2px/2px. Unselected-ring contrast logged in §10 #3. Figma's stray "Frame 2" mock removed by design. |
+| 15 Oct 2026 | 0.2 | Progress page re-checked: `Progress bar-portfolio` removed from Figma (§8 #11 marked removed; `Fillted` dropped from §10 #21); `Progress-progress bar` renamed `Progress-full` (§8 #44, code name `FinProgress` → `FinProgressFull`, §7.2 updated); Progress bar's exact Filled values recorded (§8 #10). dragger, Spinner and Progress-Spinner unchanged. |
