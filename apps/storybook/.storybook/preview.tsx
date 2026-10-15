@@ -74,7 +74,7 @@ const preview: Preview = {
     // Page background comes from the theme (reset.css), not Storybook's backgrounds tool.
     backgrounds: { disable: true },
     options: {
-      storySort: { order: ['Foundations', ['Colors', 'Typography', 'Spacing', 'Radius', 'Shadows', 'Grid', 'Breakpoints', 'Palette (reference only)'], 'Components'] },
+      storySort: { order: ['Foundations', ['Colors', 'Typography', 'Spacing', 'Radius', 'Shadows', 'Grid', 'Breakpoints', 'Palette (reference only)'], 'Components', 'Internal'] },
     },
   },
 };

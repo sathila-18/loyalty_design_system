@@ -1,45 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { finIcons, type FinIconName } from '../../icons/finIcons';
-import { FinBadgeBase, type FinBadgeBaseSize, type FinBadgeTone } from './FinBadgeBase';
+import { FinBadgeBase, type FinBadgeBaseSize } from './FinBadgeBase';
 import styles from './FinBadgeBase.stories.module.css';
 
 const SIZES: FinBadgeBaseSize[] = ['small', 'large'];
-const TONES: FinBadgeTone[] = ['primary', 'secondary', 'success', 'error', 'info', 'warning', 'disabled', 'neutral'];
-/** The `disabled` tone's contrast is a documented exception (DESIGN.md §9.10). */
-const KNOWN_CONTRAST_ISSUES = ['[data-tone="disabled"]'];
-const NONE = '(none)';
-const ICON_OPTIONS = [NONE, ...finIcons];
 
-/** Controls use a plain label and "(none)" for no icon; the component takes children and optional icon names. */
-type Args = { size: FinBadgeBaseSize; tone: FinBadgeTone; label: string; leadingIcon: string; trailingIcon: string };
-const icon = (value: string) => (value === NONE ? undefined : (value as FinIconName));
-
-const meta: Meta<Args> = {
-  title: 'Components/Badge/Badge base',
-  args: { size: 'small', tone: 'primary', label: 'Text here', leadingIcon: NONE, trailingIcon: NONE },
-  argTypes: {
-    size: { control: 'inline-radio', options: SIZES },
-    tone: { control: 'select', options: TONES, description: 'Badge-primary `State` colors; `primary` is Badge-base\'s own' },
-    label: { control: 'text', description: 'The badge text (`children`)' },
-    leadingIcon: { control: 'select', options: ICON_OPTIONS, description: 'Figma `Show Leading Icon` + the icon' },
-    trailingIcon: { control: 'select', options: ICON_OPTIONS, description: 'Figma `Show Trailing Icon` + the icon' },
-  },
-  parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  render: ({ size, tone, label, leadingIcon, trailingIcon }) => {
-    const lead = icon(leadingIcon);
-    const trail = icon(trailingIcon);
-    return (
-      <FinBadgeBase size={size} tone={tone} {...(lead ? { leadingIcon: lead } : {})} {...(trail ? { trailingIcon: trail } : {})}>
-        {label}
-      </FinBadgeBase>
-    );
-  },
+/**
+ * INTERNAL: FinBadgeBase isn't exported from the package (DESIGN.md §7.2: bases are internal unless DESIGN.md
+ * says otherwise). These stories exist only to check it against Figma; products use FinBadge.
+ */
+const meta: Meta = {
+  title: 'Internal/Badge base',
 };
 export default meta;
 
-type Story = StoryObj<Args>;
-
-export const Playground: Story = {};
+type Story = StoryObj;
 
 /** The Figma Badge-base page: Small and Large, with both icons (Figma's default), one, or none (code's default). */
 export const Sizes: Story = {

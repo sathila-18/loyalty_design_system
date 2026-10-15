@@ -4,8 +4,10 @@ import type { FinIconName } from '../../icons/finIcons';
 import styles from './FinBadgeBase.module.css';
 
 export type FinBadgeBaseSize = 'small' | 'large';
-/** The Badge-primary `State` colors (DESIGN.md §9.10). `primary` is Badge-base's own color. */
-export type FinBadgeTone = 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning' | 'disabled' | 'neutral';
+/** The Badge-primary `State` colors, in Figma order (DESIGN.md §9.10). The one list every badge and story uses. */
+export const FIN_BADGE_TONES = ['primary', 'secondary', 'success', 'error', 'info', 'warning', 'disabled', 'neutral'] as const;
+/** A badge tone. `primary` is Badge-base's own color. */
+export type FinBadgeTone = (typeof FIN_BADGE_TONES)[number];
 
 export interface FinBadgeBaseProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
   /** The label (Figma `Label`). Stays on one line; cut off with "…" when the container is narrower. */
@@ -20,7 +22,10 @@ export interface FinBadgeBaseProps extends Omit<HTMLAttributes<HTMLSpanElement>,
   trailingIcon?: FinIconName;
 }
 
-/** The base every badge is built from (Figma Badge-base, was Tag-base; DESIGN.md §7.2, §9). */
+/**
+ * The base every badge is built from (Figma Badge-base, was Tag-base; DESIGN.md §7.2, §9).
+ * **Internal:** not exported from the package; use FinBadge. Bases are internal unless DESIGN.md says otherwise.
+ */
 export function FinBadgeBase({
   children,
   size = 'small',

@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { finIcons, type FinIconName } from '../../icons/finIcons';
-import type { FinBadgeTone } from '../BadgeBase';
+import { FIN_BADGE_TONES, type FinBadgeTone } from '../BadgeBase';
 import { FinBadge } from './FinBadge';
 import styles from './FinBadge.stories.module.css';
 
-const TONES: FinBadgeTone[] = ['primary', 'secondary', 'success', 'error', 'info', 'warning', 'disabled', 'neutral'];
+const TONES = FIN_BADGE_TONES;
 const title = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const NONE = '(none)';
 const ICON_OPTIONS = [NONE, ...finIcons];
