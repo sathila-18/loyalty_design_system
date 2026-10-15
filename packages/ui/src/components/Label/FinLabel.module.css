@@ -1,0 +1,36 @@
+/* FinLabel (DESIGN.md §9). The dot is FinBadgeIndicator; this file lays it out with the text. */
+
+.label {
+  position: relative;
+  display: inline-flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+  max-width: 100%;
+  color: var(--fin-text-tertiary);
+}
+
+.label[data-size="medium"] {
+  font: var(--fin-font-label-medium);
+}
+
+.label[data-size="small"] {
+  font: var(--fin-font-label-small);
+}
+
+/* One line, no fixed max width; "…" when the container is narrower (decided 15 Oct 2026, as Badge). */
+.text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The badge's meaning, for screen readers only. */
+.hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}

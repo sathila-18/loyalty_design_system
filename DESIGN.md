@@ -621,7 +621,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 18 | `64px bg` (was `68px bg`, 68 → 64 on 14 Oct 2026) | Icon sizes | `3017:7023` | `FinIconContainer` (size 64) | `36px` | State (7) → `tone` | ✅ | ✅ |
 | 19 | ~~`Circle Icon`~~ | Icon sizes | ~~`624:4882`~~ | ~~`FinCircleIcon`~~ | — | **Removed from Figma (14 Oct 2026); not built.** | — | — |
 | 20 | `Badge-base` (renamed from `Tag-base` in Figma, 15 Oct 2026) | Badge | `30:1454` | `FinBadgeBase` | `16px`, `20px` | Size: Small/Large · Leading/Trailing icon (code: none by default) · Label (one line, "…" when narrow) | ✅ | ✅ |
-| 21 | `Label` | Text box | `28:968` | `FinLabel` | Badge - indicator | Size: Medium/Small · Show badge · Label | ⚠️ | ⬜ |
+| 21 | `Label` | Text box | `28:968` | `FinLabel` | Badge - indicator | Size: Medium/Small · Show badge · Label · code: `badgeLabel` required with `badge`, `htmlFor` → `<label>`, one line with "…" (§9.19) | ⚠️ (other-library bindings only inside the badge instance) | ✅ |
 | 22 | `Helper text content` | Text box | `28:973` | `FinHelperText` | `20px` | State: Default/Error/Success/Warning/Disabled · Show leading icon · Text | ⚠️ | ⬜ |
 | 23 | `Base-button` | Buttons | `45:405` | `FinButtonBase` | `20px`, `24px` | Type: Primary/Secondary/Tertiary · Size: Large/Medium/Small/XSmall · State, Focused (runtime) · Leading/Trailing icon · Label | ✅ | ⬜ |
 | 24 | `white-button` | Buttons | `349:5042` | `FinWhiteButton` | `20px`, `24px` | Size (4) · State, Focused (runtime) · icons · Label | ✅ | ⬜ |
@@ -702,7 +702,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner and Slider are under **Components/Progress** (the Figma page they're on). Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner and Slider are under **Components/Progress** (the Figma page they're on); Label is under **Components/Text box**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1474,6 +1474,40 @@ import { FinSlider } from '@finspace-loyalty/ui';
 
 **Built (15 Oct 2026).** Storybook (Components/Progress): Playground, Values (Figma) with 5 / 25 / 50 / 75 / 100% and disabled, Controlled (500–5000, step 100), Fills its container. Checked in Chrome: input 24 tall, handle 24 with its ring centred on the track; handle centre at exactly 12 + v × (width − 24) for every value; fill, track and handle colors equal Figma (Dark uses the Dark tokens; the handle ring is `border-inverse`, dark in Dark); Tab, →, Page Up, End, Home, clicking the track and dragging all work; the focus ring shows around the handle. a11y: no violations in Light or Dark.
 
+### 9.19 FinLabel (Label)
+
+**Figma:** page **Text box**, component set `Label` `28:968`: `Size` = Medium / Small, `Show badge` (default off), `Label` (text, default "Label text"). Text `text-tertiary`, Label/Medium (14/21) or Label/Small (12/18); with `Show badge`, a `Badge - indicator` (Small, Digits=None, Red) **before** the text, 8px gap (`Space-M`), centred. Used 61 times (Text Box, Table header cell, List, Accordion, Snackbar, Quick action), so it's mostly a caption or small heading, not only a form label.
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Size` = Medium / Small | `size: 'medium' \| 'small'` (default `'medium'`) |
+| `Label` | `children`: one line; "…" when the container is narrower (decided 15 Oct 2026, as Badge) |
+| `Show badge` | `badge` (boolean) |
+| — | `badgeLabel`: **required when `badge` is on** (enforced by the types; decided 15 Oct 2026). The dot's meaning depends on the screen (required, new, unread, error…), so there's no default |
+| — | `htmlFor`: renders a real `<label>` linked to that field; without it, a `<span>` (decided 15 Oct 2026) |
+
+**Structure:** `<span>` (or `<label htmlFor>`) with the `FinBadgeIndicator` dot (decorative), the text, and the `badgeLabel` visually hidden **after** the text, so it's read "Email address, Required" rather than "Required Email address".
+
+**Tokens used:** text `--fin-text-tertiary`, `--fin-font-label-medium` / `--fin-font-label-small`; gap `--fin-space-m`; the dot is FinBadgeIndicator `size="small" tone="error"` (`--fin-size-6`, `--fin-fg-error`). Figma's other-library bindings are only inside the badge instance (FinBadgeIndicator handles them). The only raw values are the visually hidden text's 1px box.
+
+**API:**
+
+```tsx
+import { FinLabel } from '@finspace-loyalty/ui';
+
+<FinLabel htmlFor="email" badge badgeLabel="Required">Email address</FinLabel>
+<FinLabel size="small" badge badgeLabel="Unread">Notifications</FinLabel>
+<FinLabel>Last transaction</FinLabel>
+```
+
+Presentational: no `'use client'`. `className` and other attributes go to the root.
+
+**Accessibility:** with `htmlFor`, the field's accessible name is the label text plus `badgeLabel`, and clicking the label focuses the field. The dot is never the only signal: `badgeLabel` gives its meaning in words. Contrast: text 9.28:1 Light / 5.94:1 Dark on `bg-primary` (8.51 / 4.92 on `bg-secondary`); dot 5.98 / 7.51.
+
+**Built (15 Oct 2026).** Storybook (Components/Text box): Playground, Sizes (Figma), Usage (form label, caption with badge, narrow caption). Checked against Figma: heights 21 / 18, Label/Medium and Label/Small in `#474748` (Dark uses the Dark tokens), dot 6 × 6 `fg-error`, 8px before the text and centred; widths 66 / 57 against Figma's 67 / 58 (text rounding). The field's name reads "Email address, Required"; clicking the label focuses the field; long captions end in "…". a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1534,7 +1568,7 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) and `FinSlider` (§9.18). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) and `FinLabel` (§9.19, on `feat/label`, waiting for the designer's check). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers) and §10 #35 (Indicator selected width 22 → 24 in Figma). Fixed 15 Oct 2026: §10 #29, #30.
 
@@ -1588,3 +1622,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinProgressBar` done** (§8 #10, §9.16): public base (§7.2 exception), `value` (any, clamped) with `max` (default 100), `size` large/small, required `label`; fills its container; `role="progressbar"`. Fill radius from the `Tokens` library mapped to `Radius-XS`. |
 | 15 Oct 2026 | 0.2 | **`FinSpinner` done** (§8 #13, §9.17): public base; `value` → still ring (clockwise from 12 o'clock, exact), no value → spinning loader (1s linear, still with reduced motion; first animation, §5 exception), `status` success/error with FinIcon; Figma sizes kept. Progress-Spinner (§8 #45) waits for Text Box. |
 | 15 Oct 2026 | 0.2 | `dragger` renamed `slider` in Figma; code name `FinDragger` → `FinSlider` (§8 #12). **`FinSlider` done** (§9.18): native range input restyled, `min`/`max`/`step` (0–100 by default, set by the screen), standard slider geometry, fills its container, visually hidden `label`, disabled with the disabled tokens. |
+| 15 Oct 2026 | 0.2 | **`FinLabel` done** (§8 #21, §9.19): `size` medium/small, one line with "…", `badge` (FinBadgeIndicator dot before the text) with a required `badgeLabel` (meaning varies by screen, so no default; read after the text), `htmlFor` → real `<label>`. |

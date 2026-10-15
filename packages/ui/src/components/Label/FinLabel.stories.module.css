@@ -1,0 +1,46 @@
+/* Layout for the FinLabel stories only (not part of the component). */
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(2, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
+
+.usage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  align-items: flex-start;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-s);
+}
+
+/* A plain stand-in field for the demo (the real input field is built later). */
+.input {
+  width: calc(var(--fin-size-120) * 2);
+  height: var(--fin-size-40);
+  padding: 0 var(--fin-space-m);
+  border: 1px solid var(--fin-border-default);
+  border-radius: var(--fin-radius-s);
+  background-color: var(--fin-bg-primary);
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-primary);
+}
+
+.narrow {
+  display: flex;
+  width: var(--fin-size-120);
+  padding: var(--fin-space-s);
+  border: 1px dashed var(--fin-border-default);
+}

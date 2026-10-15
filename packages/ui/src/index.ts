@@ -15,3 +15,4 @@ export * from './components/Radio';
 export * from './components/ProgressBar';
 export * from './components/Spinner';
 export * from './components/Slider';
+export * from './components/Label';
