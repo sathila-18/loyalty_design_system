@@ -2,6 +2,7 @@
 
 import { useState, type HTMLAttributes } from 'react';
 import { FinIcon, type FinIconSize } from '../../icons/FinIcon';
+import { FinOnlineIndicator, type FinOnlineIndicatorSize } from '../OnlineIndicator';
 import styles from './FinAvatar.module.css';
 
 export type FinAvatarType = 'image' | 'icon' | 'text';
@@ -18,6 +19,10 @@ export interface FinAvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'c
   initials?: string;
   /** The person's name. Without it, the avatar is decorative (for use next to a visible name). */
   label?: string;
+  /** Shows a FinOnlineIndicator at the bottom-right corner (placement decided 15 Oct 2026; not in Figma). */
+  online?: boolean;
+  /** How the online status is announced. Added to `label` ("Name, Online"), or announced on its own without a label. */
+  onlineLabel?: string;
 }
 
 const ICON_SIZE: Record<FinAvatarSize, FinIconSize> = {
@@ -30,6 +35,17 @@ const ICON_SIZE: Record<FinAvatarSize, FinIconSize> = {
   xxxlarge: 64,
 };
 
+/** The indicator is about a quarter of the avatar, on the five Figma sizes (decided 15 Oct 2026). */
+const INDICATOR_SIZE: Record<FinAvatarSize, FinOnlineIndicatorSize> = {
+  xsmall: 'xsmall',
+  small: 'small',
+  medium: 'medium',
+  large: 'medium',
+  xlarge: 'large',
+  xxlarge: 'large',
+  xxxlarge: 'xlarge',
+};
+
 /** A person's photo, initials or a default icon in a circle (Figma Avatar; DESIGN.md §9). */
 export function FinAvatar({
   type = 'image',
@@ -37,6 +53,8 @@ export function FinAvatar({
   src,
   initials,
   label,
+  online = false,
+  onlineLabel = 'Online',
   className,
   ...rest
 }: FinAvatarProps) {
@@ -47,8 +65,16 @@ export function FinAvatar({
   const hasInitials = !hasPhoto && type !== 'icon' && !!initials?.trim();
   const shown: FinAvatarType = hasPhoto ? 'image' : hasInitials ? 'text' : 'icon';
 
+  // With a name, the status joins it and the dot is decorative. Without one, only the dot is announced.
+  const name = label && online ? `${label}, ${onlineLabel}` : label;
   // A photo is named by its alt text; initials and the icon by role="img" on the circle.
-  const a11y = hasPhoto ? {} : label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true as const };
+  const a11y = hasPhoto
+    ? {}
+    : name
+      ? { role: 'img', 'aria-label': name }
+      : online
+        ? {}
+        : { 'aria-hidden': true as const };
 
   return (
     <span
@@ -59,7 +85,7 @@ export function FinAvatar({
       data-type={shown}
     >
       {shown === 'image' && (
-        <img className={styles.image} src={src} alt={label ?? ''} onError={() => setFailedSrc(src)} />
+        <img className={styles.image} src={src} alt={name ?? ''} onError={() => setFailedSrc(src)} />
       )}
       {shown === 'text' && (
         <span className={styles.initials} aria-hidden="true">
@@ -67,6 +93,14 @@ export function FinAvatar({
         </span>
       )}
       {shown === 'icon' && <FinIcon name="person" size={ICON_SIZE[size]} color="secondary" />}
+      {online && (
+        <FinOnlineIndicator
+          className={styles.online}
+          size={INDICATOR_SIZE[size]}
+          label={onlineLabel}
+          decorative={!!label}
+        />
+      )}
     </span>
   );
 }

@@ -72,4 +72,46 @@ describe('FinAvatar', () => {
     expect(container.firstElementChild).toHaveClass('extra');
     expect(screen.getByTestId('avatar')).toBe(container.firstElementChild);
   });
+
+  describe('online', () => {
+    const dot = (root: Element) => root.querySelector(':scope > [data-size]:not([translate])');
+
+    it.each([
+      ['xsmall', 'xsmall'],
+      ['small', 'small'],
+      ['medium', 'medium'],
+      ['large', 'medium'],
+      ['xlarge', 'large'],
+      ['xxlarge', 'large'],
+      ['xxxlarge', 'xlarge'],
+    ] as const)('a %s avatar gets a %s indicator', (size, indicator) => {
+      const { container } = render(<FinAvatar type="icon" size={size} label="Sathila De Silva" online />);
+      expect(dot(container.firstElementChild!)).toHaveAttribute('data-size', indicator);
+    });
+
+    it('adds the status to the name, and hides the dot', () => {
+      const { container } = render(<FinAvatar initials="SD" label="Sathila De Silva" online />);
+      expect(screen.getByRole('img')).toHaveAccessibleName('Sathila De Silva, Online');
+      expect(dot(container.firstElementChild!)).toHaveAttribute('aria-hidden', 'true');
+    });
+
+    it('adds the status to the photo alt text', () => {
+      render(<FinAvatar src="/me.jpg" label="Sathila De Silva" online onlineLabel="Available" />);
+      expect(screen.getByRole('img')).toHaveAttribute('alt', 'Sathila De Silva, Available');
+    });
+
+    it('without a name, announces only the dot', () => {
+      const { container } = render(<FinAvatar initials="SD" online />);
+      expect(container.firstElementChild).not.toHaveAttribute('aria-hidden');
+      expect(container.firstElementChild).not.toHaveAttribute('role');
+      expect(screen.getByRole('img')).toHaveAccessibleName('Online');
+      expect(screen.getByRole('img')).toBe(dot(container.firstElementChild!));
+    });
+
+    it('shows no indicator by default', () => {
+      const { container } = render(<FinAvatar type="icon" label="Sathila De Silva" />);
+      expect(dot(container.firstElementChild!)).toBeNull();
+      expect(screen.getByRole('img')).toHaveAccessibleName('Sathila De Silva');
+    });
+  });
 });

@@ -1,11 +1,12 @@
 /* FinAvatar (DESIGN.md §9). The icon is FinIcon; this file styles the circle, the photo and the initials. */
 
+/* No overflow clip, so the online indicator can sit on the edge: the photo is rounded itself instead. */
 .avatar {
+  position: relative;
   display: inline-flex;
   flex: none;
   align-items: center;
   justify-content: center;
-  overflow: clip;
   width: var(--avatar-size);
   height: var(--avatar-size);
   border: 1px solid var(--fin-border-subtle);
@@ -22,6 +23,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: var(--fin-radius-full);
+}
+
+/* Online indicator: flush with the bottom-right corner, 2px in at 64 and 96 so it stays on the circle (decided 15 Oct 2026). */
+.online {
+  position: absolute;
+  inset-block-end: var(--avatar-online-inset, var(--fin-space-none));
+  inset-inline-end: var(--avatar-online-inset, var(--fin-space-none));
 }
 
 .initials {
@@ -56,12 +65,14 @@
 }
 
 .avatar[data-size="xxlarge"] {
+  --avatar-online-inset: var(--fin-space-xxs);
   --avatar-size: var(--fin-size-64);
   --avatar-font: var(--fin-font-headline-large-h4);
 }
 
 /* Was 100 in Figma; 96 since 15 Oct 2026 so it maps to a token. */
 .avatar[data-size="xxxlarge"] {
+  --avatar-online-inset: var(--fin-space-xxs);
   --avatar-size: var(--fin-size-96);
   --avatar-font: var(--fin-font-display-medium-h2);
 }

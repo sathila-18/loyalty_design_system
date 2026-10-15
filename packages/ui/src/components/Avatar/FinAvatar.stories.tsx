@@ -19,13 +19,15 @@ const title = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const meta: Meta<typeof FinAvatar> = {
   title: 'Components/Avatar/Avatar',
   component: FinAvatar,
-  args: { type: 'image', size: 'medium', src: sample, initials: 'SD', label: 'Sample person' },
+  args: { type: 'image', size: 'medium', src: sample, initials: 'SD', label: 'Sample person', online: false, onlineLabel: 'Online' },
   argTypes: {
     type: { control: 'select', options: TYPES },
     size: { control: 'select', options: SIZES },
     src: { control: 'text' },
     initials: { control: 'text' },
     label: { control: 'text' },
+    online: { control: 'boolean' },
+    onlineLabel: { control: 'text' },
   },
 };
 export default meta;
@@ -75,6 +77,26 @@ export const Fallback: Story = {
         <FinAvatar size="xlarge" label="Sample person" />
         <figcaption>No photo, no initials → icon</figcaption>
       </figure>
+    </div>
+  ),
+};
+
+/** Not in Figma (decided 15 Oct 2026): `online` places a FinOnlineIndicator flush with the bottom-right corner (2px in at XXLarge and XXXLarge). */
+export const Online: Story = {
+  render: () => (
+    <div className={styles.table}>
+      <span />
+      {SIZES.map((size) => (
+        <span key={size}>{SIZE_LABEL[size]}</span>
+      ))}
+      {TYPES.map((type) => [
+        <span key={type} className={styles.rowLabel}>
+          {title(type)}
+        </span>,
+        ...SIZES.map((size) => (
+          <FinAvatar key={`${type}-${size}`} type={type} size={size} src={sample} initials="SD" label="Sample person" online />
+        )),
+      ])}
     </div>
   ),
 };

@@ -1,0 +1,33 @@
+/* FinOnlineIndicator (DESIGN.md §9). */
+
+.indicator {
+  display: inline-block;
+  flex: none;
+  width: var(--indicator-size);
+  height: var(--indicator-size);
+  border-radius: var(--fin-radius-full);
+  background-color: var(--fin-fg-success);
+
+  /* The Figma stroke: 1px of fg-inverse outside the dot, so it stands apart from what it sits on. */
+  box-shadow: 0 0 0 1px var(--fin-fg-inverse);
+}
+
+.indicator[data-size="xsmall"] {
+  --indicator-size: var(--fin-size-6);
+}
+
+.indicator[data-size="small"] {
+  --indicator-size: var(--fin-size-8);
+}
+
+.indicator[data-size="medium"] {
+  --indicator-size: var(--fin-size-12);
+}
+
+.indicator[data-size="large"] {
+  --indicator-size: var(--fin-size-16);
+}
+
+.indicator[data-size="xlarge"] {
+  --indicator-size: var(--fin-size-24);
+}
