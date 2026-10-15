@@ -168,7 +168,7 @@ _Collection `Color collection`, modes **Light** and **Dark**. **Components must 
 | `bg-warning_secondary` | Warning-50 `#fdf3e7` | Warning-900 `#623705` | Secondary warning backgrounds (notification, badge) |
 | `bg-info` | Primary-500 `#625bff` | Primary-400 `#817cff` | Info backgrounds (notification, badge) |
 | `bg-info_secondary` | Primary-50 `#efefff` | Primary-900 `#29266b` | Secondary info backgrounds (notification, badge) |
-| `bg-icons` | Tertiary1-400 `#ededed` | Tertiary-800 `#363636` | Icon or default avatar backgrounds |
+| `bg-icons` | Tertiary1-400 `#ededed` | Tertiary-700 `#464646` | Icon or default avatar backgrounds |
 
 #### Text
 
@@ -796,7 +796,7 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 
 **Accessibility:** the circle has no role. The icon is decorative by default (hidden from screen readers); with `label` it's an image with that name (FinIcon). Not interactive, so no focus or keyboard behaviour.
 - Contrast (icons need 3:1): every tone passes in Dark. In Light, `warning` is 2.96:1 (`fg-warning` on `bg-warning-secondary`, already §10 #3). `disabled` is exempt.
-- In Dark, `primary` and `disabled` have the same background (`bg-icons` = `bg-disabled` = `#363636`); only the icon color differs (§10 #29).
+- In Dark, `primary` (`bg-icons` `#464646`) and `disabled` (`bg-disabled` `#363636`) now have different backgrounds (§10 #29, fixed 15 Oct 2026). White icon on `#464646` is 9.44:1.
 
 **Built (14 Oct 2026).** Storybook: Playground (controls), Sizes and tones (Figma). Checked against Figma: all 21 size × tone combinations have the exact circle size (40/48/64), icon size (24/24/36), centered icon, full radius, and in Light the exact Figma background and icon colors; Dark uses the current Dark tokens. a11y: no violations in Light or Dark.
 
@@ -847,7 +847,7 @@ Template:
 | 26 | **Table** page is complete and renamed (13 Oct 2026). Figma has the parts only; designers assemble tables on screens. **Decision:** code also gets a `FinTable` organism (§8 #74) built from those parts. Its API (columns/rows as data, selection, pagination) is written in §9 when built and agreed with design. `Property 1` on Table parts still needs naming (§10 #21). | Table | ✅ Decided |
 | 27 | **Dark-mode contrast: `text-error` on `bg-error-secondary`** was 4.19:1. Design updated the Dark status colors (14 Oct 2026): now 8.52:1, and every status text and icon color passes on `bg-primary`, `bg-secondary`, `bg-tertiary` and its own `bg-*_secondary` in Dark. | Foundation › Color collection (Dark) | ✅ Decided (14 Oct 2026) |
 | 28 | **Spacing shift (14 Oct 2026) in the component file.** These components use `Space-5XL`…`Space-12XL`, and still show the **old** values because the component file hasn't accepted the Foundation library update yet. After it does, they get smaller: `sub selection` (`3140:11076`) `Space-5XL` 40 → 36; `Pagination group` (`3151:14607`) `Space-6XL` 48 → 40; `Main Selection` (`3140:10997`) `Space-5XL` 40 → 36; `Header notification` (`3178:24467`) `Space-5XL` 40 → 36; `Button dock` (`75:5858`) `Space-5XL` 40 → 36; `Side sheet` (`3120:30707`) `Space-5XL` 40 → 36; `Side Menu` (`3142:11871`) `Space-5XL` 40 → 36. No other component uses those steps. Accept the library update, then confirm each new value or rebind. | Component file | ❓ Decide |
-| 29 | **Dark: Icon container Primary and Disabled look alike.** `bg-icons` and `bg-disabled` are both `#363636` in Dark, so `FinIconContainer` `tone="primary"` and `tone="disabled"` differ only by icon color (`#ffffff` vs `#626262`). In Light they differ (`#ededed` vs `#e9e9e9`). | Foundation › Color collection (Dark) | ❓ Decide |
+| 29 | **Dark: Icon container Primary and Disabled looked alike** (both `#363636`). Fixed 15 Oct 2026: Dark `bg-icons` is now Tertiary-700 `#464646` (`bg-disabled` stays Tertiary-800 `#363636`). White icon on `#464646` is 9.44:1. | Foundation › Color collection (Dark) | ✅ Fixed |
 
 ---
 
@@ -856,7 +856,7 @@ Template:
 > **Where we are (14 Oct 2026, end of day)**
 > - **Done:** setup S1–S6, `FinIcon` (§9.1) and `FinIconContainer` (§9.2). Everything is merged into `main`.
 > - **Next:** wait for the designer to name the next component. Don't start one before that.
-> - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator), §10 #5 (Dark-mode shadows), and §10 #29 (Dark: Icon container Primary and Disabled share the `#363636` background).
+> - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator) and §10 #5 (Dark-mode shadows). §10 #29 fixed 15 Oct 2026.
 
 | Date | Version | Change |
 |---|---|---|
@@ -887,3 +887,4 @@ Template:
 | 14 Oct 2026 | 0.2 | `FinIconContainer`: `filled` added (passes straight to FinIcon). Storybook: icon stories grouped under Components/Icons (§9). §10 #3 notes the Light warning icon container (2.96:1); §10 #29 added (Dark Primary and Disabled containers share `#363636`). |
 | 14 Oct 2026 | 0.2 | Circle Icon removed from Figma; FinCircleIcon dropped. |
 | 14 Oct 2026 | 0.2 | Status note added at the top of §11: done S1–S6, FinIcon, FinIconContainer; next component to be named by design; open §10 #3, #5, #29. |
+| 15 Oct 2026 | 0.2 | §10 #29 fixed: new export, Dark `bg-icons` Tertiary-800 → Tertiary-700 `#464646` (Light unchanged), so the Dark Primary and Disabled icon containers differ. Token build still 432 variables; Storybook a11y checks pass in Light and Dark. §3.3, §9.2 and the status note updated. |

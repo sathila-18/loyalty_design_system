@@ -3197,7 +3197,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-700}"
           }
         }
       }
@@ -4160,7 +4160,7 @@
         "Color collection",
         "Alias Spacing & Radius"
       ],
-      "createdAt": "2026-10-14T09:22:37.661Z"
+      "createdAt": "2026-10-15T04:29:26.510Z"
     }
   }
 }
