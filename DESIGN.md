@@ -516,7 +516,7 @@ Many components in Figma follow a **base → mapped** structure:
 1. Build the **base component first**, with all options as props.
 2. Build each **mapped component** as a thin wrapper that only passes fixed props to the base. Mapped components must not copy the base's markup or CSS.
 3. A visual fix to a mapped component almost always belongs in the **base**.
-4. **Bases are internal unless DESIGN.md says otherwise** (decided 15 Oct 2026). A base isn't exported from the package entry point (`@finspace-loyalty/ui`); apps use the mapped components. Its stories live under **Internal** in Storybook, only to check it against Figma. A base becomes public only when DESIGN.md says so (for example when a Figma component uses the base directly), with the reason noted in its §9 spec. Shared option lists (such as tones) are defined once in the base and re-exported by the mapped component. `packages/ui/test/public-api.test.ts` checks that no `*Base` component, and none of the internal bases it lists (`FinBadgeBase`, `FinIndicatorDot`), is exported. Internal so far: FinBadgeBase (§9.9), FinIndicatorDot (§9.11).
+4. **Bases are internal unless DESIGN.md says otherwise** (decided 15 Oct 2026). A base isn't exported from the package entry point (`@finspace-loyalty/ui`); apps use the mapped components. Its stories live under **Internal** in Storybook, only to check it against Figma. A base becomes public only when DESIGN.md says so (for example when a Figma component uses the base directly), with the reason noted in its §9 spec. Shared option lists (such as tones) are defined once in the base and re-exported by the mapped component. `packages/ui/test/public-api.test.ts` checks that no `*Base` component, and none of the internal bases it lists (`FinBadgeBase`, `FinIndicatorDot`), is exported. Internal so far: FinBadgeBase (§9.9), FinIndicatorDot (§9.11). **Exception:** Figma's `Base-Radio_box` is public as `FinRadio` (§9.15), because nothing is mapped from it.
 
 | Base | Mapped components |
 |---|---|
@@ -602,7 +602,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 6 | `Caption` | List | `77:10172` | `FinCaption` | Size: Small/Medium/Large · Thickness: Heavy/Light | ⚠️ | ⬜ |
 | 7 | `Overlay` | Overlays | `111:2495` | `FinOverlay` | Type: **Desktop only** (Mobile is out of scope) · responsive: fills the window · `Alpha-md` | ✅ | ✅ |
 | 8 | `Toggle` (renamed from `Switch` in Figma, 15 Oct 2026) | Toggle | `34:2545` | `FinToggle` | Type: Selected/Unselected · Size: Small/Large · State, Focused (runtime) · visually hidden `label` (§9.14) | ⚠️ (focus-ring radius from another library → `Radius-Full`; raw radii → `Radius-Full`; approved 15 Oct 2026) | ✅ |
-| 9 | `Base-Radio_box` | Radio button | `37:104` | `FinRadio` | Type: Selected/Unselected · State (runtime) | ⚠️ | ⬜ |
+| 9 | `Base-Radio_box` | Radio button | `37:104` | `FinRadio` | Type: Selected/Unselected · State (runtime) · **public** (§7.2 rule 4 exception) · visually hidden `label` (§9.15) | ⚠️ (radius from another library → `Radius-Full`, approved 15 Oct 2026) | ✅ |
 | 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | Filled: 0–100% · Size: Large/Small · Steps: 4/5 | ⚠️ | ⬜ |
 | 11 | `Progress bar-portfolio` | Progress | `695:5418` | `FinProgressBarPortfolio` | Filled (`Fillted`): 0–100% | ⚠️ | ⬜ |
 | 12 | `dragger` | Progress | `645:3136` | `FinDragger` | Filled: 5–100% | ⚠️ | ⬜ |
@@ -700,7 +700,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1298,6 +1298,52 @@ import { FinToggle } from '@finspace-loyalty/ui';
 
 **Built (15 Oct 2026).** Storybook (Components/Toggle): Playground, States (Figma) with both sizes, on/off, enabled/disabled, Focused (Tab). Checked against Figma: tracks 40 × 24 and 56 × 32, handles 16 and 24 at (4, 4) off and (20, 4) / (28, 4) on, full radius, Light colors equal Figma for all 8 states (Dark uses the Dark tokens), focus ring 2px 1px out; Space switches it on. a11y: no violations in Light or Dark.
 
+### 9.15 FinRadio (Base-Radio_box)
+
+**Figma:** page **Radio button**, component set `Base-Radio_box` `37:104`: `State` = Enabled / Hovered / Pressed / Disabled × `Type` = Unselected / Selected (8 variants), no `Focused` variant, no label, no instances. Hover and Pressed fills swapped by design on 15 Oct 2026 (Hovered = `bg-active`, Pressed = `bg-active-hover`). **Public despite the "Base" name** (decided 15 Oct 2026): nothing in Figma is mapped from it, so it's the exception to §7.2 rule 4.
+
+**Variants:**
+
+| Figma | Prop / state |
+|---|---|
+| `Type` = Selected / Unselected | `checked` / `defaultChecked` + `onChange` (native radio) |
+| `State` = Hovered / Pressed | `:hover` / `:active` (enabled only) |
+| `State` = Disabled | `disabled` (native; not focusable, no hover or pressed) |
+| — (no Focused variant) | `:focus-visible`: the default ring (§10 #6) |
+| — | `label` (required): the accessible name, **visually hidden** (decided 15 Oct 2026; visible option labels will come from the List component) |
+
+**Structure:** a `<label>` holding a native `<input type="radio">` laid invisibly over the 24px box (it gets clicks, keyboard and focus), the ring with its dot (`aria-hidden`), and the visually hidden label. `name`, `value` and other input attributes go to the input, `ref` too; `className` goes to the wrapper. Radios that share a `name` behave as one group natively: one tab stop (the selected radio), arrow keys move and select. Grouping is up to the screen (`<fieldset>` + `<legend>`, or `role="radiogroup"` with a name); no FinRadioGroup (not in Figma).
+
+**Tokens used:** box `--fin-size-24`; ring `--fin-size-20`, 2px inside stroke (a border), centred (Figma inset 2); dot `--fin-size-12`, centred; `--fin-radius-full` (Figma's radius is bound to another library, `Alias Spacing & Radius`).
+
+| State | Unselected: ring / fill | Selected: ring and dot |
+|---|---|---|
+| Enabled | `--fin-border-strong` / none | `--fin-fg-action` |
+| Hovered | `--fin-border-hovered` / `--fin-bg-active` | `--fin-fg-hovered` |
+| Pressed | `--fin-border-pressed` / `--fin-bg-active-hover` | `--fin-fg-pressed` |
+| Disabled | `--fin-fg-disabled` / none | `--fin-fg-disabled` |
+| Focus | `outline: 2px solid var(--fin-border-focused)`, `outline-offset: 2px` | same |
+
+Raw values: the 2px ring stroke and focus ring, and the 1px visually hidden label box. No animation (§5).
+
+**API:**
+
+```tsx
+import { FinRadio } from '@finspace-loyalty/ui';
+
+<fieldset>
+  <legend>Billing period</legend>
+  <FinRadio name="billing" value="monthly" label="Monthly" defaultChecked />
+  <FinRadio name="billing" value="yearly" label="Yearly" />
+</fieldset>
+```
+
+`'use client'` (interactive).
+
+**Accessibility:** announced as a radio button with its label, selected or not, and its position in the group. Pointer target 24 × 24. Contrast (non-text, 3:1): selected `fg-action` 4.71 Light / 5.24 Dark; hovered ring on its fill 4.82 / 4.92; pressed 5.11 / 5.52. **Unselected ring** `border-strong`: 2.96:1 on `bg-primary` and 2.71:1 on `bg-secondary` in Light (2.88 / 2.39 Dark), below 3:1; built as Figma (decided 15 Oct 2026), logged in §10 #3. Disabled is exempt.
+
+**Built (15 Oct 2026).** Storybook (Components/Radio button): Playground, States (Figma) with Enabled and Disabled shown and Hovered/Pressed live, Group (fieldset, keyboard). Checked against Figma: box 24, ring 20 at (2, 2) with a 2px stroke, dot 12 at (4, 4); Light colors equal Figma for all 8 states (Hovered and Pressed measured with a real mouse); Dark uses the Dark tokens; Tab then ↓ moves to and selects the next radio, with the focus ring. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1319,7 +1365,7 @@ Template:
 |---|---|---|---|
 | 1 | **Desktop spacing rules** (page padding, section gap, card padding, gap between buttons…) aren't defined. Until then, spacing is copied from Figma with spacing tokens and off-scale values are reported (§2). | Foundation | ❓ Decide (after the first UIs) |
 | 2 | `bg-action-secondary_hovered` and `_pressed` had the same value. Fixed 13 Oct 2026: pressed is now Primary-200 / Primary-700 (hovered stays Primary-100 / Primary-800), and the Secondary button in the component file uses both tokens. | Foundation › Color collection | ✅ Fixed |
-| 3 | **Contrast failures** (checked 14 Oct 2026 after the Dark status-color update). **Light:** white text on `bg-success` 3.6:1 and on `bg-warning` 2.7:1 (dark text on `bg-warning` is 6.5:1); `border-strong` and `text-placeholder` about 2.96:1 on white (control borders need 3:1); `text-warning` on `bg-tertiary` 4.28:1; `fg-warning` on `bg-secondary` 2.98:1, `bg-tertiary` 2.77:1 and `bg-warning-secondary` 2.96:1 (icons need 3:1). **Dark, button hover/pressed:** `text-white_both` on `bg-action-primary-hovered` 3.35:1, `-pressed` 2.70:1, `bg-action-destructive-hovered` 3.53:1, `-pressed` 2.34:1 (`fg-white_both` fails on both pressed states). **Decide before `FinButtonBase` is built.** **Both:** `text-white_subtle` fails on `bg-brand`/`bg-action-primary` (3.18:1) and `bg-action-destructive` (4.03:1 Light, 3.04:1 Dark). **Badge indicator** (text is `text-inverse` on `fg-*`, rebound in Figma 14 Oct 2026): Light fails on `fg-warning` 3.24:1 and `fg-success` 3.64:1; Dark fails on `fg-error` 3.97:1 (the other four pass). **Icon container** (`FinIconContainer` `tone="warning"`, Light): `fg-warning` on `bg-warning-secondary` 2.96:1 (icons need 3:1). **`FinBadgeIndicator` built with these failures as documented exceptions (15 Oct 2026, §9.8):** Light Yellow 3.24 and Green 3.64, Dark Red 3.97; the a11y check skips only those badges in that theme. **Page indicator dots** (`fg-placeholder`, Light): 2.96:1 on `bg-primary`, 2.71:1 on `bg-secondary` (non-text needs 3:1; §9.12). **Toggle off track** (`fg-placeholder`, Light; decided 15 Oct 2026: build as Figma): 2.96:1 on `bg-primary`, 2.71:1 on `bg-secondary`, handle on it 2.96:1 (non-text needs 3:1; §9.14). | Foundation › Color collection | ❓ Decide (not blocking) |
+| 3 | **Contrast failures** (checked 14 Oct 2026 after the Dark status-color update). **Light:** white text on `bg-success` 3.6:1 and on `bg-warning` 2.7:1 (dark text on `bg-warning` is 6.5:1); `border-strong` and `text-placeholder` about 2.96:1 on white (control borders need 3:1); `text-warning` on `bg-tertiary` 4.28:1; `fg-warning` on `bg-secondary` 2.98:1, `bg-tertiary` 2.77:1 and `bg-warning-secondary` 2.96:1 (icons need 3:1). **Dark, button hover/pressed:** `text-white_both` on `bg-action-primary-hovered` 3.35:1, `-pressed` 2.70:1, `bg-action-destructive-hovered` 3.53:1, `-pressed` 2.34:1 (`fg-white_both` fails on both pressed states). **Decide before `FinButtonBase` is built.** **Both:** `text-white_subtle` fails on `bg-brand`/`bg-action-primary` (3.18:1) and `bg-action-destructive` (4.03:1 Light, 3.04:1 Dark). **Badge indicator** (text is `text-inverse` on `fg-*`, rebound in Figma 14 Oct 2026): Light fails on `fg-warning` 3.24:1 and `fg-success` 3.64:1; Dark fails on `fg-error` 3.97:1 (the other four pass). **Icon container** (`FinIconContainer` `tone="warning"`, Light): `fg-warning` on `bg-warning-secondary` 2.96:1 (icons need 3:1). **`FinBadgeIndicator` built with these failures as documented exceptions (15 Oct 2026, §9.8):** Light Yellow 3.24 and Green 3.64, Dark Red 3.97; the a11y check skips only those badges in that theme. **Page indicator dots** (`fg-placeholder`, Light): 2.96:1 on `bg-primary`, 2.71:1 on `bg-secondary` (non-text needs 3:1; §9.12). **Toggle off track** (`fg-placeholder`, Light; decided 15 Oct 2026: build as Figma): 2.96:1 on `bg-primary`, 2.71:1 on `bg-secondary`, handle on it 2.96:1 (non-text needs 3:1; §9.14). **Radio unselected ring** (`border-strong`; decided 15 Oct 2026: build as Figma): 2.96:1 / 2.71:1 Light, 2.88:1 / 2.39:1 Dark (§9.15). | Foundation › Color collection | ❓ Decide (not blocking) |
 | 4 | Dark mode default: follow the OS setting (`prefers-color-scheme`) or only the app setting? | Theming | ❓ Decide |
 | 5 | Shadows are effect styles, not variables, so they're the same in Light and Dark. Now three neutral styles (Resting cards, Panel sheets, Sticky); the mobile-era Floating and Back styles were removed (13 Oct 2026). Does dark mode need different shadows? | Foundation › effect styles | ❓ Decide after the first components are built and checked in Dark (not a blocker) |
 | 6 | Focus ring: color is `border-focused`, but width and offset aren't tokens. Read them from the `Focused` variants in Figma when building; ask if components differ. **Profile image badge** (no Focused variant in Figma): 2px ring, 2px offset (decided 15 Oct 2026); use this unless a component's Figma says otherwise. **Toggle** (Figma `Focused`): 2px, 1px offset (§9.14). | Foundation / Components | ⏳ Check per component |
@@ -1358,7 +1404,7 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) and `FinToggle` (§9.14). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) and `FinRadio` (§9.15, on `feat/radio`, waiting for approval). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers) and §10 #35 (Indicator selected width 22 → 24 in Figma). Fixed 15 Oct 2026: §10 #29, #30.
 
@@ -1407,3 +1453,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinOverlay` done** (§8 #7, §9.13): Desktop only, responsive (`position: fixed; inset: 0`, fills the window at any size), `--fin-alpha-md` as in Figma, decorative, optional `onClick`; no z-index. §3.3: `Alpha-md` is the scrim (was wrongly `Alpha-both`). Rule for Dialog box and Side sheet (§8 #67, #68): stacking added when built; the page behind doesn't scroll while they're open. |
 | 15 Oct 2026 | 0.2 | `Switch` renamed `Toggle` in Figma (`34:2545`); code name `FinSwitch` → `FinToggle` (§8 #8). |
 | 15 Oct 2026 | 0.2 | **`FinToggle` done** (§8 #8, §9.14): native checkbox with `role="switch"`, `checked`/`defaultChecked`/`onChange`/`disabled`, `size` small/large, required visually hidden `label`. Figma updated by design (Large 56, handle `fg-white_both`, off track `fg-placeholder`, disabled on-track `bg-disabled`). Off-track Light contrast logged in §10 #3; Toggle focus ring 2px/1px noted in §10 #6. |
+| 15 Oct 2026 | 0.2 | **`FinRadio` done** (§8 #9, §9.15): native radio, public despite the Figma "Base" name (§7.2 exception), visually hidden `label`, Hovered/Pressed via `:hover`/`:active` (Figma updated: Hovered `bg-active`, Pressed `bg-active-hover`), default focus ring 2px/2px. Unselected-ring contrast logged in §10 #3. Figma's stray "Frame 2" mock removed by design. |

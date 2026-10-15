@@ -11,3 +11,4 @@ export * from './components/Badge';
 export * from './components/PageIndicator';
 export * from './components/Overlay';
 export * from './components/Toggle';
+export * from './components/Radio';

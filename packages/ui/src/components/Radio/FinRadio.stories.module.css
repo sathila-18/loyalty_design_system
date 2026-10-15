@@ -1,0 +1,36 @@
+/* Layout for the FinRadio stories only (not part of the component). */
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(2, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  margin-bottom: var(--fin-space-m);
+  font: var(--fin-font-label-medium);
+  color: var(--fin-text-primary);
+}
+
+.option {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-secondary);
+}

@@ -1,0 +1,104 @@
+/*
+ * FinRadio (DESIGN.md §9). The native radio sits invisibly over the 24px box (it gets the clicks, keyboard and
+ * focus); the ring and dot are drawn here and follow its state. No animation: motion is deferred (§5).
+ */
+
+.radio {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-24);
+  height: var(--fin-size-24);
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+/* Unselected, Enabled: a 20px ring, 2px border-strong stroke inside (Light 2.96:1, logged in §10 #3). */
+.ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-20);
+  height: var(--fin-size-20);
+  border: 2px solid var(--fin-border-strong);
+  border-radius: var(--fin-radius-full);
+}
+
+/* The 12px dot, shown when Selected. */
+.dot {
+  display: none;
+  width: var(--fin-size-12);
+  height: var(--fin-size-12);
+  border-radius: var(--fin-radius-full);
+  background-color: currentcolor;
+}
+
+/* Selected: fg-action ring and dot. */
+.input:checked + .ring {
+  border-color: var(--fin-fg-action);
+  color: var(--fin-fg-action);
+}
+
+.input:checked + .ring .dot {
+  display: block;
+}
+
+/* Focus (no Focused variant in Figma): the default ring, 2px border-focused, 2px offset (§10 #6). */
+.input:focus-visible + .ring {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+/* Disabled: never focusable, no hover or pressed. */
+.radio:has(.input:disabled) {
+  cursor: default;
+}
+
+.input:disabled + .ring {
+  border-color: var(--fin-fg-disabled);
+  color: var(--fin-fg-disabled);
+}
+
+/* Hovered and Pressed (enabled only), unselected then selected; Pressed wins while the button is down. */
+.input:hover:not(:disabled) + .ring {
+  border-color: var(--fin-border-hovered);
+  background-color: var(--fin-bg-active);
+}
+
+.input:active:not(:disabled) + .ring {
+  border-color: var(--fin-border-pressed);
+  background-color: var(--fin-bg-active-hover);
+}
+
+.input:hover:not(:disabled):checked + .ring {
+  border-color: var(--fin-fg-hovered);
+  background-color: transparent;
+  color: var(--fin-fg-hovered);
+}
+
+.input:active:not(:disabled):checked + .ring {
+  border-color: var(--fin-fg-pressed);
+  background-color: transparent;
+  color: var(--fin-fg-pressed);
+}
+
+/* The visually hidden label: read by screen readers, not shown. */
+.label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
