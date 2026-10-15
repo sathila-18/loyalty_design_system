@@ -60,7 +60,7 @@
   --avatar-font: var(--fin-font-headline-large-h4);
 }
 
-/* 100 in Figma; 96 decided 15 Oct 2026 so it maps to a token. */
+/* Was 100 in Figma; 96 since 15 Oct 2026 so it maps to a token. */
 .avatar[data-size="xxxlarge"] {
   --avatar-size: var(--fin-size-96);
   --avatar-font: var(--fin-font-display-medium-h2);

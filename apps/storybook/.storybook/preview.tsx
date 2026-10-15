@@ -27,8 +27,20 @@ const withThemeAndBrand: Decorator = (Story, { globals }) => {
   );
 };
 
+/**
+ * Wait for the fonts before a story renders. Without the icon font, a glyph is plain text ("edit"),
+ * and the a11y check judges it as words: contrast as text, and button text missing from the label.
+ */
+const loadFonts = async () => {
+  await Promise.all([
+    document.fonts.load('24px "Material Symbols Rounded"', 'home'),
+    ...[400, 500, 600, 700].map((weight) => document.fonts.load(`${weight} 16px Inter`)),
+  ]);
+};
+
 const preview: Preview = {
   decorators: [withThemeAndBrand],
+  loaders: [loadFonts],
   globalTypes: {
     theme: {
       description: 'Theme',

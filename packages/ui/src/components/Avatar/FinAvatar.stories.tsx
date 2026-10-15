@@ -34,7 +34,7 @@ type Story = StoryObj<typeof FinAvatar>;
 
 export const Playground: Story = {};
 
-/** The Figma Avatar page: every Type and Size. XXXLarge is 96 (100 in Figma, decided 15 Oct 2026). */
+/** The Figma Avatar page: every Type and Size. XXXLarge is 96 (changed from 100 in Figma on 15 Oct 2026). */
 export const TypesAndSizes: Story = {
   name: 'Types and sizes (Figma)',
   render: () => (

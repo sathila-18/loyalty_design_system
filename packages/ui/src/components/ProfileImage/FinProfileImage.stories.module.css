@@ -1,0 +1,15 @@
+/* Layout for the FinProfileImage stories only (not part of the component). */
+
+.row {
+  display: flex;
+  gap: var(--fin-space-6xl);
+}
+
+.case {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+  align-items: center;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}

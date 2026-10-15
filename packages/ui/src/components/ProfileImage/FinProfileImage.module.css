@@ -1,0 +1,37 @@
+/* FinProfileImage (DESIGN.md §9). The avatar is FinAvatar and the glyph is FinIcon; this file places the badge. */
+
+/* Figma frame 100 × 100: the 96 avatar plus the badge sticking out by 4 (no Size-100). */
+.profile {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: flex-start;
+  width: calc(var(--fin-size-96) + var(--fin-space-xs));
+  height: calc(var(--fin-size-96) + var(--fin-space-xs));
+}
+
+/* "add image": 32 circle at the bottom right (68, 68). Hover and pressed wait for design (decided 15 Oct 2026). */
+.badge {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-32);
+  height: var(--fin-size-32);
+  padding: 0;
+  border: 0;
+  border-radius: var(--fin-radius-full);
+  background-color: var(--fin-fg-action);
+
+  /* The Figma stroke: 1px outside the circle. A spread shadow, so the outline stays free for focus. */
+  box-shadow: 0 0 0 1px var(--fin-border-subtle);
+  cursor: pointer;
+}
+
+/* Focus ring: 2px, 2px offset (decided 15 Oct 2026; width and offset aren't tokens, §10 #6). */
+.badge:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}

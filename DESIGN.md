@@ -474,7 +474,7 @@ Only these six sizes exist (`size` prop: `16 | 20 | 24 | 36 | 48 | 64`). In Figm
 
 _Scan of all in-scope pages, 13 Oct 2026; names checked against Material Symbols Rounded on 14 Oct 2026 (§10 #23). `FinIcon`'s registry starts with these 28 names (current Material Symbols names):_
 
-`arrow_back`, `assignment`, `cancel`, `check`, `check_circle`, `chevron_right`, `close`, `cloud_upload`, `credit_card`, `desktop_windows`, `dock_to_right`, `home`, `info`, `keyboard_arrow_down`, `keyboard_arrow_right`, `keyboard_arrow_up`, `loyalty`, `notifications`, `person`, `photo_camera`, `plagiarism`, `remove`, `search`, `sports_esports`, `supervised_user_circle`, `visibility`, `visibility_off`, `warning`
+`arrow_back`, `assignment`, `cancel`, `check`, `check_circle`, `chevron_right`, `close`, `cloud_upload`, `credit_card`, `desktop_windows`, `dock_to_right`, `edit` (added 15 Oct 2026 for Profile image, §9.6), `home`, `info`, `keyboard_arrow_down`, `keyboard_arrow_right`, `keyboard_arrow_up`, `loyalty`, `notifications`, `person`, `photo_camera`, `plagiarism`, `remove`, `search`, `sports_esports`, `supervised_user_circle`, `visibility`, `visibility_off`, `warning`
 
 **Old Material Icons names in Figma → current names in code:**
 
@@ -645,7 +645,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 40 | `Segmented button` | Segmented button | `117:4688` | `FinSegmentedButton` | **Segmented_button-base** | ⚠️ | ⬜ |
 | 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number | ✅ | ⬜ |
 | 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 (code: 2–6 shown, then "+N", §9.5) | ⚠️ (overlaps mapped to spacing, approved 15 Oct 2026) | ✅ |
-| 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image | ⚠️ | ⬜ |
+| 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image (code: from `src`) · badge button: camera / edit (§9.6) | ⚠️ (frame 100 = `Size-96` + `Space-XS`, approved 15 Oct 2026) | ✅ |
 | 44 | `Progress-progress bar` | Progress | `31:2122` | `FinProgress` | **Progress bar**, Text Box | ⚠️ | ⬜ |
 | 45 | `Progress-Spinner` | Progress | `33:2348` | `FinProgressSpinner` | **Spinner**, Text Box | ⚠️ | ⬜ |
 | 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black/Basic | ⚠️ (§10 #16) | ⬜ |
@@ -864,7 +864,7 @@ Presentational: no `'use client'`. `className` and other `<hr>` attributes go to
 | `large` | `--fin-size-48` | 24 | `--fin-font-title-large` |
 | `xlarge` | `--fin-size-56` | 36 | `--fin-font-headline-medium-h5` |
 | `xxlarge` | `--fin-size-64` | 48 | `--fin-font-headline-large-h4` |
-| `xxxlarge` | `--fin-size-96` (**100 in Figma**, §10 #30) | 64 | `--fin-font-display-medium-h2` |
+| `xxxlarge` | `--fin-size-96` (was 100 in Figma; now 96 there too, §10 #30) | 64 | `--fin-font-display-medium-h2` |
 
 | Part | Token |
 |---|---|
@@ -938,6 +938,48 @@ Presentational: no `'use client'` of its own (FinAvatar is a client component). 
 
 **Built (15 Oct 2026).** Storybook: Playground (size and number of people), Sizes and counts (Figma) with 2–6 and 10 people, Without photos. Photos are the five Unsplash photos used in Figma, for the stories only. Checked against Figma: circle sizes 24/40/56, overlap 4/8/12, group widths equal the Figma frames (XSmall 44/104/144, Medium 72/168/232, XLarge 100/232/320 for 2/5/7 circles), each avatar on top of the previous one, "+4" in the Figma text style and colors; Dark uses the Dark tokens. Figma crops some photos higher than center; code centers them (`object-fit: cover`). a11y: no violations in Light or Dark.
 
+### 9.6 FinProfileImage (Profile image)
+
+**Figma:** page **Avatar**, component set `Profile image` `432:1610`: `Type=Image` (`432:1609`) and `Type=Icon` (`432:1608`), 100 × 100. Each is an `Avatar` XXXLarge (96) and an **add image** badge (`432:1578`): a 32 circle at (68, 68) with a 16px camera.
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Type` = Image / Icon | Not a prop: `src` given → photo; no `src` → the default icon. Never initials (follows Figma, decided 15 Oct 2026). |
+| Badge icon (camera in both variants) | **Rule (design, 15 Oct 2026):** no photo → `photo_camera`; photo → `edit`. The badge follows `src`, so a photo that fails to load shows the icon with `edit` (accepted). |
+| — | `label` (the person's name, photo alt text), `onClick`, `buttonLabel` (default "Add profile photo" / "Change profile photo") |
+
+**Structure:** a `FinAvatar` (`size="xxxlarge"`, `type` image or icon) and a native `<button type="button">` holding a `FinIcon`. **Only the badge is clickable** (decided 15 Oct 2026); the component calls `onClick` and the app opens its own upload or edit flow.
+
+**Tokens used:**
+
+| Part | Token |
+|---|---|
+| Frame (100 × 100) | `calc(var(--fin-size-96) + var(--fin-space-xs))` (no `Size-100`) |
+| Badge | `--fin-size-32`, bottom right (0, 0) = Figma (68, 68), `--fin-radius-full`, `--fin-fg-action` fill (as in Figma) |
+| Badge stroke | 1px `--fin-border-subtle` outside the circle, as a spread `box-shadow` so `outline` stays free for focus |
+| Badge icon | FinIcon 16, `color="inverse"` (`fg-inverse`) |
+| Focus | `outline: 2px solid var(--fin-border-focused)`, `outline-offset: 2px` (decided 15 Oct 2026, §10 #6) |
+| Hover, pressed | **None yet**: only `cursor: pointer`. Added when design defines them (decided 15 Oct 2026, §10 #31) |
+
+Raw values: the `1px` stroke, and the `2px` focus width and offset.
+
+**API:**
+
+```tsx
+import { FinProfileImage } from '@finspace-loyalty/ui';
+
+<FinProfileImage src={user.photoUrl} label={user.name} onClick={openPhotoDialog} />  // photo, "Change profile photo" (edit)
+<FinProfileImage onClick={openPhotoDialog} />                                         // icon, "Add profile photo" (camera)
+```
+
+`'use client'` (interactive). `className` and other `<div>` attributes go to the root.
+
+**Accessibility:** the badge is a native button: focusable, Enter and Space activate it, and it has a visible focus ring. Its name says what it does ("Add profile photo" / "Change profile photo"); the glyph is decorative. The photo's alt text is `label`; the default icon is decorative. Pointer target 32 × 32. Contrast: badge icon 4.71:1 Light / 5.24:1 Dark; focus ring `border-focused` 3.35:1 on white.
+
+**Built (15 Oct 2026).** Storybook (under Components/Avatar): Playground, Types (Figma). Checked against Figma: frame 100 × 100, avatar 96 at (0, 0), badge 32 × 32 at (68, 68) with the 1px `border-subtle` stroke, `fg-action` fill, centered 16px icon in `fg-inverse`; Light colors equal Figma, Dark uses the Dark tokens. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -986,14 +1028,15 @@ Template:
 | 27 | **Dark-mode contrast: `text-error` on `bg-error-secondary`** was 4.19:1. Design updated the Dark status colors (14 Oct 2026): now 8.52:1, and every status text and icon color passes on `bg-primary`, `bg-secondary`, `bg-tertiary` and its own `bg-*_secondary` in Dark. | Foundation › Color collection (Dark) | ✅ Decided (14 Oct 2026) |
 | 28 | **Spacing shift (14 Oct 2026) in the component file.** These components use `Space-5XL`…`Space-12XL`, and still show the **old** values because the component file hasn't accepted the Foundation library update yet. After it does, they get smaller: `sub selection` (`3140:11076`) `Space-5XL` 40 → 36; `Pagination group` (`3151:14607`) `Space-6XL` 48 → 40; `Main Selection` (`3140:10997`) `Space-5XL` 40 → 36; `Header notification` (`3178:24467`) `Space-5XL` 40 → 36; `Button dock` (`75:5858`) `Space-5XL` 40 → 36; `Side sheet` (`3120:30707`) `Space-5XL` 40 → 36; `Side Menu` (`3142:11871`) `Space-5XL` 40 → 36. No other component uses those steps. Accept the library update, then confirm each new value or rebind. | Component file | ❓ Decide |
 | 29 | **Dark: Icon container Primary and Disabled looked alike** (both `#363636`). Fixed 15 Oct 2026: Dark `bg-icons` is now Tertiary-700 `#464646` (`bg-disabled` stays Tertiary-800 `#363636`). White icon on `#464646` is 9.44:1. | Foundation › Color collection (Dark) | ✅ Fixed |
-| 30 | **Avatar XXXLarge is 100 in Figma**, but there's no `Size-100`. **Decided 15 Oct 2026:** XXXLarge is 96 (`Size-96`) in code. Figma still shows 100 × 100 (`932:1366`, `932:1376`, `932:1367`). | Avatar | 🔧 Fix in Figma |
+| 30 | **Avatar XXXLarge was 100 in Figma**, but there's no `Size-100`. Decided 15 Oct 2026: 96 (`Size-96`). Figma updated to 96 × 96 (checked 15 Oct 2026). | Avatar | ✅ Fixed |
+| 31 | **Profile image badge has no hover or pressed state** in Figma, and `fg-action` has no hovered/pressed tokens. For now the badge only changes the cursor (decided 15 Oct 2026). Design to add the states. | Profile image | ❓ Design to define |
 
 ---
 
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4) and `FinAvatarGroup` (§9.5). `FinAvatar` and `FinAvatarGroup` are on `feat/avatar-group` (stacked on `feat/avatar`), not merged into `main` yet; the rest is on `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5) and `FinProfileImage` (§9.6). The three Avatar components are on `feat/profile-image` (stacked on `feat/avatar-group` and `feat/avatar`), not merged into `main` yet; the rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Don't start one before that.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator) and §10 #5 (Dark-mode shadows). §10 #29 fixed 15 Oct 2026.
 
@@ -1030,3 +1073,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinDivider` done** (§8 #2, §9.3): native `<hr>`, `type` `divider` (1px `border-default` border) / `section-divider` (`--fin-size-8` band), full width; `orientation="vertical"` added at design's request (not in Figma); `decorative` hides it from screen readers. Decisions: 1px is a border width (no `Size-1`), Section Divider full width instead of Figma's 375. |
 | 15 Oct 2026 | 0.2 | **`FinAvatar` done** (§8 #29, §9.4): `type` image/icon/text, seven sizes mapped to `--fin-size-*`, `src`, `initials` (passed in), `label`; photo → initials → icon fallback. Decisions: XXXLarge 96 instead of 100 (§10 #30 added), `"case"` font feature dropped, XSmall initials centered. |
 | 15 Oct 2026 | 0.2 | **`FinAvatarGroup` done** (§8 #42, §9.5): mapped from FinAvatar; `people`, `size` xsmall/medium/xlarge, `label`. Up to 6 avatars, then a non-interactive "+N" circle. Overlaps −4/−8/−12 mapped to `Space-XS`/`M`/`L`. Storybook photos from the Figma group (Unsplash). |
+| 15 Oct 2026 | 0.2 | **`FinProfileImage` done** (§8 #43, §9.6): FinAvatar XXXLarge plus a badge button (camera without a photo, edit with one), only the badge clickable, cursor only for hover/pressed (§10 #31), 2px focus ring with 2px offset. `edit` added to `finIcons` (29 icons, 6.4 KB). §10 #30 fixed in Figma. Storybook: stories now wait for the Inter and icon fonts before rendering, so the a11y check no longer reads an unloaded glyph as text (this caused the intermittent §10 #3 warning failure). |

@@ -15,6 +15,7 @@ export const finIcons = [
   'credit_card',
   'desktop_windows',
   'dock_to_right',
+  'edit',
   'home',
   'info',
   'keyboard_arrow_down',
