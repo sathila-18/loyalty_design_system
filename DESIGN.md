@@ -662,7 +662,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 | # | Figma component | Page | Node | Code name | Built on / depends on | Figma check | Status |
 |---|---|---|---|---|---|---|---|
-| 52 | `Input field-base` | Input field | `49:5734` | `FinInputBase` | **Base** for single-line fields. Type: Default/Payment/Mobile number/Select · Destructive (= error) · Label, Placeholder, Prefix, Suffix, Caret, Focus ring · Leading, Trailing, Placeholder and Helper text slots · Helper text, Country selector, Flags, Divider, icons | ⚠️ | ⬜ |
+| 52 | `Input field-base` | Input field | `49:5734` | `FinInputBase` | **Base** for single-line fields. Type: Default/Payment/Mobile number/Select · Destructive (= error) · Label, Placeholder, Prefix, Suffix, Caret, Focus ring · Leading, Trailing, Placeholder and Helper text slots · Helper text, Country selector, Flags, Divider, icons · **Follow-up when built:** replace the plain stand-in inputs in the Label "Usage" and Helper text "With a field" stories with this component | ⚠️ | ⬜ |
 | 52a | `Input field-textArea-base` | Input field | `3094:26567` | `FinTextAreaBase` | **Base** for multi-line fields. Type: Default/Destructive (`Distructive`) · Label, Helper text, Placeholder, Caret, Focus ring · Helper text and Placeholder slots | ⚠️ (§10 #16) | ⬜ |
 | 52b | `Input field-base` (text area) | Input field | `3097:27497` | _(provisional)_ `FinTextArea` | **Input field-textArea-base**, Helper text | 🔴 broken set and duplicate name (§10 #17) | ⬜ |
 | 53 | `Input field-standard` | Input field | `52:2629` | `FinTextField` | **Input field-base**, Payment Icons, Country selector · Type: Default/Mobile number/Payment · Error | ⚠️ (after #52) | ⬜ |
@@ -1612,6 +1612,7 @@ Template:
 > **Where we are (15 Oct 2026)**
 > - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) and `FinHelperText` (§9.20, on `feat/helper-text`, waiting for approval). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
+> - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers), §10 #35 (Indicator selected width 22 → 24 in Figma) and §10 #36 (Helper text Success icon toggle). Fixed 15 Oct 2026: §10 #29, #30.
 
 | Date | Version | Change |
