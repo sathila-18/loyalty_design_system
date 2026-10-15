@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { FinBadgeIndicator, type FinBadgeIndicatorSize, type FinBadgeIndicatorTone } from './FinBadgeIndicator';
+import {
+  FinBadgeIndicator,
+  type FinBadgeIndicatorProps,
+  type FinBadgeIndicatorSize,
+  type FinBadgeIndicatorTone,
+} from './FinBadgeIndicator';
 import styles from './FinBadgeIndicator.stories.module.css';
 
 const SIZES: FinBadgeIndicatorSize[] = ['small', 'large'];
@@ -22,22 +27,41 @@ const KNOWN_CONTRAST_ISSUES = [
   'html[data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])',
 ];
 
-const meta: Meta<typeof FinBadgeIndicator> = {
+/** Figma `Digits`, for the controls only: in code the shape follows `count`. */
+type Digits = 'none' | 'single' | 'double' | 'custom';
+const DIGITS_COUNT: Record<Exclude<Digits, 'custom'>, number | undefined> = { none: undefined, single: 3, double: 120 };
+type Args = FinBadgeIndicatorProps & { digits: Digits };
+
+const meta: Meta<Args> = {
   title: 'Components/Badge/Badge indicator',
   component: FinBadgeIndicator,
-  args: { count: 3, max: 99, tone: 'error', size: 'small' },
+  args: { digits: 'single', count: 3, max: 99, tone: 'error', size: 'small' },
   argTypes: {
-    count: { control: 'number', description: 'Empty: dot · 1–9: circle · 10+: pill · 0: hidden' },
+    digits: {
+      control: 'inline-radio',
+      options: ['none', 'single', 'double', 'custom'],
+      description:
+        'Figma `Digits`. In code: `none` passes no `count` (dot), `single` passes 3 (circle), `double` passes 120 ("99+" pill), `custom` uses the count below.',
+    },
+    count: {
+      control: 'number',
+      description: 'Empty: dot · 1–9: circle · 10+: pill · 0: hidden',
+      if: { arg: 'digits', eq: 'custom' },
+    },
     max: { control: 'number' },
     tone: { control: 'inline-radio', options: TONES },
     size: { control: 'inline-radio', options: SIZES },
     label: { control: 'text' },
   },
   parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
+  render: ({ digits, count, ...args }) => {
+    const n = digits === 'custom' ? count : DIGITS_COUNT[digits];
+    return <FinBadgeIndicator {...args} {...(n === undefined ? {} : { count: n })} />;
+  },
 };
 export default meta;
 
-type Story = StoryObj<typeof FinBadgeIndicator>;
+type Story = StoryObj<Args>;
 
 export const Playground: Story = {};
 
