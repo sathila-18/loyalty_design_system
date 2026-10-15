@@ -17,3 +17,4 @@ export * from './components/Spinner';
 export * from './components/Slider';
 export * from './components/Label';
 export * from './components/HelperText';
+export * from './components/TextBox';

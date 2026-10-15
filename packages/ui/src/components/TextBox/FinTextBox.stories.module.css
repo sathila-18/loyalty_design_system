@@ -1,0 +1,28 @@
+/* Layout for the FinTextBox stories only (not part of the component). The width matches Figma's 342px frames. */
+
+.frame {
+  width: calc(var(--fin-size-120) * 3 - var(--fin-size-16) - var(--fin-size-2));
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, calc(var(--fin-size-120) * 3 - var(--fin-size-16) - var(--fin-size-2)));
+  gap: var(--fin-space-6xl) var(--fin-space-4xl);
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+}
+
+.caption {
+  font: var(--fin-font-caption-large);
+  color: var(--fin-text-secondary);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-4xl);
+}

@@ -1,0 +1,80 @@
+/*
+ * FinTextBox (DESIGN.md §9). The label is FinLabel; this file lays out the parts and styles the heading and
+ * description. Fills its container; both texts wrap. The look comes from data-type, never from the heading level.
+ */
+
+/* No gap between the label and the content (Space-none, exactly as Figma). */
+.textBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-none);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--text-box-gap);
+  width: 100%;
+}
+
+.heading {
+  color: var(--fin-text-primary);
+  font: var(--text-box-heading);
+  overflow-wrap: break-word;
+}
+
+.description {
+  color: var(--fin-text-secondary);
+  font: var(--text-box-description);
+  overflow-wrap: break-word;
+}
+
+/* Type: heading style, description style (Body/Large for H1-H2, Body/Medium for H3-H6), gap (8 for H1-H4, 4 for H5-H6). */
+.textBox[data-type="h1"] {
+  --text-box-heading: var(--fin-font-display-large-h1);
+  --text-box-description: var(--fin-font-body-large);
+  --text-box-gap: var(--fin-space-m);
+}
+
+.textBox[data-type="h2"] {
+  --text-box-heading: var(--fin-font-display-medium-h2);
+  --text-box-description: var(--fin-font-body-large);
+  --text-box-gap: var(--fin-space-m);
+}
+
+.textBox[data-type="h3"] {
+  --text-box-heading: var(--fin-font-display-small-h3);
+  --text-box-description: var(--fin-font-body-medium);
+  --text-box-gap: var(--fin-space-m);
+}
+
+.textBox[data-type="h4"] {
+  --text-box-heading: var(--fin-font-headline-large-h4);
+  --text-box-description: var(--fin-font-body-medium);
+  --text-box-gap: var(--fin-space-m);
+}
+
+.textBox[data-type="h5"] {
+  --text-box-heading: var(--fin-font-headline-medium-h5);
+  --text-box-description: var(--fin-font-body-medium);
+  --text-box-gap: var(--fin-space-xs);
+}
+
+.textBox[data-type="h6"] {
+  --text-box-heading: var(--fin-font-headline-small-h6);
+  --text-box-description: var(--fin-font-body-medium);
+  --text-box-gap: var(--fin-space-xs);
+}
+
+/* Alignment: the label row and both texts. */
+.textBox[data-align="center"] {
+  align-items: center;
+  text-align: center;
+}
+
+.textBox[data-align="right"] {
+  align-items: flex-end;
+  text-align: right;
+}
