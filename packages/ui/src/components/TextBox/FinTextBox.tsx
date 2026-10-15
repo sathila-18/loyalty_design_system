@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react';
-import { FinLabel } from '../Label';
+import { FinLabel, type FinLabelSize } from '../Label';
 import styles from './FinTextBox.module.css';
 
 export type FinTextBoxType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -11,8 +11,10 @@ interface FinTextBoxBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
   type?: FinTextBoxType;
   /** Figma `Alignment`. */
   align?: FinTextBoxAlign;
-  /** Figma `Show Label` + its text: a FinLabel (Medium) directly above the heading. */
+  /** Figma `Show Label` + its text: a FinLabel directly above the heading. */
   label?: string;
+  /** The Label's `Size` (exposed by Figma's Text Box): Medium (default, as in Figma) or Small. */
+  labelSize?: FinLabelSize;
   /** Figma `Show Heading` + its text. */
   heading?: ReactNode;
   /** Figma `Show Description` + its text. */
@@ -37,6 +39,7 @@ export function FinTextBox({
   type = 'h1',
   align = 'left',
   label,
+  labelSize = 'medium',
   heading,
   description,
   headingLevel,
@@ -50,11 +53,11 @@ export function FinTextBox({
     <div {...rest} className={className ? `${styles.textBox} ${className}` : styles.textBox} data-type={type} data-align={align}>
       {label !== undefined &&
         (labelBadge ? (
-          <FinLabel badge badgeLabel={labelBadgeLabel}>
+          <FinLabel size={labelSize} badge badgeLabel={labelBadgeLabel}>
             {label}
           </FinLabel>
         ) : (
-          <FinLabel>{label}</FinLabel>
+          <FinLabel size={labelSize}>{label}</FinLabel>
         ))}
       {(heading !== undefined || description !== undefined) && (
         <div className={styles.content}>

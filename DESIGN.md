@@ -1559,7 +1559,8 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 |---|---|
 | `Type` | `type: 'h1' … 'h6'` (default `'h1'`): the **look** of the heading and the description |
 | `Alignment` | `align: 'left' \| 'center' \| 'right'` (default `'left'`) |
-| `Show Label` + text | `label` (string): a `FinLabel` (Medium); shown when passed |
+| `Show Label` + text | `label` (string): a `FinLabel`; shown when passed |
+| Label's `Size` (exposed) | `labelSize: 'medium' \| 'small'` (default `'medium'`, as in every Figma variant; added 15 Oct 2026 at design's request) |
 | Label's `Show badge` (exposed) | `labelBadge`, with a required `labelBadgeLabel` (screen-reader text), passed to FinLabel (decided 15 Oct 2026: follow Figma's exposed control) |
 | `Show Heading` + text | `heading`; shown when passed |
 | `Show Description` + text | `description`; shown when passed (a `<p>`) |
@@ -1585,6 +1586,7 @@ import { FinTextBox } from '@finspace-loyalty/ui';
 
 <FinTextBox type="h3" headingLevel={2} label="Step 2 of 3" heading="Confirm the reward" description="Check the details before you send it." />
 <FinTextBox type="h5" align="center" heading="No members yet" />
+<FinTextBox type="h6" label="Filters" labelSize="small" heading="Tier" />
 ```
 
 Presentational: no `'use client'`. `className` and other `<div>` attributes go to the root.
@@ -1712,3 +1714,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinLabel` done** (§8 #21, §9.19): `size` medium/small, one line with "…", `badge` (FinBadgeIndicator dot before the text) with a required `badgeLabel` (meaning varies by screen, so no default; read after the text), `htmlFor` → real `<label>`. |
 | 15 Oct 2026 | 0.2 | **`FinHelperText` done** (§8 #22, §9.20): `tone` (Figma `State`), Figma icons per tone (`info`, `check_circle`, `warning`, `warning`, `info`), `showIcon`, wrapping text, `announce` (`role="alert"`, off by default; `aria-describedby` is the default link). `disabled` tone a documented a11y exception. §10 #36 added (Success icon not linked to Show Leading Icon). |
 | 15 Oct 2026 | 0.2 | **`FinTextBox` done** (§8 #36, §9.21): `type` h1–h6 (look), `align`, `label` (FinLabel Medium) / `heading` / `description` shown when passed, `headingLevel` (structure only, defaults to `type`), label badge exposed as in Figma (`labelBadge` + required `labelBadgeLabel`). No gap under the label, as Figma. Progress-Spinner (§8 #45) and Progress-full (§8 #44) are now unblocked. |
+| 15 Oct 2026 | 0.2 | `FinTextBox`: `labelSize` (medium/small, default medium) added, following Figma's exposed Label (§9.21). |

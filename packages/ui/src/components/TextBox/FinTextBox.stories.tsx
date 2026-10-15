@@ -21,6 +21,7 @@ type Args = {
   align: FinTextBoxAlign;
   showLabel: boolean;
   label: string;
+  labelSize: 'medium' | 'small';
   labelBadge: boolean;
   labelBadgeLabel: string;
   showHeading: boolean;
@@ -36,6 +37,7 @@ const meta: Meta<Args> = {
     align: 'left',
     showLabel: true,
     label: 'Label text',
+    labelSize: 'medium',
     labelBadge: false,
     labelBadgeLabel: 'New',
     showHeading: true,
@@ -48,6 +50,7 @@ const meta: Meta<Args> = {
     align: { control: 'inline-radio', options: ALIGNS, description: 'Figma `Alignment`' },
     showLabel: { control: 'boolean', description: 'Figma `Show Label`' },
     label: { control: 'text', if: { arg: 'showLabel' } },
+    labelSize: { control: 'inline-radio', options: ['medium', 'small'], description: 'The Label’s `Size` (exposed by Figma’s Text Box)', if: { arg: 'showLabel' } },
     labelBadge: { control: 'boolean', description: 'The Label’s `Show badge` (exposed by Figma’s Text Box)', if: { arg: 'showLabel' } },
     labelBadgeLabel: { control: 'text', description: 'Required with the badge: what the dot means', if: { arg: 'labelBadge' } },
     showHeading: { control: 'boolean', description: 'Figma `Show Heading`' },
@@ -66,7 +69,7 @@ const meta: Meta<Args> = {
     <FinTextBox
       type={a.type}
       align={a.align}
-      {...(a.showLabel ? { label: a.label } : {})}
+      {...(a.showLabel ? { label: a.label, labelSize: a.labelSize } : {})}
       {...(a.showLabel && a.labelBadge ? { labelBadge: true as const, labelBadgeLabel: a.labelBadgeLabel } : {})}
       {...(a.showHeading ? { heading: a.heading } : {})}
       {...(a.showDescription ? { description: a.description } : {})}
@@ -108,6 +111,7 @@ export const Parts: Story = {
       <FinTextBox type="h4" label="Label text" heading="Label and heading" />
       <FinTextBox type="h4" heading="Heading and description" description="A short description under the heading." />
       <FinTextBox type="h4" label="Required details" labelBadge labelBadgeLabel="Required" heading="With the label’s badge" />
+      <FinTextBox type="h6" label="Small label" labelSize="small" heading="With a small label" />
     </div>
   ),
 };

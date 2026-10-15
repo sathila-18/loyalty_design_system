@@ -42,6 +42,13 @@ describe('FinTextBox', () => {
     expect(container.querySelector('[data-size="medium"]')).toHaveTextContent('Details, Required');
   });
 
+  it('takes the label size (exposed in Figma), medium by default', () => {
+    const { container, rerender } = render(<FinTextBox label="L" heading="H" />);
+    expect(container.querySelector('[data-size]')).toHaveAttribute('data-size', 'medium');
+    rerender(<FinTextBox label="L" labelSize="small" labelBadge labelBadgeLabel="New" heading="H" />);
+    expect(container.querySelector('[data-size]:not([data-shape])')).toHaveAttribute('data-size', 'small');
+  });
+
   it.each(['center', 'right'] as const)('aligns %s', (align) => {
     const { container } = render(<FinTextBox align={align} heading="Heading" />);
     expect(container.firstElementChild).toHaveAttribute('data-align', align);
