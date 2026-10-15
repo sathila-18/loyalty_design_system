@@ -1,0 +1,47 @@
+/* Layout for the FinBadgeBase stories only (not part of the component). */
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(4, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
+
+.cells {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}
+
+/* A table-cell-like box with a dashed outline, so the container edge is visible. */
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+  align-items: flex-start;
+  padding: var(--fin-space-m);
+  border: 1px dashed var(--fin-border-default);
+}
+
+.cell[data-width="240"] {
+  width: calc(var(--fin-size-120) * 2);
+}
+
+.cell[data-width="160"] {
+  width: calc(var(--fin-size-80) * 2);
+}
+
+.cell[data-width="96"] {
+  width: var(--fin-size-96);
+}
+
+.cellLabel {
+  font: var(--fin-font-caption-small);
+  color: var(--fin-text-secondary);
+}

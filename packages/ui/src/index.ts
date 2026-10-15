@@ -7,3 +7,4 @@ export * from './components/AvatarGroup';
 export * from './components/ProfileImage';
 export * from './components/OnlineIndicator';
 export * from './components/BadgeIndicator';
+export * from './components/BadgeBase';

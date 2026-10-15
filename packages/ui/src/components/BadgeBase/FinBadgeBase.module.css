@@ -1,0 +1,35 @@
+/*
+ * FinBadgeBase (DESIGN.md §9). Icons are FinIcon with no color, so they inherit the label color.
+ * Colors are Figma's base (bg-brand, white); the Badge-primary tones are added here when it's built.
+ */
+
+.badge {
+  display: inline-flex;
+  flex: none;
+  gap: var(--fin-space-xs);
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  padding: var(--fin-space-xs) var(--fin-space-m);
+  border-radius: var(--fin-radius-s);
+  background-color: var(--fin-bg-brand);
+  color: var(--fin-text-white-both);
+}
+
+.badge[data-size="small"] {
+  font: var(--fin-font-label-small);
+}
+
+/* Large is a fixed 32 in Figma (Small is 26 from its content). */
+.badge[data-size="large"] {
+  height: var(--fin-size-32);
+  font: var(--fin-font-label-medium);
+}
+
+/* One line, no fixed max width; "…" when the container is narrower (decided 15 Oct 2026). */
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,29 @@
+import type { HTMLAttributes, ReactNode } from 'react';
+import { FinIcon } from '../../icons/FinIcon';
+import type { FinIconName } from '../../icons/finIcons';
+import styles from './FinBadgeBase.module.css';
+
+export type FinBadgeBaseSize = 'small' | 'large';
+
+export interface FinBadgeBaseProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
+  /** The label (Figma `Label`). Stays on one line; cut off with "…" when the container is narrower. */
+  children: ReactNode;
+  /** Figma `Size`: Small (26 tall, fits its content) or Large (32 tall). */
+  size?: FinBadgeBaseSize;
+  /** Figma `Show Leading Icon` + the icon: shown when set (none by default, decided 15 Oct 2026). */
+  leadingIcon?: FinIconName;
+  /** Figma `Show Trailing Icon` + the icon. Decorative, not a dismiss button. */
+  trailingIcon?: FinIconName;
+}
+
+/** The base every badge is built from (Figma Badge-base, was Tag-base; DESIGN.md §7.2, §9). */
+export function FinBadgeBase({ children, size = 'small', leadingIcon, trailingIcon, className, ...rest }: FinBadgeBaseProps) {
+  const iconSize = size === 'large' ? 20 : 16;
+  return (
+    <span {...rest} className={className ? `${styles.badge} ${className}` : styles.badge} data-size={size}>
+      {leadingIcon && <FinIcon name={leadingIcon} size={iconSize} />}
+      <span className={styles.label}>{children}</span>
+      {trailingIcon && <FinIcon name={trailingIcon} size={iconSize} />}
+    </span>
+  );
+}
