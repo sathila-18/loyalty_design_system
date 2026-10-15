@@ -421,6 +421,8 @@ Both grids are the same today. Hand-written in `styles.css` as `--fin-grid-colum
 > 2. Map each use (enter, exit, hover color, expand/collapse, side nav collapse) to an M3 easing + duration pair.
 > 3. Agree the list with design.
 
+**Exception (15 Oct 2026):** the `FinSpinner` loader spins (one turn per second, linear), at design's request (§9.17). It's the only animation so far; its duration is raw until motion tokens exist.
+
 **Reduce motion:** every animation must respect `@media (prefers-reduced-motion: reduce)`. When it's on, elements appear instantly and loops stop.
 
 ---
@@ -516,7 +518,7 @@ Many components in Figma follow a **base → mapped** structure:
 1. Build the **base component first**, with all options as props.
 2. Build each **mapped component** as a thin wrapper that only passes fixed props to the base. Mapped components must not copy the base's markup or CSS.
 3. A visual fix to a mapped component almost always belongs in the **base**.
-4. **Bases are internal unless DESIGN.md says otherwise** (decided 15 Oct 2026). A base isn't exported from the package entry point (`@finspace-loyalty/ui`); apps use the mapped components. Its stories live under **Internal** in Storybook, only to check it against Figma. A base becomes public only when DESIGN.md says so (for example when a Figma component uses the base directly), with the reason noted in its §9 spec. Shared option lists (such as tones) are defined once in the base and re-exported by the mapped component. `packages/ui/test/public-api.test.ts` checks that no `*Base` component, and none of the internal bases it lists (`FinBadgeBase`, `FinIndicatorDot`), is exported. Internal so far: FinBadgeBase (§9.9), FinIndicatorDot (§9.11). **Exceptions:** Figma's `Base-Radio_box` is public as `FinRadio` (§9.15), because nothing is mapped from it; `Progress bar` is public as `FinProgressBar` (§9.16), because it's also used on its own.
+4. **Bases are internal unless DESIGN.md says otherwise** (decided 15 Oct 2026). A base isn't exported from the package entry point (`@finspace-loyalty/ui`); apps use the mapped components. Its stories live under **Internal** in Storybook, only to check it against Figma. A base becomes public only when DESIGN.md says so (for example when a Figma component uses the base directly), with the reason noted in its §9 spec. Shared option lists (such as tones) are defined once in the base and re-exported by the mapped component. `packages/ui/test/public-api.test.ts` checks that no `*Base` component, and none of the internal bases it lists (`FinBadgeBase`, `FinIndicatorDot`), is exported. Internal so far: FinBadgeBase (§9.9), FinIndicatorDot (§9.11). **Exceptions:** Figma's `Base-Radio_box` is public as `FinRadio` (§9.15), because nothing is mapped from it; `Progress bar` is public as `FinProgressBar` (§9.16) and `Spinner` as `FinSpinner` (§9.17), because they're also used on their own.
 
 | Base | Mapped components |
 |---|---|
@@ -606,7 +608,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | **Base** of Progress-full, **public** (§7.2 rule 4 exception, §9.16) · code: any `value`, `max`, fills its container · Filled: 0/25/50/75/100% (Steps=4, Large and Small) and 0/20/40/60/80/100% (Steps=5, Small only) · Size: Large (8 tall) / Small (4 tall) · 16 variants (checked 15 Oct 2026) | ⚠️ (fill radius from the `Tokens` library → `Radius-XS`, approved 15 Oct 2026) | ✅ |
 | 11 | ~~`Progress bar-portfolio`~~ | Progress | ~~`695:5418`~~ | — | **Removed from Figma (15 Oct 2026); not built.** | — | — |
 | 12 | `dragger` | Progress | `645:3136` | `FinDragger` | Filled: 5–100% | ⚠️ | ⬜ |
-| 13 | `Spinner` | Progress | `33:2331` | `FinSpinner` | Progress (`Pregress`): 25/50/75%, Success, Error | ✅ | ⬜ |
+| 13 | `Spinner` | Progress | `33:2331` | `FinSpinner` | Progress (`Pregress`): 25/50/75%, Success, Error · **public** (§7.2 rule 4 exception) · code: `value` (still ring) or none (spinning loader), `status` success/error (§9.17) | ✅ | ✅ |
 | 14 | `Input-OTP-base` | Input field | `49:5843` | `FinOtpCellBase` | **Base** for OTP. State (runtime) · Show number · Error | ⚠️ | ⬜ |
 | 15 | `Pagination item` | Table | `3144:14184` | `FinPaginationItem` | State: Default/Selected/Hovered/Dots | ✅ | ⬜ |
 
@@ -648,7 +650,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 (code: 2–6 shown, then "+N", §9.5) | ⚠️ (overlaps mapped to spacing, approved 15 Oct 2026) | ✅ |
 | 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image (code: from `src`) · badge button: camera / edit (§9.6) | ⚠️ (frame 100 = `Size-96` + `Space-XS`, approved 15 Oct 2026) | ✅ |
 | 44 | `Progress-full` (renamed from `Progress-progress bar` in Figma, 15 Oct 2026) | Progress | `31:2122` | `FinProgressFull` | **Progress bar** (Large, Steps=4), **Text Box** (Center, Display Small-H3) · Progress: 25/50/75/100% · Description: True/False · 375 wide (a mobile-era width), gap `Space-XL` | ⚠️ | ⬜ |
-| 45 | `Progress-Spinner` | Progress | `33:2348` | `FinProgressSpinner` | **Spinner**, Text Box | ⚠️ | ⬜ |
+| 45 | `Progress-Spinner` | Progress | `33:2348` | `FinProgressSpinner` | **Spinner**, Text Box · waits for Text Box (§8 #36); the Spinner is built (§9.17) | ⚠️ | ⬜ |
 | 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black/Basic | ⚠️ (§10 #16) | ⬜ |
 | 47 | `Pagination group` | Table | `3151:14607` | `FinPagination` | **Pagination item**, all-button | ⚠️ | ⬜ |
 | 48 | `Main Selection` | Side nav | `3140:10997` | `FinSideNavItem` | Side nav `24px`, sub selection, `24px` icon · State · Expanded · Type: Full/Minimized · Expanded slot | 🔴 depends on #32 | ⬜ |
@@ -700,7 +702,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar is under **Components/Progress**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar and Spinner are under **Components/Progress**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1381,6 +1383,52 @@ Presentational: no `'use client'`. `className`, `style` and other `<div>` attrib
 
 **Built (15 Oct 2026).** Storybook (Components/Progress): Playground, Values and sizes (Figma) with all 16 variants, Fills its container (120, 240, 480 px, with `max`). Checked against Figma: heights 8 / 4, radius 4, Light `#ceccff` / `#625bff` (Dark uses the Dark tokens), fill exactly `value`% of the track (25% of 311 = 77.75, as in Figma). a11y: no violations in Light or Dark.
 
+### 9.17 FinSpinner (Spinner)
+
+**Figma:** page **Progress**, component set `Spinner` `33:2331`: `Pregress` (typo for Progress, §10 #21) = 25% / 50% / 75% / Success / Error. Progress: a 48 box with a 40 ring (`bg-active-hover` track, 4px inside stroke) and an `fg-brand` arc (4px, flat ends). Success / Error: a 48 circle, `bg-success_secondary` / `bg-error_secondary`, with a 24px `check` (`fg-success`) / `warning_amber` (`fg-error`; current name `warning`, §6.4). Base of `Progress-Spinner` (§8 #45; all 10 instances are there). **Public** (decided 15 Oct 2026): §7.2 rule 4 exception, used on its own.
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Pregress` = 25/50/75% | `status: 'progress'` (default) with `value` (any, 0 to `max`, default 100): a **still** ring whose arc is that share |
+| — (loading) | `status: 'progress'` **without** `value`: a **loader**, a quarter arc that spins (decided 15 Oct 2026) |
+| `Pregress` = Success / Error | `status: 'success' \| 'error'` |
+| — | `label` (required): accessible name |
+
+**Arc (decided 15 Oct 2026):** starts at 12 o'clock and runs clockwise, exactly `value / max` of the circle. Figma's arcs are hand-drawn (its "50%" is 168°, and the start points differ); code is exact.
+
+**Motion (decided 15 Oct 2026, the first animation; §5 is otherwise still deferred):** the loader turns clockwise once per second at a steady speed (`1s linear infinite`, raw until motion tokens exist). With `prefers-reduced-motion: reduce` it doesn't spin. A ring with a `value` never spins.
+
+**Tokens used:**
+
+| Part | Token |
+|---|---|
+| Box | `--fin-size-48`, `--fin-radius-full` |
+| Ring (progress) | `--fin-size-40`, centred (Figma inset 4); an SVG circle, r 18 in a 40 view box, stroke width `--fin-size-4`; track `--fin-bg-active-hover`, arc `--fin-fg-brand` with `stroke-dasharray: var(--arc) 100` on `pathLength="100"`, flat caps |
+| Success | `--fin-bg-success-secondary`, FinIcon `check` 24 `color="success"` |
+| Error | `--fin-bg-error-secondary`, FinIcon `warning` 24 `color="error"` |
+
+Sizes as in Figma (decided 15 Oct 2026): the progress ring is 40 inside the 48 box; Success and Error fill the 48. The SVG is drawing geometry, not an icon (icons still go through FinIcon).
+
+**API:**
+
+```tsx
+import { FinSpinner } from '@finspace-loyalty/ui';
+
+<FinSpinner label="Loading members" />                     // spinning loader
+<FinSpinner value={60} label="Uploading file" />           // still ring, 60%
+<FinSpinner status="success" label="Upload complete" />
+```
+
+Presentational: no `'use client'`. `className`, `style` (merged with `--arc`) and other `<div>` attributes go to the box.
+
+**Accessibility:** progress: `role="progressbar"` with `aria-label`; with a `value`, also `aria-valuemin`, `aria-valuemax`, `aria-valuenow` (without one it's an indeterminate progressbar). Success / Error: `role="img"` named by `label`; the icon is decorative. Contrast (non-text, 3:1): arc on track 3.07 Light / 3.14 Dark; check on its circle 3.28 / 6.56; warning 5.05 / 6.34.
+
+**Progress-Spinner (§8 #45)** will put a Text Box under this spinner once Text Box (§8 #36) is built.
+
+**Built (15 Oct 2026).** Storybook (Components/Progress): Playground, States (Figma), Loading, Any value. Checked against Figma: box 48, ring 40 at (4, 4), stroke 4, arcs 90° / 180° / 270° from 12 o'clock, flat ends; Success / Error 48 circles with 24px icons at (12, 12); Light colors equal Figma (Dark uses the Dark tokens). The loader spins (1s, linear) and stays still with reduced motion. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1441,7 +1489,7 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) and `FinProgressBar` (§9.16). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) and `FinSpinner` (§9.17, on `feat/spinner`, waiting for approval). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers) and §10 #35 (Indicator selected width 22 → 24 in Figma). Fixed 15 Oct 2026: §10 #29, #30.
 
@@ -1493,3 +1541,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinRadio` done** (§8 #9, §9.15): native radio, public despite the Figma "Base" name (§7.2 exception), visually hidden `label`, Hovered/Pressed via `:hover`/`:active` (Figma updated: Hovered `bg-active`, Pressed `bg-active-hover`), default focus ring 2px/2px. Unselected-ring contrast logged in §10 #3. Figma's stray "Frame 2" mock removed by design. |
 | 15 Oct 2026 | 0.2 | Progress page re-checked: `Progress bar-portfolio` removed from Figma (§8 #11 marked removed; `Fillted` dropped from §10 #21); `Progress-progress bar` renamed `Progress-full` (§8 #44, code name `FinProgress` → `FinProgressFull`, §7.2 updated); Progress bar's exact Filled values recorded (§8 #10). dragger, Spinner and Progress-Spinner unchanged. |
 | 15 Oct 2026 | 0.2 | **`FinProgressBar` done** (§8 #10, §9.16): public base (§7.2 exception), `value` (any, clamped) with `max` (default 100), `size` large/small, required `label`; fills its container; `role="progressbar"`. Fill radius from the `Tokens` library mapped to `Radius-XS`. |
+| 15 Oct 2026 | 0.2 | **`FinSpinner` done** (§8 #13, §9.17): public base; `value` → still ring (clockwise from 12 o'clock, exact), no value → spinning loader (1s linear, still with reduced motion; first animation, §5 exception), `status` success/error with FinIcon; Figma sizes kept. Progress-Spinner (§8 #45) waits for Text Box. |
