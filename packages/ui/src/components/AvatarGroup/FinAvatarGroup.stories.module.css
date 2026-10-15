@@ -1,0 +1,18 @@
+/* Layout for the FinAvatarGroup stories only (not part of the component). */
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(6, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  align-items: center;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
+
+.cell {
+  justify-self: start;
+}

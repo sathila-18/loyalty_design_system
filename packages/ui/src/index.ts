@@ -3,3 +3,4 @@ export * from './icons';
 export * from './components/IconContainer';
 export * from './components/Divider';
 export * from './components/Avatar';
+export * from './components/AvatarGroup';

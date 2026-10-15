@@ -1,0 +1,25 @@
+/* FinAvatarGroup (DESIGN.md §9). The circles are FinAvatar; this file only lays them out. */
+
+.group {
+  display: inline-flex;
+  flex: none;
+  align-items: flex-start;
+}
+
+/* Each avatar overlaps the one before it and sits on top of it (later in the DOM). */
+.item + .item {
+  margin-inline-start: calc(-1 * var(--group-overlap));
+}
+
+/* Raw −4/−8/−12 in Figma, mapped to spacing tokens (approved 15 Oct 2026). */
+.group[data-size="xsmall"] {
+  --group-overlap: var(--fin-space-xs);
+}
+
+.group[data-size="medium"] {
+  --group-overlap: var(--fin-space-m);
+}
+
+.group[data-size="xlarge"] {
+  --group-overlap: var(--fin-space-l);
+}

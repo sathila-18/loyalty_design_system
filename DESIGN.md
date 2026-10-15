@@ -644,7 +644,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 39 | `Chips-group` | Chips | `922:6646` | `FinChipGroup` | **Chips-base** · Chip count 1–4 | ⚠️ | ⬜ |
 | 40 | `Segmented button` | Segmented button | `117:4688` | `FinSegmentedButton` | **Segmented_button-base** | ⚠️ | ⬜ |
 | 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number | ✅ | ⬜ |
-| 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 | ⚠️ | ⬜ |
+| 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 (code: 2–6 shown, then "+N", §9.5) | ⚠️ (overlaps mapped to spacing, approved 15 Oct 2026) | ✅ |
 | 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image | ⚠️ | ⬜ |
 | 44 | `Progress-progress bar` | Progress | `31:2122` | `FinProgress` | **Progress bar**, Text Box | ⚠️ | ⬜ |
 | 45 | `Progress-Spinner` | Progress | `33:2348` | `FinProgressSpinner` | **Spinner**, Text Box | ⚠️ | ⬜ |
@@ -895,6 +895,49 @@ import { FinAvatar } from '@finspace-loyalty/ui';
 
 **Built (15 Oct 2026).** Storybook: Playground (controls), Types and sizes (Figma), Fallback. Checked against Figma: all 21 variants have the exact circle size (96 for XXXLarge), 1px `border-subtle` border, full radius, `bg-icons` background, centered icon at the Figma size in `fg-secondary`, and initials in the Figma text style and `text-secondary`; Light colors equal Figma, Dark uses the Dark tokens. a11y: no violations in Light or Dark.
 
+### 9.5 FinAvatarGroup (Avatar Group)
+
+**Figma:** page **Avatar**, component set `Avatar Group` `14:1155`: `Size` = XSmall / Medium / XLarge × `Count` = 2 / 3 / 5 / 7 (12 variants). Every circle is an `Avatar` instance (Image, and Text for the "+4").
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Size` = XSmall / Medium / XLarge | `size: 'xsmall' \| 'medium' \| 'xlarge'` (default `'medium'`), passed to every FinAvatar and rendered as `data-size` |
+| `Count` = 2 / 3 / 5 / 7 | Not a prop: the count comes from `people`. **Rule (decided 15 Oct 2026):** 2–6 people are all shown; from 7, the first 6 are shown plus a "+N" circle for the rest (Figma's Count=7: 6 photos and "+4"). Figma's Count=3 (2 photos and "+4") doesn't follow this rule and isn't used. The limit is `FIN_AVATAR_GROUP_MAX` (6). |
+| Each Avatar instance | `people: { src?, initials?, label }[]`, in display order |
+| — | `label`: name of the group |
+
+**Structure:** a mapped component (§7.2). Each person is a `FinAvatar` (photo, or initials if there's no photo); the "+N" circle is `FinAvatar type="text"`. No markup or styles are copied from FinAvatar; the group only sets the overlap through a `className`.
+
+**Tokens used:**
+
+| Size | Circle (FinAvatar) | Overlap (Figma raw, approved 15 Oct 2026) | "+N" text style (FinAvatar) |
+|---|---|---|---|
+| `xsmall` | 24 | `--fin-space-xs` (−4) | Label/Small |
+| `medium` | 40 | `--fin-space-m` (−8) | Label/Large |
+| `xlarge` | 56 | `--fin-space-l` (−12) | Headline/Medium-H5 |
+
+The overlap is a negative `margin-inline-start` on every avatar after the first, so each avatar sits on top of the one before it (as in Figma). No raw values in the CSS.
+
+**API:**
+
+```tsx
+import { FinAvatarGroup } from '@finspace-loyalty/ui';
+
+<FinAvatarGroup
+  size="medium"
+  label="Team members"
+  people={members.map((m) => ({ src: m.photoUrl, initials: m.initials, label: m.name }))}
+/>  // 10 members → 6 avatars and "+4"
+```
+
+Presentational: no `'use client'` of its own (FinAvatar is a client component). `className` and other `<div>` attributes go to the group.
+
+**Accessibility:** the root is `role="group"` with `aria-label={label}`. Each avatar is announced by the person's name (FinAvatar `label`); the "+N" circle is announced as "N more". Not interactive: "+N" isn't a button (decided 15 Oct 2026).
+
+**Built (15 Oct 2026).** Storybook: Playground (size and number of people), Sizes and counts (Figma) with 2–6 and 10 people, Without photos. Photos are the five Unsplash photos used in Figma, for the stories only. Checked against Figma: circle sizes 24/40/56, overlap 4/8/12, group widths equal the Figma frames (XSmall 44/104/144, Medium 72/168/232, XLarge 100/232/320 for 2/5/7 circles), each avatar on top of the previous one, "+4" in the Figma text style and colors; Dark uses the Dark tokens. Figma crops some photos higher than center; code centers them (`object-fit: cover`). a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -950,7 +993,7 @@ Template:
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3) and `FinAvatar` (§9.4). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4) and `FinAvatarGroup` (§9.5). `FinAvatar` and `FinAvatarGroup` are on `feat/avatar-group` (stacked on `feat/avatar`), not merged into `main` yet; the rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Don't start one before that.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator) and §10 #5 (Dark-mode shadows). §10 #29 fixed 15 Oct 2026.
 
@@ -986,3 +1029,4 @@ Template:
 | 15 Oct 2026 | 0.2 | §10 #29 fixed: new export, Dark `bg-icons` Tertiary-800 → Tertiary-700 `#464646` (Light unchanged), so the Dark Primary and Disabled icon containers differ. Token build still 432 variables; Storybook a11y checks pass in Light and Dark. §3.3, §9.2 and the status note updated. |
 | 15 Oct 2026 | 0.2 | **`FinDivider` done** (§8 #2, §9.3): native `<hr>`, `type` `divider` (1px `border-default` border) / `section-divider` (`--fin-size-8` band), full width; `orientation="vertical"` added at design's request (not in Figma); `decorative` hides it from screen readers. Decisions: 1px is a border width (no `Size-1`), Section Divider full width instead of Figma's 375. |
 | 15 Oct 2026 | 0.2 | **`FinAvatar` done** (§8 #29, §9.4): `type` image/icon/text, seven sizes mapped to `--fin-size-*`, `src`, `initials` (passed in), `label`; photo → initials → icon fallback. Decisions: XXXLarge 96 instead of 100 (§10 #30 added), `"case"` font feature dropped, XSmall initials centered. |
+| 15 Oct 2026 | 0.2 | **`FinAvatarGroup` done** (§8 #42, §9.5): mapped from FinAvatar; `people`, `size` xsmall/medium/xlarge, `label`. Up to 6 avatars, then a non-interactive "+N" circle. Overlaps −4/−8/−12 mapped to `Space-XS`/`M`/`L`. Storybook photos from the Figma group (Unsplash). |
