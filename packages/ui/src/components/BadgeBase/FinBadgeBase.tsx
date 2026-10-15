@@ -1,13 +1,10 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
+import type { FinBadgeTone } from './badgeTones';
 import styles from './FinBadgeBase.module.css';
 
 export type FinBadgeBaseSize = 'small' | 'large';
-/** The Badge-primary `State` colors, in Figma order (DESIGN.md §9.10). The one list every badge and story uses. */
-export const FIN_BADGE_TONES = ['primary', 'secondary', 'success', 'error', 'info', 'warning', 'disabled', 'neutral'] as const;
-/** A badge tone. `primary` is Badge-base's own color. */
-export type FinBadgeTone = (typeof FIN_BADGE_TONES)[number];
 
 export interface FinBadgeBaseProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
   /** The label (Figma `Label`). Stays on one line; cut off with "…" when the container is narrower. */

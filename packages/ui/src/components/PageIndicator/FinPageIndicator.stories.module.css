@@ -1,0 +1,20 @@
+/* Layout for the FinPageIndicator stories only (not part of the component). */
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  align-items: flex-start;
+}
+
+.row {
+  display: flex;
+  gap: var(--fin-space-4xl);
+  align-items: center;
+}
+
+.rowLabel {
+  min-width: var(--fin-size-80);
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}

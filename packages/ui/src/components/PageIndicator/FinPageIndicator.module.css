@@ -1,0 +1,17 @@
+/* FinPageIndicator (DESIGN.md §9). The dots are FinIndicatorDot; this file only lays them out. */
+
+.indicator {
+  display: inline-flex;
+  flex: none;
+  gap: var(--fin-space-xs);
+  align-items: center;
+}
+
+/*
+ * Clickable: each dot's 24px-tall hit area already holds 2px either side, so no gap. Negative margins keep the
+ * footprint the Figma size (dots flush with the edges, 6 tall) while the hit areas reach past it.
+ */
+.indicator[data-interactive] {
+  gap: 0;
+  margin: calc((var(--fin-size-6) - var(--fin-size-24)) / 2) calc(-1 * var(--fin-space-xxs));
+}

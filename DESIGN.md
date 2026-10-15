@@ -516,7 +516,7 @@ Many components in Figma follow a **base → mapped** structure:
 1. Build the **base component first**, with all options as props.
 2. Build each **mapped component** as a thin wrapper that only passes fixed props to the base. Mapped components must not copy the base's markup or CSS.
 3. A visual fix to a mapped component almost always belongs in the **base**.
-4. **Bases are internal unless DESIGN.md says otherwise** (decided 15 Oct 2026). A base isn't exported from the package entry point (`@finspace-loyalty/ui`); apps use the mapped components. Its stories live under **Internal** in Storybook, only to check it against Figma. A base becomes public only when DESIGN.md says so (for example when a Figma component uses the base directly), with the reason noted in its §9 spec. Shared option lists (such as tones) are defined once in the base and re-exported by the mapped component. `packages/ui/test/public-api.test.ts` checks that no `*Base` component is exported.
+4. **Bases are internal unless DESIGN.md says otherwise** (decided 15 Oct 2026). A base isn't exported from the package entry point (`@finspace-loyalty/ui`); apps use the mapped components. Its stories live under **Internal** in Storybook, only to check it against Figma. A base becomes public only when DESIGN.md says so (for example when a Figma component uses the base directly), with the reason noted in its §9 spec. Shared option lists (such as tones) are defined once in the base and re-exported by the mapped component. `packages/ui/test/public-api.test.ts` checks that no `*Base` component, and none of the internal bases it lists (`FinBadgeBase`, `FinIndicatorDot`), is exported. Internal so far: FinBadgeBase (§9.9), FinIndicatorDot (§9.11).
 
 | Base | Mapped components |
 |---|---|
@@ -598,7 +598,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 2 | `Divider` | Divider | `28:367` | `FinDivider` | Type: Divider / Section Divider · plus `orientation` (vertical, code only, 15 Oct 2026) | ✅ | ✅ |
 | 3 | `Badge - indicator` | Badge | `30:1500` | `FinBadgeIndicator` | Size: Large/Small · Digits: None/Single/Double (code: from `count`) · Style: Red/Yellow/Green (code: `tone`) | ⚠️ (other-library spacing dropped, padding mapped, approved 15 Oct 2026) | ✅ (contrast exceptions, §10 #3) |
 | 4 | `Online Indicator` | Avatar | `14:995` | `FinOnlineIndicator` | Size: XSmall/Small/Medium/Large/XLarge (5, updated in Figma 15 Oct 2026) · on an avatar: FinAvatar `online` (§9.4) | ✅ (white frame fill, §10 #32) | ✅ |
-| 5 | `Indicator` | Indicator | `98:3532` | `FinIndicatorDot` | Type: Default/Selected | ✅ | ⬜ |
+| 5 | `Indicator` | Indicator | `98:3532` | `FinIndicatorDot` (**internal**, §9.11) | Type: Default/Selected (code: `selected`) · clickable option | ✅ (raw radius 8 → `Radius-Full`; selected 22 → 24, §10 #35) | ✅ |
 | 6 | `Caption` | List | `77:10172` | `FinCaption` | Size: Small/Medium/Large · Thickness: Heavy/Light | ⚠️ | ⬜ |
 | 7 | `Overlay` | Overlays | `111:2495` | `FinOverlay` | Type: **Desktop only** (Mobile is out of scope) | ✅ | ⬜ |
 | 8 | `Switch` | Toggle | `34:2545` | `FinSwitch` | Type: Selected/Unselected · Size: Small/Large · State, Focused (runtime) | ⚠️ | ⬜ |
@@ -644,7 +644,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 38 | `Chips` | Chips | `95:1848` | `FinChip` | **Chips-base** | ✅ | ⬜ |
 | 39 | `Chips-group` | Chips | `922:6646` | `FinChipGroup` | **Chips-base** · Chip count 1–4 | ⚠️ | ⬜ |
 | 40 | `Segmented button` | Segmented button | `117:4688` | `FinSegmentedButton` | **Segmented_button-base** | ⚠️ | ⬜ |
-| 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number | ✅ | ⬜ |
+| 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number (code: `active`, `count`, no maximum) · clickable with `onChange` (§9.12) | ✅ | ✅ |
 | 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 (code: 2–6 shown, then "+N", §9.5) | ⚠️ (overlaps mapped to spacing, approved 15 Oct 2026) | ✅ |
 | 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image (code: from `src`) · badge button: camera / edit (§9.6) | ⚠️ (frame 100 = `Size-96` + `Space-XS`, approved 15 Oct 2026) | ✅ |
 | 44 | `Progress-progress bar` | Progress | `31:2122` | `FinProgress` | **Progress bar**, Text Box | ⚠️ | ⬜ |
@@ -700,7 +700,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1162,6 +1162,67 @@ Presentational: no `'use client'`. `className` and other `<span>` attributes go 
 
 **Built (15 Oct 2026).** Storybook (Components/Badge): Playground (tone, label, each icon or none), States (Figma) with each tone plain, with a leading and with a trailing icon. Checked against Figma: all 8 tones have the exact Light fill, border and text colors, 26 tall (also with icons), icons in the text color; width 70.2 against Figma's 71 (text rounding). Dark uses the Dark tokens. a11y: no violations in Light or Dark apart from the documented `disabled` exception.
 
+### 9.11 FinIndicatorDot (Indicator) — internal
+
+**Figma:** page **Indicator**, component set `Indicator` `98:3532`: `Type` = Default (6 × 6, `fg-placeholder`) / Selected (22 × 6, `fg-brand`), raw radius 8. Used only inside `Indicator set` (all 50 instances). **Internal base** (§7.2 rule 4): not exported; FinPageIndicator is the public component.
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Type` = Default / Selected | `selected?: boolean` (renders `data-selected`) |
+| — (clickable, decided 15 Oct 2026) | `interactive?: boolean`: a `<button>` with the hit area and focus ring; otherwise a decorative `<span>` (`aria-hidden`) |
+
+**Tokens used:**
+
+| Part | Token |
+|---|---|
+| Dot (Default) | `--fin-size-6` × `--fin-size-6`, `--fin-fg-placeholder` |
+| Pill (Selected) | `--fin-size-24` × `--fin-size-6`, `--fin-fg-brand`. **24 in code, 22 in Figma** (no `Size-22`; decided 15 Oct 2026, §10 #35) |
+| Radius | `--fin-radius-full` (Figma's raw 8 on a 6px shape is already a full pill) |
+| Clickable hit area | height `--fin-size-24`, padding `0 var(--fin-space-xxs)` (the 2px either side that the set's 4px gap leaves) |
+| Focus | on the visible dot: `outline: 2px solid var(--fin-border-focused)`, `outline-offset: 2px` (§10 #6) |
+| Hover, pressed | none yet: cursor only (no design; like the Profile image badge, §10 #31) |
+
+All styles live here (§7.2); FinPageIndicator only lays the dots out. Internal API: `<FinIndicatorDot selected interactive aria-label="Step 2" />` (ref goes to the button).
+
+**Built (15 Oct 2026).** Storybook: **Internal/Indicator** › Types (Figma), display-only and clickable.
+
+### 9.12 FinPageIndicator (Indicator set)
+
+**Figma:** page **Indicator**, component set `Indicator set` `98:3541`: `Active` = 1–5 × `Number` = 3 / 4 / 5 × `Size` = Small (12 variants): a row of `Indicator` instances with a 4px gap (`Space-XS`), one Selected. No instances yet. **Mapped** from the internal FinIndicatorDot.
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Number` = 3 / 4 / 5 | `count`: any number from 1, **no maximum** (decided 15 Oct 2026); 0 renders nothing |
+| `Active` = 1…5 | `active`: 1-based, kept between 1 and `count` |
+| `Size` = Small | only size; not a prop |
+| — (clickable, decided 15 Oct 2026) | `onChange?(position)`: makes the dots clickable; `label`; `dotLabel?(position, count)` |
+
+**Layout:** `display: inline-flex`, gap `--fin-space-xs`. Clickable: gap 0 (each hit area holds 2px either side) and negative margins (`calc((var(--fin-size-6) - var(--fin-size-24)) / 2)` and `calc(-1 * var(--fin-space-xxs))`) so the layout footprint stays the Figma size while the 24px-tall hit areas reach past it. Widths: 44 / 54 / 64 for 3 / 4 / 5 (Figma 42 / 52 / 62, from the 22px pill).
+
+**API:**
+
+```tsx
+import { FinPageIndicator } from '@finspace-loyalty/ui';
+
+<FinPageIndicator count={5} active={2} />                                  // display-only: "Step 2 of 5"
+<FinPageIndicator count={5} active={step} onChange={setStep} label="Onboarding steps" />  // clickable
+```
+
+`'use client'`. `className` and other `<div>` attributes go to the root.
+
+**Accessibility:**
+- **Display-only:** `role="img"`, named "Step {active} of {count}" (or `label`); the dots are hidden.
+- **Clickable (radio group pattern, decided 15 Oct 2026):** `role="radiogroup"` (named by `label`, default "Steps"); each dot is a native `<button role="radio">` with `aria-checked` and a name ("Step {n} of {count}", or `dotLabel`). One tab stop (the current dot); ←/↑ and →/↓ move and select (wrapping), Home/End jump to the ends; focus follows.
+- **Target size (WCAG 2.2 2.5.8), decided 15 Oct 2026:** the dots keep Figma's spacing, so each hit area is 24 tall but only as wide as the dot plus 4 (10 px for a dot, 28 for the pill). This relies on the **equivalent-control exception**: any screen that uses a clickable page indicator must also offer another way to change position (for example Previous / Next buttons).
+- The selected position differs by **shape** (24 vs 6 wide), not only color. Default dots are `fg-placeholder`: 2.96:1 on `bg-primary` and 2.71:1 on `bg-secondary` in Light (below the 3:1 non-text minimum; Dark 4.51 / 3.73), logged in §10 #3. The a11y check doesn't measure non-text contrast.
+- The focus ring (2px, 2px offset) reaches the neighbouring dots because of the 4px gap.
+
+**Built (15 Oct 2026).** Storybook (Components/Indicator): Playground (count, active, clickable), Active and number (Figma) with all 12, Clickable (3, 5 and 8 dots, keyboard). Checked against Figma: dots 6 × 6, selected 24 × 6, gap 4, full radius, Light colors `#625bff` / `#969696` equal Figma (Dark uses the Dark tokens), widths 44 / 54 / 64; clickable dots look the same, with 24px-tall hit areas side by side; Tab then → moves to and checks the next dot, with the focus ring on it. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1183,7 +1244,7 @@ Template:
 |---|---|---|---|
 | 1 | **Desktop spacing rules** (page padding, section gap, card padding, gap between buttons…) aren't defined. Until then, spacing is copied from Figma with spacing tokens and off-scale values are reported (§2). | Foundation | ❓ Decide (after the first UIs) |
 | 2 | `bg-action-secondary_hovered` and `_pressed` had the same value. Fixed 13 Oct 2026: pressed is now Primary-200 / Primary-700 (hovered stays Primary-100 / Primary-800), and the Secondary button in the component file uses both tokens. | Foundation › Color collection | ✅ Fixed |
-| 3 | **Contrast failures** (checked 14 Oct 2026 after the Dark status-color update). **Light:** white text on `bg-success` 3.6:1 and on `bg-warning` 2.7:1 (dark text on `bg-warning` is 6.5:1); `border-strong` and `text-placeholder` about 2.96:1 on white (control borders need 3:1); `text-warning` on `bg-tertiary` 4.28:1; `fg-warning` on `bg-secondary` 2.98:1, `bg-tertiary` 2.77:1 and `bg-warning-secondary` 2.96:1 (icons need 3:1). **Dark, button hover/pressed:** `text-white_both` on `bg-action-primary-hovered` 3.35:1, `-pressed` 2.70:1, `bg-action-destructive-hovered` 3.53:1, `-pressed` 2.34:1 (`fg-white_both` fails on both pressed states). **Decide before `FinButtonBase` is built.** **Both:** `text-white_subtle` fails on `bg-brand`/`bg-action-primary` (3.18:1) and `bg-action-destructive` (4.03:1 Light, 3.04:1 Dark). **Badge indicator** (text is `text-inverse` on `fg-*`, rebound in Figma 14 Oct 2026): Light fails on `fg-warning` 3.24:1 and `fg-success` 3.64:1; Dark fails on `fg-error` 3.97:1 (the other four pass). **Icon container** (`FinIconContainer` `tone="warning"`, Light): `fg-warning` on `bg-warning-secondary` 2.96:1 (icons need 3:1). **`FinBadgeIndicator` built with these failures as documented exceptions (15 Oct 2026, §9.8):** Light Yellow 3.24 and Green 3.64, Dark Red 3.97; the a11y check skips only those badges in that theme. | Foundation › Color collection | ❓ Decide (not blocking) |
+| 3 | **Contrast failures** (checked 14 Oct 2026 after the Dark status-color update). **Light:** white text on `bg-success` 3.6:1 and on `bg-warning` 2.7:1 (dark text on `bg-warning` is 6.5:1); `border-strong` and `text-placeholder` about 2.96:1 on white (control borders need 3:1); `text-warning` on `bg-tertiary` 4.28:1; `fg-warning` on `bg-secondary` 2.98:1, `bg-tertiary` 2.77:1 and `bg-warning-secondary` 2.96:1 (icons need 3:1). **Dark, button hover/pressed:** `text-white_both` on `bg-action-primary-hovered` 3.35:1, `-pressed` 2.70:1, `bg-action-destructive-hovered` 3.53:1, `-pressed` 2.34:1 (`fg-white_both` fails on both pressed states). **Decide before `FinButtonBase` is built.** **Both:** `text-white_subtle` fails on `bg-brand`/`bg-action-primary` (3.18:1) and `bg-action-destructive` (4.03:1 Light, 3.04:1 Dark). **Badge indicator** (text is `text-inverse` on `fg-*`, rebound in Figma 14 Oct 2026): Light fails on `fg-warning` 3.24:1 and `fg-success` 3.64:1; Dark fails on `fg-error` 3.97:1 (the other four pass). **Icon container** (`FinIconContainer` `tone="warning"`, Light): `fg-warning` on `bg-warning-secondary` 2.96:1 (icons need 3:1). **`FinBadgeIndicator` built with these failures as documented exceptions (15 Oct 2026, §9.8):** Light Yellow 3.24 and Green 3.64, Dark Red 3.97; the a11y check skips only those badges in that theme. **Page indicator dots** (`fg-placeholder`, Light): 2.96:1 on `bg-primary`, 2.71:1 on `bg-secondary` (non-text needs 3:1; §9.12). | Foundation › Color collection | ❓ Decide (not blocking) |
 | 4 | Dark mode default: follow the OS setting (`prefers-color-scheme`) or only the app setting? | Theming | ❓ Decide |
 | 5 | Shadows are effect styles, not variables, so they're the same in Light and Dark. Now three neutral styles (Resting cards, Panel sheets, Sticky); the mobile-era Floating and Back styles were removed (13 Oct 2026). Does dark mode need different shadows? | Foundation › effect styles | ❓ Decide after the first components are built and checked in Dark (not a blocker) |
 | 6 | Focus ring: color is `border-focused`, but width and offset aren't tokens. Read them from the `Focused` variants in Figma when building; ask if components differ. **Profile image badge** (no Focused variant in Figma): 2px ring, 2px offset (decided 15 Oct 2026); use this unless a component's Figma says otherwise. | Foundation / Components | ⏳ Check per component |
@@ -1214,15 +1275,17 @@ Template:
 | 31 | **Profile image badge has no hover or pressed state** in Figma, and `fg-action` has no hovered/pressed tokens. For now the badge only changes the cursor (decided 15 Oct 2026). Design to add the states. | Profile image | ❓ Design to define |
 | 32 | **Online Indicator frames have an unbound white fill** (square, no radius) behind the round dot, so white corners would show on a dark or colored background. Code draws only the round dot. Remove the frame fill. | Online Indicator | 🔧 Fix in Figma |
 | 33 | **Online indicator on an avatar isn't in Figma.** Code places it (decided 15 Oct 2026, §9.4 Online): flush with the bottom-right corner, 2px in at 64 and 96, indicator size per avatar size. Design to add it to the Avatar (or an example) in Figma so the two match. | Avatar | ⏳ Design to add in Figma |
+| 34 | **Off-canvas Badge leftovers:** `Badge-primary/brand` (`70:10326`, with 3 instances in an off-canvas `Placeholder-text` frame) and `Badge-primary/Gold` (`421:1316`) still reference Badge-base but aren't on any page. Nothing live depends on them. Is `Gold` planned (for example a loyalty tier)? | Badge | ❓ Design to confirm |
+| 35 | **Indicator `Type=Selected` is 22 wide in Figma**, but there's no `Size-22`. Decided 15 Oct 2026: 24 (`Size-24`) in code. Update the Figma Indicator (and the Indicator set widths become 44 / 54 / 64). | Indicator | 🔧 Fix in Figma |
 
 ---
 
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal) and `FinPageIndicator` (§9.12) are on `feat/indicator`, waiting for approval. The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
-> - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma) and §10 #33 (online indicator placement to add in Figma). Fixed 15 Oct 2026: §10 #29, #30.
+> - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers) and §10 #35 (Indicator selected width 22 → 24 in Figma). Fixed 15 Oct 2026: §10 #29, #30.
 
 | Date | Version | Change |
 |---|---|---|
@@ -1265,3 +1328,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinBadgeBase` done** (§8 #20, §9.9): `size` small/large, label as `children` (one line, "…" in narrow containers), `leadingIcon`/`trailingIcon` (none by default, decorative, inherit the label color). Figma base colors only; the Badge-primary tones go into this base's CSS when FinBadge is built. |
 | 15 Oct 2026 | 0.2 | **`FinBadge` done** (§8 #35, §9.10): mapped from FinBadgeBase (always Small, passes `tone`, label and optional leading/trailing icons; no CSS of its own). FinBadgeBase gets `tone` and the 8 tone styles (fill, text, 1px inside border as an inset shadow), §9.9 updated. Figma: `brand` state removed and the Error variant's outer stroke fixed by design; `brand` dropped from §10 #21. `disabled` tone kept as designed, a documented a11y exception. |
 | 15 Oct 2026 | 0.2 | §7.2 rule 4: **bases are internal unless DESIGN.md says otherwise**. FinBadgeBase no longer exported from `@finspace-loyalty/ui`; its stories moved to **Internal/Badge base** (Playground removed); FinBadge is the public badge. Tone list defined once (`FIN_BADGE_TONES`, `FinBadgeTone`), re-exported by FinBadge. New `test/public-api.test.ts`. Figma check: only Badge-primary uses Badge-base; Table cell uses Badge-primary (§8 #51 corrected). |
+| 15 Oct 2026 | 0.2 | **`FinIndicatorDot` (internal) and `FinPageIndicator` done** (§8 #5, #41, §9.11, §9.12): `count` (no maximum), `active`; clickable with `onChange` as a radio group (one tab stop, arrows/Home/End), Figma spacing kept with the WCAG 2.5.8 equivalent-control exception documented. Selected pill 24 (Figma 22, §10 #35); raw radius 8 → `Radius-Full`. Light dot contrast added to §10 #3. Badge tone list moved to its own file (`badgeTones.ts`). §10 #34 added. |

@@ -1,0 +1,47 @@
+/* FinIndicatorDot (DESIGN.md §9). Internal base of FinPageIndicator. */
+
+/* Type=Default: 6 × 6 fg-placeholder. Figma's raw radius 8 on a 6px shape is a full pill. */
+.dot {
+  display: block;
+  width: var(--fin-size-6);
+  height: var(--fin-size-6);
+  border-radius: var(--fin-radius-full);
+  background-color: var(--fin-fg-placeholder);
+}
+
+/* Type=Selected: fg-brand pill, 24 wide (22 in Figma; no Size-22, decided 15 Oct 2026). */
+.dot[data-selected] {
+  width: var(--fin-size-24);
+  background-color: var(--fin-fg-brand);
+}
+
+.static {
+  display: block;
+  flex: none;
+}
+
+/*
+ * Clickable: a 24px-tall hit area, as wide as the dot plus the 2px either side that the set's 4px gap leaves.
+ * Hover and pressed have no design yet: cursor only (decided 15 Oct 2026, like the Profile image badge).
+ */
+.hit {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  height: var(--fin-size-24);
+  padding: 0 var(--fin-space-xxs);
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+/* Focus ring on the visible dot: 2px, 2px offset (§10 #6). */
+.hit:focus-visible {
+  outline: none;
+}
+
+.hit:focus-visible .dot {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
