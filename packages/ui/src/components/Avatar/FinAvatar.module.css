@@ -1,0 +1,67 @@
+/* FinAvatar (DESIGN.md §9). The icon is FinIcon; this file styles the circle, the photo and the initials. */
+
+.avatar {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  overflow: clip;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border: 1px solid var(--fin-border-subtle);
+  border-radius: var(--fin-radius-full);
+}
+
+.avatar[data-type="icon"],
+.avatar[data-type="text"] {
+  background-color: var(--fin-bg-icons);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.initials {
+  font: var(--avatar-font);
+  color: var(--fin-text-secondary);
+  white-space: nowrap;
+}
+
+.avatar[data-size="xsmall"] {
+  --avatar-size: var(--fin-size-24);
+  --avatar-font: var(--fin-font-label-small);
+}
+
+.avatar[data-size="small"] {
+  --avatar-size: var(--fin-size-32);
+  --avatar-font: var(--fin-font-label-medium);
+}
+
+.avatar[data-size="medium"] {
+  --avatar-size: var(--fin-size-40);
+  --avatar-font: var(--fin-font-label-large);
+}
+
+.avatar[data-size="large"] {
+  --avatar-size: var(--fin-size-48);
+  --avatar-font: var(--fin-font-title-large);
+}
+
+.avatar[data-size="xlarge"] {
+  --avatar-size: var(--fin-size-56);
+  --avatar-font: var(--fin-font-headline-medium-h5);
+}
+
+.avatar[data-size="xxlarge"] {
+  --avatar-size: var(--fin-size-64);
+  --avatar-font: var(--fin-font-headline-large-h4);
+}
+
+/* 100 in Figma; 96 decided 15 Oct 2026 so it maps to a token. */
+.avatar[data-size="xxxlarge"] {
+  --avatar-size: var(--fin-size-96);
+  --avatar-font: var(--fin-font-display-medium-h2);
+}

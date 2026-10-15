@@ -626,7 +626,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 26 | `Base-Checkbox` | Checkbox | `42:185` | `FinCheckboxBase` | `16px` | Type: Unselected/Selected/Indeterminate · State, Focused (runtime) | ⚠️ | ⬜ |
 | 27 | `Chips-base` | Chips | `95:1811` | `FinChipBase` | `16px`, `20px` | Type: Unselected/Selected/Unselected-border · Size: XSmall/Small/Large · Leading slot · Trailing icon | ⚠️ | ⬜ |
 | 28 | `Segmented_button-base` | Segmented button | `117:4667` | `FinSegmentBase` | `20px` | Type: Unselected/Selected · State (runtime) · Leading slot | ⚠️ | ⬜ |
-| 29 | `Avatar` | Avatar | `932:1387` | `FinAvatar` | `16`–`64px` | Type: Image/Icon/Text · Size: XSmall…XXXLarge (7) | ⚠️ | ⬜ |
+| 29 | `Avatar` | Avatar | `932:1387` | `FinAvatar` | `16`–`64px` | Type: Image/Icon/Text · Size: XSmall…XXXLarge (7; XXXLarge 96 in code, §10 #30) · fallback photo → initials → icon (code only) | ⚠️ (sizes mapped to `Size-*`, approved 15 Oct 2026) | ✅ |
 | 30 | `Contry selecter` | Input field | `49:5731` | `FinCountrySelector` | Flag sizes, Flag icons, `24px` | Show icon | ✅ | ⬜ |
 | 31 | `Row count dropdown` | Table | `3151:14547` | `FinRowCountSelect` | `24px` | Default/Hovered (runtime) · `Property 1` name (§10 #21) | ✅ | ⬜ |
 | 32 | `24px` (side nav) | Side nav | `3138:10976` | `FinSideNavIcon` | `24px` icon | Type: Unselected/Selected | 🔴 name clashes with icon size (§10 #20) | ⬜ |
@@ -838,6 +838,63 @@ Presentational: no `'use client'`. `className` and other `<hr>` attributes go to
 
 **Built (15 Oct 2026).** Storybook: Playground (controls), Types (Figma), Vertical. Checked against Figma: 1px and 8px high at full width, Light color `#d4d4d4` equals Figma `border-default`; Dark uses the Dark token (`#464646`). a11y: no violations in Light or Dark.
 
+### 9.4 FinAvatar (Avatar)
+
+**Figma:** page **Avatar**, component set `Avatar` `932:1387`: `Type` = Image / Icon / Text × `Size` = Xsmall / Small / Medium / Large / XLarge / XXLarge / XXXLarge (21 variants). The icon in Figma is the old `perm_identity`; code uses `person` (§6.4).
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `Type` = Image / Icon / Text | `type: 'image' \| 'icon' \| 'text'` (default `'image'`). What's shown is rendered as `data-type` |
+| `Size` (`Xsmall` in Figma, §10 #21) | `size: 'xsmall' \| 'small' \| 'medium' \| 'large' \| 'xlarge' \| 'xxlarge' \| 'xxxlarge'` (default `'medium'`), rendered as `data-size` |
+| Image fill | `src` |
+| Text (`SD`) | `initials`, passed in as they should appear (decided 15 Oct 2026; not worked out from the name) |
+| — | `label`: the person's name |
+
+**Fallback** (not in Figma, decided 15 Oct 2026): `image` without a photo (no `src`, or it fails to load) shows the initials; without initials it shows the icon. `text` without initials shows the icon. `icon` ignores `src` and `initials`. A new `src` is tried again after a failure.
+
+**Tokens used:**
+
+| Size | Circle | Icon (FinIcon `size`) | Initials text style |
+|---|---|---|---|
+| `xsmall` | `--fin-size-24` | 16 | `--fin-font-label-small` |
+| `small` | `--fin-size-32` | 20 | `--fin-font-label-medium` |
+| `medium` | `--fin-size-40` | 24 | `--fin-font-label-large` |
+| `large` | `--fin-size-48` | 24 | `--fin-font-title-large` |
+| `xlarge` | `--fin-size-56` | 36 | `--fin-font-headline-medium-h5` |
+| `xxlarge` | `--fin-size-64` | 48 | `--fin-font-headline-large-h4` |
+| `xxxlarge` | `--fin-size-96` (**100 in Figma**, §10 #30) | 64 | `--fin-font-display-medium-h2` |
+
+| Part | Token |
+|---|---|
+| Circle | `border: 1px solid var(--fin-border-subtle)`, `--fin-radius-full`, content clipped |
+| Background (icon, text) | `--fin-bg-icons` (image: none) |
+| Icon | FinIcon `color="secondary"` (`fg-secondary`) |
+| Initials | `--fin-text-secondary`, centered (Figma's XSmall text is slightly off-center; centered in code, decided 15 Oct 2026) |
+| Photo | fills the circle inside the border, `object-fit: cover` |
+
+Decisions (15 Oct 2026): XXXLarge is 96 so it maps to `Size-96`; the `"case"` font feature on the Figma initials is dropped (not part of the text style tokens, no visible effect on letters). The only raw value is the `1px` border width. Nothing from another library was found in the bindings.
+
+**API:**
+
+```tsx
+import { FinAvatar } from '@finspace-loyalty/ui';
+
+<FinAvatar src={user.photoUrl} initials="SD" label="Sathila De Silva" />  // photo, or initials if it's missing or fails
+<FinAvatar type="text" size="large" initials="SD" />                      // initials, decorative
+<FinAvatar type="icon" size="xsmall" />                                   // default icon
+```
+
+`'use client'` (it remembers a photo that failed to load). `className` and other `<span>` attributes go to the circle.
+
+**Accessibility:**
+- Photo: `<img alt={label}>`; without `label`, `alt=""`.
+- Initials and icon: with `label`, the circle is `role="img"` with `aria-label`; without it, the circle is `aria-hidden` (decorative, next to a visible name). The initials themselves are always hidden, so the name is read instead of "S D".
+- Not interactive. Contrast on `bg-icons`: initials 4.97:1 Light / 4.71:1 Dark, icon 5.21:1 / 4.71:1.
+
+**Built (15 Oct 2026).** Storybook: Playground (controls), Types and sizes (Figma), Fallback. Checked against Figma: all 21 variants have the exact circle size (96 for XXXLarge), 1px `border-subtle` border, full radius, `bg-icons` background, centered icon at the Figma size in `fg-secondary`, and initials in the Figma text style and `text-secondary`; Light colors equal Figma, Dark uses the Dark tokens. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -886,13 +943,14 @@ Template:
 | 27 | **Dark-mode contrast: `text-error` on `bg-error-secondary`** was 4.19:1. Design updated the Dark status colors (14 Oct 2026): now 8.52:1, and every status text and icon color passes on `bg-primary`, `bg-secondary`, `bg-tertiary` and its own `bg-*_secondary` in Dark. | Foundation › Color collection (Dark) | ✅ Decided (14 Oct 2026) |
 | 28 | **Spacing shift (14 Oct 2026) in the component file.** These components use `Space-5XL`…`Space-12XL`, and still show the **old** values because the component file hasn't accepted the Foundation library update yet. After it does, they get smaller: `sub selection` (`3140:11076`) `Space-5XL` 40 → 36; `Pagination group` (`3151:14607`) `Space-6XL` 48 → 40; `Main Selection` (`3140:10997`) `Space-5XL` 40 → 36; `Header notification` (`3178:24467`) `Space-5XL` 40 → 36; `Button dock` (`75:5858`) `Space-5XL` 40 → 36; `Side sheet` (`3120:30707`) `Space-5XL` 40 → 36; `Side Menu` (`3142:11871`) `Space-5XL` 40 → 36. No other component uses those steps. Accept the library update, then confirm each new value or rebind. | Component file | ❓ Decide |
 | 29 | **Dark: Icon container Primary and Disabled looked alike** (both `#363636`). Fixed 15 Oct 2026: Dark `bg-icons` is now Tertiary-700 `#464646` (`bg-disabled` stays Tertiary-800 `#363636`). White icon on `#464646` is 9.44:1. | Foundation › Color collection (Dark) | ✅ Fixed |
+| 30 | **Avatar XXXLarge is 100 in Figma**, but there's no `Size-100`. **Decided 15 Oct 2026:** XXXLarge is 96 (`Size-96`) in code. Figma still shows 100 × 100 (`932:1366`, `932:1376`, `932:1367`). | Avatar | 🔧 Fix in Figma |
 
 ---
 
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2) and `FinDivider` (§9.3). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3) and `FinAvatar` (§9.4). Everything is merged into `main`.
 > - **Next:** wait for the designer to name the next component. Don't start one before that.
 > - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator) and §10 #5 (Dark-mode shadows). §10 #29 fixed 15 Oct 2026.
 
@@ -927,3 +985,4 @@ Template:
 | 14 Oct 2026 | 0.2 | Status note added at the top of §11: done S1–S6, FinIcon, FinIconContainer; next component to be named by design; open §10 #3, #5, #29. |
 | 15 Oct 2026 | 0.2 | §10 #29 fixed: new export, Dark `bg-icons` Tertiary-800 → Tertiary-700 `#464646` (Light unchanged), so the Dark Primary and Disabled icon containers differ. Token build still 432 variables; Storybook a11y checks pass in Light and Dark. §3.3, §9.2 and the status note updated. |
 | 15 Oct 2026 | 0.2 | **`FinDivider` done** (§8 #2, §9.3): native `<hr>`, `type` `divider` (1px `border-default` border) / `section-divider` (`--fin-size-8` band), full width; `orientation="vertical"` added at design's request (not in Figma); `decorative` hides it from screen readers. Decisions: 1px is a border width (no `Size-1`), Section Divider full width instead of Figma's 375. |
+| 15 Oct 2026 | 0.2 | **`FinAvatar` done** (§8 #29, §9.4): `type` image/icon/text, seven sizes mapped to `--fin-size-*`, `src`, `initials` (passed in), `label`; photo → initials → icon fallback. Decisions: XXXLarge 96 instead of 100 (§10 #30 added), `"case"` font feature dropped, XSmall initials centered. |
