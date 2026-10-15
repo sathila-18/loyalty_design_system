@@ -531,8 +531,8 @@ Many components in Figma follow a **base → mapped** structure:
 | `Input field-textArea-base` (`3094:26567`) | the text area set at `3097:27497` (still named `Input field-base` in Figma, §10 #17) |
 | `Input-OTP-base` | (base only; no mapped OTP component in the file) |
 | `Indicator` | `Indicator set` |
-| `Progress bar` | `Progress-full` (was `Progress-progress bar`) |
-| `Spinner` | `Progress-Spinner` |
+| `Progress bar` | `bar-with-text` (was `Progress-full`, before that `Progress-progress bar`) |
+| `Spinner` | `spinner-with-text` (was `Progress-Spinner`) |
 | `Avatar` | `Avatar Group`, `Profile image` |
 | `Pagination item` | `Pagination group` |
 | `List-base`, `List-fill-base` | (bases; used directly by Side Menu, no mapped components yet) |
@@ -615,7 +615,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 7 | `Overlay` | Overlays | `111:2495` | `FinOverlay` | Type: **Desktop only** (Mobile is out of scope) · responsive: fills the window · `Alpha-md` | ✅ | ✅ |
 | 8 | `Toggle` (renamed from `Switch` in Figma, 15 Oct 2026) | Toggle | `34:2545` | `FinToggle` | Type: Selected/Unselected · Size: Small/Large · State, Focused (runtime) · visually hidden `label` (§9.14) | ⚠️ (focus-ring radius from another library → `Radius-Full`; raw radii → `Radius-Full`; approved 15 Oct 2026) | ✅ |
 | 9 | `Base-Radio_box` | Radio button | `37:104` | `FinRadio` | Type: Selected/Unselected · State (runtime) · **public** (§7.2 rule 4 exception) · visually hidden `label` (§9.15) | ⚠️ (radius from another library → `Radius-Full`, approved 15 Oct 2026) | ✅ |
-| 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | **Base** of Progress-full, **public** (§7.2 rule 4 exception, §9.16) · code: any `value`, `max`, fills its container · Filled: 0/25/50/75/100% (Steps=4, Large and Small) and 0/20/40/60/80/100% (Steps=5, Small only) · Size: Large (8 tall) / Small (4 tall) · 16 variants (checked 15 Oct 2026) | ⚠️ (fill radius from the `Tokens` library → `Radius-XS`, approved 15 Oct 2026) | ✅ |
+| 10 | `Progress bar` | Progress | `31:2113` | `FinProgressBar` | **Base** of bar-with-text, **public** (§7.2 rule 4 exception, §9.16) · code: any `value`, `max`, fills its container · Filled: 0/25/50/75/100% (Steps=4, Large and Small) and 0/20/40/60/80/100% (Steps=5, Small only) · Size: Large (8 tall) / Small (4 tall) · 16 variants (checked 15 Oct 2026) | ⚠️ (fill radius from the `Tokens` library → `Radius-XS`, approved 15 Oct 2026) | ✅ |
 | 11 | ~~`Progress bar-portfolio`~~ | Progress | ~~`695:5418`~~ | — | **Removed from Figma (15 Oct 2026); not built.** | — | — |
 | 12 | `slider` (renamed from `dragger` in Figma, 15 Oct 2026) | Progress | `645:3136` | `FinSlider` | Filled: 5–100% · code: `value`/`defaultValue`, `min` 0, `max` 100, `step`, visually hidden `label`, disabled (§9.18) | ⚠️ (radius and padding from another library → `Radius-XS`, `Space-none`, approved 15 Oct 2026) | ✅ |
 | 13 | `Spinner` | Progress | `33:2331` | `FinSpinner` | Progress (`Pregress`): 25/50/75%, Success, Error · **public** (§7.2 rule 4 exception) · code: `value` (still ring) or none (spinning loader), `status` success/error (§9.17) | ✅ | ✅ |
@@ -659,8 +659,8 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number (code: `active`, `count`, no maximum) · clickable with `onChange` (§9.12) | ✅ | ✅ |
 | 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 (code: 2–6 shown, then "+N", §9.5) | ⚠️ (overlaps mapped to spacing, approved 15 Oct 2026) | ✅ |
 | 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image (code: from `src`) · badge button: camera / edit (§9.6) | ⚠️ (frame 100 = `Size-96` + `Space-XS`, approved 15 Oct 2026) | ✅ |
-| 44 | `Progress-full` (renamed from `Progress-progress bar` in Figma, 15 Oct 2026) | Progress | `31:2122` | `FinProgressFull` | **Progress bar** (Large, Steps=4), **Text Box** (Center, Display Small-H3) · Progress: 25/50/75/100% · Description: True/False · 375 wide (a mobile-era width), gap `Space-XL` · Progress bar (§9.16) and Text Box (§9.21) are built: ready to build | ⚠️ | ⬜ |
-| 45 | `Progress-Spinner` | Progress | `33:2348` | `FinProgressSpinner` | **Spinner**, Text Box · Spinner (§9.17) and Text Box (§9.21) are built: ready to build | ⚠️ | ⬜ |
+| 44 | `bar-with-text` (renamed in Figma 15 Oct 2026: `Progress-progress bar` → `Progress-full` → `bar-with-text`) | Progress | `31:2122` | `FinBarWithText` | **Progress bar** (Large, Steps=4), **Text Box** (Center, Display Small-H3) · Progress: 25/50/75/100% · Description: True/False · 375 wide (a mobile-era width), gap `Space-XL` · Progress bar (§9.16) and Text Box (§9.21) are built: ready to build | ⚠️ | ⬜ |
+| 45 | `spinner-with-text` (renamed from `Progress-Spinner` in Figma, 15 Oct 2026) | Progress | `33:2348` | `FinSpinnerWithText` | **Spinner**, Text Box · Spinner (§9.17) and Text Box (§9.21) are built: ready to build | ⚠️ | ⬜ |
 | 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black/Basic | ⚠️ (§10 #16) | ⬜ |
 | 47 | `Pagination group` | Table | `3151:14607` | `FinPagination` | **Pagination item**, all-button | ⚠️ | ⬜ |
 | 48 | `Main Selection` | Side nav | `3140:10997` | `FinSideNavItem` | Side nav `24px`, sub selection, `24px` icon · State · Expanded · Type: Full/Minimized · Expanded slot | 🔴 depends on #32 | ⬜ |
@@ -1388,7 +1388,7 @@ import { FinRadio } from '@finspace-loyalty/ui';
 
 ### 9.16 FinProgressBar (Progress bar)
 
-**Figma:** page **Progress**, component set `Progress bar` `31:2113`: `Filled` × `Size` = Large / Small × `Steps` = 4 / 5 (16 variants): a `bg-active-hover` track with an `fg-brand` fill, both `Radius-XS`, 311 wide (fixed). Base of `Progress-full` (§8 #44; its 8 instances are all there). **Public** (decided 15 Oct 2026): §7.2 rule 4 exception, because it will also be used on its own, for example in layouts.
+**Figma:** page **Progress**, component set `Progress bar` `31:2113`: `Filled` × `Size` = Large / Small × `Steps` = 4 / 5 (16 variants): a `bg-active-hover` track with an `fg-brand` fill, both `Radius-XS`, 311 wide (fixed). Base of `bar-with-text` (§8 #44; its 8 instances are all there). **Public** (decided 15 Oct 2026): §7.2 rule 4 exception, because it will also be used on its own, for example in layouts.
 
 **Figma → code names:** `Filled` → `value` (any number, not only Figma's steps); `Steps` → no prop. Code-only: `max`, `label`.
 
@@ -1427,7 +1427,7 @@ Presentational: no `'use client'`. `className`, `style` and other `<div>` attrib
 
 ### 9.17 FinSpinner (Spinner)
 
-**Figma:** page **Progress**, component set `Spinner` `33:2331`: `Pregress` (typo for Progress, §10 #21) = 25% / 50% / 75% / Success / Error. Progress: a 48 box with a 40 ring (`bg-active-hover` track, 4px inside stroke) and an `fg-brand` arc (4px, flat ends). Success / Error: a 48 circle, `bg-success_secondary` / `bg-error_secondary`, with a 24px `check` (`fg-success`) / `warning_amber` (`fg-error`; current name `warning`, §6.4). Base of `Progress-Spinner` (§8 #45; all 10 instances are there). **Public** (decided 15 Oct 2026): §7.2 rule 4 exception, used on its own.
+**Figma:** page **Progress**, component set `Spinner` `33:2331`: `Pregress` (typo for Progress, §10 #21) = 25% / 50% / 75% / Success / Error. Progress: a 48 box with a 40 ring (`bg-active-hover` track, 4px inside stroke) and an `fg-brand` arc (4px, flat ends). Success / Error: a 48 circle, `bg-success_secondary` / `bg-error_secondary`, with a 24px `check` (`fg-success`) / `warning_amber` (`fg-error`; current name `warning`, §6.4). Base of `spinner-with-text` (§8 #45; all 10 instances are there). **Public** (decided 15 Oct 2026): §7.2 rule 4 exception, used on its own.
 
 **Figma → code names:** `Pregress` (typo for Progress) → `status` (`progress` / `success` / `error`) plus `value` for the 25 / 50 / 75% options. Code-only: `max`, `label`; no `value` gives the spinning loader.
 
@@ -1469,7 +1469,7 @@ Presentational: no `'use client'`. `className`, `style` (merged with `--arc`) an
 
 **Accessibility:** progress: `role="progressbar"` with `aria-label`; with a `value`, also `aria-valuemin`, `aria-valuemax`, `aria-valuenow` (without one it's an indeterminate progressbar). Success / Error: `role="img"` named by `label`; the icon is decorative. Contrast (non-text, 3:1): arc on track 3.07 Light / 3.14 Dark; check on its circle 3.28 / 6.56; warning 5.05 / 6.34.
 
-**Progress-Spinner (§8 #45)** will put a Text Box under this spinner once Text Box (§8 #36) is built.
+**spinner-with-text (§8 #45)** puts a Text Box under this spinner.
 
 **Built (15 Oct 2026).** Storybook (Components/Progress): Playground, States (Figma), Loading, Any value. Checked against Figma: box 48, ring 40 at (4, 4), stroke 4, arcs 90° / 180° / 270° from 12 o'clock, flat ends; Success / Error 48 circles with 24px icons at (12, 12); Light colors equal Figma (Dark uses the Dark tokens). The loader spins (1s, linear) and stays still with reduced motion. a11y: no violations in Light or Dark.
 
@@ -1601,7 +1601,7 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 
 ### 9.21 FinTextBox (Text Box)
 
-**Figma:** page **Text box**, component set `Text Box` `28:1001`: `Type` = Display Large-H1 / Display Medium-H2 / Display Small-H3 / Headline Large-H4 / Headline Medium-H5 / Headline Small-H6 × `Alignment` = Left / Center / Right (18 variants), with `Show Label`, `Show Heading`, `Show Description` (all on by default). Its `Label` instance is **exposed**, so the Label's `Show badge` can be set from the Text Box in Figma. Used 113 times (Dialog box, Side sheet, Snackbar, Empty state, Button dock, Main header, Checkbox, OTP, File uploads, Tooltip, Accordion, List, Progress-Spinner, Progress-full…).
+**Figma:** page **Text box**, component set `Text Box` `28:1001`: `Type` = Display Large-H1 / Display Medium-H2 / Display Small-H3 / Headline Large-H4 / Headline Medium-H5 / Headline Small-H6 × `Alignment` = Left / Center / Right (18 variants), with `Show Label`, `Show Heading`, `Show Description` (all on by default). Its `Label` instance is **exposed**, so the Label's `Show badge` can be set from the Text Box in Figma. Used 113 times (Dialog box, Side sheet, Snackbar, Empty state, Button dock, Main header, Checkbox, OTP, File uploads, Tooltip, Accordion, List, spinner-with-text, bar-with-text…).
 
 **Figma → code names:** `Alignment` → `align` and `Type` values `Display Large-H1` … `Headline Small-H6` → `h1` … `h6` (both outside the patterns, §10 #37); `Show Label` / `Show Heading` / `Show Description` → `label` / `heading` / `description` (shown when passed); exposed Label `Size` / `Show badge` → `labelSize` / `labelBadge`. Code-only: `headingLevel`, `labelBadgeLabel`.
 
@@ -1771,3 +1771,4 @@ Template:
 | 15 Oct 2026 | 0.2 | `FinTextBox`: `labelSize` (medium/small, default medium) added, following Figma's exposed Label (§9.21). |
 | 15 Oct 2026 | 0.2 | §7.3 **Figma ↔ code parity rules** added (every Figma control, including exposed nested ones, has a matching prop; names differ only by the listed patterns; option values keep Figma's names in lower case; code-only props only for behaviour/accessibility; anything else flagged first). One-line "Figma → code names" notes added to §9.1–9.21; §9 template now asks for a full Figma → code table. Differences outside the patterns listed in §10 #37 for a decision. |
 | 15 Oct 2026 | 0.2 | §10 #37 deferred to the end of the build at design's request. |
+| 15 Oct 2026 | 0.2 | Figma renames: `Progress-full` → `bar-with-text` (§8 #44, code name `FinBarWithText`), `Progress-Spinner` → `spinner-with-text` (§8 #45, `FinSpinnerWithText`); §7.2, §9.16, §9.17, §9.21 updated. |
