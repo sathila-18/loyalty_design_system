@@ -1676,7 +1676,7 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 
 **Accessibility:** the bar is a progressbar named by `heading` (with its value); the heading is a real `<h3>` (or `headingLevel`). Contrast as FinProgressBar and FinTextBox.
 
-**Built (15 Oct 2026).** Storybook (Components/Progress): Playground, Variants (Figma) with 25 / 50 / 75 / 100% and the description on and off, in a 1240-wide content area. a11y: no violations in Light or Dark.
+**Built (15 Oct 2026).** Storybook (Components/Progress): Playground, Variants (Figma) with 25 / 50 / 75 / 100% and the description on and off, in a page-like content area (the window minus the 24px grid margins). Measured at window widths 1024 / 1288 / 1440 / 1920: 476 / **608** / 684 / 924 wide, equal gaps on both sides (centred). a11y: no violations in Light or Dark.
 
 ### 9.23 FinSpinnerWithText (spinner-with-text)
 
@@ -1710,7 +1710,7 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 
 **Accessibility:** the spinner is a progressbar (or, for Complete / Error, an image) named by `heading`; the heading is a real `<h3>` (or `headingLevel`). The loader stops spinning with reduced motion (FinSpinner).
 
-**Built (15 Oct 2026).** Storybook (Components/Progress): Playground (status, loading or value, description), Variants (Figma) with all 10, Loading. Checked in a 1240 content area: 608 wide, centred (316 each side), spinner 48 centred, gap 16, heading Display Small-H3 centred. a11y: no violations in Light or Dark.
+**Built (15 Oct 2026).** Storybook (Components/Progress): Playground (status, loading or value, description), Variants (Figma) with all 10, Loading. Measured at window widths 1024 / 1288 / 1440 / 1920: 476 / **608** / 684 / 924 wide, centred; spinner 48 centred, gap 16, heading Display Small-H3 centred. a11y: no violations in Light or Dark.
 
 Template:
 
@@ -1839,3 +1839,4 @@ Template:
 | 15 Oct 2026 | 0.2 | Figma renames: `Progress-full` → `bar-with-text` (§8 #44, code name `FinBarWithText`), `Progress-Spinner` → `spinner-with-text` (§8 #45, `FinSpinnerWithText`); §7.2, §9.16, §9.17, §9.21 updated. |
 | 15 Oct 2026 | 0.2 | **`FinBarWithText` done** (§8 #44, §9.22): FinProgressBar (large) + FinTextBox (H3, centre); `value` (any, §10 #37), `heading`, `description`, `headingLevel`; spans the middle 6 of 12 grid columns of its container (608 in a 1240 content area). First spec with a full Figma → code table. |
 | 15 Oct 2026 | 0.2 | **`FinSpinnerWithText` done** (§8 #45, §9.23): FinSpinner + FinTextBox (H3, centre); `status` / `value` (§10 #37), loader added at design's request, `heading`, `description`, `headingLevel`; spans the middle 6 grid columns. |
+| 15 Oct 2026 | 0.2 | Bar with text / Spinner with text stories: the demo content area is now the full window minus the grid margins (it was a fixed 1240 box on the left), so the components show centred and responsive in Storybook. |

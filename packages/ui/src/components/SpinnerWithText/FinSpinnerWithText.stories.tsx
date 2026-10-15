@@ -44,7 +44,7 @@ export default meta;
 
 type Story = StoryObj<Args>;
 
-/** In a 1240-wide content area (dashed), it spans the middle 6 of 12 columns: 608 wide. */
+/** In the page content area (dashed: the window minus the 24px grid margins) it spans the middle 6 of 12 columns, centred; resize the window to see it follow (608 when the content area is 1240). */
 export const Playground: Story = {};
 
 /** The Figma spinner-with-text page: Progress 25 / 50 / 75% / Complete / Error, with and without the description. */
