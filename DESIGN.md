@@ -622,7 +622,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 19 | ~~`Circle Icon`~~ | Icon sizes | ~~`624:4882`~~ | ~~`FinCircleIcon`~~ | — | **Removed from Figma (14 Oct 2026); not built.** | — | — |
 | 20 | `Badge-base` (renamed from `Tag-base` in Figma, 15 Oct 2026) | Badge | `30:1454` | `FinBadgeBase` | `16px`, `20px` | Size: Small/Large · Leading/Trailing icon (code: none by default) · Label (one line, "…" when narrow) | ✅ | ✅ |
 | 21 | `Label` | Text box | `28:968` | `FinLabel` | Badge - indicator | Size: Medium/Small · Show badge · Label · code: `badgeLabel` required with `badge`, `htmlFor` → `<label>`, one line with "…" (§9.19) | ⚠️ (other-library bindings only inside the badge instance) | ✅ |
-| 22 | `Helper text content` | Text box | `28:973` | `FinHelperText` | `20px` | State: Default/Error/Success/Warning/Disabled · Show leading icon · Text | ⚠️ | ⬜ |
+| 22 | `Helper text content` | Text box | `28:973` | `FinHelperText` | `20px` | State: Default/Error/Success/Warning/Disabled · Show leading icon · Text · code: `tone`, `showIcon`, wraps, `announce` (§9.20) | ⚠️ (text radius from another library, no effect, dropped) | ✅ |
 | 23 | `Base-button` | Buttons | `45:405` | `FinButtonBase` | `20px`, `24px` | Type: Primary/Secondary/Tertiary · Size: Large/Medium/Small/XSmall · State, Focused (runtime) · Leading/Trailing icon · Label | ✅ | ⬜ |
 | 24 | `white-button` | Buttons | `349:5042` | `FinWhiteButton` | `20px`, `24px` | Size (4) · State, Focused (runtime) · icons · Label | ✅ | ⬜ |
 | 25 | `Destructive-button` | Buttons | `523:2813` | `FinDestructiveButton` | `20px`, `24px` | Type: Primary/Secondary · Size (4) · State, Focused (runtime) | ✅ | ⬜ |
@@ -702,7 +702,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner and Slider are under **Components/Progress** (the Figma page they're on); Label is under **Components/Text box**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner and Slider are under **Components/Progress** (the Figma page they're on); Label and Helper text are under **Components/Text box**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1508,6 +1508,47 @@ Presentational: no `'use client'`. `className` and other attributes go to the ro
 
 **Built (15 Oct 2026).** Storybook (Components/Text box): Playground, Sizes (Figma), Usage (form label, caption with badge, narrow caption). Checked against Figma: heights 21 / 18, Label/Medium and Label/Small in `#474748` (Dark uses the Dark tokens), dot 6 × 6 `fg-error`, 8px before the text and centred; widths 66 / 57 against Figma's 67 / 58 (text rounding). The field's name reads "Email address, Required"; clicking the label focuses the field; long captions end in "…". a11y: no violations in Light or Dark.
 
+### 9.20 FinHelperText (Helper text content)
+
+**Figma:** page **Text box**, component set `Helper text content` `28:973`: `State` = Default / Success / Warning / Error / Disabled, `Show Leading Icon` (default on), `Text`. A 20px icon (Icon sizes `20px`), 8px gap (`Space-M`), Body/Small text; fills its container. Icons updated by design 15 Oct 2026 (were placeholders). Used 78 times, in Input field-base, Input field-textArea-base and OTP. The Success variant's icon isn't linked to `Show Leading Icon` (§10 #36).
+
+**Variants:**
+
+| Figma | Prop |
+|---|---|
+| `State` | `tone: 'default' \| 'success' \| 'warning' \| 'error' \| 'disabled'` (default `'default'`; only changes colors and the icon, so `tone`, §7.3; decided 15 Oct 2026) |
+| `Show Leading Icon` | `showIcon` (default `true`; works in every tone, Success included) |
+| `Text` | `children`: **wraps** onto more lines when long (decided 15 Oct 2026; messages aren't cut off) |
+| — | `icon` (optional, replaces the tone's icon), `announce` (see Accessibility), `id` (for the field's `aria-describedby`) |
+
+**Tokens used:**
+
+| `tone` | Icon (FinIcon 20, Figma glyph) | Text |
+|---|---|---|
+| `default` | `info`, `fg-secondary` | `--fin-text-secondary` |
+| `success` | `check_circle`, `fg-success` | `--fin-text-success` |
+| `warning` | `warning`, `fg-warning` | `--fin-text-warning` |
+| `error` | `warning`, `fg-error` (same glyph as warning, as in Figma) | `--fin-text-error` |
+| `disabled` | `info`, `fg-disabled` | `--fin-text-disabled` |
+
+Layout: flex, gap `--fin-space-m`, items at the top; text `--fin-font-body-small`. With the icon, the text has a 1px top offset (`calc(var(--fin-space-xxs) / 2)`), so its 18px line is centred on the 20px icon as in Figma, and a wrapped message keeps the icon beside its first line. Figma's text-layer radius (another library, `Spacing, Radius & Widths`) has no effect and is dropped.
+
+**API:**
+
+```tsx
+import { FinHelperText } from '@finspace-loyalty/ui';
+
+<input id="card" aria-invalid="true" aria-describedby="card-help" />
+<FinHelperText id="card-help" tone="error">Enter all 16 digits.</FinHelperText>
+<FinHelperText tone="error" announce>Payment failed. Try again.</FinHelperText>   // read as soon as it appears
+```
+
+Presentational: no `'use client'`. `className` and other `<div>` attributes go to the root.
+
+**Accessibility:** the icon is decorative; the message carries the meaning. **Announcing (decided 15 Oct 2026):** by default the field links to the message (`aria-describedby`), so it's read when the person reaches the field and a form doesn't announce every error at once; `announce` adds `role="alert"` for a message that must interrupt. Contrast: text ≥ 4.60:1 in every enabled tone (Light, on `bg-primary` and `bg-secondary`; Dark ≥ 7.25). Icons ≥ 3:1, except the warning icon on `bg-secondary` in Light (2.98, already in §10 #3). **`disabled`** (2.0:1 Light, 2.5:1 Dark): the message of a disabled field, exempt like the Badge's disabled tone; the Storybook a11y check leaves out only `[data-tone="disabled"]` (verified: without it, only disabled text fails).
+
+**Built (15 Oct 2026).** Storybook (Components/Text box): Playground, States (Figma) with and without the icon, With a field (long wrapping error, `aria-describedby`). Checked against Figma: 20 tall with the icon (18 without), icon 20 in the tone's color, 8px gap, Body/Small 12/18; Light colors equal Figma (Dark uses the Dark tokens); a long message wraps to two lines with the icon beside the first. a11y: no violations in Light or Dark apart from the documented `disabled` exception.
+
 Template:
 
 ```
@@ -1562,15 +1603,16 @@ Template:
 | 33 | **Online indicator on an avatar isn't in Figma.** Code places it (decided 15 Oct 2026, §9.4 Online): flush with the bottom-right corner, 2px in at 64 and 96, indicator size per avatar size. Design to add it to the Avatar (or an example) in Figma so the two match. | Avatar | ⏳ Design to add in Figma |
 | 34 | **Off-canvas Badge leftovers:** `Badge-primary/brand` (`70:10326`, with 3 instances in an off-canvas `Placeholder-text` frame) and `Badge-primary/Gold` (`421:1316`) still reference Badge-base but aren't on any page. Nothing live depends on them. Is `Gold` planned (for example a loyalty tier)? | Badge | ❓ Design to confirm |
 | 35 | **Indicator `Type=Selected` is 22 wide in Figma**, but there's no `Size-22`. Decided 15 Oct 2026: 24 (`Size-24`) in code. Update the Figma Indicator (and the Indicator set widths become 44 / 54 / 64). | Indicator | 🔧 Fix in Figma |
+| 36 | **Helper text content `State=Success`:** its icon isn't linked to `Show Leading Icon`, so it can't be hidden in Figma (the other four states are linked). Code hides it in every tone. | Text box | 🔧 Fix in Figma |
 
 ---
 
 ## 11. Changelog
 
 > **Where we are (15 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) and `FinLabel` (§9.19). Everything is merged into `main`.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) and `FinHelperText` (§9.20, on `feat/helper-text`, waiting for approval). The rest is on `main`.
 > - **Next:** wait for the designer to name the next component. Plan first, then wait for the go-ahead.
-> - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers) and §10 #35 (Indicator selected width 22 → 24 in Figma). Fixed 15 Oct 2026: §10 #29, #30.
+> - **Open:** §10 #3 (contrast, including Dark button hover/pressed, to decide before `FinButtonBase`, and the badge indicator, built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers), §10 #35 (Indicator selected width 22 → 24 in Figma) and §10 #36 (Helper text Success icon toggle). Fixed 15 Oct 2026: §10 #29, #30.
 
 | Date | Version | Change |
 |---|---|---|
@@ -1623,3 +1665,4 @@ Template:
 | 15 Oct 2026 | 0.2 | **`FinSpinner` done** (§8 #13, §9.17): public base; `value` → still ring (clockwise from 12 o'clock, exact), no value → spinning loader (1s linear, still with reduced motion; first animation, §5 exception), `status` success/error with FinIcon; Figma sizes kept. Progress-Spinner (§8 #45) waits for Text Box. |
 | 15 Oct 2026 | 0.2 | `dragger` renamed `slider` in Figma; code name `FinDragger` → `FinSlider` (§8 #12). **`FinSlider` done** (§9.18): native range input restyled, `min`/`max`/`step` (0–100 by default, set by the screen), standard slider geometry, fills its container, visually hidden `label`, disabled with the disabled tokens. |
 | 15 Oct 2026 | 0.2 | **`FinLabel` done** (§8 #21, §9.19): `size` medium/small, one line with "…", `badge` (FinBadgeIndicator dot before the text) with a required `badgeLabel` (meaning varies by screen, so no default; read after the text), `htmlFor` → real `<label>`. |
+| 15 Oct 2026 | 0.2 | **`FinHelperText` done** (§8 #22, §9.20): `tone` (Figma `State`), Figma icons per tone (`info`, `check_circle`, `warning`, `warning`, `info`), `showIcon`, wrapping text, `announce` (`role="alert"`, off by default; `aria-describedby` is the default link). `disabled` tone a documented a11y exception. §10 #36 added (Success icon not linked to Show Leading Icon). |

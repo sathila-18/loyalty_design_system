@@ -1,0 +1,42 @@
+/*
+ * FinHelperText (DESIGN.md §9). The icon is FinIcon (its color comes from the tone); this file lays it out and
+ * colors the text. Long messages wrap; the 20px icon lines up with the first 18px line (decided 15 Oct 2026).
+ */
+
+.helper {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.text {
+  min-width: 0;
+  font: var(--fin-font-body-small);
+  overflow-wrap: anywhere;
+}
+
+/* With the icon, Figma centres the 18px line on the 20px icon (1px offset); when wrapping, the first line keeps it. */
+.helper[data-icon] .text {
+  padding-top: calc(var(--fin-space-xxs) / 2);
+}
+
+.helper[data-tone="default"] .text {
+  color: var(--fin-text-secondary);
+}
+
+.helper[data-tone="success"] .text {
+  color: var(--fin-text-success);
+}
+
+.helper[data-tone="warning"] .text {
+  color: var(--fin-text-warning);
+}
+
+.helper[data-tone="error"] .text {
+  color: var(--fin-text-error);
+}
+
+.helper[data-tone="disabled"] .text {
+  color: var(--fin-text-disabled);
+}

@@ -1,0 +1,40 @@
+/* Layout for the FinHelperText stories only (not part of the component). */
+
+.frame {
+  width: calc(var(--fin-size-120) * 3);
+}
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(2, 1fr);
+  gap: var(--fin-space-l) var(--fin-space-3xl);
+  align-items: center;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-s);
+}
+
+.label {
+  font: var(--fin-font-label-medium);
+  color: var(--fin-text-tertiary);
+}
+
+/* A plain stand-in field for the demo (the real input field is built later). */
+.input {
+  height: var(--fin-size-40);
+  padding: 0 var(--fin-space-m);
+  border: 1px solid var(--fin-border-error);
+  border-radius: var(--fin-radius-s);
+  background-color: var(--fin-bg-primary);
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-primary);
+}
