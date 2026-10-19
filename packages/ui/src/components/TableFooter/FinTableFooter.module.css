@@ -1,0 +1,26 @@
+/*
+ * FinTableFooter (DESIGN.md §9). Figma: the summary (Body S, text-tertiary) and the Row count dropdown 12 apart
+ * (Space-L) on the left, the Pagination group on the right, centred. Fills its container; when narrow, the pagination
+ * wraps onto a second line 8 below (Space-M, decided 19 Oct 2026).
+ */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-m);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.start {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: center;
+}
+
+.summary {
+  margin: 0;
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-tertiary);
+  white-space: nowrap;
+}
