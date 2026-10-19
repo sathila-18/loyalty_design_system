@@ -5,3 +5,4 @@ storybook-static/
 *.log
 .DS_Store
 packages/ui/src/styles/generated/
+packages/ui/src/assets/generated/

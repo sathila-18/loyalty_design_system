@@ -30,6 +30,12 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinSegmentedButton');
   });
 
+  it('exports FinFlag and its registry', () => {
+    expect(ui).toHaveProperty('FinFlag');
+    expect(ui).toHaveProperty('finFlags');
+    expect(ui).toHaveProperty('isFinFlagCountry');
+  });
+
   it.each(INTERNAL_BASES)('does not export the internal base %s', (name) => {
     expect(ui).not.toHaveProperty(name);
   });
