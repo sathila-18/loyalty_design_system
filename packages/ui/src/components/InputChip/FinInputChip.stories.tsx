@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef, useState } from 'react';
 import type { FinChipSize } from '../ChipBase';
-import { FinInputChip } from './FinInputChip';
+import { chipLeadingArgs, chipLeadingArgTypes, withChipLeading, type ChipLeadingArgs } from '../ChipBase/chipStoryControls';
+import { FinInputChip, type FinInputChipProps } from './FinInputChip';
 import styles from './FinInputChip.stories.module.css';
 
 const SIZES: FinChipSize[] = ['xsmall', 'small', 'large'];
@@ -12,20 +13,24 @@ const SIZES: FinChipSize[] = ['xsmall', 'small', 'large'];
  */
 const DISABLED_CHIPS = ['[data-disabled]'];
 
-const meta: Meta<typeof FinInputChip> = {
+type Args = Omit<FinInputChipProps, 'leadingIcon' | 'leadingAccessory'> & ChipLeadingArgs;
+
+const meta: Meta<Args> = {
   title: 'Components/Chips/Input chip',
   component: FinInputChip,
-  args: { children: 'Gold', size: 'small', disabled: false, onRemove: () => {} },
+  args: { children: 'Gold', size: 'small', disabled: false, onRemove: () => {}, ...chipLeadingArgs, leading: 'none' },
   argTypes: {
     children: { control: 'text', description: 'The chosen value' },
     size: { control: 'inline-radio', options: SIZES },
     disabled: { control: 'boolean' },
+    ...chipLeadingArgTypes,
   },
   parameters: { a11y: { context: { include: ['body'], exclude: DISABLED_CHIPS } } },
+  render: (args) => <FinInputChip {...withChipLeading(args)} />,
 };
 export default meta;
 
-type Story = StoryObj<typeof FinInputChip>;
+type Story = StoryObj<Args>;
 
 export const Playground: Story = {};
 

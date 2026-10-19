@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import type { FinChipSize } from '../ChipBase';
-import { FinAssistChip } from './FinAssistChip';
+import { chipLeadingArgs, chipLeadingArgTypes, withChipLeading, type ChipLeadingArgs } from '../ChipBase/chipStoryControls';
+import { FinAssistChip, type FinAssistChipProps } from './FinAssistChip';
 import styles from './FinAssistChip.stories.module.css';
 
 const SIZES: FinChipSize[] = ['xsmall', 'small', 'large'];
@@ -9,22 +10,26 @@ const SIZES: FinChipSize[] = ['xsmall', 'small', 'large'];
 /** Selected text contrast is accepted by design (DESIGN.md §10 #3); only the open (Selected) chips skip the a11y check. */
 const KNOWN_CONTRAST_ISSUES = ['[data-variant="selected"]'];
 
-const meta: Meta<typeof FinAssistChip> = {
+type Args = Omit<FinAssistChipProps, 'leadingIcon' | 'leadingAccessory'> & ChipLeadingArgs;
+
+const meta: Meta<Args> = {
   title: 'Components/Chips/Assist chip',
   component: FinAssistChip,
-  args: { children: 'Last 30 days', size: 'small', dropdown: true, expanded: false, disabled: false },
+  args: { children: 'Last 30 days', size: 'small', dropdown: true, expanded: false, disabled: false, ...chipLeadingArgs, leading: 'none' },
   argTypes: {
     children: { control: 'text', description: 'The label' },
     size: { control: 'inline-radio', options: SIZES },
     dropdown: { control: 'boolean', description: 'Shows the down arrow: opens a menu or picker' },
     expanded: { control: 'boolean', description: 'The menu is open (Selected look)' },
     disabled: { control: 'boolean' },
+    ...chipLeadingArgTypes,
   },
   parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
+  render: (args) => <FinAssistChip {...withChipLeading(args)} />,
 };
 export default meta;
 
-type Story = StoryObj<typeof FinAssistChip>;
+type Story = StoryObj<Args>;
 
 export const Playground: Story = {};
 

@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FinIcon } from '../../icons/FinIcon';
+import { FinAvatar } from '../Avatar';
 import { finIcons, type FinIconName } from '../../icons/finIcons';
 import { FinChipBase, type FinChipBaseProps, type FinChipSize, type FinChipVariant } from './FinChipBase';
 import styles from './FinChipBase.stories.module.css';
+import { chipLeadingArgs, chipLeadingArgTypes, withChipLeading, type ChipLeadingArgs } from './chipStoryControls';
 
 const VARIANTS: FinChipVariant[] = ['unselected', 'selected', 'unselected-border'];
 const SIZES: FinChipSize[] = ['xsmall', 'small', 'large'];
@@ -19,9 +21,8 @@ const SIZE_NAMES: Record<FinChipSize, string> = { xsmall: 'XSmall', small: 'Smal
  */
 const KNOWN_CONTRAST_ISSUES = ['[data-variant="selected"]'];
 
-type Args = Omit<FinChipBaseProps, 'leadingIcon' | 'leadingAccessory' | 'trailingIcon'> & {
-  showLeadingAccessory: boolean;
-  leadingIcon: FinIconName;
+type Args = Omit<FinChipBaseProps, 'leadingIcon' | 'leadingAccessory' | 'trailingIcon'> &
+  ChipLeadingArgs & {
   showTrailingIcon: boolean;
   trailingIcon: FinIconName;
 };
@@ -36,8 +37,7 @@ const meta: Meta<Args> = {
     children: 'Label',
     variant: 'unselected',
     size: 'small',
-    showLeadingAccessory: true,
-    leadingIcon: 'person',
+    ...chipLeadingArgs,
     showTrailingIcon: true,
     trailingIcon: 'close',
   },
@@ -45,18 +45,13 @@ const meta: Meta<Args> = {
     children: { control: 'text', description: 'Figma `Label text`' },
     variant: { control: 'inline-radio', options: VARIANTS, description: 'Figma `Type`' },
     size: { control: 'inline-radio', options: SIZES, description: 'Figma `Size`' },
-    showLeadingAccessory: { control: 'boolean', name: 'Show Leading Accessory', description: 'Figma `Show Leading Accessory`' },
-    leadingIcon: { control: 'select', options: finIcons, description: 'The leading icon', if: { arg: 'showLeadingAccessory' } },
+    ...chipLeadingArgTypes,
     showTrailingIcon: { control: 'boolean', name: 'Show Trailing Icon', description: 'Figma `Show Trailing Icon`' },
     trailingIcon: { control: 'select', options: finIcons, description: 'The trailing icon', if: { arg: 'showTrailingIcon' } },
   },
   parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  render: ({ showLeadingAccessory, leadingIcon, showTrailingIcon, trailingIcon, ...args }) => (
-    <FinChipBase
-      {...args}
-      {...(showLeadingAccessory ? { leadingIcon } : {})}
-      {...(showTrailingIcon ? { trailingIcon } : {})}
-    />
+  render: ({ showTrailingIcon, trailingIcon, ...args }) => (
+    <FinChipBase {...withChipLeading(args)} {...(showTrailingIcon ? { trailingIcon } : {})} />
   ),
 };
 export default meta;
@@ -109,6 +104,28 @@ export const Content: Story = {
       >
         Custom accessory
       </FinChipBase>
+    </div>
+  ),
+};
+
+/**
+ * The leading slot with an avatar, ready for when design adds one. The smallest FinAvatar is 24px, so XSmall and
+ * Small chips grow (26 → 32, 33 → 36); Large (40) fits. Avatar sizes in chips are for design to decide (DESIGN.md §10 #47).
+ */
+export const AvatarAccessory: Story = {
+  name: 'Avatar in the slot',
+  render: () => (
+    <div className={styles.row}>
+      {SIZES.map((size) => (
+        <FinChipBase
+          key={size}
+          size={size}
+          trailingIcon="close"
+          leadingAccessory={<FinAvatar size="xsmall" type="text" initials="SD" />}
+        >
+          {SIZE_NAMES[size]}
+        </FinChipBase>
+      ))}
     </div>
   ),
 };

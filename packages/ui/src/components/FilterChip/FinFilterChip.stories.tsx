@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { userEvent } from 'storybook/test';
 import type { FinChipSize } from '../ChipBase';
-import { FinFilterChip } from './FinFilterChip';
+import { chipLeadingArgs, chipLeadingArgTypes, withChipLeading, type ChipLeadingArgs } from '../ChipBase/chipStoryControls';
+import { FinFilterChip, type FinFilterChipProps } from './FinFilterChip';
 import styles from './FinFilterChip.stories.module.css';
 
 const SIZES: FinChipSize[] = ['xsmall', 'small', 'large'];
@@ -10,21 +11,25 @@ const SIZES: FinChipSize[] = ['xsmall', 'small', 'large'];
 /** Selected text contrast is accepted by design (DESIGN.md §10 #3); only Selected chips skip the a11y check. */
 const KNOWN_CONTRAST_ISSUES = ['[data-variant="selected"]'];
 
-const meta: Meta<typeof FinFilterChip> = {
+type Args = Omit<FinFilterChipProps, 'leadingIcon' | 'leadingAccessory'> & ChipLeadingArgs;
+
+const meta: Meta<Args> = {
   title: 'Components/Chips/Filter chip',
   component: FinFilterChip,
-  args: { children: 'Gold', defaultSelected: false, size: 'small', disabled: false },
+  args: { children: 'Gold', defaultSelected: false, size: 'small', disabled: false, ...chipLeadingArgs },
   argTypes: {
     children: { control: 'text', description: 'The label' },
     defaultSelected: { control: 'boolean', description: 'Figma Chips `Type=Selected` (uncontrolled start value)' },
     size: { control: 'inline-radio', options: SIZES },
     disabled: { control: 'boolean', description: 'Figma Chips `State=Disabled`' },
+    ...chipLeadingArgTypes,
   },
   parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
+  render: (args) => <FinFilterChip {...withChipLeading(args)} />,
 };
 export default meta;
 
-type Story = StoryObj<typeof FinFilterChip>;
+type Story = StoryObj<Args>;
 
 export const Playground: Story = {};
 
