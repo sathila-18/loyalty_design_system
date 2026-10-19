@@ -26,3 +26,4 @@ export * from './components/Checkbox';
 export * from './components/AssistChip';
 export * from './components/FilterChip';
 export * from './components/InputChip';
+export * from './components/SegmentedButton';

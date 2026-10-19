@@ -1,0 +1,22 @@
+/*
+ * FinSegmentedButton (DESIGN.md §9). The track only; every segment look and state is FinSegmentBase's. Fills its
+ * container (Figma draws it 343 wide); the segments share the width equally.
+ */
+
+.track {
+  display: flex;
+  gap: var(--fin-space-l);
+  padding: var(--fin-space-xs);
+  border-radius: var(--fin-radius-l);
+  background-color: var(--fin-bg-tertiary);
+}
+
+/* Figma State=Disabled: no fill, a 1px border-disabled stroke inside. */
+.track[data-disabled] {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--fin-border-disabled);
+}
+
+.segment {
+  flex: 1 1 0;
+}

@@ -26,6 +26,10 @@ describe('public API', () => {
     for (const name of ['FinAssistChip', 'FinFilterChip', 'FinInputChip']) expect(ui).toHaveProperty(name);
   });
 
+  it('exports FinSegmentedButton, but not its FinSegmentBase base', () => {
+    expect(ui).toHaveProperty('FinSegmentedButton');
+  });
+
   it.each(INTERNAL_BASES)('does not export the internal base %s', (name) => {
     expect(ui).not.toHaveProperty(name);
   });

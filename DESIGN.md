@@ -655,7 +655,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 37 | `Checkbox` | Checkbox | `42:220` | `FinCheckbox` | **Base-Checkbox**, Text Box · checkbox always on the left · **public** (§9.30) | ⚠️ | ✅ |
 | 38 | `Chips` | Chips | `95:1848` | `FinAssistChip`, `FinFilterChip`, `FinInputChip` (three chip types, decided 19 Oct 2026) | **Chips-base** · State Enabled/Hovered/Pressed/Disabled × Type (code `selected`) · **public** (§9.32) | ✅ | ✅ |
 | 39 | `Chips-group` | Chips | `922:6646` | `FinChipGroup` | **Chips-base** · Chip count 1–4 | ⚠️ | ⬜ |
-| 40 | `Segmented button` | Segmented button | `117:4688` | `FinSegmentedButton` | **Segmented_button-base** | ⚠️ | ⬜ |
+| 40 | `Segmented button` | Segmented button | `117:4688` | `FinSegmentedButton` | **Segmented_button-base** · State Enabled/Disabled · Show Button 1/2/3 (code: `options`, at least 2) · **public** (§9.34) | ⚠️ | ✅ |
 | 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number (code: `active`, `count`, no maximum) · clickable with `onChange` (§9.12) | ✅ | ✅ |
 | 42 | `Avatar Group` | Avatar | `14:1155` | `FinAvatarGroup` | **Avatar** · Size · Count 2/3/5/7 (code: 2–6 shown, then "+N", §9.5) | ⚠️ (overlaps mapped to spacing, approved 15 Oct 2026) | ✅ |
 | 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image (code: from `src`) · badge button: camera / edit (§9.6) | ⚠️ (frame 100 = `Size-96` + `Space-XS`, approved 15 Oct 2026) | ✅ |
@@ -712,7 +712,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**; Caption is under **Components/List**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`), Base button (`FinButtonBase`), White button (`FinWhiteButton`), Destructive button (`FinDestructiveButton`), Checkbox base (`FinCheckboxBase`), Chip base (`FinChipBase`), Segment base (`FinSegmentBase`). Checkbox (`FinCheckbox`) is **Components/Checkbox**; the three chips are **Components/Chips** (Assist chip, Filter chip, Input chip). **Chip Playground controls** (all three chips and the Chip base): `Leading accessory` = none / icon / avatar, with an icon picker from `finIcons` or the avatar's initials (stories only; one shared helper, `chipStoryControls.ts`, so new accessory kinds are added once; decided 19 Oct 2026). **Buttons:** `FinButton` is under **Components/Buttons/Button**. **Button Playground controls** mirror Figma: `Show Leading Icon` / `Show Trailing Icon` toggles plus an icon picker from `finIcons` (shown only when on), and `Show Label` (stories only; the props stay `leadingIcon` / `trailingIcon`, decided 19 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**; Caption is under **Components/List**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`), Base button (`FinButtonBase`), White button (`FinWhiteButton`), Destructive button (`FinDestructiveButton`), Checkbox base (`FinCheckboxBase`), Chip base (`FinChipBase`), Segment base (`FinSegmentBase`). Checkbox (`FinCheckbox`) is **Components/Checkbox**; the three chips are **Components/Chips** (Assist chip, Filter chip, Input chip); Segmented button (`FinSegmentedButton`) is **Components/Segmented button**. **Chip Playground controls** (all three chips and the Chip base): `Leading accessory` = none / icon / avatar, with an icon picker from `finIcons` or the avatar's initials (stories only; one shared helper, `chipStoryControls.ts`, so new accessory kinds are added once; decided 19 Oct 2026). **Buttons:** `FinButton` is under **Components/Buttons/Button**. **Button Playground controls** mirror Figma: `Show Leading Icon` / `Show Trailing Icon` toggles plus an icon picker from `finIcons` (shown only when on), and `Show Label` (stories only; the props stay `leadingIcon` / `trailingIcon`, decided 19 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -2144,6 +2144,43 @@ Icon `fg-secondary` in every enabled state; `fg-disabled-on_bg` (Selected) / `fg
 
 **Built (19 Oct 2026).** Storybook (Internal/Segment base): Playground (Show Leading Icon toggle + icon picker), States (Figma) on the track, Focused. Checked against Figma in a browser: 112.6 × 40 (Figma 113 × 40), padding 8 / 24, gap 8, radius 12, Button M, icon 20; Light colors equal Figma in all 8 states (Hovered and Pressed with a real mouse); Dark uses the Dark tokens. a11y: no violations in Light or Dark.
 
+### 9.34 FinSegmentedButton (Segmented button)
+
+**Figma:** page **Segmented button**, component set `Segmented button` `117:4688`: `State` = Enabled / Disabled, with `Show Button 1 / 2 / 3`. FinSegmentBase segments (§9.33, no icons in Figma's default) on a track, sharing its width equally; drawn 343 wide. **Public.**
+
+**Figma → code:**
+
+| Figma property | Prop | Notes |
+|---|---|---|
+| `Show Button 1 / 2 / 3` + each segment's label and icon | `options: { value, label, icon?, disabled? }[]` | Data, one entry per segment; **at least 2, no maximum** (decided 19 Oct 2026; Figma shows up to 3) |
+| the selected segment | `value` / `defaultValue` + `onValueChange(value)` | Controlled or uncontrolled; default the first segment that isn't disabled |
+| `State` = Enabled / Disabled | `disabled` | The whole control: track look and every segment |
+| — | `option.disabled` | One segment unavailable (decided 19 Oct 2026), the segment's own Disabled look |
+| — | `label` or `aria-labelledby` (one required) | The group's name |
+| — | `name` | Submits the value in a form (a hidden input) |
+| — | `ref` (to the track), `className`, other attributes | Code-only |
+
+**Tokens used:** track `--fin-bg-tertiary`, padding `--fin-space-xs`, gap `--fin-space-l`, radius `--fin-radius-l` (48 tall with 40 segments); Disabled: no fill, a 1px `--fin-border-disabled` inside stroke. Segments as §9.33, each `flex: 1 1 0`. Fills its container.
+
+**API:**
+
+```tsx
+import { FinSegmentedButton } from '@finspace-loyalty/ui';
+
+<FinSegmentedButton
+  label="Billing period"
+  options={[{ value: 'monthly', label: 'Monthly' }, { value: 'yearly', label: 'Yearly' }]}
+  value={period}
+  onValueChange={setPeriod}
+/>
+```
+
+`'use client'`. Exports also `FinSegmentedButtonOption`.
+
+**Accessibility:** a radio group (decided 19 Oct 2026: it picks a value; switching panels of content would be a future Tabs component). `role="radiogroup"` named by `label` / `aria-labelledby`; each segment `role="radio"` with `aria-checked`. One tab stop (the selected segment, or the first enabled one); ← / → and ↑ / ↓ move and select, wrapping; Home / End jump to the ends; disabled segments are skipped; a disabled control is skipped. Focus: the segment's default ring, inside the track's padding. Contrast as §9.33.
+
+**Built (19 Oct 2026).** Storybook (Components/Segmented button): Playground (segments 2–5, Show Leading Icon, disabled), States (Figma) at 343px, Variations (two, icons, one unavailable, five), Keyboard. Checked against Figma in a browser at 343px: track 343 × 48, padding 4, gap 12, radius 16; segments 103.67 × 40 at x 4 / 119.66 / 235.33 (equal, as Figma); Enabled and Disabled colors and the Disabled stroke equal Figma in Light; Dark uses the Dark tokens. In Chrome: Tab lands on the selected segment, ← / → move and wrap, End jumps. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -2217,8 +2254,8 @@ Template:
 ## 11. Changelog
 
 > **Where we are (19 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; approved 19 Oct 2026) and `FinSegmentBase` (§9.33, internal; approved 19 Oct 2026). Everything is merged into `main`.
-> - **Next:** `FinSegmentedButton` (§8 #40). Plan first, then wait for the go-ahead. Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; approved 19 Oct 2026) and `FinSegmentBase` (§9.33, internal; approved 19 Oct 2026) and `FinSegmentedButton` (§9.34, public; waiting for design review). Everything else is merged into `main`.
+> - **Next:** design review of `FinSegmentedButton` (on `feat/segmented-button`); then wait for the designer to name the next component. Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
 > - **Open:** §10 #3 (contrast: button hover/pressed accepted 19 Oct 2026, enabled state is what matters; Secondary/Tertiary enabled on `bg-secondary` 4.32:1 still open; badge indicator built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers), §10 #35 (Indicator selected width 22 → 24 in Figma), §10 #36 (Helper text Success icon toggle) §10 #38 (XSmall Tertiary Pressed still bound to `bg-active-hover` when checked after merge, 19 Oct 2026) §10 #40 (White button border on Small/XSmall), §10 #41 and #42 (all-button Small Pressed token, raw `Primary-400`) §10 #43 (all-button `Tone`, label and icon swap to add) §10 #44 (Checkbox: leading/trailing booleans, missing variants) §10 #45 (Chips-base font binding, raw `Primary-400`) §10 #46 (Chips: three types, `Selected` rename, arrow and ✕ to add) §10 #47 (avatar size in chips) and §10 #48 (Segment base: pressed fill, Dark hover text, Selected vs track). Fixed 19 Oct 2026: §10 #39. Fixed 15 Oct 2026: §10 #29, #30.
@@ -2309,3 +2346,4 @@ Template:
 | 19 Oct 2026 | 0.2 | The three chips (FinAssistChip, FinFilterChip, FinInputChip) approved by design and merged into `main`. |
 | 19 Oct 2026 | 0.2 | **`FinSegmentBase` built** (§8 #28, §9.33), internal: a native button, `selected`, `leadingIcon` (icons only), Figma's new Hovered and Pressed. Raw `Primary-400` removed by design. §10 #48 added. |
 | 19 Oct 2026 | 0.2 | `FinSegmentBase` approved by design and merged into `main`. |
+| 19 Oct 2026 | 0.2 | **`FinSegmentedButton` built** (§8 #40, §9.34), public: a radio group of FinSegmentBase segments on a track; `options` (at least 2, per-option `disabled`), `value` / `defaultValue` / `onValueChange`, `disabled`, `name`. |

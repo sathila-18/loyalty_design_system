@@ -1,0 +1,17 @@
+/* Layout for the FinSegmentedButton stories only (not part of the component). Figma draws it 343 wide. */
+
+.frame,
+.list {
+  width: calc(var(--fin-size-120) * 3 - var(--fin-size-16) - 1px);
+}
+
+.list,
+.wideList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.wideList {
+  width: calc(var(--fin-size-120) * 5);
+}
