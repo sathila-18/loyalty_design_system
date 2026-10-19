@@ -34,6 +34,7 @@
 .button[data-size="large"] {
   --button-padding-y: var(--fin-space-xl);
   --button-padding-x: var(--fin-space-3xl);
+  --button-padding-x-icon: var(--fin-space-xl);
   --button-radius: var(--fin-radius-m);
   --button-font: var(--fin-font-button-xlarge);
 }
@@ -41,6 +42,7 @@
 .button[data-size="medium"] {
   --button-padding-y: var(--fin-space-l);
   --button-padding-x: var(--fin-space-3xl);
+  --button-padding-x-icon: var(--fin-space-xl);
   --button-radius: var(--fin-radius-m);
   --button-font: var(--fin-font-button-large);
 }
@@ -48,6 +50,7 @@
 .button[data-size="small"] {
   --button-padding-y: var(--fin-space-m);
   --button-padding-x: var(--fin-space-xl);
+  --button-padding-x-icon: var(--fin-space-l);
   --button-radius: var(--fin-radius-s);
   --button-font: var(--fin-font-button-medium);
 }
@@ -55,8 +58,21 @@
 .button[data-size="xsmall"] {
   --button-padding-y: var(--fin-space-s);
   --button-padding-x: var(--fin-space-xl);
+  --button-padding-x-icon: var(--fin-space-l);
   --button-radius: var(--fin-radius-s);
   --button-font: var(--fin-font-button-medium);
+}
+
+/*
+ * One icon (all-button `Icon=Leading` / `Trailing`): one step less padding on the icon's side, so the button looks
+ * balanced (the icon's own whitespace makes that side look wider).
+ */
+.button[data-icon-side="leading"] {
+  padding-inline-start: var(--button-padding-x-icon);
+}
+
+.button[data-icon-side="trailing"] {
+  padding-inline-end: var(--button-padding-x-icon);
 }
 
 /* Icon only (all-button `Icon=Only Icon`): the vertical padding on every side makes it square. */

@@ -1765,6 +1765,7 @@ Presentational: no `'use client'`. A `<span>`; `className` and other attributes 
 | `Show Trailing Icon` + icon | `trailingIcon?: FinIconName` | Shown when set |
 | `Show Label` | `showLabel` (default `true`) | Off: the label is visually hidden but still names the button |
 | `Button label` | `children` | One line |
+| — | `iconOnly`, `iconSide` (internal, set by FinButton only) | all-button's padding overrides: square icon-only, less padding on the icon side (§9.28). Not in Figma's Base-button, so its stories don't use them |
 | — | `type` (native, default `"button"`), `ref`, other button attributes | Code-only |
 
 **Tokens used:**
@@ -1883,7 +1884,7 @@ In Dark, the Secondary label (`text-error`, Error-100 `#edb7b9`) is lighter than
 
 ### 9.28 FinButton (all-button)
 
-**Figma:** page **Buttons**, component set `all-button` `47:1580`: `Type` = Primary / Secondary / Tertiary × `Size` = Large / Medium / Small / XSmall × `State` = Enabled / Hovered / Pressed / Disabled × `Icon` = None / Leading / Trailing / Only Icon (192 variants). Each variant is a Base-button instance; Only Icon overrides the padding to make it square. **New property `Tone`** (Normal / White / Destructive, decided 19 Oct 2026, to be added in Figma) picks the base: Normal = Base-button, White = white-button, Destructive = Destructive-button. Combinations that exist: Normal × Primary / Secondary / Tertiary, White (one look, Type Primary), Destructive × Primary / Secondary. No `Focused` property: the ring comes from the base. **The only public button**; the three bases are internal (§7.2).
+**Figma:** page **Buttons**, component set `all-button` `47:1580`: `Type` = Primary / Secondary / Tertiary × `Size` = Large / Medium / Small / XSmall × `State` = Enabled / Hovered / Pressed / Disabled × `Icon` = None / Leading / Trailing / Only Icon (192 variants). Each variant is a Base-button instance with padding overrides: Only Icon is square, and Leading / Trailing have one step less padding on the icon's side so the button looks balanced (added by design 19 Oct 2026; the icon's own whitespace made that side look wider). **New property `Tone`** (Normal / White / Destructive, decided 19 Oct 2026, to be added in Figma) picks the base: Normal = Base-button, White = white-button, Destructive = Destructive-button. Combinations that exist: Normal × Primary / Secondary / Tertiary, White (one look, Type Primary), Destructive × Primary / Secondary. No `Focused` property: the ring comes from the base. **The only public button**; the three bases are internal (§7.2).
 
 **Figma → code:**
 
@@ -1904,7 +1905,13 @@ In Dark, the Secondary label (`text-error`, Error-100 `#edb7b9`) is lighter than
 | `white` | `white` | §9.26 |
 | `destructive` + `primary` / `secondary` | `destructive` / `destructive-secondary` | §9.27 |
 
-**Tokens used:** all from FinButtonBase (§9.25–9.27); FinButton has no CSS. **Icon only:** the base's `iconOnly` puts the vertical padding on every side (`--fin-space-xl` / `-l` / `-m` / `-s`), so 56 / 48 / 36 / 32 square.
+**Tokens used:** all from FinButtonBase (§9.25–9.27); FinButton has no CSS. It turns on two base options that exist only for all-button (Figma's Base-button stays as it is):
+
+| `icon` | Base option | Padding (Large / Medium / Small / XSmall) |
+|---|---|---|
+| `'none'` | — | 24 / 24 / 16 / 16 both sides |
+| `'leading'` / `'trailing'` | `iconSide` | icon side `--fin-space-xl` 16 / 16, `--fin-space-l` 12 / 12; text side unchanged |
+| `'only-icon'` | `iconOnly` | the vertical padding on every side (`--fin-space-xl` / `-l` / `-m` / `-s`), so 56 / 48 / 36 / 32 square |
 
 **API:**
 
@@ -1922,7 +1929,7 @@ import { FinButton } from '@finspace-loyalty/ui';
 
 **Accessibility:** native button: Tab, Enter and Space; disabled skipped. Named by its label; icons are decorative. Icon-only buttons keep the label as a visually hidden name, so they're never unnamed (required `children`). Pointer targets ≥ 32 × 32. Contrast per look in §9.25–9.27 (enabled passes everywhere except Secondary/Tertiary on `bg-secondary`, §10 #3).
 
-**Built (19 Oct 2026),** before `Tone` and the White/Destructive Types are in Figma (agreed: check against Figma once added). Storybook (Components/Buttons/Button): Playground (Tone, Type, Size, Icon, icon picker), States (Figma) with every look × Icon option + Disabled per Size, Icon only, White on brand. Checked against Figma in a browser: widths and heights equal all-button (None 130 / 121 / 96 / 96, one icon 162 / 153 / 124 / 124, icon only 56 / 48 / 36 / 32; widths 0.8px narrower from text rendering); colors are the base's, already checked. a11y: no violations in Light or Dark.
+**Built (19 Oct 2026),** before `Tone` and the White/Destructive Types are in Figma (agreed: check against Figma once added). Storybook (Components/Buttons/Button): Playground (Tone, Type, Size, Icon, icon picker), States (Figma) with every look × Icon option + Disabled per Size, Icon only, White on brand. Checked against Figma in a browser: widths, heights and padding equal all-button (None 130 / 121 / 96 / 96, one icon 154 / 145 / 120 / 120 after the icon-side padding change, icon only 56 / 48 / 36 / 32; widths 0.8px narrower from text rendering); colors are the base's, already checked. a11y: no violations in Light or Dark.
 
 Template:
 
@@ -2069,3 +2076,4 @@ Template:
 | 19 Oct 2026 | 0.2 | **`FinDestructiveButton` built** (§8 #25, §9.27), internal: FinButtonBase gains `destructive` and `destructive-secondary`; the wrapper's `variant` is Figma `Type` (Primary/Secondary). Figma fixed by design before the build (Medium Primary `bg-error`, XSmall Secondary Hovered `bg-error_secondary`, Show Label on Disabled). Focus ring matches the other buttons. |
 | 19 Oct 2026 | 0.2 | `FinDestructiveButton` approved by design and merged into `main`. Agreed: `all-button` `Type` gains White and Destructive. |
 | 19 Oct 2026 | 0.2 | **`FinButton` built** (§8 #34, §9.28), the only public button: `tone` (new Figma `Tone`: Normal / White / Destructive) × `variant` (Figma `Type`), `size`, `icon` (Figma `Icon`) + `iconName`; invalid combinations are type errors. FinButtonBase gains `iconOnly` (square padding). §7.2 updated. §10 #41–43 added. |
+| 19 Oct 2026 | 0.2 | Buttons with one icon looked uneven (the icon's whitespace made its side look wider). Design overrode `all-button` Leading/Trailing padding: icon side 16 (Large, Medium) and 12 (Small, XSmall). FinButtonBase gains internal `iconSide`, set only by FinButton, so Base, White and Destructive stay as their Figma sets. |

@@ -32,6 +32,12 @@ export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButton
    * the vertical padding on every side, so 56 / 48 / 36 / 32. Set by FinButton, not part of Figma's Base-button.
    */
   iconOnly?: boolean;
+  /**
+   * Less padding on the icon's side, so a button with one icon looks balanced (all-button `Icon=Leading` /
+   * `Trailing`, where Figma overrides the base's padding; decided 19 Oct 2026). Set by FinButton, not part of
+   * Figma's Base-button.
+   */
+  iconSide?: 'leading' | 'trailing';
 }
 
 const ICON_SIZE = { large: 24, medium: 24, small: 20, xsmall: 20 } as const;
@@ -50,6 +56,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
     trailingIcon,
     showLabel = true,
     iconOnly = false,
+    iconSide,
     type = 'button',
     className,
     ...rest
@@ -66,6 +73,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
       data-variant={variant}
       data-size={size}
       data-icon-only={iconOnly || undefined}
+      data-icon-side={iconSide}
     >
       {leadingIcon && (
         <span className={styles.icon}>

@@ -28,7 +28,7 @@ describe('FinButton', () => {
     expect(screen.getByRole('button')).toHaveAttribute('data-variant', look);
   });
 
-  it('places the icon before or after the label', () => {
+  it('places the icon before or after the label, with less padding on the icon side', () => {
     const { rerender } = render(
       <FinButton icon="leading" iconName="check">
         Save
@@ -36,12 +36,16 @@ describe('FinButton', () => {
     );
     const parts = () => [...screen.getByRole('button').children].map((c) => c.textContent);
     expect(parts()).toEqual(['check', 'Save']);
+    expect(screen.getByRole('button')).toHaveAttribute('data-icon-side', 'leading');
     rerender(
       <FinButton icon="trailing" iconName="check">
         Save
       </FinButton>,
     );
     expect(parts()).toEqual(['Save', 'check']);
+    expect(screen.getByRole('button')).toHaveAttribute('data-icon-side', 'trailing');
+    rerender(<FinButton>Save</FinButton>);
+    expect(screen.getByRole('button')).not.toHaveAttribute('data-icon-side');
   });
 
   it('as icon only, is square, shows just the icon and is still named by its label', () => {

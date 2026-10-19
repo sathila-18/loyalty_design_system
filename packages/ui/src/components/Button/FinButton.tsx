@@ -25,7 +25,7 @@ export type FinButtonIconProps =
 
 export type FinButtonProps = Omit<
   FinButtonBaseProps,
-  'variant' | 'leadingIcon' | 'trailingIcon' | 'showLabel' | 'iconOnly'
+  'variant' | 'leadingIcon' | 'trailingIcon' | 'showLabel' | 'iconOnly' | 'iconSide'
 > &
   FinButtonToneProps &
   FinButtonIconProps;
@@ -55,6 +55,7 @@ export const FinButton = forwardRef<HTMLButtonElement, FinButtonProps>(function 
       {...((icon === 'trailing' || icon === 'only-icon') && iconName ? { trailingIcon: iconName } : {})}
       showLabel={icon !== 'only-icon'}
       iconOnly={icon === 'only-icon'}
+      {...(icon === 'leading' || icon === 'trailing' ? { iconSide: icon } : {})}
     />
   );
 });
