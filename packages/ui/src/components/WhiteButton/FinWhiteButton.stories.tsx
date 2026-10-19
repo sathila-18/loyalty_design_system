@@ -1,35 +1,46 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { userEvent } from 'storybook/test';
 import type { FinButtonSize } from '../ButtonBase';
-import { FinWhiteButton } from './FinWhiteButton';
+import {
+  buttonIconArgs,
+  buttonIconArgTypes,
+  withIconToggles,
+  type FinButtonIconToggles,
+} from '../ButtonBase/buttonStoryControls';
+import { FinWhiteButton, type FinWhiteButtonProps } from './FinWhiteButton';
 import styles from './FinWhiteButton.stories.module.css';
 
 const SIZES: FinButtonSize[] = ['large', 'medium', 'small', 'xsmall'];
 const SIZE_NAMES: Record<FinButtonSize, string> = { large: 'Large', medium: 'Medium', small: 'Small', xsmall: 'XSmall' };
 
-const meta: Meta<typeof FinWhiteButton> = {
-  title: 'Components/Buttons/White button',
+type Args = Omit<FinWhiteButtonProps, 'leadingIcon' | 'trailingIcon'> & FinButtonIconToggles;
+
+/**
+ * INTERNAL: FinWhiteButton isn't exported from the package. White-button is one of the bases inside all-button
+ * (DESIGN.md §7.2, decided 19 Oct 2026). These stories exist only to check it against Figma; products use FinButton.
+ */
+const meta: Meta<Args> = {
+  title: 'Internal/White button',
   component: FinWhiteButton,
   args: {
     children: 'Text here',
     size: 'large',
-    leadingIcon: 'person',
-    trailingIcon: 'person',
+    ...buttonIconArgs,
     showLabel: true,
     disabled: false,
   },
   argTypes: {
     children: { control: 'text', description: 'Figma `Button label`' },
     size: { control: 'inline-radio', options: SIZES },
-    leadingIcon: { control: 'text', description: 'Figma `Show Leading Icon` + icon (a finIcons name)' },
-    trailingIcon: { control: 'text', description: 'Figma `Show Trailing Icon` + icon (a finIcons name)' },
-    showLabel: { control: 'boolean', description: 'Figma `Show Label`' },
+    ...buttonIconArgTypes,
+    showLabel: { control: 'boolean', name: 'Show Label', description: 'Figma `Show Label`' },
     disabled: { control: 'boolean', description: 'Figma `State=Disabled`' },
   },
+  render: (args) => <FinWhiteButton {...withIconToggles(args)} />,
 };
 export default meta;
 
-type Story = StoryObj<typeof FinWhiteButton>;
+type Story = StoryObj<Args>;
 
 export const Playground: Story = {};
 

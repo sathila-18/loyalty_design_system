@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { userEvent } from 'storybook/test';
-import { FinButtonBase, type FinButtonSize, type FinButtonVariant } from './FinButtonBase';
+import { buttonIconArgs, buttonIconArgTypes, withIconToggles, type FinButtonIconToggles } from './buttonStoryControls';
+import { FinButtonBase, type FinButtonBaseProps, type FinButtonSize, type FinButtonVariant } from './FinButtonBase';
 import styles from './FinButtonBase.stories.module.css';
 
 const VARIANTS: FinButtonVariant[] = ['primary', 'secondary', 'tertiary'];
@@ -12,15 +13,16 @@ const VARIANT_NAMES: Record<FinButtonVariant, string> = { primary: 'Primary', se
  * INTERNAL: FinButtonBase isn't exported from the package (DESIGN.md §7.2: bases are internal unless DESIGN.md
  * says otherwise). These stories exist only to check it against Figma; products use FinButton.
  */
-const meta: Meta<typeof FinButtonBase> = {
+type Args = Omit<FinButtonBaseProps, 'leadingIcon' | 'trailingIcon'> & FinButtonIconToggles;
+
+const meta: Meta<Args> = {
   title: 'Internal/Base button',
   component: FinButtonBase,
   args: {
     children: 'Text here',
     variant: 'primary',
     size: 'large',
-    leadingIcon: 'person',
-    trailingIcon: 'person',
+    ...buttonIconArgs,
     showLabel: true,
     disabled: false,
   },
@@ -28,15 +30,15 @@ const meta: Meta<typeof FinButtonBase> = {
     children: { control: 'text', description: 'Figma `Button label`' },
     variant: { control: 'inline-radio', options: VARIANTS, description: 'Figma `Type`' },
     size: { control: 'inline-radio', options: SIZES },
-    leadingIcon: { control: 'text', description: 'Figma `Show Leading Icon` + icon (a finIcons name)' },
-    trailingIcon: { control: 'text', description: 'Figma `Show Trailing Icon` + icon (a finIcons name)' },
-    showLabel: { control: 'boolean', description: 'Figma `Show Label`' },
+    ...buttonIconArgTypes,
+    showLabel: { control: 'boolean', name: 'Show Label', description: 'Figma `Show Label`' },
     disabled: { control: 'boolean', description: 'Figma `State=Disabled`' },
   },
+  render: (args) => <FinButtonBase {...withIconToggles(args)} />,
 };
 export default meta;
 
-type Story = StoryObj<typeof FinButtonBase>;
+type Story = StoryObj<Args>;
 
 export const Playground: Story = {};
 

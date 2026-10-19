@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import * as ui from '../src';
 
 // DESIGN.md §7.2 rule 4: bases are internal unless DESIGN.md says otherwise. The package entry point must not expose them.
-const INTERNAL_BASES = ['FinBadgeBase', 'FinIndicatorDot', 'FinButtonBase'];
+const INTERNAL_BASES = ['FinBadgeBase', 'FinIndicatorDot', 'FinButtonBase', 'FinWhiteButton'];
 
 describe('public API', () => {
   it('exports FinBadge and the shared tone list, but not FinBadgeBase', () => {
@@ -12,10 +12,6 @@ describe('public API', () => {
 
   it('exports FinPageIndicator, but not its FinIndicatorDot base', () => {
     expect(ui).toHaveProperty('FinPageIndicator');
-  });
-
-  it('exports FinWhiteButton, but not its FinButtonBase base', () => {
-    expect(ui).toHaveProperty('FinWhiteButton');
   });
 
   it.each(INTERNAL_BASES)('does not export the internal base %s', (name) => {
