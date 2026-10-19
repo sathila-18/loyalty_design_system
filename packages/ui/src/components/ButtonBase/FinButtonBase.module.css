@@ -20,8 +20,8 @@
   white-space: nowrap;
   cursor: pointer;
 
-  /* Figma's 2px inside stroke (Secondary): drawn inside the box, so it never changes the size. */
-  box-shadow: inset 0 0 0 2px var(--button-border, transparent);
+  /* Figma's inside stroke (Secondary 2px, White 1px): drawn inside the box, so it never changes the size. */
+  box-shadow: inset 0 0 0 var(--button-border-width, 2px) var(--button-border, transparent);
 }
 
 /* Figma Focused: a 2px border-focused ring straddling the edge (1px outside, 1px inside), same radius. */
@@ -122,6 +122,36 @@
 
 .button[data-variant="secondary"]:active:enabled {
   --button-border: var(--fin-border-pressed);
+}
+
+/*
+ * White (Figma white-button, a separate set in Figma; FinWhiteButton passes it). White in both themes with dark
+ * text, a 1px border-subtle in every state (§10 #40), and the Secondary hover/pressed colors.
+ */
+.button[data-variant="white"] {
+  --button-bg: var(--fin-bg-action-inverse);
+  --button-text: var(--fin-text-dark-both);
+  --button-icon: var(--fin-fg-dark-both);
+  --button-border: var(--fin-border-subtle);
+  --button-border-width: 1px;
+}
+
+.button[data-variant="white"]:disabled {
+  --button-bg: var(--fin-bg-disabled);
+  --button-text: var(--fin-text-disabled-on-bg);
+  --button-icon: var(--fin-fg-disabled-on-bg);
+}
+
+.button[data-variant="white"]:hover:enabled {
+  --button-bg: var(--fin-bg-active);
+  --button-text: var(--fin-text-hovered);
+  --button-icon: var(--fin-fg-hovered);
+}
+
+.button[data-variant="white"]:active:enabled {
+  --button-bg: var(--fin-bg-action-secondary-pressed);
+  --button-text: var(--fin-text-pressed);
+  --button-icon: var(--fin-fg-pressed);
 }
 
 /* Disabled buttons are never focusable (§7.3). */

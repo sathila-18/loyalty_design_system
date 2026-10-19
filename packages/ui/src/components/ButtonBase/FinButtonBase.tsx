@@ -5,14 +5,17 @@ import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import styles from './FinButtonBase.module.css';
 
+/** Figma Base-button `Type`. */
 export type FinButtonVariant = 'primary' | 'secondary' | 'tertiary';
+/** The base's variants: Figma `Type`, plus `white` for FinWhiteButton (Figma white-button, decided 19 Oct 2026). */
+export type FinButtonBaseVariant = FinButtonVariant | 'white';
 export type FinButtonSize = 'large' | 'medium' | 'small' | 'xsmall';
 
 export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** The label (Figma `Button label`). Stays on one line. */
   children: ReactNode;
   /** Figma `Type`. Called `variant` so it doesn't clash with the native `type` (decided 19 Oct 2026). */
-  variant?: FinButtonVariant;
+  variant?: FinButtonBaseVariant;
   /** Figma `Size`: Large 56, Medium 48, Small 40, XSmall 36 tall. */
   size?: FinButtonSize;
   /** Figma `Show Leading Icon` + the icon: shown when set. */

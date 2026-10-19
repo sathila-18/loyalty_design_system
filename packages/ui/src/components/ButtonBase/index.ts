@@ -1,1 +1,7 @@
-export { FinButtonBase, type FinButtonBaseProps, type FinButtonSize, type FinButtonVariant } from './FinButtonBase';
+export {
+  FinButtonBase,
+  type FinButtonBaseProps,
+  type FinButtonBaseVariant,
+  type FinButtonSize,
+  type FinButtonVariant,
+} from './FinButtonBase';

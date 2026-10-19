@@ -14,6 +14,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinPageIndicator');
   });
 
+  it('exports FinWhiteButton, but not its FinButtonBase base', () => {
+    expect(ui).toHaveProperty('FinWhiteButton');
+  });
+
   it.each(INTERNAL_BASES)('does not export the internal base %s', (name) => {
     expect(ui).not.toHaveProperty(name);
   });

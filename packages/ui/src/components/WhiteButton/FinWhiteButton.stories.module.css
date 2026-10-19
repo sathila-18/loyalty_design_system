@@ -1,0 +1,42 @@
+/* Layout for the FinWhiteButton stories only (not part of the component). */
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-3xl);
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-3xl);
+  align-items: center;
+  padding: var(--fin-space-3xl);
+  border-radius: var(--fin-radius-m);
+  background-color: var(--fin-bg-brand);
+}
+
+.focusStory {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.hint {
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-secondary);
+}
