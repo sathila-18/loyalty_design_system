@@ -540,7 +540,7 @@ Many components in Figma follow a **base → mapped** structure:
 
 **List and Accordion bases (design note, 13 Oct 2026).** These are bases even though nothing is mapped from them yet. They have no interaction states in Figma today (no hover, pressed or selected). Build them as bases with **no hover or selected styling** for now, but keep the structure ready for states: the root element must be able to take `data-selected` and be interactive later (as a `button` or link through the `as` prop) without changing the markup or slots. When design adds states, or a mapped list item needs them, they are added to the **base**, not to the mapped component. Don't invent states before design adds them.
 
-`white-button` and `Destructive-button` are **separate** from `Base-button` in Figma (they don't contain it). **They're bases too** (decided 19 Oct 2026): `all-button` (`FinButton`) is built from all three, so all three are internal and FinButton is the only public button. In code they're built on `FinButtonBase`: their sizes and layout are identical, so each adds an internal `variant` with only its colors, and a thin internal wrapper mirrors its Figma set for the Storybook check. `FinWhiteButton` is `variant="white"` (§9.26); `FinDestructiveButton` is `variant="destructive"` / `"destructive-secondary"` (§9.27).
+`white-button` and `Destructive-button` are **separate** from `Base-button` in Figma (they don't contain it). **They're bases too** (decided 19 Oct 2026): `all-button` (`FinButton`) is built from all three, so all three are internal and FinButton is the only public button. In code they're built on `FinButtonBase`: their sizes and layout are identical, so each adds an internal `variant` with only its colors, and a thin internal wrapper mirrors its Figma set for the Storybook check. `FinWhiteButton` is `variant="white"` (§9.26); `FinDestructiveButton` is `variant="destructive"` / `"destructive-secondary"` (§9.27). **`all-button` picks the base with a new `Tone` property** (Normal / White / Destructive) next to `Type` (Primary / Secondary / Tertiary), decided 19 Oct 2026; `FinButton` maps the pair to the base's look (§9.28).
 
 ### 7.3 Figma properties → React props
 
@@ -649,7 +649,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 | # | Figma component | Page | Node | Code name | Built on / depends on | Figma check | Status |
 |---|---|---|---|---|---|---|---|
-| 34 | `all-button` | Buttons | `47:1580` | `FinButton` | **Base-button** · Type (3) · Size (4) · Icon: None/Leading/Trailing/Only Icon | ⚠️ | ⬜ |
+| 34 | `all-button` | Buttons | `47:1580` | `FinButton` | **Base-button**, **white-button**, **Destructive-button** · Tone (new: Normal/White/Destructive) · Type (3, code `variant`) · Size (4) · Icon: None/Leading/Trailing/Only Icon · **public** (§9.28) | ⚠️ | ✅ |
 | 35 | `Badge-primary` | Badge | `30:1465` | `FinBadge` | **Badge-base** · State: Primary/Secondary/Success/Error/Info/Warning/Disabled/Neutral (`brand` removed 15 Oct 2026) → `tone` · optional icons (code) | ✅ (Error outer stroke fixed 15 Oct 2026) | ✅ |
 | 36 | `Text Box` | Text box | `28:1001` | `FinTextBox` | Label · Type: H1–H6 · Alignment: Left/Center/Right · code: `headingLevel` (structure only), label badge (exposed in Figma) (§9.21) | ✅ | ✅ |
 | 37 | `Checkbox` | Checkbox | `42:220` | `FinCheckbox` | **Base-Checkbox**, Text Box | ⚠️ | ⬜ |
@@ -712,7 +712,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**; Caption is under **Components/List**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`), Base button (`FinButtonBase`), White button (`FinWhiteButton`), Destructive button (`FinDestructiveButton`). **Button Playground controls** mirror Figma: `Show Leading Icon` / `Show Trailing Icon` toggles plus an icon picker from `finIcons` (shown only when on), and `Show Label` (stories only; the props stay `leadingIcon` / `trailingIcon`, decided 19 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**; Caption is under **Components/List**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`), Base button (`FinButtonBase`), White button (`FinWhiteButton`), Destructive button (`FinDestructiveButton`). **Buttons:** `FinButton` is under **Components/Buttons/Button**. **Button Playground controls** mirror Figma: `Show Leading Icon` / `Show Trailing Icon` toggles plus an icon picker from `finIcons` (shown only when on), and `Show Label` (stories only; the props stay `leadingIcon` / `trailingIcon`, decided 19 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1881,6 +1881,49 @@ In Dark, the Secondary label (`text-error`, Error-100 `#edb7b9`) is lighter than
 
 **Built (19 Oct 2026).** Storybook (Internal/Destructive button): Playground (Figma-style controls), States (Figma) with every Type and Size, Enabled and Disabled shown and Hovered/Pressed live, Content, Focused (Tab). Checked against Figma in a browser: sizes, padding, radius, fonts and icons as the Base button; Light colors equal Figma for both Types in every state (Hovered and Pressed with a real mouse); Dark colors equal Figma's Dark page; focus ring 2px at -1px. a11y: no violations in Light or Dark.
 
+### 9.28 FinButton (all-button)
+
+**Figma:** page **Buttons**, component set `all-button` `47:1580`: `Type` = Primary / Secondary / Tertiary × `Size` = Large / Medium / Small / XSmall × `State` = Enabled / Hovered / Pressed / Disabled × `Icon` = None / Leading / Trailing / Only Icon (192 variants). Each variant is a Base-button instance; Only Icon overrides the padding to make it square. **New property `Tone`** (Normal / White / Destructive, decided 19 Oct 2026, to be added in Figma) picks the base: Normal = Base-button, White = white-button, Destructive = Destructive-button. Combinations that exist: Normal × Primary / Secondary / Tertiary, White (one look, Type Primary), Destructive × Primary / Secondary. No `Focused` property: the ring comes from the base. **The only public button**; the three bases are internal (§7.2).
+
+**Figma → code:**
+
+| Figma property | Prop | Notes |
+|---|---|---|
+| `Tone` = Normal / White / Destructive (new) | `tone: 'normal' \| 'white' \| 'destructive'` (default `'normal'`) | A property that only changes colors is `tone` (§7.3) |
+| `Type` = Primary / Secondary / Tertiary | `variant: 'primary' \| 'secondary' \| 'tertiary'` (default `'primary'`) | Named `variant` so it doesn't clash with the native `type` (as §9.25). White takes only `'primary'`, Destructive `'primary' \| 'secondary'`: other combinations are a type error |
+| `Size` = Large / Medium / Small / XSmall | `size` (default `'large'`) | Same options |
+| `State` = Enabled / Hovered / Pressed / Disabled | `:hover`, `:active`; `disabled` (native) | Runtime state (§7.3) |
+| `Icon` = None / Leading / Trailing / Only Icon | `icon: 'none' \| 'leading' \| 'trailing' \| 'only-icon'` (default `'none'`) | One icon at a time, as in Figma |
+| icon swap (nested, not exposed in Figma) | `iconName: FinIconName` | Required whenever `icon` isn't `'none'` (type error otherwise) |
+| button label (nested, not exposed in Figma) | `children` | Required. With `'only-icon'` it's visually hidden and names the button |
+| — | `type` (native, default `"button"`), `ref`, other button attributes | Code-only |
+
+| `tone` + `variant` | Base look | Spec |
+|---|---|---|
+| `normal` + `primary` / `secondary` / `tertiary` | `primary` / `secondary` / `tertiary` | §9.25 |
+| `white` | `white` | §9.26 |
+| `destructive` + `primary` / `secondary` | `destructive` / `destructive-secondary` | §9.27 |
+
+**Tokens used:** all from FinButtonBase (§9.25–9.27); FinButton has no CSS. **Icon only:** the base's `iconOnly` puts the vertical padding on every side (`--fin-space-xl` / `-l` / `-m` / `-s`), so 56 / 48 / 36 / 32 square.
+
+**API:**
+
+```tsx
+import { FinButton } from '@finspace-loyalty/ui';
+
+<FinButton>Save</FinButton>
+<FinButton variant="secondary" icon="leading" iconName="arrow_back">Back</FinButton>
+<FinButton tone="destructive" variant="secondary" size="small">Remove</FinButton>
+<FinButton tone="white" icon="only-icon" iconName="edit">Edit profile</FinButton>
+<FinButton type="submit" disabled={!valid}>Continue</FinButton>
+```
+
+`'use client'` (forwards `ref`). Exports `FinButton` and the types `FinButtonProps`, `FinButtonTone`, `FinButtonIcon`, `FinButtonVariant`, `FinButtonSize`.
+
+**Accessibility:** native button: Tab, Enter and Space; disabled skipped. Named by its label; icons are decorative. Icon-only buttons keep the label as a visually hidden name, so they're never unnamed (required `children`). Pointer targets ≥ 32 × 32. Contrast per look in §9.25–9.27 (enabled passes everywhere except Secondary/Tertiary on `bg-secondary`, §10 #3).
+
+**Built (19 Oct 2026),** before `Tone` and the White/Destructive Types are in Figma (agreed: check against Figma once added). Storybook (Components/Buttons/Button): Playground (Tone, Type, Size, Icon, icon picker), States (Figma) with every look × Icon option + Disabled per Size, Icon only, White on brand. Checked against Figma in a browser: widths and heights equal all-button (None 130 / 121 / 96 / 96, one icon 162 / 153 / 124 / 124, icon only 56 / 48 / 36 / 32; widths 0.8px narrower from text rendering); colors are the base's, already checked. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -1940,17 +1983,20 @@ Template:
 | 38 | **XSmall Tertiary Pressed** (`37:1057`, `3060:16592`) uses `bg-active-hover` (the hover color, `#ceccff`); every other size uses `bg-action-secondary_pressed`. Code uses the pressed token for all sizes (§9.25). | Buttons | 🔧 Fix in Figma |
 | 39 | **Dark hovered/pressed text vs icon colors were swapped:** `text-hovered` was Primary-200 and `text-pressed` Primary-300, but `fg-hovered`/`border-hovered` are Primary-300 and `fg-pressed`/`border-pressed` Primary-200, so a button's label and icon differed on hover and press in Dark. **Fixed 19 Oct 2026** (new export): Dark `text-hovered` → Primary-300 `#9691ff`, `text-pressed` → Primary-200 `#b7b4ff`; text, icon and border now match in both themes. Token build still 432 variables. | Foundation › Color collection (Dark) | ✅ Fixed |
 | 40 | **White button border:** Large and Medium have the 1px `border-subtle` in every state, but Small and XSmall have it only when Enabled (none on Hovered `349:5073`/`349:5078`, Pressed `3067:16961`/`3067:16973`, Disabled `349:5093`/`349:5098`). Code keeps the border in every state at every size (§9.26). | Buttons | 🔧 Fix in Figma |
+| 41 | **all-button: six Small Pressed variants** (Secondary and Tertiary with Leading, Trailing, Only Icon: `3185:13035`, `3185:13044`, `3185:13008`, `3185:13053`, `3185:13062`, `3185:13071`) use `bg-active-hover` (the hover color) instead of `bg-action-secondary_pressed`. Code is unaffected: colors come from the base. | Buttons | 🔧 Fix in Figma |
+| 42 | **all-button: raw palette `Colors/Fintech/Primary/Primary-400`** is bound somewhere in the set (seen 19 Oct 2026). Same value as `border-focused`; code uses the base's tokens. | Buttons | 🔧 Fix in Figma |
+| 43 | **all-button doesn't expose the label text or the icon swap** as component properties (designers override nested layers). Code has `children` and `iconName`. Expose them in Figma for the same controls. Also to add: `Tone` (Normal / White / Destructive) and the White and Destructive variants (§9.28). | Buttons | ⏳ Design to add in Figma |
 
 ---
 
 ## 11. Changelog
 
 > **Where we are (19 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026). Everything is merged into `main`.
-> - **Next:** `FinButton` (`all-button`): its `Type` gains White and Destructive (agreed 19 Oct 2026). Plan first, then wait for the go-ahead. Before `FinButton` (`all-button`): confirm whether its `Type` gains White and Destructive in Figma. Plan first, then wait for the go-ahead.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; waiting for design review). Everything else is merged into `main`.
+> - **Next:** design review of `FinButton` (on `feat/button`). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck against Figma. Before `FinButton` (`all-button`): confirm whether its `Type` gains White and Destructive in Figma. Plan first, then wait for the go-ahead.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
-> - **Open:** §10 #3 (contrast: button hover/pressed accepted 19 Oct 2026, enabled state is what matters; Secondary/Tertiary enabled on `bg-secondary` 4.32:1 still open; badge indicator built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers), §10 #35 (Indicator selected width 22 → 24 in Figma), §10 #36 (Helper text Success icon toggle) §10 #38 (XSmall Tertiary Pressed still bound to `bg-active-hover` when checked after merge, 19 Oct 2026) and §10 #40 (White button border on Small/XSmall). Fixed 19 Oct 2026: §10 #39. Fixed 15 Oct 2026: §10 #29, #30.
+> - **Open:** §10 #3 (contrast: button hover/pressed accepted 19 Oct 2026, enabled state is what matters; Secondary/Tertiary enabled on `bg-secondary` 4.32:1 still open; badge indicator built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers), §10 #35 (Indicator selected width 22 → 24 in Figma), §10 #36 (Helper text Success icon toggle) §10 #38 (XSmall Tertiary Pressed still bound to `bg-active-hover` when checked after merge, 19 Oct 2026) §10 #40 (White button border on Small/XSmall), §10 #41 and #42 (all-button Small Pressed token, raw `Primary-400`) and §10 #43 (all-button `Tone`, label and icon swap to add). Fixed 19 Oct 2026: §10 #39. Fixed 15 Oct 2026: §10 #29, #30.
 
 | Date | Version | Change |
 |---|---|---|
@@ -2022,3 +2068,4 @@ Template:
 | 19 Oct 2026 | 0.2 | `FinWhiteButton` approved by design and merged into `main`. |
 | 19 Oct 2026 | 0.2 | **`FinDestructiveButton` built** (§8 #25, §9.27), internal: FinButtonBase gains `destructive` and `destructive-secondary`; the wrapper's `variant` is Figma `Type` (Primary/Secondary). Figma fixed by design before the build (Medium Primary `bg-error`, XSmall Secondary Hovered `bg-error_secondary`, Show Label on Disabled). Focus ring matches the other buttons. |
 | 19 Oct 2026 | 0.2 | `FinDestructiveButton` approved by design and merged into `main`. Agreed: `all-button` `Type` gains White and Destructive. |
+| 19 Oct 2026 | 0.2 | **`FinButton` built** (§8 #34, §9.28), the only public button: `tone` (new Figma `Tone`: Normal / White / Destructive) × `variant` (Figma `Type`), `size`, `icon` (Figma `Icon`) + `iconName`; invalid combinations are type errors. FinButtonBase gains `iconOnly` (square padding). §7.2 updated. §10 #41–43 added. |

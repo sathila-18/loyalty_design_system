@@ -59,6 +59,11 @@
   --button-font: var(--fin-font-button-medium);
 }
 
+/* Icon only (all-button `Icon=Only Icon`): the vertical padding on every side makes it square. */
+.button[data-icon-only] {
+  padding: var(--button-padding-y);
+}
+
 /* Primary. Dark hover/pressed contrast is a documented exception (§10 #3, decided 19 Oct 2026). */
 .button[data-variant="primary"] {
   --button-bg: var(--fin-bg-action-primary);

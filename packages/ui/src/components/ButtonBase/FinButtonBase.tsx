@@ -27,6 +27,11 @@ export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButton
   trailingIcon?: FinIconName;
   /** Figma `Show Label`. When false the label is visually hidden but still names the button. */
   showLabel?: boolean;
+  /**
+   * Square padding for an icon-only button (all-button `Icon=Only Icon`, where Figma overrides the base's padding):
+   * the vertical padding on every side, so 56 / 48 / 36 / 32. Set by FinButton, not part of Figma's Base-button.
+   */
+  iconOnly?: boolean;
 }
 
 const ICON_SIZE = { large: 24, medium: 24, small: 20, xsmall: 20 } as const;
@@ -44,6 +49,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
     leadingIcon,
     trailingIcon,
     showLabel = true,
+    iconOnly = false,
     type = 'button',
     className,
     ...rest
@@ -59,6 +65,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
       className={className ? `${styles.button} ${className}` : styles.button}
       data-variant={variant}
       data-size={size}
+      data-icon-only={iconOnly || undefined}
     >
       {leadingIcon && (
         <span className={styles.icon}>
