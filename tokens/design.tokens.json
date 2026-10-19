@@ -3331,7 +3331,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-200}"
           }
         }
       },
@@ -3342,7 +3342,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-200}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
           }
         }
       },
@@ -4160,7 +4160,7 @@
         "Color collection",
         "Alias Spacing & Radius"
       ],
-      "createdAt": "2026-10-15T04:29:26.510Z"
+      "createdAt": "2026-10-19T05:04:45.306Z"
     }
   }
 }
