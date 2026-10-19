@@ -18,6 +18,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinButton');
   });
 
+  it('exports FinCheckbox, but not its FinCheckboxBase base', () => {
+    expect(ui).toHaveProperty('FinCheckbox');
+  });
+
   it.each(INTERNAL_BASES)('does not export the internal base %s', (name) => {
     expect(ui).not.toHaveProperty(name);
   });

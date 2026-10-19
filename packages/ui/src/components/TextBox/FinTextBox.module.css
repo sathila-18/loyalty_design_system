@@ -31,6 +31,12 @@
   overflow-wrap: break-word;
 }
 
+/* Inside a disabled control (Figma Checkbox, State=Disabled). */
+.textBox[data-disabled] .heading,
+.textBox[data-disabled] .description {
+  color: var(--fin-text-disabled);
+}
+
 /* Type: heading style, description style (Body/Large for H1-H2, Body/Medium for H3-H6), gap (8 for H1-H4, 4 for H5-H6). */
 .textBox[data-type="h1"] {
   --text-box-heading: var(--fin-font-display-large-h1);

@@ -5,8 +5,11 @@ import { FinIcon } from '../../icons/FinIcon';
 import styles from './FinCheckboxBase.module.css';
 
 export interface FinCheckboxBaseProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size' | 'children'> {
-  /** Accessible name, visually hidden (the base has no visible label; FinCheckbox adds one). */
-  label: string;
+  /**
+   * Accessible name, visually hidden (the base has no visible label). Leave it out only when the input is named
+   * another way, as FinCheckbox does with `aria-labelledby` pointing at its Text Box.
+   */
+  label?: string;
   /**
    * Figma `Type=Indeterminate` ("some selected"): shows the dash and is announced as mixed. HTML has no attribute
    * for it, so it's set on the input. Clicking clears it in the browser; the parent decides the next value.
@@ -43,7 +46,7 @@ export const FinCheckboxBase = forwardRef<HTMLInputElement, FinCheckboxBaseProps
           <FinIcon name="remove" size={16} />
         </span>
       </span>
-      <span className={styles.label}>{label}</span>
+      {label !== undefined && <span className={styles.label}>{label}</span>}
     </label>
   );
 });

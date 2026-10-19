@@ -652,7 +652,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 34 | `all-button` | Buttons | `47:1580` | `FinButton` | **Base-button**, **white-button**, **Destructive-button** · Tone (new: Normal/White/Destructive) · Type (3, code `variant`) · Size (4) · Icon: None/Leading/Trailing/Only Icon · **public** (§9.28) | ⚠️ | ✅ |
 | 35 | `Badge-primary` | Badge | `30:1465` | `FinBadge` | **Badge-base** · State: Primary/Secondary/Success/Error/Info/Warning/Disabled/Neutral (`brand` removed 15 Oct 2026) → `tone` · optional icons (code) | ✅ (Error outer stroke fixed 15 Oct 2026) | ✅ |
 | 36 | `Text Box` | Text box | `28:1001` | `FinTextBox` | Label · Type: H1–H6 · Alignment: Left/Center/Right · code: `headingLevel` (structure only), label badge (exposed in Figma) (§9.21) | ✅ | ✅ |
-| 37 | `Checkbox` | Checkbox | `42:220` | `FinCheckbox` | **Base-Checkbox**, Text Box | ⚠️ | ⬜ |
+| 37 | `Checkbox` | Checkbox | `42:220` | `FinCheckbox` | **Base-Checkbox**, Text Box · checkbox always on the left · **public** (§9.30) | ⚠️ | ✅ |
 | 38 | `Chips` | Chips | `95:1848` | `FinChip` | **Chips-base** | ✅ | ⬜ |
 | 39 | `Chips-group` | Chips | `922:6646` | `FinChipGroup` | **Chips-base** · Chip count 1–4 | ⚠️ | ⬜ |
 | 40 | `Segmented button` | Segmented button | `117:4688` | `FinSegmentedButton` | **Segmented_button-base** | ⚠️ | ⬜ |
@@ -712,7 +712,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**; Caption is under **Components/List**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`), Base button (`FinButtonBase`), White button (`FinWhiteButton`), Destructive button (`FinDestructiveButton`), Checkbox base (`FinCheckboxBase`). **Buttons:** `FinButton` is under **Components/Buttons/Button**. **Button Playground controls** mirror Figma: `Show Leading Icon` / `Show Trailing Icon` toggles plus an icon picker from `finIcons` (shown only when on), and `Show Label` (stories only; the props stay `leadingIcon` / `trailingIcon`, decided 19 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**; Caption is under **Components/List**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`), Base button (`FinButtonBase`), White button (`FinWhiteButton`), Destructive button (`FinDestructiveButton`), Checkbox base (`FinCheckboxBase`). Checkbox (`FinCheckbox`) is **Components/Checkbox**. **Buttons:** `FinButton` is under **Components/Buttons/Button**. **Button Playground controls** mirror Figma: `Show Leading Icon` / `Show Trailing Icon` toggles plus an icon picker from `finIcons` (shown only when on), and `Show Label` (stories only; the props stay `leadingIcon` / `trailingIcon`, decided 19 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -1617,6 +1617,7 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 | `Show Heading` + text | `heading`; shown when passed |
 | `Show Description` + text | `description`; shown when passed (a `<p>`) |
 | — | `headingLevel` (1–6): the heading **element** for the page's structure; defaults to the number in `type`; changes the structure only, never the look (decided 15 Oct 2026) |
+| — (Figma Checkbox `State=Disabled` overrides its Text Box) | `disabled`: heading and description use `--fin-text-disabled` (added 19 Oct 2026 for FinCheckbox, §9.30) |
 
 **Tokens used:**
 
@@ -1943,7 +1944,7 @@ import { FinButton } from '@finspace-loyalty/ui';
 | `Type` = Indeterminate | `indeterminate` (default `false`) | Set on the input (HTML has no attribute); announced as mixed. Clicking clears it in the browser; the parent sets the next value |
 | `State` = Enabled / Hovered / Pressed / Disabled | `:hover`, `:active`; `disabled` (native) | Runtime state (§7.3) |
 | `Focused` | `:focus-visible` | Disabled + Focused ignored (§7.3) |
-| — | `label` (required) | Accessible name, visually hidden (the base has no visible label; FinCheckbox adds one) |
+| — | `label` | Accessible name, visually hidden. Required unless the input is named another way: FinCheckbox leaves it out and uses `aria-labelledby` to its Text Box (19 Oct 2026) |
 | — | `name`, `value`, `ref` (to the input), other input attributes | Code-only |
 
 **Structure:** like FinRadio: a `<label>` holding a native `<input type="checkbox">` laid invisibly over the 24px frame (clicks, keyboard, focus), the box with both icons (`aria-hidden`; CSS shows the one for the input's state), and the hidden label. `className` goes to the wrapper.
@@ -1972,6 +1973,43 @@ Raw values: the 2px stroke and ring, the 1px hidden label box. Figma's raw `Prim
 **Accessibility:** announced as a checkbox with its label: checked, not checked or mixed. Tab reaches it, Space toggles it; disabled is skipped. Pointer target 24 × 24. Contrast (non-text, 3:1), enabled: unselected stroke 3.90 Light / 8.76 Dark on `bg-primary` (3.57 / 7.25 on `bg-secondary`), after `border-strong` changed on 19 Oct 2026; selected fill 4.71 / 3.73 (4.32 / 3.09 on `bg-secondary`); icon on fill 4.71 / 3.73. Disabled is exempt: the Disabled Selected icon is nearly invisible on its fill (1.4:1 Light, 1.1:1 Dark).
 
 **Built (19 Oct 2026).** Storybook (Internal/Checkbox base): Playground, States (Figma) with all three Types, Enabled and Disabled shown and Hovered/Pressed live, Select all (indeterminate), Focused (Tab). Checked against Figma in a browser: box 18 × 18 in the 24 frame, radius 4, 2px stroke, icons 16; Light colors equal Figma in every State and Type (Hovered and Pressed with a real mouse); Dark uses the Dark tokens; focus ring 2px. a11y: no violations in Light or Dark.
+
+### 9.30 FinCheckbox (Checkbox)
+
+**Figma:** page **Checkbox**, component set `Checkbox` `42:220`: `Type` = Unselected / Selected × `State` = Enabled / Disabled × `Focused` = True / False (6 variants), with `Show Leading Icon`, `Show Trailing Icon` (both on by default) and `Show Text Box`. A Base-Checkbox and a Text Box (description only: Body/Large, `text-secondary`; `text-disabled` when disabled) side by side, 12 apart (`Space-L`), top-aligned; fixed width 343. Focused draws a ring around the whole row. **Public.**
+
+**Decided 19 Oct 2026:** the checkbox is **always on the left** (one control per row; no trailing option); the text **is a FinTextBox**; focus shows **the checkbox's own ring** (not the row ring).
+
+**Figma → code:**
+
+| Figma property | Prop | Notes |
+|---|---|---|
+| `Type` = Unselected / Selected | `checked` / `defaultChecked` + `onChange` (native checkbox) | Also `indeterminate`, from the base (not drawn in this set) |
+| `State` = Enabled / Disabled | `disabled` (native) | Hovered and Pressed come from the base (§9.29) |
+| `Focused` | `:focus-visible` on the checkbox | The base's box ring, not Figma's row ring (decided 19 Oct 2026) |
+| `Show Leading Icon` / `Show Trailing Icon` | — | Checkbox always on the left (decided 19 Oct 2026, §10 #44) |
+| `Show Text Box` + text | `children` (string), `showTextBox` (default `true`) | Off: the text is visually hidden (the base's hidden `label`) but still names the checkbox |
+| — | `name`, `value`, `ref` (to the input), other input attributes | `className` goes to the row |
+
+**Structure:** a row `<div>`: `FinCheckboxBase` (its input `aria-labelledby` the Text Box) and a `FinTextBox` with only `description`, inside a wrapper whose click focuses the checkbox (without the keyboard ring, like a `<label>` click) and toggles it. Not a `<label>`: the Text Box renders `<div>` / `<p>`, which a `<label>` can't contain. The click is a pointer shortcut only (the checkbox is the keyboard control); the two jsx-a11y rules about click handlers are disabled on that one line with that reason.
+
+**Tokens used:** gap `--fin-space-l`; top-aligned (the 24px checkbox lines up with the first 24px line); the text is FinTextBox `type="h1"` description (`--fin-font-body-large`, `--fin-text-secondary`, `disabled` → `--fin-text-disabled`); the checkbox as §9.29. Fills its container (Figma's 343 is the drawing width); the text wraps. No raw values.
+
+**API:**
+
+```tsx
+import { FinCheckbox } from '@finspace-loyalty/ui';
+
+<FinCheckbox name="prefs" value="summary" defaultChecked>Send members a monthly points summary</FinCheckbox>
+<FinCheckbox checked={agreed} onChange={(e) => setAgreed(e.target.checked)}>I agree to the programme terms</FinCheckbox>
+<FinCheckbox disabled>Email receipts (not available on this plan)</FinCheckbox>
+```
+
+`'use client'`.
+
+**Accessibility:** announced as a checkbox named by its text: checked, not checked or mixed. Tab reaches it, Space toggles it; clicking the box or the text toggles it; disabled ignores both and is skipped. Contrast: text `text-secondary` 5.82:1 Light / 8.76:1 Dark on `bg-primary`; checkbox as §9.29. Disabled text is exempt.
+
+**Built (19 Oct 2026).** Storybook (Components/Checkbox): Playground (with Show Text Box), States (Figma) at 343px plus Disabled Selected and Indeterminate, Widths, Focused (Tab). Checked against Figma in a browser at 343px: row 343 × 72, checkbox at (0, 0), text at x 36 (24 + 12), Body L 16/24 on three lines; Light colors equal Figma (enabled and disabled), Dark uses the Dark tokens; clicking the text toggles and focuses without the ring; Tab shows the box ring. Line breaks differ slightly from Figma, whose text column is narrower (it leaves room for the trailing checkbox). a11y: no violations in Light or Dark.
 
 Template:
 
@@ -2035,17 +2073,18 @@ Template:
 | 41 | **all-button: six Small Pressed variants** (Secondary and Tertiary with Leading, Trailing, Only Icon: `3185:13035`, `3185:13044`, `3185:13008`, `3185:13053`, `3185:13062`, `3185:13071`) use `bg-active-hover` (the hover color) instead of `bg-action-secondary_pressed`. Code is unaffected: colors come from the base. | Buttons | 🔧 Fix in Figma |
 | 42 | **all-button: raw palette `Colors/Fintech/Primary/Primary-400`** is bound somewhere in the set (seen 19 Oct 2026). Same value as `border-focused`; code uses the base's tokens. | Buttons | 🔧 Fix in Figma |
 | 43 | **all-button doesn't expose the label text or the icon swap** as component properties (designers override nested layers). Code has `children` and `iconName`. Expose them in Figma for the same controls. Also to add: `Tone` (Normal / White / Destructive) and the White and Destructive variants (§9.28). | Buttons | ⏳ Design to add in Figma |
+| 44 | **Checkbox (`42:220`) in Figma vs code:** code has the checkbox **only on the left** (decided 19 Oct 2026), so `Show Leading Icon` / `Show Trailing Icon` have no code equivalent; remove them (or keep only the leading one, always on) so designers can't draw a row with two checkboxes. Figma's `Focused` row ring isn't used (code shows the checkbox's ring). This set also has no Selected + Disabled, Indeterminate, Hovered or Pressed variants (code has them from the base). | Checkbox | 🔧 Fix in Figma |
 
 ---
 
 ## 11. Changelog
 
 > **Where we are (19 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026). Everything is merged into `main`.
-> - **Next:** wait for the designer to name the next component (likely `FinCheckbox`, §8 #37). Plan first, then wait for the go-ahead. Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; waiting for design review). Everything else is merged into `main`.
+> - **Next:** design review of `FinCheckbox` (on `feat/checkbox`); then wait for the designer to name the next component. Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
-> - **Open:** §10 #3 (contrast: button hover/pressed accepted 19 Oct 2026, enabled state is what matters; Secondary/Tertiary enabled on `bg-secondary` 4.32:1 still open; badge indicator built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers), §10 #35 (Indicator selected width 22 → 24 in Figma), §10 #36 (Helper text Success icon toggle) §10 #38 (XSmall Tertiary Pressed still bound to `bg-active-hover` when checked after merge, 19 Oct 2026) §10 #40 (White button border on Small/XSmall), §10 #41 and #42 (all-button Small Pressed token, raw `Primary-400`) and §10 #43 (all-button `Tone`, label and icon swap to add). Fixed 19 Oct 2026: §10 #39. Fixed 15 Oct 2026: §10 #29, #30.
+> - **Open:** §10 #3 (contrast: button hover/pressed accepted 19 Oct 2026, enabled state is what matters; Secondary/Tertiary enabled on `bg-secondary` 4.32:1 still open; badge indicator built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers), §10 #35 (Indicator selected width 22 → 24 in Figma), §10 #36 (Helper text Success icon toggle) §10 #38 (XSmall Tertiary Pressed still bound to `bg-active-hover` when checked after merge, 19 Oct 2026) §10 #40 (White button border on Small/XSmall), §10 #41 and #42 (all-button Small Pressed token, raw `Primary-400`) §10 #43 (all-button `Tone`, label and icon swap to add) and §10 #44 (Checkbox: leading/trailing booleans, missing variants). Fixed 19 Oct 2026: §10 #39. Fixed 15 Oct 2026: §10 #29, #30.
 
 | Date | Version | Change |
 |---|---|---|
@@ -2123,3 +2162,4 @@ Template:
 | 19 Oct 2026 | 0.2 | New export: `border-strong` Light Tertiary-300 → Tertiary-400 `#818181`, Dark Tertiary-500 → Tertiary-200 `#b7b7b7` (§3.3). Fixes the checkbox and Radio ring contrast (§10 #3, §9.15); the Secondary badge border changes with it. Token build still 432 variables. |
 | 19 Oct 2026 | 0.2 | **`FinCheckboxBase` built** (§8 #26, §9.29), internal: native checkbox, `indeterminate`, hidden `label`; Figma added Pressed and new hover colors. Box 18 derived as `Size-24 − Space-S` (no 18 token, decided 19 Oct 2026). |
 | 19 Oct 2026 | 0.2 | `FinCheckboxBase` approved by design and merged into `main`. |
+| 19 Oct 2026 | 0.2 | **`FinCheckbox` built** (§8 #37, §9.30), public: FinCheckboxBase on the left + FinTextBox description, named with `aria-labelledby`, text click toggles. Decided: checkbox only on the left, text from Text Box, the base's ring only. FinTextBox gains `disabled` (§9.21); FinCheckboxBase `label` is optional when the input is named another way (§9.29). §10 #44 added. |

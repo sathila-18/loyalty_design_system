@@ -1,0 +1,27 @@
+/* Layout for the FinCheckbox stories only (not part of the component). Figma draws the Checkbox 343 wide. */
+
+.frame {
+  width: calc(var(--fin-size-120) * 3 - var(--fin-size-16) - 1px);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+  width: calc(var(--fin-size-120) * 3 - var(--fin-size-16) - 1px);
+}
+
+.widths {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}
+
+.wide {
+  width: calc(var(--fin-size-120) * 5);
+}
+
+.hint {
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-secondary);
+}

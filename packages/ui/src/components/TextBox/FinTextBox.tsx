@@ -24,6 +24,11 @@ interface FinTextBoxBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
    * structure only, never the look (decided 15 Oct 2026).
    */
   headingLevel?: FinHeadingLevel;
+  /**
+   * The heading and description use `text-disabled`, for a Text Box inside a disabled control (Figma Checkbox
+   * `State=Disabled` overrides its Text Box this way; added 19 Oct 2026).
+   */
+  disabled?: boolean;
 }
 
 /**
@@ -43,6 +48,7 @@ export function FinTextBox({
   heading,
   description,
   headingLevel,
+  disabled = false,
   labelBadge,
   labelBadgeLabel,
   className,
@@ -50,7 +56,7 @@ export function FinTextBox({
 }: FinTextBoxProps) {
   const Heading = `h${headingLevel ?? Number(type.slice(1))}` as 'h1';
   return (
-    <div {...rest} className={className ? `${styles.textBox} ${className}` : styles.textBox} data-type={type} data-align={align}>
+    <div {...rest} className={className ? `${styles.textBox} ${className}` : styles.textBox} data-type={type} data-align={align} data-disabled={disabled || undefined}>
       {label !== undefined &&
         (labelBadge ? (
           <FinLabel size={labelSize} badge badgeLabel={labelBadgeLabel}>

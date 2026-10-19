@@ -1,0 +1,21 @@
+/*
+ * FinCheckbox (DESIGN.md §9). The row only: checkbox on the left, the Text Box beside it, top-aligned (the 24px
+ * checkbox lines up with the first 24px line). Fills its container; the text wraps. The focus ring is the
+ * checkbox's own (decided 19 Oct 2026).
+ */
+
+.checkbox {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: flex-start;
+}
+
+.text {
+  flex: 1 1 0;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.checkbox[data-disabled] .text {
+  cursor: default;
+}
