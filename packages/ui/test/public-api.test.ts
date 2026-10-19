@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import * as ui from '../src';
 
 // DESIGN.md §7.2 rule 4: bases are internal unless DESIGN.md says otherwise. The package entry point must not expose them.
-const INTERNAL_BASES = ['FinBadgeBase', 'FinIndicatorDot', 'FinButtonBase', 'FinWhiteButton', 'FinDestructiveButton', 'FinCheckboxBase', 'FinChipBase', 'FinSegmentBase'];
+const INTERNAL_BASES = ['FinBadgeBase', 'FinIndicatorDot', 'FinButtonBase', 'FinWhiteButton', 'FinDestructiveButton', 'FinCheckboxBase', 'FinChipBase', 'FinSegmentBase', 'FinCountrySelector'];
 
 describe('public API', () => {
   it('exports FinBadge and the shared tone list, but not FinBadgeBase', () => {

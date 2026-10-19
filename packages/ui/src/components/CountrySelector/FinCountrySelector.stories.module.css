@@ -1,0 +1,8 @@
+/* Layout for the FinCountrySelector stories only (not part of the component). */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-xl);
+  align-items: center;
+}

@@ -1,0 +1,37 @@
+/*
+ * FinCountrySelector (DESIGN.md §9). The trigger only: a Small flag and a 24px down arrow. Figma binds the gap to
+ * another library (Mobile/Component/icon-text, 8); code uses Space-M. 48 tall on its own, as Figma (the input field
+ * will set its own height). Hover and focus design come with the input field.
+ */
+
+.selector {
+  display: inline-flex;
+  flex: none;
+  gap: var(--fin-space-m);
+  align-items: center;
+  margin: 0;
+  padding: var(--fin-space-l) var(--fin-space-m) var(--fin-space-l) var(--fin-space-xl);
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.selector:disabled {
+  cursor: default;
+}
+
+/* Temporary: the default ring, drawn inside so it won't clash with the field's border, until the input field's
+   focus design (CLAUDE.md: every interactive element shows focus). */
+.selector:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -2px;
+}
+
+.chevron {
+  display: inline-flex;
+  color: var(--fin-fg-secondary);
+}
+
+.selector:disabled .chevron {
+  color: var(--fin-fg-disabled);
+}
