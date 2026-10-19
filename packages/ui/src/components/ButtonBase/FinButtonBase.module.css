@@ -1,0 +1,150 @@
+/*
+ * FinButtonBase (DESIGN.md §9). Icons sit in their own span colored with the fg-* token (FinIcon has no color, so it
+ * inherits it); the label uses the text-* token, as in Figma. No animation: motion is deferred (§5).
+ */
+
+.button {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  gap: var(--fin-space-m);
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border: 0;
+  border-radius: var(--button-radius);
+  background-color: var(--button-bg, transparent);
+  color: var(--button-text);
+  font: var(--button-font);
+  white-space: nowrap;
+  cursor: pointer;
+
+  /* Figma's 2px inside stroke (Secondary): drawn inside the box, so it never changes the size. */
+  box-shadow: inset 0 0 0 2px var(--button-border, transparent);
+}
+
+/* Figma Focused: a 2px border-focused ring straddling the edge (1px outside, 1px inside), same radius. */
+.button:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -1px;
+}
+
+/* Sizes. Height comes from the padding plus the 24px line height. */
+.button[data-size="large"] {
+  --button-padding-y: var(--fin-space-xl);
+  --button-padding-x: var(--fin-space-3xl);
+  --button-radius: var(--fin-radius-m);
+  --button-font: var(--fin-font-button-xlarge);
+}
+
+.button[data-size="medium"] {
+  --button-padding-y: var(--fin-space-l);
+  --button-padding-x: var(--fin-space-3xl);
+  --button-radius: var(--fin-radius-m);
+  --button-font: var(--fin-font-button-large);
+}
+
+.button[data-size="small"] {
+  --button-padding-y: var(--fin-space-m);
+  --button-padding-x: var(--fin-space-xl);
+  --button-radius: var(--fin-radius-s);
+  --button-font: var(--fin-font-button-medium);
+}
+
+.button[data-size="xsmall"] {
+  --button-padding-y: var(--fin-space-s);
+  --button-padding-x: var(--fin-space-xl);
+  --button-radius: var(--fin-radius-s);
+  --button-font: var(--fin-font-button-medium);
+}
+
+/* Primary. Dark hover/pressed contrast is a documented exception (§10 #3, decided 19 Oct 2026). */
+.button[data-variant="primary"] {
+  --button-bg: var(--fin-bg-action-primary);
+  --button-text: var(--fin-text-white-both);
+  --button-icon: var(--fin-fg-white-both);
+}
+
+.button[data-variant="primary"]:disabled {
+  --button-bg: var(--fin-bg-disabled);
+  --button-text: var(--fin-text-disabled-on-bg);
+  --button-icon: var(--fin-fg-disabled-on-bg);
+}
+
+.button[data-variant="primary"]:hover:enabled {
+  --button-bg: var(--fin-bg-action-primary-hovered);
+}
+
+.button[data-variant="primary"]:active:enabled {
+  --button-bg: var(--fin-bg-action-primary-pressed);
+}
+
+/* Secondary (outlined) and Tertiary (text only) share every color except the border. */
+.button[data-variant="secondary"] {
+  --button-border: var(--fin-border-active);
+}
+
+.button[data-variant="secondary"],
+.button[data-variant="tertiary"] {
+  --button-text: var(--fin-text-action);
+  --button-icon: var(--fin-fg-action);
+}
+
+.button[data-variant="secondary"]:disabled,
+.button[data-variant="tertiary"]:disabled {
+  --button-text: var(--fin-text-disabled);
+  --button-icon: var(--fin-fg-disabled);
+}
+
+.button[data-variant="secondary"]:disabled {
+  --button-border: var(--fin-border-disabled);
+}
+
+.button[data-variant="secondary"]:hover:enabled,
+.button[data-variant="tertiary"]:hover:enabled {
+  --button-bg: var(--fin-bg-action-secondary-hovered);
+  --button-text: var(--fin-text-hovered);
+  --button-icon: var(--fin-fg-hovered);
+}
+
+.button[data-variant="secondary"]:hover:enabled {
+  --button-border: var(--fin-border-hovered);
+}
+
+/* Figma's XSmall Tertiary uses bg-active-hover here; every other size uses the pressed token (§9). */
+.button[data-variant="secondary"]:active:enabled,
+.button[data-variant="tertiary"]:active:enabled {
+  --button-bg: var(--fin-bg-action-secondary-pressed);
+  --button-text: var(--fin-text-pressed);
+  --button-icon: var(--fin-fg-pressed);
+}
+
+.button[data-variant="secondary"]:active:enabled {
+  --button-border: var(--fin-border-pressed);
+}
+
+/* Disabled buttons are never focusable (§7.3). */
+.button:disabled {
+  cursor: default;
+}
+
+.icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--button-icon);
+}
+
+.label {
+  min-width: 0;
+}
+
+/* Figma Show Label off: read by screen readers, not shown. */
+.hiddenLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
