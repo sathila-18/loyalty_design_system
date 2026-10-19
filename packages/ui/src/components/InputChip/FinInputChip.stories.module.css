@@ -1,0 +1,31 @@
+/* Layout for the chip stories only (not part of the components). The field is a plain stand-in for the demo. */
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  justify-content: start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-xs);
+  align-items: center;
+  width: calc(var(--fin-size-120) * 3);
+  padding: var(--fin-space-m);
+  border-radius: var(--fin-radius-s);
+  box-shadow: inset 0 0 0 1px var(--fin-border-default);
+}
+
+.input {
+  flex: 1 1 var(--fin-size-80);
+  min-width: 0;
+  border: 0;
+  background: none;
+  color: var(--fin-text-primary);
+  font: var(--fin-font-body-medium);
+}

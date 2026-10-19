@@ -61,6 +61,33 @@ describe('FinChipBase', () => {
     }
   });
 
+  it('is a span by default, or a native button that does not submit forms', () => {
+    const { container, rerender } = render(<FinChipBase>Gold</FinChipBase>);
+    expect(container.firstElementChild!.tagName).toBe('SPAN');
+    rerender(<FinChipBase as="button">Gold</FinChipBase>);
+    expect(screen.getByRole('button', { name: 'Gold' })).toHaveAttribute('type', 'button');
+  });
+
+  it('marks Disabled on any chip, and disables a button chip natively', () => {
+    const { container, rerender } = render(<FinChipBase disabled>Gold</FinChipBase>);
+    expect(container.firstElementChild).toHaveAttribute('data-disabled');
+    rerender(
+      <FinChipBase as="button" disabled>
+        Gold
+      </FinChipBase>,
+    );
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+
+  it('takes other trailing content instead of the trailing icon', () => {
+    render(
+      <FinChipBase trailingIcon="close" trailingAccessory={<button type="button">x</button>}>
+        Gold
+      </FinChipBase>,
+    );
+    expect(screen.getByRole('button', { name: 'x' })).toBeInTheDocument();
+  });
+
   it('passes className and other attributes to the chip', () => {
     render(
       <FinChipBase className="extra" data-testid="c" title="Gold tier">

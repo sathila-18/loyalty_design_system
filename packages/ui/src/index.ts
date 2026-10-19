@@ -23,3 +23,6 @@ export * from './components/SpinnerWithText';
 export * from './components/Caption';
 export * from './components/Button';
 export * from './components/Checkbox';
+export * from './components/AssistChip';
+export * from './components/FilterChip';
+export * from './components/InputChip';

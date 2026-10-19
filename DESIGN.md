@@ -524,7 +524,7 @@ Many components in Figma follow a **base → mapped** structure:
 |---|---|
 | `Base-button`, `white-button`, `Destructive-button` (all three are bases, decided 19 Oct 2026) | `all-button` → used by Button dock, Dialog, Empty state, File uploads, Header, Notification, Side Menu, Side sheet, Snackbar, Pagination group, Table cell |
 | `Badge-base` (was `Tag-base`) | `Badge-primary` |
-| `Chips-base` | `Chips`, `Chips-group` |
+| `Chips-base` | `Chips` (code: FinAssistChip, FinFilterChip, FinInputChip), `Chips-group` |
 | `Base-Checkbox` | `Checkbox` |
 | `Segmented_button-base` | `Segmented button` |
 | `Input field-base` (`49:5734`) | `Input field-standard`, `Input field-password`, `Input field-select`, `Input field-Multi select`, `Search` |
@@ -653,7 +653,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 35 | `Badge-primary` | Badge | `30:1465` | `FinBadge` | **Badge-base** · State: Primary/Secondary/Success/Error/Info/Warning/Disabled/Neutral (`brand` removed 15 Oct 2026) → `tone` · optional icons (code) | ✅ (Error outer stroke fixed 15 Oct 2026) | ✅ |
 | 36 | `Text Box` | Text box | `28:1001` | `FinTextBox` | Label · Type: H1–H6 · Alignment: Left/Center/Right · code: `headingLevel` (structure only), label badge (exposed in Figma) (§9.21) | ✅ | ✅ |
 | 37 | `Checkbox` | Checkbox | `42:220` | `FinCheckbox` | **Base-Checkbox**, Text Box · checkbox always on the left · **public** (§9.30) | ⚠️ | ✅ |
-| 38 | `Chips` | Chips | `95:1848` | `FinChip` | **Chips-base** | ✅ | ⬜ |
+| 38 | `Chips` | Chips | `95:1848` | `FinAssistChip`, `FinFilterChip`, `FinInputChip` (three chip types, decided 19 Oct 2026) | **Chips-base** · State Enabled/Hovered/Pressed/Disabled × Type (code `selected`) · **public** (§9.32) | ✅ | ✅ |
 | 39 | `Chips-group` | Chips | `922:6646` | `FinChipGroup` | **Chips-base** · Chip count 1–4 | ⚠️ | ⬜ |
 | 40 | `Segmented button` | Segmented button | `117:4688` | `FinSegmentedButton` | **Segmented_button-base** | ⚠️ | ⬜ |
 | 41 | `Indicator set` | Indicator | `98:3541` | `FinPageIndicator` | **Indicator** · Active, Number (code: `active`, `count`, no maximum) · clickable with `onChange` (§9.12) | ✅ | ✅ |
@@ -712,7 +712,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 Each component gets a full spec here **when it's built**. Exact measurements (padding, gaps, sizes) come from Figma at build time. Read the component node with the Figma tools rather than guessing.
 
-**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**; Caption is under **Components/List**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`), Base button (`FinButtonBase`), White button (`FinWhiteButton`), Destructive button (`FinDestructiveButton`), Checkbox base (`FinCheckboxBase`), Chip base (`FinChipBase`). Checkbox (`FinCheckbox`) is **Components/Checkbox**. **Buttons:** `FinButton` is under **Components/Buttons/Button**. **Button Playground controls** mirror Figma: `Show Leading Icon` / `Show Trailing Icon` toggles plus an icon picker from `finIcons` (shown only when on), and `Show Label` (stories only; the props stay `leadingIcon` / `trailingIcon`, decided 19 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
+**Storybook grouping:** icon components are grouped in the sidebar under **Components/Icons**: Icon (`FinIcon`) and Icon container (`FinIconContainer`). Avatar components are grouped under **Components/Avatar**: Avatar (`FinAvatar`), Avatar group (`FinAvatarGroup`), Profile image (`FinProfileImage`) and Online indicator (`FinOnlineIndicator`) (15 Oct 2026). Badge components are grouped under **Components/Badge**: Badge indicator (`FinBadgeIndicator`) and Badge (`FinBadge`). Indicator components are under **Components/Indicator**: Page indicator (`FinPageIndicator`). Overlay is **Components/Overlay**; Toggle is **Components/Toggle**; Radio button is **Components/Radio button**; Progress bar, Spinner, Slider, Bar with text and Spinner with text are under **Components/Progress** (the Figma page they're on); Label, Helper text and Text box are under **Components/Text box**; Caption is under **Components/List**. Internal bases (§7.2) are under **Internal**, sorted last: Badge base (`FinBadgeBase`), Indicator (`FinIndicatorDot`), Base button (`FinButtonBase`), White button (`FinWhiteButton`), Destructive button (`FinDestructiveButton`), Checkbox base (`FinCheckboxBase`), Chip base (`FinChipBase`). Checkbox (`FinCheckbox`) is **Components/Checkbox**; the three chips are **Components/Chips** (Assist chip, Filter chip, Input chip). **Buttons:** `FinButton` is under **Components/Buttons/Button**. **Button Playground controls** mirror Figma: `Show Leading Icon` / `Show Trailing Icon` toggles plus an icon picker from `finIcons` (shown only when on), and `Show Label` (stories only; the props stay `leadingIcon` / `trailingIcon`, decided 19 Oct 2026). Only the story titles are grouped; each component keeps its own folder.
 
 ### 9.1 FinIcon (Icon sizes)
 
@@ -2013,7 +2013,7 @@ import { FinCheckbox } from '@finspace-loyalty/ui';
 
 ### 9.31 FinChipBase (Chips-base) — internal
 
-**Figma:** page **Chips**, component set `Chips-base` `95:1811`: `Type` = Unselected / Selected / Unselected-border × `Size` = Xsmall / Small / Large (9 variants), with `Show Leading Accessory` (a slot; default content an icon), `Show Trailing Icon` (a ✕) and `Label text`. No interaction states: the mapped `Chips` (§8 #38) adds Pressed and Disabled, which go into this base when FinChip is built (§7.2 rule 3). Base of Chips, Chips-group and Input field-Multi select. **Internal**; products use FinChip.
+**Figma:** page **Chips**, component set `Chips-base` `95:1811`: `Type` = Unselected / Selected / Unselected-border × `Size` = Xsmall / Small / Large (9 variants), with `Show Leading Accessory` (a slot; default content an icon), `Show Trailing Icon` (a ✕) and `Label text`. The mapped `Chips` (§8 #38) adds Hovered, Pressed and Disabled; they live in this base (§7.2 rule 3, added 19 Oct 2026 with the three chips, §9.32). Base of Chips, Chips-group and Input field-Multi select. **Internal**; products use FinChip.
 
 **Figma → code:**
 
@@ -2025,6 +2025,10 @@ import { FinCheckbox } from '@finspace-loyalty/ui';
 | `Show Leading Accessory` + other content | `leadingAccessory?: ReactNode` | Any content (avatar, flag…), laid out 8 apart; used instead of `leadingIcon` (decided 19 Oct 2026: the slot may hold other things) |
 | `Show Trailing Icon` + icon | `trailingIcon?: FinIconName` | Decorative here; removing a chip comes with the mapped components |
 | `Label text` | `children` | One line; "…" when the container is narrower (as FinBadgeBase) |
+| Chips `State` = Hovered / Pressed | `:hover` / `:active` when `as="button"` | Unselected (and Unselected-border) drop the stroke and shadow; Selected keeps one (`border-active` / `border-pressed`) |
+| Chips `State` = Disabled | `disabled` (`data-disabled`; native on a button) | `bg-disabled`, `text-disabled-on_bg`; Selected adds `border-disabled` |
+| — | `as: 'span' \| 'button'` (internal) | The whole chip as a button (Assist, Filter) |
+| — | `trailingAccessory` (internal) | Other trailing content instead of `trailingIcon` (Input chip's ✕ button) |
 
 **Tokens used:**
 
@@ -2052,11 +2056,55 @@ Figma binds Label/Large's font family to `Title XL/Font family` (same Inter); co
 <FinChipBase leadingAccessory={<FinAvatar size="xsmall" initials="SD" label="Sathila" />}>Sathila</FinChipBase>
 ```
 
-Presentational: no `'use client'`. A `<span>`; `className` and other attributes go to it. Structure ready to become a button when FinChip adds the interaction states.
+`'use client'` (forwards `ref`). A `<span>`, or a `<button>` with `as="button"`; `className` and other attributes go to it.
+
+**States (Figma Chips, Small):** Hovered `bg-active-hover`; Pressed `bg-action-primary_pressed` with `text-inverse` (icons `fg-inverse`); Disabled `bg-disabled`, `text-disabled-on_bg` (icons `fg-disabled-on_bg`). Unselected / Unselected-border have no stroke in those states; Selected keeps `border-active` / `border-pressed` / `border-disabled`. Unselected-border has no states in Figma; it uses Unselected's (its shadow goes too). Focus: no design, the default ring (2px `border-focused`, 2px out).
 
 **Accessibility:** text and decorative icons only (no role yet). Contrast: Unselected text 17.57:1, icons 6.10 Light / 8.76 Dark. **Selected text `text-action` on `bg-active` is 4.13:1 Light / 3.95:1 Dark, below 4.5:1: accepted by design (19 Oct 2026, §10 #3)**; the a11y check skips only Selected chips.
 
 **Built (19 Oct 2026).** Storybook (Internal/Chip base): Playground (Figma-style toggles for the leading accessory and trailing icon, icon pickers), Types (Figma), Content (both parts optional, custom accessory), Long label. Checked against Figma in a browser: heights 26 / 33 / 40, widths 87.4 / 108.6 / 121.9 (Figma 88 / 109 / 122, text rendering), padding, gaps, radius 8, Label S / M / L, icons 16 / 16 / 20, Light colors and the shadow equal Figma; Dark uses the Dark tokens. a11y: no violations in Light or Dark apart from the accepted Selected text.
+
+### 9.32 FinAssistChip, FinFilterChip, FinInputChip (Chips)
+
+**Figma:** page **Chips**, component set `Chips` `95:1848`: `State` = Enabled / Hovered / Pressed / Disabled × `Type` = Unselected / Selected (8 variants, Small, no icons), built on Chips-base. **Decided by design 19 Oct 2026:** chips come in three types with different meanings, which Figma doesn't define yet; in code they're three public components on FinChipBase (§9.31), which holds every look and state:
+
+| | **FinAssistChip** | **FinFilterChip** | **FinInputChip** |
+|---|---|---|---|
+| Meaning | An action: date ranges, selections; may open a menu or picker | A filter, on / off; several can be on | A chosen value in a multi-select field |
+| Element | `<button>` | `<button aria-pressed>` | `<span>` + a `<button>` ✕ |
+| Base look | `unselected-border`; `selected` while `expanded` | `unselected` / `selected` | `unselected` |
+| Own props | `dropdown` (shows `keyboard_arrow_down`, sets `aria-haspopup`), `expanded` (`aria-expanded`) | `selected` / `defaultSelected` + `onSelectedChange` | `onRemove`, `removeLabel` (default "Remove {value}") |
+| Keyboard | Tab; Enter / Space run it | Tab; Enter / Space toggle | Tab to the ✕; Enter / Space / Delete / Backspace remove |
+| `ref` | the button | the button | the ✕ button (so a field can move focus after a removal) |
+
+Shared: `children` (label), `size` (`'xsmall' \| 'small' \| 'large'`, default `'small'`; all three sizes, decided 19 Oct 2026), `leadingIcon` / `leadingAccessory`, `disabled`, `className` and other attributes.
+
+**Figma → code:** Chips `Type` = Unselected / Selected → FinFilterChip `selected` (a data state, §7.3); `State` → CSS and `disabled`. Figma has no Assist / Input types, no dropdown arrow and no ✕ button design (§10 #46).
+
+**Input chip ✕:** a 16 / 16 / 20px icon button, its hit area `--fin-space-xs` past the icon on every side (24 for the 16px icon). No hover or pressed design: cursor only (decided 19 Oct 2026). Focus: a 2px `border-focused` ring on the icon's edge (no offset, so it clears the label at XSmall's 4px gap).
+
+**Tokens used:** all from FinChipBase (§9.31); the ✕ button's hit area and ring are FinInputChip's only CSS.
+
+**API:**
+
+```tsx
+import { FinAssistChip, FinFilterChip, FinInputChip } from '@finspace-loyalty/ui';
+
+<FinAssistChip dropdown expanded={open} aria-haspopup="dialog" onClick={() => setOpen(!open)}>Last 30 days</FinAssistChip>
+<FinAssistChip leadingIcon="cloud_upload" onClick={exportCsv}>Export</FinAssistChip>
+
+<div role="group" aria-label="Filter by tier">
+  <FinFilterChip selected={gold} onSelectedChange={setGold}>Gold</FinFilterChip>
+</div>
+
+<FinInputChip size="xsmall" onRemove={() => remove('Gold')}>Gold</FinInputChip>
+```
+
+All `'use client'`. Exports also the type `FinChipSize`.
+
+**Accessibility:** Assist: a button; with a menu, `aria-haspopup` and `aria-expanded`. Filter: a toggle button (`aria-pressed`); name groups of filters (`role="group"` + `aria-label`, or Chips-group later). Input: the value is text, the ✕ is a named button; disabled skips it. Contrast: as §9.31; Selected text (open Assist chip, Selected Filter chip) is accepted (§10 #3), hover and press too; disabled is exempt (disabled Input chips are left out of the a11y check because the chip itself is a span).
+
+**Built (19 Oct 2026).** Storybook (Components/Chips): Assist chip (Playground, States in every size, With a menu), Filter chip (Playground, States (Figma) in every size, Filters group, Focused), Input chip (Playground, Sizes, In a field: remove with the ✕ or Delete / Backspace, focus moves on). Checked against Figma Chips in a browser: 60.6 × 33 (Figma 61 × 33); all 8 states equal Figma in Light (Hovered and Pressed with a real mouse); Dark uses the Dark tokens. ✕: 16 × 16 with a 24 hit area, Delete removes and focus moves to the next ✕. a11y: no violations in Light or Dark apart from the accepted ones above.
 
 Template:
 
@@ -2122,17 +2170,18 @@ Template:
 | 43 | **all-button doesn't expose the label text or the icon swap** as component properties (designers override nested layers). Code has `children` and `iconName`. Expose them in Figma for the same controls. Also to add: `Tone` (Normal / White / Destructive) and the White and Destructive variants (§9.28). | Buttons | ⏳ Design to add in Figma |
 | 44 | **Checkbox (`42:220`) in Figma vs code:** code has the checkbox **only on the left** (decided 19 Oct 2026), so `Show Leading Icon` / `Show Trailing Icon` have no code equivalent; remove them (or keep only the leading one, always on) so designers can't draw a row with two checkboxes. Figma's `Focused` row ring isn't used (code shows the checkbox's ring). This set also has no Selected + Disabled, Indeterminate, Hovered or Pressed variants (code has them from the base). | Checkbox | 🔧 Fix in Figma |
 | 45 | **Chips-base (`95:1811`):** Label/Large's font family is bound to `Title XL/Font family` (same Inter); bind it to `Label L/Font family`. The raw palette `Colors/Fintech/Primary/Primary-400` is bound somewhere in the set (seen 19 Oct 2026). Code uses this system's tokens either way. | Chips | 🔧 Fix in Figma |
+| 46 | **Chips in Figma vs code** (decided 19 Oct 2026): code has three chip types (§9.32). To match in Figma: rename Chips `Type` (Unselected / Selected) to **`Selected` (True / False)**, so "type" isn't used for two things; make **three sets from Chips-base**, `Assist chip`, `Filter chip`, `Input chip` (the current `Chips` becomes `Filter chip`); add the Assist chip's down arrow and open (Selected) state, and the Input chip's ✕ button; add sizes (code has XSmall, Small, Large). Raw `Primary-400` in Chips was removed by design (19 Oct 2026). | Chips | ⏳ Design to add in Figma |
 
 ---
 
 ## 11. Changelog
 
 > **Where we are (19 Oct 2026)**
-> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026). Everything is merged into `main`.
-> - **Next:** the chips (§8 #38): three code components FinAssistChip, FinFilterChip, FinInputChip (designer's plan, 19 Oct 2026). Plan first, then wait for the go-ahead. Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
+> - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; waiting for design review). Everything else is merged into `main`.
+> - **Next:** design review of the three chips (on `feat/chips`); then `Chips-group` (§8 #39) when design names it. Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
-> - **Open:** §10 #3 (contrast: button hover/pressed accepted 19 Oct 2026, enabled state is what matters; Secondary/Tertiary enabled on `bg-secondary` 4.32:1 still open; badge indicator built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers), §10 #35 (Indicator selected width 22 → 24 in Figma), §10 #36 (Helper text Success icon toggle) §10 #38 (XSmall Tertiary Pressed still bound to `bg-active-hover` when checked after merge, 19 Oct 2026) §10 #40 (White button border on Small/XSmall), §10 #41 and #42 (all-button Small Pressed token, raw `Primary-400`) §10 #43 (all-button `Tone`, label and icon swap to add) §10 #44 (Checkbox: leading/trailing booleans, missing variants) and §10 #45 (Chips-base font binding, raw `Primary-400`). Fixed 19 Oct 2026: §10 #39. Fixed 15 Oct 2026: §10 #29, #30.
+> - **Open:** §10 #3 (contrast: button hover/pressed accepted 19 Oct 2026, enabled state is what matters; Secondary/Tertiary enabled on `bg-secondary` 4.32:1 still open; badge indicator built with documented exceptions), §10 #5 (Dark-mode shadows), §10 #31 (Profile image badge hover/pressed, design to define), §10 #32 (Online Indicator white frame fill, fix in Figma), §10 #33 (online indicator placement to add in Figma), §10 #34 (off-canvas Badge leftovers), §10 #35 (Indicator selected width 22 → 24 in Figma), §10 #36 (Helper text Success icon toggle) §10 #38 (XSmall Tertiary Pressed still bound to `bg-active-hover` when checked after merge, 19 Oct 2026) §10 #40 (White button border on Small/XSmall), §10 #41 and #42 (all-button Small Pressed token, raw `Primary-400`) §10 #43 (all-button `Tone`, label and icon swap to add) §10 #44 (Checkbox: leading/trailing booleans, missing variants) §10 #45 (Chips-base font binding, raw `Primary-400`) and §10 #46 (Chips: three types, `Selected` rename, arrow and ✕ to add). Fixed 19 Oct 2026: §10 #39. Fixed 15 Oct 2026: §10 #29, #30.
 
 | Date | Version | Change |
 |---|---|---|
@@ -2215,3 +2264,4 @@ Template:
 | 19 Oct 2026 | 0.2 | `FinCheckbox` (and the white checkbox icon) approved by design and merged into `main`. |
 | 19 Oct 2026 | 0.2 | **`FinChipBase` built** (§8 #27, §9.31), internal: `variant`, `size`, `leadingIcon` / `leadingAccessory` (slot), `trailingIcon`; visual only (interaction comes with FinChip). Selected text contrast accepted (§10 #3). §10 #45 added. |
 | 19 Oct 2026 | 0.2 | `FinChipBase` approved by design and merged into `main`. |
+| 19 Oct 2026 | 0.2 | **Three chips built** (§8 #38, §9.32), public: FinAssistChip (action, optional dropdown arrow, Selected while open), FinFilterChip (toggle, `aria-pressed`), FinInputChip (value with a ✕ button, Delete / Backspace). FinChipBase gains the Chips states (Hovered, Pressed, Disabled), `as="button"` and a trailing slot (§9.31). §10 #46 added. |

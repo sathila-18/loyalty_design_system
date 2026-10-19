@@ -1,0 +1,18 @@
+/* Layout for the chip stories only (not part of the components). */
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  justify-content: start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-m);
+  align-items: center;
+}

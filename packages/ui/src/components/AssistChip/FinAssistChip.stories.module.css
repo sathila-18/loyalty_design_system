@@ -1,0 +1,46 @@
+/* Layout for the chip stories only (not part of the components). The menu is a plain stand-in for the demo. */
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(5, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  justify-content: start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.menuDemo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+  align-items: flex-start;
+  min-height: var(--fin-size-120);
+}
+
+.menu {
+  margin: 0;
+  padding: var(--fin-space-xs);
+  border-radius: var(--fin-radius-s);
+  background-color: var(--fin-bg-primary);
+  box-shadow: inset 0 0 0 1px var(--fin-border-subtle), var(--fin-shadow-panel-sheets);
+  list-style: none;
+}
+
+.option {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: var(--fin-space-s) var(--fin-space-m);
+  border: 0;
+  border-radius: var(--fin-radius-xs);
+  background: none;
+  color: var(--fin-text-primary);
+  font: var(--fin-font-body-medium);
+  text-align: start;
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: var(--fin-bg-active);
+}

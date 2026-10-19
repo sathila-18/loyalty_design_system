@@ -1,0 +1,34 @@
+/*
+ * FinInputChip (DESIGN.md §9). Only the ✕ button: no native look, it takes the chip's trailing color. Its hit area
+ * reaches Space-XS past the icon on every side (24 for the 16px icon). No hover or pressed design: cursor only.
+ */
+
+.remove {
+  position: relative;
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fin-radius-full);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.remove::after {
+  position: absolute;
+  inset: calc(-1 * var(--fin-space-xs));
+  content: "";
+}
+
+.remove:disabled {
+  cursor: default;
+}
+
+/*
+ * No Focused design: a 2px border-focused ring on the icon's edge (no offset), so it clears the label even with the
+ * XSmall chip's 4px gap.
+ */
+.remove:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+}

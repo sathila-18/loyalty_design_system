@@ -22,6 +22,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinCheckbox');
   });
 
+  it('exports the three chips, but not their FinChipBase base', () => {
+    for (const name of ['FinAssistChip', 'FinFilterChip', 'FinInputChip']) expect(ui).toHaveProperty(name);
+  });
+
   it.each(INTERNAL_BASES)('does not export the internal base %s', (name) => {
     expect(ui).not.toHaveProperty(name);
   });
