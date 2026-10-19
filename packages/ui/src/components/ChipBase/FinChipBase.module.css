@@ -1,0 +1,89 @@
+/*
+ * FinChipBase (DESIGN.md §9). Icons are FinIcon with no color, so they take the color of their wrapper: the leading
+ * icon follows the Type, the trailing ✕ is always fg-secondary (as Figma). Figma's 1px stroke is an inset shadow,
+ * so it never changes the size.
+ */
+
+.chip {
+  display: inline-flex;
+  flex: none;
+  gap: var(--chip-gap);
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  padding: var(--chip-padding-y) var(--chip-padding-x);
+  border-radius: var(--fin-radius-s);
+  background-color: var(--chip-bg);
+  color: var(--chip-text);
+  font: var(--chip-font);
+  box-shadow: inset 0 0 0 1px var(--chip-border), var(--chip-shadow, 0 0 transparent);
+}
+
+/* Sizes. Height comes from the padding plus the text style's line height (18 / 21 / 24). */
+.chip[data-size="xsmall"] {
+  --chip-padding-y: var(--fin-space-xs);
+  --chip-padding-x: var(--fin-space-m);
+  --chip-gap: var(--fin-space-xs);
+  --chip-font: var(--fin-font-label-small);
+}
+
+.chip[data-size="small"] {
+  --chip-padding-y: var(--fin-space-s);
+  --chip-padding-x: var(--fin-space-l);
+  --chip-gap: var(--fin-space-m);
+  --chip-font: var(--fin-font-label-medium);
+}
+
+.chip[data-size="large"] {
+  --chip-padding-y: var(--fin-space-m);
+  --chip-padding-x: var(--fin-space-l);
+  --chip-gap: var(--fin-space-m);
+  --chip-font: var(--fin-font-label-large);
+}
+
+/* Types. */
+.chip[data-variant="unselected"] {
+  --chip-bg: var(--fin-bg-primary);
+  --chip-border: var(--fin-border-subtle);
+  --chip-text: var(--fin-text-primary);
+  --chip-leading: var(--fin-fg-secondary);
+}
+
+/* Selected: text-action on bg-active is 4.14:1 Light / 3.95:1 Dark, accepted by design (19 Oct 2026, §10 #3). */
+.chip[data-variant="selected"] {
+  --chip-bg: var(--fin-bg-active);
+  --chip-border: var(--fin-border-active);
+  --chip-text: var(--fin-text-action);
+  --chip-leading: var(--fin-fg-brand);
+}
+
+.chip[data-variant="unselected-border"] {
+  --chip-bg: var(--fin-bg-primary);
+  --chip-border: var(--fin-border-default);
+  --chip-text: var(--fin-text-primary);
+  --chip-leading: var(--fin-fg-secondary);
+  --chip-shadow: var(--fin-shadow-resting-cards);
+}
+
+/* The leading accessory: an icon, or other content laid out 8 apart. */
+.leading {
+  display: inline-flex;
+  flex: none;
+  gap: var(--fin-space-m);
+  align-items: center;
+  color: var(--chip-leading);
+}
+
+.trailing {
+  display: inline-flex;
+  flex: none;
+  color: var(--fin-fg-secondary);
+}
+
+/* One line, no fixed max width; "…" when the container is narrower (as FinBadgeBase). */
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
