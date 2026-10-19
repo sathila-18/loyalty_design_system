@@ -36,6 +36,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('isFinFlagCountry');
   });
 
+  it('exports FinPagination, but not its FinPaginationItem base', () => {
+    expect(ui).toHaveProperty('FinPagination');
+  });
+
   it.each(INTERNAL_BASES)('does not export the internal base %s', (name) => {
     expect(ui).not.toHaveProperty(name);
   });

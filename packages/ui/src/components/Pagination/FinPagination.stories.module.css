@@ -1,0 +1,14 @@
+/* Layout for the FinPagination stories only (not part of the component). */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+  align-items: flex-start;
+}
+
+.caption {
+  margin-top: var(--fin-space-m);
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}

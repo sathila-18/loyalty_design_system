@@ -9,6 +9,7 @@ export const finIcons = [
   'cancel',
   'check',
   'check_circle',
+  'chevron_left',
   'chevron_right',
   'close',
   'cloud_upload',

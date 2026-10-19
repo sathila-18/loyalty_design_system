@@ -1,0 +1,52 @@
+/*
+ * FinPagination (DESIGN.md §9). The row (gap Space-M) and the previous / next arrows. Figma draws the arrows as
+ * all-button (XSmall, Only Icon) with a grey 1px outline override, a look FinButton doesn't have; they're drawn here
+ * (decided 19 Oct 2026: code only, no change to the approved buttons or to Figma). No hover or pressed design for
+ * them: cursor only.
+ */
+
+.pagination {
+  display: inline-flex;
+}
+
+.list {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list > li {
+  display: flex;
+}
+
+.arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-32);
+  height: var(--fin-size-32);
+  margin: 0;
+  padding: var(--fin-space-s);
+  border: 0;
+  border-radius: var(--fin-radius-s);
+  background: none;
+  color: var(--fin-fg-primary);
+  box-shadow: inset 0 0 0 1px var(--fin-border-strong);
+  cursor: pointer;
+}
+
+/* No Focused design: the default ring, 2px border-focused, 2px out (§10 #6). */
+.arrow:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+/* At the first / last page (Figma "Only one" and the ends). */
+.arrow:disabled {
+  color: var(--fin-fg-disabled);
+  box-shadow: inset 0 0 0 1px var(--fin-border-disabled);
+  cursor: default;
+}
