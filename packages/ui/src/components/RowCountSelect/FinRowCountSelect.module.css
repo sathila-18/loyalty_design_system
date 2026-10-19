@@ -1,0 +1,45 @@
+/*
+ * FinRowCountSelect (DESIGN.md §9). A pill: the label (Body S, text-tertiary), the value (Label S, text-primary) and a
+ * 24px down arrow (fg-secondary). Figma's 1px stroke is an inset shadow, so it never changes the size. 40 tall.
+ */
+
+.select {
+  display: inline-flex;
+  flex: none;
+  gap: var(--fin-space-m);
+  align-items: center;
+  margin: 0;
+  padding: var(--fin-space-m) var(--fin-space-l);
+  border: 0;
+  border-radius: var(--fin-radius-full);
+  background-color: var(--fin-bg-secondary);
+  white-space: nowrap;
+  box-shadow: inset 0 0 0 1px var(--fin-border-subtle);
+  cursor: pointer;
+}
+
+/* No Focused design: the default ring, 2px border-focused, 2px out (§10 #6). */
+.select:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+/* Figma Property 1=Hovered; press keeps the hover look (decided 19 Oct 2026). */
+.select:hover {
+  background-color: var(--fin-bg-tertiary);
+}
+
+.label {
+  color: var(--fin-text-tertiary);
+  font: var(--fin-font-body-small);
+}
+
+.value {
+  color: var(--fin-text-primary);
+  font: var(--fin-font-label-small);
+}
+
+.chevron {
+  display: inline-flex;
+  color: var(--fin-fg-secondary);
+}

@@ -17,7 +17,7 @@ interface Args {
  * says otherwise). These stories exist only to check it against Figma; products use FinPagination.
  */
 const meta: Meta<Args> = {
-  title: 'Internal/Pagination item',
+  title: 'Internal/Pagination/Pagination item',
   args: { page: '1', selected: false, dots: false },
   argTypes: {
     page: { control: 'text', description: 'The page number' },
