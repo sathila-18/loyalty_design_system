@@ -39,7 +39,7 @@
   height: calc(var(--fin-size-24) - var(--fin-space-s));
   border-radius: var(--fin-radius-xs);
   background-color: var(--checkbox-fill);
-  color: var(--fin-fg-inverse);
+  color: var(--fin-fg-white-both);
   box-shadow: inset 0 0 0 2px var(--checkbox-stroke);
 }
 

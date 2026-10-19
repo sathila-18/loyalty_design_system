@@ -1953,13 +1953,13 @@ import { FinButton } from '@finspace-loyalty/ui';
 
 | State | Unselected: fill / stroke | Selected, Indeterminate: fill / icon |
 |---|---|---|
-| Enabled | none / `border-strong` | `bg-action-primary` / `fg-inverse` |
-| Hovered | `bg-active-hover` / `border-hovered` | `fg-hovered` / `fg-inverse` |
-| Pressed | `bg-action-primary_pressed` / `border-pressed` | `fg-pressed` / `fg-inverse` |
+| Enabled | none / `border-strong` | `bg-action-primary` / `fg-white_both` |
+| Hovered | `bg-active-hover` / `border-hovered` | `fg-hovered` / `fg-white_both` |
+| Pressed | `bg-action-primary_pressed` / `border-pressed` | `fg-pressed` / `fg-white_both` |
 | Disabled | none / `fg-disabled` | `fg-disabled` / `fg-disabled-on_bg` |
 | Focused | `outline: 2px solid var(--fin-border-focused)` hugging the box (Figma: 22 around 18), radius follows | |
 
-Raw values: the 2px stroke and ring, the 1px hidden label box. Figma's raw `Primary-400` binding is the focus ring color; code uses `border-focused`.
+The icon is white in both themes (`fg-white_both`; was `fg-inverse`, which turned near-black in Dark; changed by design 19 Oct 2026). Raw values: the 2px stroke and ring, the 1px hidden label box. Figma's raw `Primary-400` binding was removed by design (19 Oct 2026).
 
 **API (internal):**
 
@@ -1970,7 +1970,7 @@ Raw values: the 2px stroke and ring, the 1px hidden label box. Figma's raw `Prim
 
 `'use client'` (ref and effect).
 
-**Accessibility:** announced as a checkbox with its label: checked, not checked or mixed. Tab reaches it, Space toggles it; disabled is skipped. Pointer target 24 × 24. Contrast (non-text, 3:1), enabled: unselected stroke 3.90 Light / 8.76 Dark on `bg-primary` (3.57 / 7.25 on `bg-secondary`), after `border-strong` changed on 19 Oct 2026; selected fill 4.71 / 3.73 (4.32 / 3.09 on `bg-secondary`); icon on fill 4.71 / 3.73. Disabled is exempt: the Disabled Selected icon is nearly invisible on its fill (1.4:1 Light, 1.1:1 Dark).
+**Accessibility:** announced as a checkbox with its label: checked, not checked or mixed. Tab reaches it, Space toggles it; disabled is skipped. Pointer target 24 × 24. Contrast (non-text, 3:1), enabled: unselected stroke 3.90 Light / 8.76 Dark on `bg-primary` (3.57 / 7.25 on `bg-secondary`), after `border-strong` changed on 19 Oct 2026; selected fill 4.71 / 3.73 (4.32 / 3.09 on `bg-secondary`); white icon on the fill 4.71 in both themes. Hovered / Pressed (accepted, §10 #3): icon 5.49 / 7.82 Light but 2.70 / 1.91 Dark, where the fills turn light purple. Disabled is exempt: the Disabled Selected icon is nearly invisible on its fill (1.4:1 Light, 1.1:1 Dark).
 
 **Built (19 Oct 2026).** Storybook (Internal/Checkbox base): Playground, States (Figma) with all three Types, Enabled and Disabled shown and Hovered/Pressed live, Select all (indeterminate), Focused (Tab). Checked against Figma in a browser: box 18 × 18 in the 24 frame, radius 4, 2px stroke, icons 16; Light colors equal Figma in every State and Type (Hovered and Pressed with a real mouse); Dark uses the Dark tokens; focus ring 2px. a11y: no violations in Light or Dark.
 
@@ -2163,3 +2163,4 @@ Template:
 | 19 Oct 2026 | 0.2 | **`FinCheckboxBase` built** (§8 #26, §9.29), internal: native checkbox, `indeterminate`, hidden `label`; Figma added Pressed and new hover colors. Box 18 derived as `Size-24 − Space-S` (no 18 token, decided 19 Oct 2026). |
 | 19 Oct 2026 | 0.2 | `FinCheckboxBase` approved by design and merged into `main`. |
 | 19 Oct 2026 | 0.2 | **`FinCheckbox` built** (§8 #37, §9.30), public: FinCheckboxBase on the left + FinTextBox description, named with `aria-labelledby`, text click toggles. Decided: checkbox only on the left, text from Text Box, the base's ring only. FinTextBox gains `disabled` (§9.21); FinCheckboxBase `label` is optional when the input is named another way (§9.29). §10 #44 added. |
+| 19 Oct 2026 | 0.2 | FinCheckboxBase icon `fg-inverse` → `fg-white_both` (white in both themes), following Figma. Dark hover/pressed icon contrast drops to 2.70 / 1.91 (accepted with hover/pressed, §10 #3). |
