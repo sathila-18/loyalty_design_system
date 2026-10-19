@@ -154,6 +154,50 @@
   --button-icon: var(--fin-fg-pressed);
 }
 
+/*
+ * Destructive (Figma Destructive-button, a separate set in Figma; FinDestructiveButton passes these). Primary is
+ * filled red; Secondary has a 2px red border and keeps its red text and border on hover and press.
+ */
+.button[data-variant="destructive"] {
+  --button-bg: var(--fin-bg-action-destructive);
+  --button-text: var(--fin-text-white-both);
+  --button-icon: var(--fin-fg-white-both);
+}
+
+.button[data-variant="destructive"]:disabled {
+  --button-bg: var(--fin-bg-disabled);
+  --button-text: var(--fin-text-disabled-on-bg);
+  --button-icon: var(--fin-fg-disabled-on-bg);
+}
+
+.button[data-variant="destructive"]:hover:enabled {
+  --button-bg: var(--fin-bg-action-destructive-hovered);
+}
+
+.button[data-variant="destructive"]:active:enabled {
+  --button-bg: var(--fin-bg-action-destructive-pressed);
+}
+
+.button[data-variant="destructive-secondary"] {
+  --button-text: var(--fin-text-error);
+  --button-icon: var(--fin-fg-error);
+  --button-border: var(--fin-border-error);
+}
+
+.button[data-variant="destructive-secondary"]:disabled {
+  --button-text: var(--fin-text-disabled);
+  --button-icon: var(--fin-fg-disabled);
+  --button-border: var(--fin-border-disabled);
+}
+
+.button[data-variant="destructive-secondary"]:hover:enabled {
+  --button-bg: var(--fin-bg-action-destructive-secondary-hovered);
+}
+
+.button[data-variant="destructive-secondary"]:active:enabled {
+  --button-bg: var(--fin-bg-action-destructive-secondary-pressed);
+}
+
 /* Disabled buttons are never focusable (§7.3). */
 .button:disabled {
   cursor: default;

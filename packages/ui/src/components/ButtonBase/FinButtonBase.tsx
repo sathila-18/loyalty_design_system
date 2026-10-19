@@ -7,8 +7,11 @@ import styles from './FinButtonBase.module.css';
 
 /** Figma Base-button `Type`. */
 export type FinButtonVariant = 'primary' | 'secondary' | 'tertiary';
-/** The base's variants: Figma `Type`, plus `white` for FinWhiteButton (Figma white-button, decided 19 Oct 2026). */
-export type FinButtonBaseVariant = FinButtonVariant | 'white';
+/**
+ * The base's variants: Figma `Type`, plus the colors of the other two button bases (decided 19 Oct 2026):
+ * `white` for FinWhiteButton (Figma white-button), `destructive` / `destructive-secondary` for FinDestructiveButton.
+ */
+export type FinButtonBaseVariant = FinButtonVariant | 'white' | 'destructive' | 'destructive-secondary';
 export type FinButtonSize = 'large' | 'medium' | 'small' | 'xsmall';
 
 export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
