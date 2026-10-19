@@ -1,0 +1,83 @@
+/*
+ * FinSegmentBase (DESIGN.md §9). The icon sits in its own span colored with the fg-* token (FinIcon has no color,
+ * so it inherits it); the label uses the text-* token, as in Figma. No animation (§5).
+ */
+
+.segment {
+  --segment-bg: transparent;
+  --segment-text: var(--fin-text-secondary);
+  --segment-icon: var(--fin-fg-secondary);
+
+  display: inline-flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: var(--fin-space-m) var(--fin-space-3xl);
+  border: 0;
+  border-radius: var(--fin-radius-m);
+  background-color: var(--segment-bg);
+  color: var(--segment-text);
+  font: var(--fin-font-button-medium);
+  cursor: pointer;
+}
+
+/* No Focused design: the default ring, 2px border-focused, 2px out (§10 #6). */
+.segment:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+/* Selected, Enabled: the white segment. */
+.segment[data-selected] {
+  --segment-bg: var(--fin-bg-primary);
+  --segment-text: var(--fin-text-primary);
+}
+
+/* Disabled: never focusable, no hover or pressed. */
+.segment:disabled {
+  --segment-text: var(--fin-text-disabled);
+  --segment-icon: var(--fin-fg-disabled);
+
+  cursor: default;
+}
+
+.segment[data-selected]:disabled {
+  --segment-bg: var(--fin-bg-disabled);
+  --segment-text: var(--fin-text-disabled-on-bg);
+  --segment-icon: var(--fin-fg-disabled-on-bg);
+}
+
+/* Hovered and Pressed (Figma, 19 Oct 2026): Unselected only darkens its text; Selected darkens its fill. */
+.segment:hover:enabled {
+  --segment-text: var(--fin-text-tertiary);
+}
+
+.segment:active:enabled {
+  --segment-text: var(--fin-text-primary);
+}
+
+.segment[data-selected]:hover:enabled {
+  --segment-bg: var(--fin-bg-secondary);
+  --segment-text: var(--fin-text-primary);
+}
+
+.segment[data-selected]:active:enabled {
+  --segment-bg: var(--fin-bg-tertiary);
+}
+
+.icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--segment-icon);
+}
+
+/* One line, no fixed max width; "…" when the segment is narrower. */
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,23 @@
+/* Layout for the FinSegmentBase stories only (not part of the component). The track is Figma Segmented button's. */
+
+.track {
+  display: inline-flex;
+  gap: var(--fin-space-l);
+  padding: var(--fin-space-xs);
+  border-radius: var(--fin-radius-l);
+  background-color: var(--fin-bg-tertiary);
+}
+
+.table {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  justify-content: start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
