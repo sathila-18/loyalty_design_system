@@ -1,0 +1,7 @@
+/* Layout for the FinPaginationItem stories only (not part of the component). Gap as Figma Pagination group. */
+
+.row {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+}

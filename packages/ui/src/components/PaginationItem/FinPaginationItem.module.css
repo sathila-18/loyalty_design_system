@@ -1,0 +1,58 @@
+/*
+ * FinPaginationItem (DESIGN.md §9). A 32 × 32 square (at least 32 wide: longer numbers widen it), padding Space-XS,
+ * Radius-S, a 1px stroke drawn inside (an inset shadow, so it never changes the size). No animation (§5).
+ */
+
+.item {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--fin-size-32);
+  height: var(--fin-size-32);
+  margin: 0;
+  padding: var(--fin-space-xs);
+  border: 0;
+  border-radius: var(--fin-radius-s);
+  background-color: var(--item-bg, transparent);
+  color: var(--item-text);
+  font: var(--fin-font-label-medium);
+  box-shadow: inset 0 0 0 1px var(--item-border, transparent);
+}
+
+/* A page, Figma State=Default. */
+.item[data-variant="page"] {
+  --item-bg: var(--fin-bg-secondary);
+  --item-border: var(--fin-border-subtle);
+  --item-text: var(--fin-text-secondary);
+
+  cursor: pointer;
+}
+
+/* No Focused design: the default ring, 2px border-focused, 2px out (§10 #6). */
+.item[data-variant="page"]:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+/* Figma State=Hovered; press keeps the hover look (decided 19 Oct 2026). */
+.item[data-variant="page"]:hover {
+  --item-bg: var(--fin-bg-tertiary);
+  --item-border: var(--fin-border-default);
+  --item-text: var(--fin-text-primary);
+}
+
+/* Figma State=Selected (text-action on bg-active, 4.13:1 Light / 3.95:1 Dark: accepted by design, §10 #3). */
+.item[data-selected],
+.item[data-selected]:hover {
+  --item-bg: var(--fin-bg-active);
+  --item-border: var(--fin-border-active);
+  --item-text: var(--fin-text-action);
+}
+
+/* Figma State=Dots: "…" (one character, decided 19 Oct 2026), Label L, no fill or stroke. */
+.item[data-variant="dots"] {
+  --item-text: var(--fin-text-secondary);
+
+  font: var(--fin-font-label-large);
+}
