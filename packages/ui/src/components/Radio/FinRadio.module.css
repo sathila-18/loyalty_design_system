@@ -24,7 +24,7 @@
   cursor: inherit;
 }
 
-/* Unselected, Enabled: a 20px ring, 2px border-strong stroke inside (Light 2.96:1, logged in §10 #3). */
+/* Unselected, Enabled: a 20px ring, 2px border-strong stroke inside (3.90:1 Light, 8.76:1 Dark since 19 Oct 2026). */
 .ring {
   display: flex;
   align-items: center;

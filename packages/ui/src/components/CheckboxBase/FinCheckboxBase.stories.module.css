@@ -1,0 +1,49 @@
+/* Layout for the FinCheckboxBase stories only (not part of the component). */
+
+.table {
+  display: grid;
+  grid-template-columns: auto repeat(3, auto);
+  gap: var(--fin-space-xl) var(--fin-space-3xl);
+  place-items: center start;
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.rowLabel {
+  justify-self: start;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+}
+
+.option {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-primary);
+}
+
+.option[data-indent] {
+  padding-left: var(--fin-space-3xl);
+}
+
+.row {
+  display: flex;
+  gap: var(--fin-space-3xl);
+  align-items: center;
+}
+
+.focusStory {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.hint {
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-secondary);
+}

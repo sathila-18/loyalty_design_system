@@ -3416,12 +3416,12 @@
       },
       "border-strong": {
         "$type": "color",
-        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
+        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-400}",
         "$description": "Strong version of border color (radio buttons)",
         "$extensions": {
           "mode": {
-            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}"
+            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-400}",
+            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}"
           }
         }
       },
@@ -4160,7 +4160,7 @@
         "Color collection",
         "Alias Spacing & Radius"
       ],
-      "createdAt": "2026-10-19T05:04:45.306Z"
+      "createdAt": "2026-10-19T06:28:20.634Z"
     }
   }
 }

@@ -1,0 +1,117 @@
+/*
+ * FinCheckboxBase (DESIGN.md §9). The native checkbox sits invisibly over the 24px frame (it gets the clicks,
+ * keyboard and focus); the box and its icon are drawn here and follow its state. No animation (§5).
+ */
+
+.checkbox {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-24);
+  height: var(--fin-size-24);
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+/*
+ * The 18px box: the 24px frame minus Space-S (no 18 token; decided 19 Oct 2026). Figma's 2px inside stroke is an
+ * inset shadow, so the 16px icon keeps the full box. Unselected, Enabled: border-strong, no fill.
+ */
+.box {
+  --checkbox-fill: transparent;
+  --checkbox-stroke: var(--fin-border-strong);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--fin-size-24) - var(--fin-space-s));
+  height: calc(var(--fin-size-24) - var(--fin-space-s));
+  border-radius: var(--fin-radius-xs);
+  background-color: var(--checkbox-fill);
+  color: var(--fin-fg-inverse);
+  box-shadow: inset 0 0 0 2px var(--checkbox-stroke);
+}
+
+/* Figma Focused: a 2px border-focused ring around the box (22 around 18), same radius. */
+.input:focus-visible + .box {
+  outline: 2px solid var(--fin-border-focused);
+}
+
+/* Each icon shows only in its own Type. */
+.check,
+.dash {
+  display: none;
+}
+
+/* Selected and Indeterminate: filled, no stroke. Indeterminate shows the dash even when checked. */
+.input:checked + .box,
+.input:indeterminate + .box {
+  --checkbox-fill: var(--fin-bg-action-primary);
+  --checkbox-stroke: transparent;
+}
+
+.input:checked:not(:indeterminate) + .box .check,
+.input:indeterminate + .box .dash {
+  display: flex;
+}
+
+/* Disabled: never focusable, no hover or pressed. */
+.checkbox:has(.input:disabled) {
+  cursor: default;
+}
+
+.input:disabled + .box {
+  --checkbox-stroke: var(--fin-fg-disabled);
+}
+
+.input:disabled:checked + .box,
+.input:disabled:indeterminate + .box {
+  --checkbox-fill: var(--fin-fg-disabled);
+  --checkbox-stroke: transparent;
+
+  color: var(--fin-fg-disabled-on-bg);
+}
+
+/* Hovered and Pressed (enabled only), Unselected then Selected / Indeterminate; Pressed wins while held down. */
+.input:hover:enabled + .box {
+  --checkbox-fill: var(--fin-bg-active-hover);
+  --checkbox-stroke: var(--fin-border-hovered);
+}
+
+.input:active:enabled + .box {
+  --checkbox-fill: var(--fin-bg-action-primary-pressed);
+  --checkbox-stroke: var(--fin-border-pressed);
+}
+
+.input:hover:enabled:checked + .box,
+.input:hover:enabled:indeterminate + .box {
+  --checkbox-fill: var(--fin-fg-hovered);
+  --checkbox-stroke: transparent;
+}
+
+.input:active:enabled:checked + .box,
+.input:active:enabled:indeterminate + .box {
+  --checkbox-fill: var(--fin-fg-pressed);
+  --checkbox-stroke: transparent;
+}
+
+/* The visually hidden label: read by screen readers, not shown. */
+.label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
