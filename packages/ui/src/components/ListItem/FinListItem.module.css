@@ -4,7 +4,7 @@
  * Large: title Headline Small-H6, body Body/Medium. Small: title Label/Medium, body Body/Small (Figma binds the Small
  * title to the H6 variables at 14/21; mapped to Label/Medium, decided 20 Oct 2026). Title text-primary, body
  * text-secondary; both wrap. No states: a base (decided 20 Oct 2026). Without a body the row is centred, and the
- * last item of a group has no divider (both decided 20 Oct 2026).
+ * last item of a group has no divider but 16 of bottom padding (both decided 20 Oct 2026).
  */
 
 .item {
@@ -16,7 +16,14 @@
   list-style: none;
 }
 
-/* Rule: when several items are shown together, the last one has no divider (a single item keeps it). */
+/*
+ * Rule: when several items are shown together, the last one has no divider (a single item keeps it) and gets 16
+ * (Space-XL) of bottom padding instead, so it doesn't end flush with its content (decided 20 Oct 2026).
+ */
+.item:last-child:not(:first-child) {
+  padding-bottom: var(--fin-space-xl);
+}
+
 .item:last-child:not(:first-child) .divider {
   display: none;
 }

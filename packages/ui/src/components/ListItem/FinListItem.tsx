@@ -31,7 +31,7 @@ export interface FinListItemProps extends Omit<HTMLAttributes<HTMLElement>, 'chi
   trailingAccessory?: boolean;
   /** Figma Trailing accessory slot. Default: `keyboard_arrow_right` 24 (`fg-secondary`). Any component per scenario. */
   trailing?: ReactNode;
-  /** Figma `Show divider`: the line under the item. Default on; never on the last item of a group (rule, 20 Oct 2026). */
+  /** Figma `Show divider`: the line under the item. Default on; never on the last of several items (rule: it gets 16 of bottom padding instead). */
   divider?: boolean;
 }
 
@@ -39,7 +39,7 @@ export interface FinListItemProps extends Omit<HTMLAttributes<HTMLElement>, 'chi
  * The base of list rows (Figma List-base; DESIGN.md §9): leading accessory, a text column (top label, title with an
  * extra icon, body) and a trailing accessory, with a divider 16 below. Padding 16 / 16 / 0, fills its container.
  * Without a body, the title and trailing accessory are centred on the leading accessory. When several items are
- * shown together (siblings), the last one has no divider.
+ * shown together (siblings), the last one has no divider and 16 of bottom padding instead.
  * **A base has no interaction states** (decided 20 Oct 2026): hover, selected and focus belong to the components
  * built on it (menus, list rows). Other attributes go to the root.
  * **Internal:** a base (§7.2).
