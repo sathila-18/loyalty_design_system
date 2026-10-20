@@ -1,0 +1,56 @@
+/*
+ * FinPaymentIcon (DESIGN.md §9). The box is sized from the Size-* tokens before the logo loads, so nothing moves:
+ * heights 16 / 24 / 32 / 48 (Figma Payment Icons), width from the library's 38 × 24 card. The logo is an <img> that
+ * fits the box at its own ratio, never distorted or recolored. The default card is drawn from tokens (Figma Default
+ * card: bg-primary, 1px border-subtle inside, Radius-XS, the `credit_card` icon in fg-secondary).
+ */
+
+.icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--payment-height) * 38 / 24);
+  height: var(--payment-height);
+  vertical-align: middle;
+}
+
+.icon[data-size="small"] {
+  --payment-height: var(--fin-size-16);
+}
+
+.icon[data-size="medium"] {
+  --payment-height: var(--fin-size-24);
+}
+
+.icon[data-size="large"] {
+  --payment-height: var(--fin-size-32);
+}
+
+.icon[data-size="xlarge"] {
+  --payment-height: var(--fin-size-48);
+}
+
+.art {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* img only: the logo fills the card (its own ratio, centred). */
+img.art {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.icon[data-default] {
+  border-radius: var(--fin-radius-xs);
+  background-color: var(--fin-bg-primary);
+  box-shadow: inset 0 0 0 1px var(--fin-border-subtle);
+}
+
+/* Disabled: partly transparent (opacity 0.4, as FinFlag, decided 19 Oct 2026); colors unchanged. */
+.icon[data-disabled] {
+  opacity: 0.4;
+}

@@ -37,7 +37,7 @@ const meta: Meta<Args> = {
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Size (List-base, nested in Figma)' },
     description: { control: 'boolean', description: 'Figma `Description`' },
     chevron: { control: 'boolean', description: 'Figma `Chevron`' },
-    leadingAccessory: { control: 'inline-radio', options: ['none', 'icon', 'flag', 'avatar'], description: 'Figma `Leading accessory` (Payment later)' },
+    leadingAccessory: { control: 'inline-radio', options: ['none', 'icon', 'flag', 'payment', 'avatar'], description: 'Figma `Leading accessory`' },
     caption: { control: 'boolean', description: 'Figma `Trailing accessory=Caption`' },
     behavior: { control: 'inline-radio', options: ['static', 'link', 'button', 'option'], description: 'What the row does (per scenario)' },
   },
@@ -50,6 +50,7 @@ const meta: Meta<Args> = {
         behavior={behavior}
         title="Title here"
         country="LK"
+        paymentMethod="visa"
         avatar={{ src: avatarSample }}
         selected={state === 'selected'}
         disabled={state === 'disabled'}
@@ -82,12 +83,14 @@ export const Accessories: Story = {
         <FinListStandard as="li" title="Title here" description="Placeholder description here" />
         <FinListStandard as="li" title="Title here" leadingAccessory="icon" description="Placeholder description here" />
         <FinListStandard as="li" title="Title here" leadingAccessory="flag" country="LK" description="Placeholder description here" />
+        <FinListStandard as="li" title="Title here" leadingAccessory="payment" paymentMethod="visa" description="Placeholder description here" />
         <FinListStandard as="li" title="Title here" leadingAccessory="avatar" avatar={{ src: avatarSample }} description="Placeholder description here" />
       </ul>
       <ul className={styles.list}>
         <FinListStandard as="li" title="Title here" caption="Caption" chevron />
         <FinListStandard as="li" title="Title here" leadingAccessory="icon" caption="Caption" chevron />
         <FinListStandard as="li" title="Title here" leadingAccessory="flag" country="LK" caption="Caption" chevron />
+        <FinListStandard as="li" title="Title here" leadingAccessory="payment" paymentMethod="visa" caption="Caption" chevron />
         <FinListStandard as="li" title="Title here" leadingAccessory="avatar" avatar={{ src: avatarSample }} caption="Caption" chevron />
       </ul>
     </div>

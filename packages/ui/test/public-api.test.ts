@@ -30,6 +30,12 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinSegmentedButton');
   });
 
+  it('exports FinPaymentIcon and its registry', () => {
+    expect(ui).toHaveProperty('FinPaymentIcon');
+    expect(ui).toHaveProperty('finPaymentMethods');
+    expect(ui).toHaveProperty('isFinPaymentMethod');
+  });
+
   it('exports FinFlag and its registry', () => {
     expect(ui).toHaveProperty('FinFlag');
     expect(ui).toHaveProperty('finFlags');

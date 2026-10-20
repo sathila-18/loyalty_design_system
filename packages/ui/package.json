@@ -24,7 +24,8 @@
     "typecheck": "tsc -p tsconfig.json",
     "test": "pnpm icons && vitest run",
     "test:watch": "pnpm icons && vitest",
-    "icons": "node scripts/subset-icons.ts && node scripts/copy-flags.ts"
+    "icons": "node scripts/subset-icons.ts && node scripts/copy-flags.ts",
+    "payment-icons": "node scripts/update-payment-icons.ts"
   },
   "peerDependencies": {
     "react": "^19.0.0",

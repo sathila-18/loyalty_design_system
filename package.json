@@ -15,7 +15,8 @@
     "test:a11y": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui icons && pnpm --filter @finspace-loyalty/storybook test:a11y",
     "lint": "eslint .",
     "lint:css": "stylelint \"**/*.css\" --allow-empty-input",
-    "icons": "pnpm --filter @finspace-loyalty/ui icons"
+    "icons": "pnpm --filter @finspace-loyalty/ui icons",
+    "payment-icons": "pnpm --filter @finspace-loyalty/ui payment-icons"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

@@ -24,6 +24,8 @@ describe('FinListStandard', () => {
     expect(row()).toHaveTextContent('keyboard_arrow_right');
     rerender(<FinListStandard title="T" leadingAccessory="avatar" avatar={{ initials: 'AP', label: 'Ann Perera' }} />);
     expect(screen.getByRole('img', { name: 'Ann Perera' })).toBeInTheDocument();
+    rerender(<FinListStandard title="T" leadingAccessory="payment" paymentMethod="mastercard" />);
+    expect(screen.getByRole('img', { name: 'Mastercard' })).toBeInTheDocument();
     rerender(<FinListStandard title="T" leading={<span>VISA</span>} leadingAccessory="icon" />);
     expect(screen.getByText('VISA')).toBeInTheDocument();
     expect(row()).not.toHaveTextContent('person');

@@ -1,0 +1,23 @@
+/* Layout for the FinPaymentIcon stories only (not part of the component). */
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-xl);
+  align-items: center;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+  align-items: center;
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-tertiary);
+}
+
+.sizes {
+  display: flex;
+  gap: var(--fin-space-xl);
+  align-items: flex-end;
+}

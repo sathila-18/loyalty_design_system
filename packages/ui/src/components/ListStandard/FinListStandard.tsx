@@ -4,13 +4,14 @@ import { useId, type ElementType, type MouseEvent, type ReactNode } from 'react'
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinFlag, type FinFlagCountry } from '../../flags';
+import { FinPaymentIcon, type FinPaymentMethod } from '../../payment';
 import { FinAvatar, type FinAvatarProps } from '../Avatar';
 import { FinCaption } from '../Caption';
 import { FinListItem, type FinListItemProps } from '../ListItem';
 import styles from './FinListStandard.module.css';
 
-/** Figma `Leading accessory` (Payment comes with the payment artwork; until then pass it as `leading`). */
-export type FinListStandardLeading = 'none' | 'icon' | 'flag' | 'avatar';
+/** Figma `Leading accessory`. */
+export type FinListStandardLeading = 'none' | 'icon' | 'flag' | 'payment' | 'avatar';
 
 /**
  * What the row does, per scenario: `static` shows data; `link` goes somewhere (`href`); `button` runs `onClick`;
@@ -30,9 +31,11 @@ export interface FinListStandardProps
   icon?: FinIconName;
   /** Flag accessory: the country (FinFlag medium, 32 × 24). */
   country?: FinFlagCountry;
+  /** Payment accessory: the payment method (FinPaymentIcon medium, 38 × 24). Default the default card. */
+  paymentMethod?: FinPaymentMethod;
   /** Avatar accessory: the 40 avatar's photo, initials and name. */
   avatar?: Pick<FinAvatarProps, 'src' | 'initials' | 'label'>;
-  /** Any other leading content (for example a payment logo), in place of the accessory above. */
+  /** Any other leading content, in place of the accessory above. */
   leading?: ReactNode;
   /** Figma `Trailing accessory=Caption`: the caption text (Caption Small, Heavy). */
   caption?: string;
@@ -65,6 +68,7 @@ export function FinListStandard({
   leadingAccessory = 'none',
   icon = 'person',
   country,
+  paymentMethod = 'default',
   avatar,
   leading,
   caption,
@@ -86,6 +90,8 @@ export function FinListStandard({
     leadingNode = <FinIcon name={icon} size={24} color={disabled ? 'disabled' : 'primary'} />;
   if (leadingNode === undefined && leadingAccessory === 'flag' && country)
     leadingNode = <FinFlag country={country} size="medium" disabled={disabled} decorative />;
+  if (leadingNode === undefined && leadingAccessory === 'payment')
+    leadingNode = <FinPaymentIcon method={paymentMethod} size="medium" disabled={disabled} />;
   if (leadingNode === undefined && leadingAccessory === 'avatar') leadingNode = <FinAvatar size="medium" {...avatar} />;
 
   const describedBy = description !== undefined && description !== null ? descriptionId : undefined;
