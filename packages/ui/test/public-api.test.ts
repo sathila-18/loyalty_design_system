@@ -56,6 +56,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinListCheckboxGroup');
   });
 
+  it('exports the toggle list', () => {
+    expect(ui).toHaveProperty('FinListToggle');
+  });
+
   it('exports FinTable, but not the table parts it is built from', () => {
     expect(ui).toHaveProperty('FinTable');
   });
