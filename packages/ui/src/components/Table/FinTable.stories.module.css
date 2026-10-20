@@ -1,0 +1,12 @@
+/* Layout for the FinTable stories only (not part of the component). */
+
+/* A narrow container (480), to show the table scrolling sideways. */
+.narrow {
+  max-width: calc(var(--fin-size-120) * 4);
+}
+
+.readout {
+  margin-top: var(--fin-space-xl);
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-tertiary);
+}

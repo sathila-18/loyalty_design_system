@@ -36,6 +36,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('isFinFlagCountry');
   });
 
+  it('exports FinTable, but not the table parts it is built from', () => {
+    expect(ui).toHaveProperty('FinTable');
+  });
+
   it('exports FinPagination, but not its FinPaginationItem base', () => {
     expect(ui).toHaveProperty('FinPagination');
   });

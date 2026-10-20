@@ -1,0 +1,38 @@
+/*
+ * FinTable (DESIGN.md §9). Code only: the Header row, Table rows and Table footer, with no outer border, background
+ * or radius. Fixed table layout: fixed columns take their width, flexible ones share the rest equally, and long text
+ * ends in "…". Below the columns' minimum the table scrolls sideways. 16 (Space-XL) above the footer.
+ */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+  min-width: 0;
+}
+
+.scroll {
+  overflow-x: auto;
+}
+
+/* The row's line is its border, so borders are collapsed. Min width comes from the columns (set in TSX). */
+.table {
+  width: 100%;
+  min-width: var(--fin-table-min-width);
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* With select cells, the minimum also covers the select column. */
+.table[data-selectable] {
+  min-width: calc(var(--fin-table-min-width) + var(--fin-size-24) + 2 * var(--fin-space-3xl));
+}
+
+/* The select column: the checkbox and its padding either side (24 + 24 + 24 = 72). */
+.selectColumn {
+  width: calc(var(--fin-size-24) + 2 * var(--fin-space-3xl));
+}
+
+.fixedColumn {
+  width: var(--fin-table-column-width);
+}

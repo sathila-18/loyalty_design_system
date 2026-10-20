@@ -697,7 +697,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 71 | `Table row` | Table | `3151:15248` | `FinTableRow` | Table - Cell, Base-Checkbox · `State` (was `Property 1`): Default/Hovered/Selected/Selected - Hovered (hover is CSS; Selected is `selected`) · `Select Cell`, `Cell Slot` (was `Sells Slot`) · `<tr>`, `onRowClick` opens details · **internal**, part of the table (§9.44) | ✅ | ✅ |
 | 72 | `Header row` | Table | `3151:15203` | `FinTableHeaderRow` | Table header cell, Base-Checkbox, Label · `Select Cell`, `Cell Slot` (were `Select Sell` / `Sell Slot`) · `<tr>`, Grey cells, no width of its own · **internal**, part of the table (§9.42) | ✅ | ✅ |
 | 73 | `Table footer` | Table | `3151:14830` | `FinTableFooter` | Row count dropdown, Pagination group · pages and summary worked out from `totalRows` / `rowsPerPage` · **internal**, part of the table (§9.40); the row count menu waits for the List component (§10 #49) | ⚠️ | ✅ |
-| 74 | — (code only; in Figma the table is assembled on each screen) | Table | — | `FinTable` | **Code-only organism** composed from Header row, Table row, Table footer: columns and rows as data, row selection (select all / indeterminate), footer pagination. No Figma node, so it only uses the parts above and adds no new visuals. **Widths (decided 20 Oct 2026):** the table is 100% of its container (Figma's 1088 is only a drawing frame); each column is **fixed** (checkbox, actions), **flexible** (the default, shares the remaining space) or has a **minimum width**; when the columns don't fit, the table scrolls horizontally; long cell text ends in "…". Header cells are Grey (§9.42). See §9 when built. | ✅ (after #50–73) | ⬜ |
+| 74 | — (code only; in Figma the table is assembled on each screen) | Table | — | `FinTable` | **Code-only organism** composed from Header row, Table row, Table footer: columns and rows as data, row selection (select all / indeterminate), footer pagination. No Figma node, so it only uses the parts above and adds no new visuals. **Widths (decided 20 Oct 2026):** the table is 100% of its container (Figma's 1088 is only a drawing frame); each column is **fixed** (checkbox, actions), **flexible** (the default, shares the remaining space) or has a **minimum width**; when the columns don't fit, the table scrolls horizontally; long cell text ends in "…". Header cells are Grey (§9.42). Built: §9.45, **public**, Components/Table. | ✅ (after #50–73) | ✅ |
 
 ### 8.5 Assets (exported, not built as components)
 
@@ -2502,7 +2502,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 **Figma:** page **Table**, component set `Table row` `3151:15248`: `State` = Default / Hovered / Selected / Selected - Hovered (was `Property 1`), `Select Cell` (on), and `Cell Slot` (was `Sells Slot`) holding the data cells (six Table - Cells, text only, no checkbox). The select cell is a Table - Cell with only the checkbox (72 wide), as in the Header row. Cells 56 tall plus a 1px `border-default` line under the row (57). Fills: Hovered `bg-secondary`, Selected `bg-active`, Selected - Hovered `bg-active-hover`; Default none. **Internal**, under Internal/Table; used by FinTable.
 
-**Decided 20 Oct 2026:** (1) a Selected row's checkbox is ticked (the checkbox selects the row); (2) **clicking the row opens its details** (for example a side sheet): `onRowClick`. A click on something interactive in the row (the checkbox, a link, an action button) does that thing instead. Rows that only show data leave `onRowClick` out. When a screen's whole-row click would clash, use a "view details" action in a cell (`FinTableCell` `action`) instead; this depends on the screen; (3) hover fills the whole row; (4) the Selected + hover contrast in Light, and a link on a Selected row (`text-action` on `bg-active`, 4.13:1 Light / 3.95:1 Dark), are accepted; links keep `text-action` in every row (§10 #3).
+**Decided 20 Oct 2026:** (1) a Selected row's checkbox is ticked (the checkbox selects the row); (2) **clicking the row opens its details** (for example a side sheet): `onRowClick`. A click on something interactive in the row (the checkbox, a link, an action button) does that thing instead. Rows that only show data leave `onRowClick` out. When a screen's whole-row click would clash, use a "view details" action in a cell (`FinTableCell` `action`) instead; this depends on the screen; (3) hover fills the whole row; (4) **rule: the last row never has a line under it** (added 20 Oct 2026, `:last-child`); (5) the Selected + hover contrast in Light, and a link on a Selected row (`text-action` on `bg-active`, 4.13:1 Light / 3.95:1 Dark), are accepted; links keep `text-action` in every row (§10 #3).
 
 **Figma → code:**
 
@@ -2533,7 +2533,56 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 **Accessibility:** a native `<tr>` of `<td>`s; the checkbox is named by `checkboxLabel` ("Select Ann Perera"). With `onRowClick` the row is in the Tab order and opens with Enter, with a visible focus ring; the links and buttons inside keep their own keyboard behaviour. Screen reader users also reach the details through any link or action in the row, so screens that need it add a "view details" action. Contrast: every state passes in both themes except Selected + hover in Light (3.80:1) and a link on a Selected row (4.13:1 / 3.95:1), both accepted.
 
-**Built (20 Oct 2026).** Storybook (Internal/Table/Table row): Playground (Selected, Select Cell, number of columns, clickable), States (Figma), Interactive (selection, row click opening details, edit action and link doing their own job), Without select cell. Checked against Figma in a browser: cells 56 + 1px line, select cell 72, line `#d4d4d4` (Dark `#464646`); fills Hovered `#f5f5f5`, Selected `#efefff` with the checkbox ticked, Selected - Hovered `#ceccff` (Dark `#292929`, `#29266b`, `#36328c`), across the whole row; the keyboard focus ring sits inside the row; row click, Enter, checkbox, link and action button checked. a11y: no violations in Light or Dark apart from the accepted link on a Selected row.
+**Built (20 Oct 2026).** Storybook (Internal/Table/Table row): Playground (Selected, Select Cell, number of columns, clickable), States (Figma), Interactive (selection, row click opening details, edit action and link doing their own job), Without select cell. Checked against Figma in a browser: cells 56 + 1px line (none under the last row), select cell 72, line `#d4d4d4` (Dark `#464646`); fills Hovered `#f5f5f5`, Selected `#efefff` with the checkbox ticked, Selected - Hovered `#ceccff` (Dark `#292929`, `#29266b`, `#36328c`), across the whole row; the keyboard focus ring sits inside the row; row click, Enter, checkbox, link and action button checked. a11y: no violations in Light or Dark apart from the accepted link on a Selected row.
+
+### 9.45 FinTable (code-only table) — public
+
+**Figma:** none; designers assemble tables on screens from the Table parts (§10 #26). FinTable puts together FinTableHeaderRow (§9.42), FinTableRow (§9.44) with FinTableCell (§9.43), and FinTableFooter (§9.40) with FinPagination (§9.39), from columns and rows as data. **Public**, under Components/Table; the parts stay internal.
+
+**Decided 20 Oct 2026:** (1) **widths:** the table is 100% of its container; each column is **fixed** (`width`), **flexible** (the default, sharing the remaining space equally) or has a **minimum** (`minWidth`); the select column is fixed at 72; when the columns don't fit, the table scrolls sideways; long text ends in "…"; (2) **"select all" acts on the current page**, and selection is by row ID and **kept across pages**; (3) **row click** opens the row's details (`onRowClick`, for example a side sheet); interactive content in a row (checkbox, link, action) does its own job; (4) **rule: while any row is selected, clicking a row selects it** (or clears it if it's selected) instead of opening details; with no rows selected, clicks open details again; (5) **rows per page** default 10; the dropdown's menu comes with the List component (§10 #49); (6) **no rows:** the header and "Showing 0 of 0 entries" for now; an empty state comes with the Empty state component (§8 #65); (7) **16 (`Space-XL`) between the last row and the footer**; (8) **no outer border**, background or radius, and the last row has no line under it (§9.44); (9) header cells are Grey (§9.42); a column's header arrow is display-only until sort and filter are designed (§10 #50); (10) pagination is **client** (all rows; FinTable makes the pages) or **server** (`totalRows`, and `rows` is the current page).
+
+**Props:**
+
+| Prop | Notes |
+|---|---|
+| `label` (required) | The table's name for screen readers |
+| `columns` | `key`, `header`, `value(row)` (default `row[key]`), `type` (default / badge / link), `badgeTone` (fixed or per row), `href(row)`, `linkAs`, `action` (`icon`, `label(row)`, `onAction(row)`), `width`, `minWidth`, `trailingIcon` |
+| `rows`, `getRowId` | Rows and a stable ID for each |
+| `getRowLabel` | The row's name for its checkbox ("Select Ann Perera"); default the first column's text |
+| `selectable` (default `true`) | Select cells and "select all" (Figma `Select Cell`) |
+| `selectedIds` / `defaultSelectedIds`, `onSelectionChange` | Controlled or uncontrolled selection |
+| `onRowClick(row)` | Opens details; see rule (4) |
+| `rowsPerPage` (default 10), `page` / `defaultPage`, `onPageChange` | Paging |
+| `totalRows` | Server pagination |
+| `ref`, `className`, other `div` attributes | On the root |
+
+**Tokens used:** gap above the footer `--fin-space-xl`; select column `calc(var(--fin-size-24) + 2 * var(--fin-space-3xl))` (72). Column widths and the table's minimum width are data from `columns`, passed as CSS variables (`--fin-table-column-width`, `--fin-table-min-width`). The parts bring everything else.
+
+**API:**
+
+```tsx
+<FinTable
+  label="Members"
+  rows={members}
+  getRowId={(m) => m.id}
+  getRowLabel={(m) => m.name}
+  columns={[
+    { key: 'name', header: 'Customer', minWidth: 160 },
+    { key: 'status', header: 'Status', type: 'badge', badgeTone: (m) => tones[m.status], width: 140 },
+    { key: 'tier', header: 'Tier', width: 160, action: { label: (m) => `Edit ${m.name}'s tier`, onAction: editTier } },
+    { key: 'profile', header: 'Profile', type: 'link', width: 180, value: () => 'View profile', href: (m) => `/members/${m.id}` },
+  ]}
+  selectedIds={selected}
+  onSelectionChange={setSelected}
+  onRowClick={(m) => openSideSheet(m)}
+/>
+```
+
+`'use client'` (state, event handlers, forwards `ref`).
+
+**Accessibility:** a native `<table>` named by `label`, with `<th scope="col">` headers; checkboxes named "Select all rows" and "Select <row>"; clickable rows are in the Tab order and open (or select, rule 4) with Enter; the footer summary is a polite live region. Contrast: the accepted exceptions of the parts (§10 #3): Grey header titles in Dark, a link on a Selected row, the current page.
+
+**Built (20 Oct 2026).** Storybook (Components/Table): Playground (row count, rows per page, selectable, clickable), Members (selection across pages, row click, selection-mode clicks, edit action, profile links), Server pagination, Narrow, No rows. Checked in a browser at 1280: select column 72, the two flexible columns 298 each, fixed columns 140 / 160 / 120 / 180; header 48, rows 57, no line under the last row; footer 16 below the table; Light and Dark use their tokens; a row click opens it, and once a row is ticked, clicks select rows instead; in a 480 container the columns keep their widths and minimums (160) and the table scrolls sideways. a11y: no violations in Light or Dark apart from the accepted exceptions.
 
 Template:
 
@@ -2611,6 +2660,7 @@ Template:
 
 > **Where we are (20 Oct 2026)**
 > - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; approved 19 Oct 2026) and `FinSegmentBase` (§9.33, internal; approved 19 Oct 2026) and `FinSegmentedButton` (§9.34, public; approved 19 Oct 2026) and `FinFlag` (§9.35, public; approved 19 Oct 2026) and `FinCountrySelector` (§9.36, internal, trigger only; approved 19 Oct 2026) and `FinPaginationItem` (§9.37, internal; approved 19 Oct 2026) and `FinRowCountSelect` (§9.38, internal, trigger only; approved 19 Oct 2026) and `FinPagination` (§9.39, public; approved 19 Oct 2026) and `FinTableFooter` (§9.40, internal; approved 19 Oct 2026) and `FinTableHeaderCell` (§9.41, internal; approved 19 Oct 2026) and `FinTableHeaderRow` (§9.42, internal; approved 20 Oct 2026) and `FinTableCell` (§9.43, internal; approved 20 Oct 2026) and `FinTableRow` (§9.44, internal; approved 20 Oct 2026). Everything is merged into `main`.
+> - **Built, waiting for approval:** `FinTable` (§9.45, public, on `feat/table`).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -2726,3 +2776,4 @@ Template:
 | 20 Oct 2026 | 0.2 | `FinTableCell` approved by design and merged into `main`. |
 | 20 Oct 2026 | 0.2 | **`FinTableRow` built** (§8 #71, §9.44), internal under Internal/Table: a `<tr>` with Figma's `State` (Hovered in CSS, Selected `selected`), `Select Cell` and `Cell Slot`; Figma renamed `Property 1` → `State` and `Sells Slot` → `Cell Slot` (removed from §10 #21). Decided: a Selected row's checkbox is ticked; `onRowClick` opens details, and interactive content in the row does its own job; hover fills the whole row; §10 #3: Selected + hover in Light, and a link on a Selected row, accepted. |
 | 20 Oct 2026 | 0.2 | `FinTableRow` approved by design and merged into `main`. |
+| 20 Oct 2026 | 0.2 | **`FinTable` built** (§8 #74, §9.45), **public** under Components/Table: header row, rows and footer with pagination from columns and rows as data. Decided: fixed / flexible / minimum column widths with sideways scroll; "select all" on the current page, selection kept across pages; row click opens details, and while any row is selected a row click selects it; rows per page 10; no empty state yet; 16 above the footer; no outer border. **Rule:** the last row never has a line under it (FinTableRow, §9.44). |

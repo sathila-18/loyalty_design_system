@@ -29,3 +29,4 @@ export * from './components/FilterChip';
 export * from './components/InputChip';
 export * from './components/SegmentedButton';
 export * from './components/Pagination';
+export * from './components/Table';

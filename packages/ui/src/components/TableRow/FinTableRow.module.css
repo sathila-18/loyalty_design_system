@@ -9,6 +9,11 @@
   border-bottom: 1px solid var(--fin-border-default);
 }
 
+/* Rule (decided 20 Oct 2026): the last row never has a line under it. */
+.row:last-child {
+  border-bottom: 0;
+}
+
 .row:hover {
   background-color: var(--fin-bg-secondary);
 }
