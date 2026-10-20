@@ -1,20 +1,67 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import type { FinListItemSize } from '../ListItem';
 import { FinListCheckboxGroup } from '../ListCheckbox';
+import type { FinListRadioItemSide, FinListRadioType } from '../ListRadio';
 import { FinListCheckboxFilled } from './FinListCheckboxFilled';
 import styles from './FinListCheckboxFilled.stories.module.css';
 
 /** Disabled cards are greyed on purpose (as List-standard, DESIGN.md §10 #3) and left out of the a11y check. */
 const KNOWN_CONTRAST_ISSUES = ['[data-disabled]'];
 
+interface Args {
+  type: FinListRadioType;
+  itemSide: FinListRadioItemSide;
+  description: boolean;
+  size: FinListItemSize;
+  disabled: boolean;
+}
+
 /** Checkbox cards: the checkbox list on List_fill-base, in FinListCheckboxGroup. Code first (DESIGN.md §10 #56). */
-const meta: Meta = {
+const meta: Meta<Args> = {
   title: 'Components/List/Filled/List checkbox',
+  args: { type: 'default', itemSide: 'leading', description: true, size: 'large', disabled: false },
+  argTypes: {
+    type: { control: 'inline-radio', options: ['default', 'country', 'payment'], description: 'Type' },
+    itemSide: { control: 'inline-radio', options: ['leading', 'trailing'], description: 'Item side' },
+    description: { control: 'boolean', description: 'Description' },
+    size: { control: 'inline-radio', options: ['large', 'small'], description: 'Size' },
+    disabled: { control: 'boolean', description: 'Disabled (the third card)' },
+  },
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
+  render: function Playground({ type, itemSide, description, size, disabled }) {
+    const [value, setValue] = useState(['one']);
+    const rows = [
+      { value: 'one', country: 'LK', payment: 'visa' },
+      { value: 'two', country: 'IN', payment: 'mastercard' },
+      { value: 'three', country: 'MV', payment: 'amex' },
+    ] as const;
+    return (
+      <div className={styles.list}>
+        <FinListCheckboxGroup label="Example" value={value} onValueChange={setValue} size={size}>
+          {rows.map((row) => (
+            <FinListCheckboxFilled
+              key={row.value}
+              value={row.value}
+              title="Title here"
+              type={type}
+              itemSide={itemSide}
+              country={row.country}
+              paymentMethod={row.payment}
+              disabled={disabled && row.value === 'three'}
+              {...(description ? { description: 'Placeholder description here' } : {})}
+            />
+          ))}
+        </FinListCheckboxGroup>
+      </div>
+    );
+  },
 };
 export default meta;
 
-type Story = StoryObj;
+type Story = StoryObj<Args>;
+
+export const Playground: Story = {};
 
 /** Tick any cards: ticked cards have the 1px blue edge. */
 export const Countries: Story = {

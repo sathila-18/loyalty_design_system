@@ -2945,7 +2945,7 @@ import { FinPaymentIcon } from '@finspace-loyalty/ui';
 
 **Accessibility:** as the plain components (native links, buttons, options, radios, checkboxes and switches; the row is the control's label; the ring around the card).
 
-**Built (20 Oct 2026).** Storybook (Components/List/Filled/…): List standard (Playground, States, Accessories), List radio (Payment method, Types), List checkbox (Countries, Types), List toggle (States, Settings). Checked in a browser: cards 81 tall (16 padding), 12 apart, radius 16; edges `#ededed` / Selected `#625bff` (Dark `#363636` / `#817cff`) / Disabled `#e9e9e9`, no Selected fill; hover `#f5f5f5` keeps the blue edge; toggle on has no edge; the chevron on every standard card; the focus ring rounded. a11y: no violations in Light or Dark (Disabled cards skipped).
+**Built (20 Oct 2026).** Storybook (Components/List/Filled/…): List standard (Playground, States, Accessories), List radio (Playground, Payment method, Types), List checkbox (Playground, Countries, Types), List toggle (Playground, States, Settings); each Playground has the same controls as the plain version. Checked in a browser: cards 81 tall (16 padding), 12 apart, radius 16; edges `#ededed` / Selected `#625bff` (Dark `#363636` / `#817cff`) / Disabled `#e9e9e9`, no Selected fill; hover `#f5f5f5` keeps the blue edge; toggle on has no edge; the chevron on every standard card; the focus ring rounded. a11y: no violations in Light or Dark (Disabled cards skipped).
 
 Template:
 
