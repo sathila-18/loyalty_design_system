@@ -131,7 +131,7 @@ export function FinListStandard({
               {caption}
             </FinCaption>
           )}
-          {chevron && <FinIcon name="keyboard_arrow_right" size={24} color="secondary" />}
+          {chevron && <FinIcon name="keyboard_arrow_right" size={24} color={disabled ? 'disabled' : 'secondary'} />}
         </span>
       }
     >

@@ -1,7 +1,7 @@
 /*
  * FinListStandard (DESIGN.md §9). Figma List-standard on List-base (FinListItem): Hovered bg-secondary (interactive
  * rows only), Selected bg-active, Selected+hovered bg-active-hover; Disabled: title and caption
- * text-disabled-on_bg, description text-disabled, icon fg-disabled, line border-disabled. No pressed look; the
+ * text-disabled-on_bg, description text-disabled, icon and chevron fg-disabled, line border-disabled. No pressed look; the
  * standard focus ring inside the row (decided 20 Oct 2026). Caption and chevron 6 (Space-S) apart. Description
  * Body/Medium (Small: Body/Small) text-secondary.
  */
