@@ -1,0 +1,78 @@
+/*
+ * FinListItem (DESIGN.md §9). Figma List-base: padding 16 (Space-XL) top and sides, 0 bottom; the content row and the
+ * divider 16 apart. Content: gap 12 (Space-L), top aligned; text column gap 4 (Space-XS); title row gap 8 (Space-M).
+ * Large: title Headline Small-H6, body Body/Medium. Small: title Label/Medium, body Body/Small (Figma binds the Small
+ * title to the H6 variables at 14/21; mapped to Label/Medium, decided 20 Oct 2026). Title text-primary, body
+ * text-secondary; both wrap. No states: a base (decided 20 Oct 2026).
+ */
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+  padding: var(--fin-space-xl) var(--fin-space-xl) 0;
+}
+
+.content {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: flex-start;
+}
+
+.leadingContent {
+  display: flex;
+  flex: 1;
+  gap: var(--fin-space-l);
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.leading,
+.trailing {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+.text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  font: var(--fin-font-headline-small-h6);
+  color: var(--fin-text-primary);
+  overflow-wrap: break-word;
+}
+
+.item[data-size="small"] .title {
+  font: var(--fin-font-label-medium);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+}
+
+.description {
+  margin: 0;
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-secondary);
+  overflow-wrap: break-word;
+}
+
+.item[data-size="small"] .description {
+  font: var(--fin-font-body-small);
+}
