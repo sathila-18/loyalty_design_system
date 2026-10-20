@@ -1,0 +1,45 @@
+/*
+ * FinSideNavSubItem (DESIGN.md §9). Figma: padding 12 (Space-L) / 16 (Space-XL) / 12 / 36 (Space-5XL), radius M,
+ * Label/Medium text-secondary. Default fill is the nav's own (Figma bg-secondary; transparent here, decided
+ * 20 Oct 2026); Hovered bg-tertiary, Pressed bg-neutral, Selected bg-primary + text-action (no hover change).
+ * No Focused design: a 2px border-focused ring inside the item (§10 #6).
+ */
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: var(--fin-space-l) var(--fin-space-xl) var(--fin-space-l) var(--fin-space-5xl);
+  border-radius: var(--fin-radius-m);
+  background-color: transparent;
+  color: var(--fin-text-secondary);
+  font: var(--fin-font-label-medium);
+  text-decoration: none;
+}
+
+.item:hover {
+  background-color: var(--fin-bg-tertiary);
+}
+
+.item:active {
+  background-color: var(--fin-bg-neutral);
+}
+
+.item[data-selected],
+.item[data-selected]:hover,
+.item[data-selected]:active {
+  background-color: var(--fin-bg-primary);
+  color: var(--fin-text-action);
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -2px;
+}
+
+/* One line, ending in "…" when it doesn't fit (decided 20 Oct 2026). */
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

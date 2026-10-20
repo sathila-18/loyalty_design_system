@@ -1,0 +1,11 @@
+/* Layout for the FinSideNavSubItem stories only (not part of the component). */
+
+/* A side nav column: Figma's 280 wide, on the nav's bg-secondary. */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+  width: calc(var(--fin-size-56) * 5);
+  padding: var(--fin-space-m);
+  background-color: var(--fin-bg-secondary);
+}

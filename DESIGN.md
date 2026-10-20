@@ -644,7 +644,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 30 | `Contry selecter` | Input field | `49:5731` | `FinCountrySelector` | FinFlag, `24px` · trigger built; **the country menu waits for the List component** (§10 #49) · **internal**, part of the input field (§9.36) | ✅ | 🟨 |
 | 31 | `Row count dropdown` | Table | `3151:14547` | `FinRowCountSelect` | `24px` | Default/Hovered (runtime) · `Property 1` name (§10 #21) · trigger built; **the menu waits for the List component** (§10 #49) · **internal**, part of the pagination (§9.38) | ✅ | 🟨 |
 | 32 | `Icon` (side nav; was `24px`, renamed 20 Oct 2026) | Side nav | `3138:10976` | `FinSideNavIcon` | `24px` icon | Type: Unselected/Selected → `selected` (filled when selected) · icon by `name` · **internal**, part of the side nav (§9.46) | ⚠️ (raw `#626262` → `fg-secondary`, `#5953E8` → `fg-active`; icon swap not exposed, §10 #51) | ✅ |
-| 33 | `sub selection` | Side nav | `3140:11076` | `FinSideNavSubItem` | — | Default/Hovered/Pressed/Selected (runtime; `Property 1`) | ✅ | ⬜ |
+| 33 | `sub selection` | Side nav | `3140:11076` | `FinSideNavSubItem` | — | `state` (was `Property 1`): Default/Hovered/Pressed (CSS)/Selected (`selected`) · a link (`linkAs`), one line with "…" · **internal**, part of the side nav (§9.47) | ✅ | ✅ |
 
 ### 8.3 Molecules
 
@@ -2612,6 +2612,35 @@ Presentational (no `'use client'`).
 
 **Built (20 Oct 2026).** Storybook (Internal/Side nav/Icon): Playground (icon, Selected), Types (Figma). Checked against Figma in a browser: 24 × 24; Unselected outlined `#626262`, Selected filled `#5953e8` (Dark `#b7b7b7` and `#9691ff`). a11y: no violations in Light or Dark.
 
+### 9.47 FinSideNavSubItem (sub selection) — internal
+
+**Figma:** page **Side nav**, component set `sub selection` `3140:11076`: `state` = Default / Hovered / Pressed / Selected (was `Property 1`, renamed 20 Oct 2026; lowercase, §10 #21) and the text "Text Here" (Label/Medium, `text-secondary`; Selected `text-action`). 280 × 45; padding `Space-L` / `Space-XL` / `Space-L` / `Space-5XL` (12 / 16 / 12 / 36, so the text lines up past the section icon), radius `Radius-M`. Fills: Default `bg-secondary` (the side nav's own), Hovered `bg-tertiary`, Pressed `bg-neutral`, Selected `bg-primary`. **Internal**, under Internal/Side nav; used by Main Selection (§8 #48) and FinSideNav.
+
+**Decided 20 Oct 2026:** (1) it's a **link** (it navigates): `href`, `linkAs` for a router's link component; Selected is the current page (`aria-current="page"`); (2) **Default has no fill** (transparent; the nav's `bg-secondary` shows, the same look); (3) **Selected doesn't change on hover or press** (it's the current page); (4) long labels stay on **one line and end in "…"**; (5) no Focused design: a 2px `border-focused` ring inside the item (§10 #6). It fills the nav's width (Figma's 280 is the drawing frame).
+
+**Figma → code:**
+
+| Figma | Prop | Notes |
+|---|---|---|
+| `state` = Hovered / Pressed | — | CSS `:hover` / `:active` (§7.3) |
+| `state` = Selected | `selected` (default `false`) | `data-selected`, `aria-current="page"` |
+| text "Text Here" | `children` | Not a Figma property yet (designers override the layer) |
+| — | `href`, `linkAs` (default `'a'`), `ref`, `className`, other `a` attributes | |
+
+**Tokens used:** padding `--fin-space-l` / `--fin-space-xl` / `--fin-space-5xl`, radius `--fin-radius-m`, text `--fin-font-label-medium`, `--fin-text-secondary` (Selected `--fin-text-action`); fills `--fin-bg-tertiary` (hover), `--fin-bg-neutral` (pressed), `--fin-bg-primary` (selected); focus `--fin-border-focused`.
+
+**API (internal):**
+
+```tsx
+<FinSideNavSubItem href="/members/tiers" linkAs={Link} selected={pathname === '/members/tiers'}>Tiers</FinSideNavSubItem>
+```
+
+Forwards `ref` (presentational, no `'use client'`).
+
+**Accessibility:** a native link named by its label (the full text, even when it ends in "…" on screen); `aria-current="page"` on the selected one; Tab and Enter as any link; visible focus ring. Contrast passes in every state, both themes (lowest: `text-action` on `bg-primary` 4.71:1 Light; `text-secondary` on `bg-neutral` 4.71:1 Dark).
+
+**Built (20 Oct 2026).** Storybook (Internal/Side nav/Sub selection): Playground (label, Selected), States (Figma), Example (a section's items, one selected, a long label). Checked against Figma in a browser (on a 280 nav column): 45 tall, padding 12 / 16 / 12 / 36, radius 12, Label/Medium 14/21 `#656566`; Hovered `#ededed`, Pressed `#e9e9e9`, Selected white with `#625bff` and no change on hover; Dark uses the Dark tokens; focus ring inside; the long label ends in "…". a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -2651,7 +2680,7 @@ Template:
 | 18 | Input bases decided (13 Oct 2026): `Input field-base` (`49:5734`) for single-line fields, `Input field-textArea-base` (`3094:26567`) for text areas, `Input-OTP-base` (`49:5843`) for OTP. | Input field | ✅ Decided |
 | 19 | `Accordion-bare-base`, `List-base` and `List-fill-base` use a `20px` component whose main component isn't on any page (deleted or moved). | Accordion, List | 🔧 Fix in Figma |
 | 20 | **Clashing name:** `24px` on the Side nav page clashed with the icon size `24px`; **renamed `Icon` 20 Oct 2026**. (Renamed 13 Oct 2026: `Frame 5` → `sub selection`, Dialog `Frame 3` → `Dialog box`, Header `Frame 1707478998` → `Main header`, `Frame 1707478999` → `Header notification`, Table parts.) | Side nav | ✅ Fixed (20 Oct 2026) |
-| 21 | **Typos and inconsistent names:** `Pregress` (Spinner); `SIze`/`Mediu` (Flag sizes); `Contry selecter`; `Distructive` (Input field-textArea-base); `Xsmall` vs `XSmall` (Avatar, Chips-base); `state` lowercase (Input field-select, Multi select); Snackbar has a property with no name; Empty state has both `Icon slot` and `Icon Slot`; Accordion-bare-base has `Trailing accessory` twice; several `Property 1` properties. Code uses the corrected spelling. The `64px` icon state names (`Variant3`, `Errorr`) were fixed in Figma on 14 Oct 2026. | Components | 🔧 Fix in Figma |
+| 21 | **Typos and inconsistent names:** `Pregress` (Spinner); `SIze`/`Mediu` (Flag sizes); `Contry selecter`; `Distructive` (Input field-textArea-base); `Xsmall` vs `XSmall` (Avatar, Chips-base); `state` lowercase (Input field-select, Multi select, sub selection); Snackbar has a property with no name; Empty state has both `Icon slot` and `Icon Slot`; Accordion-bare-base has `Trailing accessory` twice; several `Property 1` properties. Code uses the corrected spelling. The `64px` icon state names (`Variant3`, `Errorr`) were fixed in Figma on 14 Oct 2026. | Components | 🔧 Fix in Figma |
 | 22 | `Side Menu`: 8 text layers have no text style. | Side nav | 🔧 Fix in Figma |
 | 23 | Icon names checked against Material Symbols Rounded (14 Oct 2026): all 29 §6.4 names render, but four are old Material Icons names. **Decided:** code uses the current names: `camera_alt` → `photo_camera`, `payment` → `credit_card`, `perm_identity` → `person`, `warning_amber` → `warning` (same glyph as `warning`, so one registry entry). List in §6.4. Figma icons will be updated by design later; for icons, code is the source of truth (§6.1). | Icons | ✅ Decided (14 Oct 2026) |
 | 24 | Overlay `Mobile` variant is out of scope; only `Desktop` is built. | Overlays | ✅ Decided (13 Oct 2026) |
@@ -2689,6 +2718,7 @@ Template:
 
 > **Where we are (20 Oct 2026)**
 > - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; approved 19 Oct 2026) and `FinSegmentBase` (§9.33, internal; approved 19 Oct 2026) and `FinSegmentedButton` (§9.34, public; approved 19 Oct 2026) and `FinFlag` (§9.35, public; approved 19 Oct 2026) and `FinCountrySelector` (§9.36, internal, trigger only; approved 19 Oct 2026) and `FinPaginationItem` (§9.37, internal; approved 19 Oct 2026) and `FinRowCountSelect` (§9.38, internal, trigger only; approved 19 Oct 2026) and `FinPagination` (§9.39, public; approved 19 Oct 2026) and `FinTableFooter` (§9.40, internal; approved 19 Oct 2026) and `FinTableHeaderCell` (§9.41, internal; approved 19 Oct 2026) and `FinTableHeaderRow` (§9.42, internal; approved 20 Oct 2026) and `FinTableCell` (§9.43, internal; approved 20 Oct 2026) and `FinTableRow` (§9.44, internal; approved 20 Oct 2026) and `FinTable` (§9.45, public; approved 20 Oct 2026) and `FinSideNavIcon` (§9.46, internal; approved 20 Oct 2026). Everything is merged into `main`.
+> - **Built, waiting for approval:** `FinSideNavSubItem` (§9.47, internal, on `feat/side-nav-sub-item`).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -2809,3 +2839,4 @@ Template:
 | 20 Oct 2026 | 0.2 | Side nav `24px` renamed `Icon` in Figma (§8 #32, node `3138:10976`); §10 #20 fixed. Code name `FinSideNavIcon` unchanged; internal. |
 | 20 Oct 2026 | 0.2 | **`FinSideNavIcon` built** (§8 #32, §9.46), internal under Internal/Side nav: FinIcon 24, `selected` (filled, `fg-active`) or not (outlined, `fg-secondary`), icon by `name`. Figma raw colors → tokens. §10 #51 added (icon swap, filled Selected, raw colors). |
 | 20 Oct 2026 | 0.2 | `FinSideNavIcon` approved by design and merged into `main`. |
+| 20 Oct 2026 | 0.2 | **`FinSideNavSubItem` built** (§8 #33, §9.47), internal under Internal/Side nav: a link with Figma's `state` (Hovered / Pressed in CSS, Selected `selected` + `aria-current`); Figma renamed `Property 1` → `state`. Decided: transparent Default, Selected unchanged on hover, one line with "…". |
