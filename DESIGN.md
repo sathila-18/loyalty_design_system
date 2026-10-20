@@ -2686,7 +2686,7 @@ Forwards `ref` (presentational, no `'use client'`).
 
 **Figma:** page **List**, component set `List-base` `77:10185`: `Size` = Large / Small; `Show leading accessory` (on) with a **Leading accessory** slot (a `40px bg` Icon container, info, `person`; preferred instances added per scenario, 20 Oct 2026); a text column: `Show top label` (off; Label small, `text-tertiary`), the title (Text Box, `text-primary`) with `Show extra icon` and its swappable `20px` icon (`person` placeholder, `fg-secondary`), and `Show body content` (on) with a **Body content** slot (Text Box description, `text-secondary`); `Show trailing accessory` (on) with a **Trailing accessory** slot (`keyboard_arrow_right` 24, raw `#626262`); `Show divider` (on). 375 wide (the old mobile frame); padding `Space-XL` top and sides, 0 bottom; content and divider `Space-XL` apart; content gap `Space-L`, top aligned; text column gap `Space-XS`; title row gap `Space-M`. Large 82 tall (title Headline Small-H6 16/24, body Body/Medium); Small 76 (title 14/21, body Body/Small 12/18). **Internal**, under Internal/List; the base of menus and list rows (§10 #49).
 
-**Decided 20 Oct 2026:** (1) **no interaction states** on the base (§7.2 rule); (2) slots take any component per scenario (Figma's preferred instances); (3) the extra icon is a prop (`extraIcon`), hidden without it (Figma's `person` is a placeholder); (4) the Small title is bound to the H6 variables but shows 14/21 Semi Bold, so it's **Label/Medium** in code; (5) title and body wrap (as Figma); (6) it fills its container.
+**Decided 20 Oct 2026:** (1) **no interaction states** on the base (§7.2 rule); (2) slots take any component per scenario (Figma's preferred instances); (3) the extra icon is a prop (`extraIcon`), hidden without it (Figma's `person` is a placeholder); (4) the Small title is bound to the H6 variables but shows 14/21 Semi Bold, so it's **Label/Medium** in code; (5) title and body wrap (as Figma); (6) it fills its container; (7) **without a body, the title and the trailing accessory are centred on the leading accessory** (with a body, the row is top aligned as Figma); (8) **rule: when several items are shown together, the last one has no divider** (a single item keeps it; CSS `:last-child:not(:first-child)`, so the items must be siblings: use `as="li"` inside a `ul` / `ol`).
 
 **Figma → code:**
 
@@ -2700,7 +2700,7 @@ Forwards `ref` (presentational, no `'use client'`).
 | `Show body content` (on) + slot | `showBody` (default `true`) + `children` | Text → description; other content as given |
 | `Show trailing accessory` (on) + slot | `trailingAccessory` (default `true`) + `trailing` | Default: FinIcon `keyboard_arrow_right` 24, `fg-secondary` |
 | `Show divider` (on) | `divider` (default `true`) | FinDivider (decorative) |
-| — | `className`, other `div` attributes | |
+| — | `as: 'div' \| 'li'` (default `'div'`), `className`, other attributes | `li` for items in a list |
 
 **Tokens used:** padding and gaps `--fin-space-xl`, `--fin-space-l`, `--fin-space-m`, `--fin-space-xs`; title `--fin-font-headline-small-h6` (Small `--fin-font-label-medium`), `--fin-text-primary`; body `--fin-font-body-medium` (Small `--fin-font-body-small`), `--fin-text-secondary`; icons `--fin-fg-secondary` (Figma's raw chevron color mapped). The icon container, label and divider bring their own.
 
@@ -2714,9 +2714,9 @@ Forwards `ref` (presentational, no `'use client'`).
 
 Presentational (no `'use client'`).
 
-**Accessibility:** plain content (a `div`); the components built on it give it a role (option, link, list item) and keyboard behaviour. Icons are decorative; the divider is hidden from screen readers. Contrast: title and body pass in both themes.
+**Accessibility:** plain content (a `div`, or an `li` in a list); the components built on it give it a role (option, link, list item) and keyboard behaviour. Icons are decorative; the divider is hidden from screen readers. Contrast: title and body pass in both themes.
 
-**Built (20 Oct 2026).** Storybook (Internal/List/List base): Playground (every Figma property), Sizes (Figma), All parts, Slots (avatar, flag, badge). Checked against Figma in a browser (in a 360 column): Large 82 tall, Small 76; leading 40 at 16 / 16; text column 52 after it; title 16/24 (Small 14/21) `#19191a`, body 28 (Small 25) below the title's top, 14/21 (Small 12/18) `#656566`; extra icon 20 at the end of the title row, 2 down; trailing arrow 24 at the right edge; divider 16 below the content; Dark uses the Dark tokens. a11y: no violations in Light or Dark.
+**Built (20 Oct 2026).** Storybook (Internal/List/List base): Playground (every Figma property), Sizes (Figma), All parts, Slots (avatar, flag, badge), Group (lists of items, the last without a divider; items without a body centred). Checked against Figma in a browser (in a 360 column): Large 82 tall, Small 76; leading 40 at 16 / 16; text column 52 after it; title 16/24 (Small 14/21) `#19191a`, body 28 (Small 25) below the title's top, 14/21 (Small 12/18) `#656566`; extra icon 20 at the end of the title row, 2 down; trailing arrow 24 at the right edge; divider 16 below the content; without a body the title and arrow are centred on the 40 accessory (both 36 from the top at Large); in a group the last item has no divider and single items keep it; Dark uses the Dark tokens. a11y: no violations in Light or Dark.
 
 Template:
 
@@ -2923,3 +2923,4 @@ Template:
 | 20 Oct 2026 | 0.2 | `FinSideNavItem` approved by design and merged into `main`. |
 | 20 Oct 2026 | 0.2 | **Rule (§7.2): bases have no interaction states**; they belong to the components built on them. §10 #49 updated. |
 | 20 Oct 2026 | 0.2 | **`FinListItem` built** (§8 #59, §9.49), internal under Internal/List: Figma's `Size`, leading / trailing accessory slots, top label, title with a swappable extra icon, body slot and divider; no states. §10 #19 fixed for List-base (Figma updated: extra icon is the Icon sizes `20px`, top label icon removed). Small title → Label/Medium. |
+| 20 Oct 2026 | 0.2 | `FinListItem`: without a body, the title and trailing accessory are centred on the leading accessory; **rule: the last of several items shown together has no divider**; `as="li"` for lists (§9.49). |

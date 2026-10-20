@@ -50,6 +50,25 @@ describe('FinListItem', () => {
     expect(screen.getByText('Gold member').tagName).toBe('STRONG');
   });
 
+  it('marks whether it has a body, so the row is centred without one', () => {
+    const { container, rerender } = render(<FinListItem title="Title">Body</FinListItem>);
+    expect(container.firstElementChild).toHaveAttribute('data-body');
+    rerender(<FinListItem title="Title" showBody={false}>Body</FinListItem>);
+    expect(container.firstElementChild).not.toHaveAttribute('data-body');
+    rerender(<FinListItem title="Title" />);
+    expect(container.firstElementChild).not.toHaveAttribute('data-body');
+  });
+
+  it('can be a list item, so a group of items is a list', () => {
+    render(
+      <ul>
+        <FinListItem as="li" title="One" />
+        <FinListItem as="li" title="Two" />
+      </ul>,
+    );
+    expect(screen.getAllByRole('listitem')).toHaveLength(2);
+  });
+
   it('passes attributes to the root', () => {
     render(<FinListItem title="Title" data-testid="item" className="extra" />);
     expect(screen.getByTestId('item')).toHaveClass('extra');

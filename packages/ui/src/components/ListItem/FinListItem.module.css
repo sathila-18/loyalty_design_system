@@ -3,14 +3,22 @@
  * divider 16 apart. Content: gap 12 (Space-L), top aligned; text column gap 4 (Space-XS); title row gap 8 (Space-M).
  * Large: title Headline Small-H6, body Body/Medium. Small: title Label/Medium, body Body/Small (Figma binds the Small
  * title to the H6 variables at 14/21; mapped to Label/Medium, decided 20 Oct 2026). Title text-primary, body
- * text-secondary; both wrap. No states: a base (decided 20 Oct 2026).
+ * text-secondary; both wrap. No states: a base (decided 20 Oct 2026). Without a body the row is centred, and the
+ * last item of a group has no divider (both decided 20 Oct 2026).
  */
 
 .item {
   display: flex;
   flex-direction: column;
   gap: var(--fin-space-xl);
+  margin: 0;
   padding: var(--fin-space-xl) var(--fin-space-xl) 0;
+  list-style: none;
+}
+
+/* Rule: when several items are shown together, the last one has no divider (a single item keeps it). */
+.item:last-child:not(:first-child) .divider {
+  display: none;
 }
 
 .content {
@@ -25,6 +33,12 @@
   gap: var(--fin-space-l);
   align-items: flex-start;
   min-width: 0;
+}
+
+/* No body: the title (and the trailing accessory) centred on the leading accessory. */
+.item:not([data-body]) .content,
+.item:not([data-body]) .leadingContent {
+  align-items: center;
 }
 
 .leading,

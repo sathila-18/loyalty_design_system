@@ -11,3 +11,9 @@
   gap: var(--fin-space-3xl);
   align-items: flex-start;
 }
+
+.list {
+  width: calc(var(--fin-size-120) * 3);
+  margin: 0;
+  padding: 0;
+}

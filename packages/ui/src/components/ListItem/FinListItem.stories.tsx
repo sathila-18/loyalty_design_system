@@ -99,3 +99,24 @@ export const Slots: Story = {
     </div>
   ),
 };
+
+/**
+ * Several items together (a `ul` of `li` items): the last one has no divider. Without a body (the second group), the
+ * title is centred on the leading accessory.
+ */
+export const Group: Story = {
+  render: () => (
+    <div className={styles.row}>
+      <ul className={styles.list} aria-label="Members">
+        <FinListItem as="li" title="Ann Perera">ann.perera@email.com</FinListItem>
+        <FinListItem as="li" title="Ravi Fernando">ravi.fernando@email.com</FinListItem>
+        <FinListItem as="li" title="Mala Silva">mala.silva@email.com</FinListItem>
+      </ul>
+      <ul className={styles.list} aria-label="Countries">
+        <FinListItem as="li" size="small" title="Sri Lanka" showBody={false} />
+        <FinListItem as="li" size="small" title="India" showBody={false} />
+        <FinListItem as="li" size="small" title="Maldives" showBody={false} />
+      </ul>
+    </div>
+  ),
+};
