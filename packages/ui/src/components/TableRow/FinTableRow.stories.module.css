@@ -1,0 +1,7 @@
+/* Layout for the FinTableRow stories only (not part of the component). */
+
+/* Collapsed borders, as FinTable will have: the row's line is its border. */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
