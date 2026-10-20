@@ -6,6 +6,8 @@ import styles from './FinRadio.module.css';
 export interface FinRadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size' | 'children'> {
   /** Accessible name, visually hidden (decided 15 Oct 2026; visible labels will come from the List component). */
   label: string;
+  /** Draws the radio's own focus ring. Off when a parent draws one (a list row, decided 20 Oct 2026). Default on. */
+  focusRing?: boolean;
 }
 
 /**
@@ -15,9 +17,9 @@ export interface FinRadioProps extends Omit<InputHTMLAttributes<HTMLInputElement
  * `name` get the browser's arrow-key behaviour. Figma `Type` = Selected/Unselected is `checked`; `State`
  * (Hovered, Pressed, Disabled) is runtime state (§7.3). `ref` goes to the input.
  */
-export const FinRadio = forwardRef<HTMLInputElement, FinRadioProps>(function FinRadio({ label, className, ...rest }, ref) {
+export const FinRadio = forwardRef<HTMLInputElement, FinRadioProps>(function FinRadio({ label, focusRing = true, className, ...rest }, ref) {
   return (
-    <label className={className ? `${styles.radio} ${className}` : styles.radio}>
+    <label className={className ? `${styles.radio} ${className}` : styles.radio} data-no-focus-ring={focusRing ? undefined : ''}>
       <input {...rest} ref={ref} type="radio" className={styles.input} />
       <span className={styles.ring} aria-hidden="true">
         <span className={styles.dot} />

@@ -688,6 +688,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 59 | `List-base` | List | `77:10185` | `FinListItem` | **Base.** 40px bg, Label, Text Box, Divider · `Size` · leading / trailing accessory slots (preferred instances per scenario), top label, title + extra icon (swappable `20px`), body slot, divider · no states (§7.2) · **internal** (§9.49) | ⚠️ (Small title bound to H6 variables at 14/21 → Label/Medium) | ✅ |
 | 60 | `List_fill-base` (was `List-fill-base`; new node 20 Oct 2026, was `3169:6327`) | List | `3494:14233` | `FinListItemFilled` | **Base.** List-base in a frame (`bg-primary`, `border-subtle`, `Radius-L`, padding `Space-XL`), no divider · Avatar (leading default), Label, Text Box · slots · `Size` · filled items together 12 apart · no states · **internal** (§9.50) | ⚠️ (Small ignores `Show leading accessory`, §10 #53) | ✅ |
 | 60a | `List-standard` (added 20 Oct 2026) | List | `3491:5292` | `FinListStandard` | **List-base** (mapped), Icon `24px`, Flag sizes, Avatar, Caption, `24px` chevron · `State`: Default / Hovered / Selected / Selected+hovered / Disabled · `Description` · `Chevron` · `Leading accessory`: None / Icon / Flag / Payment / Avatar · `Trailing accessory`: None / Caption · Size from List-base (nested) · link, button, option or static per scenario · Payment: FinPaymentIcon (§9.52) · **public**, Components/List (§9.51) | ⚠️ (Size not exposed, §10 #54) | ✅ |
+| 60b | `List-radio_button` (added 20 Oct 2026) | List | `3503:21171` | `FinListRadio`, `FinListRadioGroup` | **List-standard** (as a control row), Base-Radio_box, Flag sizes, Payment Icons · `Type`: Default / Country / Payment · `State` (5, as List-standard; Selected = chosen) · `Item side`: Leading / Trailing · `Description` · Size (List-base) · **public**, Components/List (§9.53) | ✅ (Selected radio fixed in Figma 20 Oct 2026) | ✅ |
 | 61 | `Accordion-frame-base` | Accordion | `555:1767` | `FinAccordionFramed` | **Base.** Text Box, Badge-primary, Label · slots | ✅ | ⬜ |
 | 62 | `Accordion-bare-base` | Accordion | `555:1968` | `FinAccordion` | **Base.** Text Box, Badge-primary, Label, Divider · slots | 🔴 missing `20px` main (§10 #19) | ⬜ |
 | 63 | `Notification` | Notification banners | `77:10612` | `FinNotificationBanner` | all-button, icons · Type: Info/Success/Error/Warning/Neutral | ⚠️ (§10 #16) | ⬜ |
@@ -1394,6 +1395,8 @@ import { FinRadio } from '@finspace-loyalty/ui';
 **Accessibility:** announced as a radio button with its label, selected or not, and its position in the group. Pointer target 24 × 24. Contrast (non-text, 3:1): selected `fg-action` 4.71 Light / 5.24 Dark; hovered ring on its fill 4.82 / 4.92; pressed 5.11 / 5.52. **Unselected ring** `border-strong`: 3.90:1 on `bg-primary` and 3.57:1 on `bg-secondary` in Light, 8.76 / 7.25 in Dark, since the token changed on 19 Oct 2026 (was 2.96 / 2.71 Light, 2.88 / 2.39 Dark; §10 #3). Disabled is exempt.
 
 **Built (15 Oct 2026).** Storybook (Components/Radio button): Playground, States (Figma) with Enabled and Disabled shown and Hovered/Pressed live, Group (fieldset, keyboard). Checked against Figma: box 24, ring 20 at (2, 2) with a 2px stroke, dot 12 at (4, 4); Light colors equal Figma for all 8 states (Hovered and Pressed measured with a real mouse); Dark uses the Dark tokens; Tab then ↓ moves to and selects the next radio, with the focus ring. a11y: no violations in Light or Dark.
+
+**Added 20 Oct 2026:** `focusRing` (default `true`). List rows (FinListRadio, §9.53) turn it off and draw the ring around the row instead.
 
 ### 9.16 FinProgressBar (Progress bar)
 
@@ -2766,6 +2769,7 @@ Presentational (no `'use client'`).
 | `Trailing accessory` = Caption | `caption?: string` | |
 | Size (nested List-base) | `size: 'large' \| 'small'` | |
 | — | `title` (required), `behavior`, `href`, `linkAs`, `onClick`, `as` (`div` / `li`), `className`, `id`, `style` | |
+| — | `trailing`, `labelFor`, `titleId`, `descriptionId` | Added 20 Oct 2026 for control rows (radio, checkbox, toggle lists): `labelFor` makes the title the control's label covering the row, with the focus ring around the row |
 
 **Tokens used:** fills `--fin-bg-secondary`, `--fin-bg-active`, `--fin-bg-active-hover`; description `--fin-font-body-medium` (Small `--fin-font-body-small`), `--fin-text-secondary` (Disabled `--fin-text-disabled`); Disabled title and caption `--fin-text-disabled-on-bg`, icon `--fin-fg-disabled`, line `--fin-border-disabled` (through FinDivider's `--divider-color`, added 20 Oct 2026); trailing gap `--fin-space-s`; focus `--fin-border-focused`. The rest from FinListItem, FinIcon, FinFlag, FinAvatar and FinCaption.
 
@@ -2817,6 +2821,42 @@ import { FinPaymentIcon } from '@finspace-loyalty/ui';
 **Accessibility:** `role="img"` named by the brand (or `label`); `decorative` hides it next to a visible brand name. Logos are artwork (not checked for contrast); the Default card's icon passes 3:1 on `bg-primary`.
 
 **Built (20 Oct 2026).** Storybook (Components/Payment icon): Playground (method, size, disabled, decorative), Methods (all 19), Sizes, Disabled. Checked in a browser: 25.3 × 16, 38 × 24, 50.7 × 32, 76 × 48; every logo loads from its own file; the Default card's icon 16 / 20 / 24 / 36; in List-standard the logo is 38 × 24 at 16 / 16 in an 82 row. **In Dark, the Default card follows the tokens (dark card) while brand logos stay as drawn (light cards).** a11y: no violations in Light or Dark.
+
+### 9.53 FinListRadio and FinListRadioGroup (List-radio_button) — public
+
+**Figma:** page **List**, component set `List-radio_button` `3503:21171` (added 20 Oct 2026; 50 variants): `Type` = Default / Country / Payment × `State` = Default / Hovered / Selected / Selected+hovered / Disabled × `Item side` = Leading / Trailing × `Description`. List-base with the radio (Base-Radio_box, 24) in the leading accessory; Country (Flag sizes 32 × 24) or Payment (Payment Icons 34.5 × 24) either next to the radio (`Space-M` after it) or as the trailing accessory. Fills, Disabled colors and heights as List-standard (82 / 57). Selected rows show the chosen radio (fixed in Figma 20 Oct 2026). **Public**, under Components/List.
+
+**Decided 20 Oct 2026:** (1) **radio, checkbox and toggle lists are separate components** on List-base (different behaviour and layout); (2) built on **List-standard as a control row** (`labelFor`): the title is the radio's label and covers the row, so **clicking anywhere chooses it**; (3) **native radios** in a `radiogroup` (`FinListRadioGroup`, named by `label`): Tab enters and leaves the group, the arrow keys move the choice, disabled rows are skipped; (4) **the focus ring goes around the row** (the radio's own ring is off: FinRadio `focusRing={false}`, added 20 Oct 2026); (5) Country and Payment items for now; `item` takes any other component (an avatar…) for future scenarios; (6) contrast exceptions as List-standard (§10 #3).
+
+**Figma → code:**
+
+| Figma | Prop | Notes |
+|---|---|---|
+| `Type` = Default / Country / Payment | `type` (default `'default'`) + `country` / `paymentMethod` | FinFlag medium / FinPaymentIcon medium (38 × 24), decorative |
+| `Item side` = Leading / Trailing | `itemSide` (default `'leading'`) | |
+| `State` = Selected | — | From the group's `value` (or `checked` outside a group) |
+| `State` = Disabled | `disabled` | Per row, or the whole group |
+| `State` = Hovered / Selected+hovered | — | CSS (List-standard) |
+| `Description` | `description?: ReactNode` | Also the radio's description |
+| Size (List-base) | `size` (row or group) | |
+| — | `value` (required), `title` (required), `item`, `className`; group: `label` (required), `value`, `onValueChange`, `name`, `disabled`, `size` | |
+
+**Tokens used:** item gap `--fin-space-m`; everything else from List-standard (§9.51), FinRadio (§9.15), FinFlag and FinPaymentIcon.
+
+**API:**
+
+```tsx
+<FinListRadioGroup label="Pay with" value={card} onValueChange={setCard}>
+  <FinListRadio value="visa" title="Visa ending 4242" description="Expires 09/28" type="payment" paymentMethod="visa" />
+  <FinListRadio value="lk" title="Sri Lanka" type="country" country="LK" itemSide="trailing" />
+</FinListRadioGroup>
+```
+
+`'use client'` (context, `useId`, event handlers).
+
+**Accessibility:** a `radiogroup` named by `label`; each native radio is named by the row's title (`aria-labelledby`) and described by its description; the row is its label; keyboard as native radios; the focus ring around the row. Contrast as List-standard.
+
+**Built (20 Oct 2026).** Storybook (Components/List/List radio): Playground (Type, Item side, Description, Size, Disabled), Types (Figma), Payment method (a real choice). Checked against Figma in a browser (in a 360 column): radio 24 at 16 / 16; Leading flag at 48 (title at 92), Leading logo at 48 (title at 98; Figma 94.5, the logo is 38 wide here); Trailing items 16 from the right; rows 82 / 57 (the last without a line); Selected `bg-active` with the radio chosen (Dark `#29266b`); Tab focuses the chosen radio and the ring goes around its row; clicking a title or anywhere on the row chooses it. a11y: no violations in Light or Dark (Disabled rows skipped).
 
 Template:
 
@@ -2898,7 +2938,8 @@ Template:
 
 > **Where we are (20 Oct 2026)**
 > - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; approved 19 Oct 2026) and `FinSegmentBase` (§9.33, internal; approved 19 Oct 2026) and `FinSegmentedButton` (§9.34, public; approved 19 Oct 2026) and `FinFlag` (§9.35, public; approved 19 Oct 2026) and `FinCountrySelector` (§9.36, internal, trigger only; approved 19 Oct 2026) and `FinPaginationItem` (§9.37, internal; approved 19 Oct 2026) and `FinRowCountSelect` (§9.38, internal, trigger only; approved 19 Oct 2026) and `FinPagination` (§9.39, public; approved 19 Oct 2026) and `FinTableFooter` (§9.40, internal; approved 19 Oct 2026) and `FinTableHeaderCell` (§9.41, internal; approved 19 Oct 2026) and `FinTableHeaderRow` (§9.42, internal; approved 20 Oct 2026) and `FinTableCell` (§9.43, internal; approved 20 Oct 2026) and `FinTableRow` (§9.44, internal; approved 20 Oct 2026) and `FinTable` (§9.45, public; approved 20 Oct 2026) and `FinSideNavIcon` (§9.46, internal; approved 20 Oct 2026) and `FinSideNavSubItem` (§9.47, internal; approved 20 Oct 2026) and `FinSideNavItem` (§9.48, internal; approved 20 Oct 2026) and `FinListItem` (§9.49, internal; approved 20 Oct 2026) and `FinListItemFilled` (§9.50, internal; approved 20 Oct 2026) and `FinListStandard` (§9.51, public; approved 20 Oct 2026) and `FinPaymentIcon` (§9.52, public; approved 20 Oct 2026). Everything is merged into `main`.
-> - **Next:** radio / checkbox / toggle lists once designed.
+> - **Built, waiting for approval:** `FinListRadio` and `FinListRadioGroup` (§9.53, public, on `feat/list-radio`).
+> - **Next:** checkbox and toggle lists once designed.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3034,4 +3075,5 @@ Template:
 | 20 Oct 2026 | 0.2 | **Payment icons decided** (§6.1, §8.5): logos from Shopify's `activemerchant/payment_icons` (MIT, `v1.7.69` pinned, copied by `pnpm payment-icons` and committed), own logos in `src/payment/custom/` (template in §8.5), our Default card in code; Bitpay, Verifone, IPS dropped. |
 | 20 Oct 2026 | 0.2 | **`FinPaymentIcon` built** (§9.52), **public** under Components/Payment icon: `method`, `size` (16 / 24 / 32 / 48 tall on a 38 × 24 card), `disabled` (opacity 0.4), `label` / `decorative`; registry `finPaymentMethods`. List-standard's Payment accessory added (`paymentMethod`); §10 #54 (3) done. |
 | 20 Oct 2026 | 0.2 | `FinPaymentIcon` approved by design and merged into `main` (Default card follows the tokens in Dark, as built). |
+| 20 Oct 2026 | 0.2 | **`FinListRadio` and `FinListRadioGroup` built** (§8 #60b, §9.53), **public** under Components/List: List-radio_button on List-standard as a control row; native radios in a named `radiogroup`; the whole row chooses; the focus ring around the row. List-standard: `trailing`, `labelFor`, `titleId`, `descriptionId` (control rows). FinRadio: `focusRing` (off in list rows). |
 | 20 Oct 2026 | 0.2 | `FinListItem` and `FinListItemFilled` approved by design and merged into `main`. |

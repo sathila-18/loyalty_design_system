@@ -32,3 +32,4 @@ export * from './components/SegmentedButton';
 export * from './components/Pagination';
 export * from './components/Table';
 export * from './components/ListStandard';
+export * from './components/ListRadio';

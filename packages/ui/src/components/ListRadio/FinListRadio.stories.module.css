@@ -1,0 +1,19 @@
+/* Layout for the FinListRadio stories only (not part of the component). */
+
+/* A 360 column, close to Figma's 375 frame. */
+.column {
+  width: calc(var(--fin-size-120) * 3);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-3xl);
+  align-items: flex-start;
+}
+
+.readout {
+  margin-top: var(--fin-space-xl);
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-tertiary);
+}

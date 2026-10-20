@@ -46,6 +46,11 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinListStandard');
   });
 
+  it('exports the radio list and its group', () => {
+    expect(ui).toHaveProperty('FinListRadio');
+    expect(ui).toHaveProperty('FinListRadioGroup');
+  });
+
   it('exports FinTable, but not the table parts it is built from', () => {
     expect(ui).toHaveProperty('FinTable');
   });

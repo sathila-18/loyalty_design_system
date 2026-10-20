@@ -102,3 +102,8 @@
   white-space: nowrap;
   clip-path: inset(50%);
 }
+
+/* focusRing off: a parent (a list row) draws the ring instead. */
+.radio[data-no-focus-ring] .input:focus-visible + .ring {
+  outline: 0;
+}

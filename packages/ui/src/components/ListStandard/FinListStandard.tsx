@@ -37,6 +37,17 @@ export interface FinListStandardProps
   avatar?: Pick<FinAvatarProps, 'src' | 'initials' | 'label'>;
   /** Any other leading content, in place of the accessory above. */
   leading?: ReactNode;
+  /** Any other trailing content (for example a list control's flag or logo), before the caption and chevron. */
+  trailing?: ReactNode;
+  /**
+   * The id of a form control in the row (a radio, checkbox or toggle in `leading` or `trailing`): the title becomes its
+   * label and covers the row, so clicking anywhere toggles it; the focus ring goes around the row (decided 20 Oct 2026).
+   */
+  labelFor?: string;
+  /** The title's id (a control row's input points `aria-labelledby` at it). */
+  titleId?: string;
+  /** The description's id (a control row's input points `aria-describedby` at it). Default generated. */
+  descriptionId?: string;
   /** Figma `Trailing accessory=Caption`: the caption text (Caption Small, Heavy). */
   caption?: string;
   /** Figma `Chevron`: the right arrow. Default off. */
@@ -71,6 +82,10 @@ export function FinListStandard({
   paymentMethod = 'default',
   avatar,
   leading,
+  trailing,
+  labelFor,
+  titleId,
+  descriptionId: descriptionIdProp,
   caption,
   chevron = false,
   selected = false,
@@ -82,8 +97,9 @@ export function FinListStandard({
   className,
   ...rest
 }: FinListStandardProps) {
-  const descriptionId = useId();
-  const interactive = behavior !== 'static' && !disabled;
+  const generatedId = useId();
+  const descriptionId = descriptionIdProp ?? generatedId;
+  const interactive = (behavior !== 'static' || labelFor !== undefined) && !disabled;
 
   let leadingNode: ReactNode = leading;
   if (leadingNode === undefined && leadingAccessory === 'icon')
@@ -95,7 +111,17 @@ export function FinListStandard({
   if (leadingNode === undefined && leadingAccessory === 'avatar') leadingNode = <FinAvatar size="medium" {...avatar} />;
 
   const describedBy = description !== undefined && description !== null ? descriptionId : undefined;
-  let titleNode: ReactNode = <span className={styles.title}>{title}</span>;
+  let titleNode: ReactNode = (
+    <span id={titleId} className={styles.title}>
+      {title}
+    </span>
+  );
+  if (labelFor !== undefined)
+    titleNode = (
+      <label id={titleId} htmlFor={labelFor} className={`${styles.title} ${styles.action}`}>
+        {title}
+      </label>
+    );
   if (behavior === 'link')
     titleNode = (
       <Link
@@ -114,7 +140,7 @@ export function FinListStandard({
       </button>
     );
 
-  const hasTrailing = caption !== undefined || chevron;
+  const hasTrailing = trailing !== undefined || caption !== undefined || chevron;
 
   return (
     <FinListItem
@@ -123,6 +149,7 @@ export function FinListStandard({
       data-selected={selected ? '' : undefined}
       data-disabled={disabled ? '' : undefined}
       data-interactive={interactive ? '' : undefined}
+      data-control={labelFor !== undefined ? '' : undefined}
       {...(behavior === 'option'
         ? { role: 'option', 'aria-selected': selected, 'aria-disabled': disabled || undefined, ...(disabled ? {} : { onClick }) }
         : {})}
@@ -132,6 +159,7 @@ export function FinListStandard({
       trailingAccessory={hasTrailing}
       trailing={
         <span className={styles.trailing}>
+          {trailing}
           {caption !== undefined && (
             <FinCaption size="small" thickness="heavy" className={styles.caption}>
               {caption}

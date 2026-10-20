@@ -1,0 +1,11 @@
+/*
+ * FinListRadio (DESIGN.md §9). Figma List-radio_button on List-standard: the radio (Base-Radio_box, 24) and, with
+ * Item side Leading, the flag or logo 8 (Space-M) after it. Everything else (fills, Disabled, focus ring) is
+ * List-standard's.
+ */
+
+.leading {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+}
