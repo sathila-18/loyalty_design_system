@@ -1,0 +1,11 @@
+/*
+ * FinListCheckbox (DESIGN.md §9). The radio list's layout with the checkbox (Base-Checkbox, 24) in the radio's place:
+ * the flag or logo 8 (Space-M) after it when the item is leading. Everything else (fills, Disabled, focus ring) is
+ * List-standard's.
+ */
+
+.leading {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+}

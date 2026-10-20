@@ -15,6 +15,8 @@ export interface FinCheckboxBaseProps extends Omit<InputHTMLAttributes<HTMLInput
    * for it, so it's set on the input. Clicking clears it in the browser; the parent decides the next value.
    */
   indeterminate?: boolean;
+  /** Draws the box's own focus ring. Off when a parent draws one (a list row, decided 20 Oct 2026). Default on. */
+  focusRing?: boolean;
 }
 
 /**
@@ -25,7 +27,7 @@ export interface FinCheckboxBaseProps extends Omit<InputHTMLAttributes<HTMLInput
  * **Internal:** not exported from the package; use FinCheckbox. Table parts use it directly inside their own code.
  */
 export const FinCheckboxBase = forwardRef<HTMLInputElement, FinCheckboxBaseProps>(function FinCheckboxBase(
-  { label, indeterminate = false, className, ...rest },
+  { label, indeterminate = false, focusRing = true, className, ...rest },
   ref,
 ) {
   const input = useRef<HTMLInputElement>(null);
@@ -36,7 +38,7 @@ export const FinCheckboxBase = forwardRef<HTMLInputElement, FinCheckboxBaseProps
   }, [indeterminate]);
 
   return (
-    <label className={className ? `${styles.checkbox} ${className}` : styles.checkbox}>
+    <label className={className ? `${styles.checkbox} ${className}` : styles.checkbox} data-no-focus-ring={focusRing ? undefined : ''}>
       <input {...rest} ref={input} type="checkbox" className={styles.input} />
       <span className={styles.box} aria-hidden="true">
         <span className={styles.check}>

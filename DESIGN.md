@@ -689,6 +689,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 60 | `List_fill-base` (was `List-fill-base`; new node 20 Oct 2026, was `3169:6327`) | List | `3494:14233` | `FinListItemFilled` | **Base.** List-base in a frame (`bg-primary`, `border-subtle`, `Radius-L`, padding `Space-XL`), no divider · Avatar (leading default), Label, Text Box · slots · `Size` · filled items together 12 apart · no states · **internal** (§9.50) | ⚠️ (Small ignores `Show leading accessory`, §10 #53) | ✅ |
 | 60a | `List-standard` (added 20 Oct 2026) | List | `3491:5292` | `FinListStandard` | **List-base** (mapped), Icon `24px`, Flag sizes, Avatar, Caption, `24px` chevron · `State`: Default / Hovered / Selected / Selected+hovered / Disabled · `Description` · `Chevron` · `Leading accessory`: None / Icon / Flag / Payment / Avatar · `Trailing accessory`: None / Caption · Size from List-base (nested) · link, button, option or static per scenario · Payment: FinPaymentIcon (§9.52) · **public**, Components/List (§9.51) | ⚠️ (Size not exposed, §10 #54) | ✅ |
 | 60b | `List-radio_button` (added 20 Oct 2026) | List | `3503:21171` | `FinListRadio`, `FinListRadioGroup` | **List-standard** (as a control row), Base-Radio_box, Flag sizes, Payment Icons · `Type`: Default / Country / Payment · `State` (5, as List-standard; Selected = chosen) · `Item side`: Leading / Trailing · `Description` · Size (List-base) · **public**, Components/List (§9.53) | ✅ (Selected radio fixed in Figma 20 Oct 2026) | ✅ |
+| 60c | — (code first; no Figma component yet, §10 #55) | List | — | `FinListCheckbox`, `FinListCheckboxGroup` | **List-standard** (as a control row), Base-Checkbox, Flag sizes, Payment Icons · the radio list's properties (Type, Item side, Description, Size, Disabled) with a checkbox; ticked = Selected; `indeterminate` for a "select all" row · **public**, Components/List (§9.54) | — (code first) | ✅ |
 | 61 | `Accordion-frame-base` | Accordion | `555:1767` | `FinAccordionFramed` | **Base.** Text Box, Badge-primary, Label · slots | ✅ | ⬜ |
 | 62 | `Accordion-bare-base` | Accordion | `555:1968` | `FinAccordion` | **Base.** Text Box, Badge-primary, Label, Divider · slots | 🔴 missing `20px` main (§10 #19) | ⬜ |
 | 63 | `Notification` | Notification banners | `77:10612` | `FinNotificationBanner` | all-button, icons · Type: Info/Success/Error/Warning/Neutral | ⚠️ (§10 #16) | ⬜ |
@@ -1986,6 +1987,8 @@ The icon is white in both themes (`fg-white_both`; was `fg-inverse`, which turne
 
 **Built (19 Oct 2026).** Storybook (Internal/Checkbox base): Playground, States (Figma) with all three Types, Enabled and Disabled shown and Hovered/Pressed live, Select all (indeterminate), Focused (Tab). Checked against Figma in a browser: box 18 × 18 in the 24 frame, radius 4, 2px stroke, icons 16; Light colors equal Figma in every State and Type (Hovered and Pressed with a real mouse); Dark uses the Dark tokens; focus ring 2px. a11y: no violations in Light or Dark.
 
+**Added 20 Oct 2026:** `focusRing` (default `true`). List rows (FinListCheckbox, §9.54) turn it off and draw the ring around the row instead.
+
 ### 9.30 FinCheckbox (Checkbox)
 
 **Figma:** page **Checkbox**, component set `Checkbox` `42:220`: `Type` = Unselected / Selected × `State` = Enabled / Disabled × `Focused` = True / False (6 variants), with `Show Leading Icon`, `Show Trailing Icon` (both on by default) and `Show Text Box`. A Base-Checkbox and a Text Box (description only: Body/Large, `text-secondary`; `text-disabled` when disabled) side by side, 12 apart (`Space-L`), top-aligned; fixed width 343. Focused draws a ring around the whole row. **Public.**
@@ -2858,6 +2861,31 @@ import { FinPaymentIcon } from '@finspace-loyalty/ui';
 
 **Built (20 Oct 2026).** Storybook (Components/List/List radio): Playground (Type, Item side, Description, Size, Disabled), Types (Figma), Payment method (a real choice). Checked against Figma in a browser (in a 360 column): radio 24 at 16 / 16; Leading flag at 48 (title at 92), Leading logo at 48 (title at 98; Figma 94.5, the logo is 38 wide here); Trailing items 16 from the right; rows 82 / 57 (the last without a line); Selected `bg-active` with the radio chosen (Dark `#29266b`); Tab focuses the chosen radio and the ring goes around its row; clicking a title or anywhere on the row chooses it. a11y: no violations in Light or Dark (Disabled rows skipped).
 
+### 9.54 FinListCheckbox and FinListCheckboxGroup (code first) — public
+
+**Figma:** none yet (§10 #55). Built 20 Oct 2026 at design's request as **the radio list's twin** (§9.53): the same layout, properties and states, with Base-Checkbox (FinCheckboxBase, 24) in the radio's place. **Public**, under Components/List.
+
+**Decided 20 Oct 2026:** (1) same as the radio list: a control row on List-standard (`labelFor`), clicking anywhere ticks it, ticked = Selected (`bg-active`), the focus ring around the row (FinCheckboxBase `focusRing={false}`, added 20 Oct 2026), Country / Payment / any `item` on either side, Size, Disabled; (2) **native checkboxes** in a `group` named by `label` (`FinListCheckboxGroup`): each is its own Tab stop and Space ticks it; the group's `value` is the list of ticked values; (3) `indeterminate` for a "select all" row (the dash, announced as mixed).
+
+**Props:** as FinListRadio (§9.53), with `checked` / `onCheckedChange` outside a group and `indeterminate`; the group: `label` (required), `value` (`string[]`), `onValueChange`, `name`, `disabled`, `size`.
+
+**Tokens used:** item gap `--fin-space-m`; everything else from List-standard, FinCheckboxBase, FinFlag and FinPaymentIcon.
+
+**API:**
+
+```tsx
+<FinListCheckboxGroup label="Notifications" value={channels} onValueChange={setChannels}>
+  <FinListCheckbox value="email" title="Email" description="Weekly summary" />
+  <FinListCheckbox value="sms" title="SMS" />
+</FinListCheckboxGroup>
+```
+
+`'use client'` (context, `useId`, event handlers).
+
+**Accessibility:** a `group` named by `label`; each native checkbox is named by the row's title and described by its description; the row is its label; keyboard as native checkboxes; the focus ring around the row. Contrast as List-standard.
+
+**Built (20 Oct 2026).** Storybook (Components/List/List checkbox): Playground, Types, Select all. Checked in a browser against the radio list: checkbox 24 at 16 / 16, items and title at the same places, rows 82 / 57 (the last 16 padded, no line), ticked rows `bg-active`, the ring around the focused row. a11y: no violations in Light or Dark (Disabled rows skipped).
+
 Template:
 
 ```
@@ -2931,6 +2959,7 @@ Template:
 | 52 | **Main Selection:** (1) the chevron colors are raw: `#626262` → `fg-secondary`, `#5953E8` → `fg-active` (bind them); (2) Selected variants show the **up** chevron even when closed; code points it by open / closed (decided 20 Oct 2026); (3) `Show dropdown` is a separate property, but code shows the chevron whenever the item has sub items (decided 20 Oct 2026). | Side nav | ⏳ Design to update in Figma |
 | 53 | **List_fill-base, Size=Small:** the avatar is always shown; `Show leading accessory` only works on Large. Code applies it to both sizes. | List | 🔧 Fix in Figma |
 | 54 | **List-standard:** (1) ~~on Disabled rows the chevron stayed `fg-secondary`~~ **fixed in Figma 20 Oct 2026** (now `fg-disabled`, as code). (2) **Size** (Large / Small) comes from the nested List-base and isn't exposed on List-standard yet; code has `size`. (3) ~~Payment waits for the artwork~~ **done 20 Oct 2026** (FinPaymentIcon, §9.52). | List | 🔧 Fix in Figma / ⏳ Payment artwork |
+| 55 | **List checkbox isn't in Figma yet** (built code first 20 Oct 2026, decided by design: "do the same as radio"). Add a `List-checkbox` component set mirroring List-radio_button (`Type`, `State`, `Item side`, `Description`) with Base-Checkbox, plus an Indeterminate state for "select all"; then re-check code against it. | List | ⏳ Design to add in Figma |
 
 ---
 
@@ -2938,7 +2967,8 @@ Template:
 
 > **Where we are (20 Oct 2026)**
 > - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; approved 19 Oct 2026) and `FinSegmentBase` (§9.33, internal; approved 19 Oct 2026) and `FinSegmentedButton` (§9.34, public; approved 19 Oct 2026) and `FinFlag` (§9.35, public; approved 19 Oct 2026) and `FinCountrySelector` (§9.36, internal, trigger only; approved 19 Oct 2026) and `FinPaginationItem` (§9.37, internal; approved 19 Oct 2026) and `FinRowCountSelect` (§9.38, internal, trigger only; approved 19 Oct 2026) and `FinPagination` (§9.39, public; approved 19 Oct 2026) and `FinTableFooter` (§9.40, internal; approved 19 Oct 2026) and `FinTableHeaderCell` (§9.41, internal; approved 19 Oct 2026) and `FinTableHeaderRow` (§9.42, internal; approved 20 Oct 2026) and `FinTableCell` (§9.43, internal; approved 20 Oct 2026) and `FinTableRow` (§9.44, internal; approved 20 Oct 2026) and `FinTable` (§9.45, public; approved 20 Oct 2026) and `FinSideNavIcon` (§9.46, internal; approved 20 Oct 2026) and `FinSideNavSubItem` (§9.47, internal; approved 20 Oct 2026) and `FinSideNavItem` (§9.48, internal; approved 20 Oct 2026) and `FinListItem` (§9.49, internal; approved 20 Oct 2026) and `FinListItemFilled` (§9.50, internal; approved 20 Oct 2026) and `FinListStandard` (§9.51, public; approved 20 Oct 2026) and `FinPaymentIcon` (§9.52, public; approved 20 Oct 2026) and `FinListRadio` / `FinListRadioGroup` (§9.53, public; approved 20 Oct 2026). Everything is merged into `main`.
-> - **Next:** checkbox and toggle lists once designed.
+> - **Built, waiting for approval:** `FinListCheckbox` and `FinListCheckboxGroup` (§9.54, public, code first, on `feat/list-checkbox`).
+> - **Next:** the toggle list.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3068,6 +3098,7 @@ Template:
 | 20 Oct 2026 | 0.2 | `FinListItem`: without a body, the title and trailing accessory are centred on the leading accessory; **rule: the last of several items shown together has no divider**; `as="li"` for lists (§9.49). |
 | 20 Oct 2026 | 0.2 | **List rule extended:** the last of several list items has no divider **and gets 16 (`Space-XL`) of bottom padding** (FinListItem, so every list on List-base; §9.49). |
 | 20 Oct 2026 | 0.2 | `FinListRadio` / `FinListRadioGroup` and the last-item padding rule approved by design and merged into `main`. |
+| 20 Oct 2026 | 0.2 | **`FinListCheckbox` and `FinListCheckboxGroup` built code first** (§8 #60c, §9.54), **public** under Components/List: the radio list's twin with checkboxes; `indeterminate` for "select all". FinCheckboxBase: `focusRing`. §10 #55 added (add it to Figma). |
 | 20 Oct 2026 | 0.2 | List fill base is a new component in Figma: `List_fill-base` `3494:14233` (was `List-fill-base` `3169:6327`); §8 #60 updated, §10 #19 fixed for it, §10 #53 added (Small ignores `Show leading accessory`). |
 | 20 Oct 2026 | 0.2 | **`FinListItemFilled` built** (§8 #60, §9.50), internal under Internal/List: FinListItem in a frame (`bg-primary`, inset `border-subtle`, `Radius-L`, padding `Space-XL`), no divider, avatar by default. Decided: filled items together sit 12 (`Space-L`) apart. |
 | 20 Oct 2026 | 0.2 | List-standard added to the inventory (§8 #60a, `3491:5292`). |

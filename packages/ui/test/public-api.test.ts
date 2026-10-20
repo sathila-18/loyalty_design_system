@@ -51,6 +51,11 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinListRadioGroup');
   });
 
+  it('exports the checkbox list and its group', () => {
+    expect(ui).toHaveProperty('FinListCheckbox');
+    expect(ui).toHaveProperty('FinListCheckboxGroup');
+  });
+
   it('exports FinTable, but not the table parts it is built from', () => {
     expect(ui).toHaveProperty('FinTable');
   });
