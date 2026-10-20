@@ -11,10 +11,10 @@ const Header = ({ children }: { children: ReactNode }) => (
   </table>
 );
 
-/** Figma's Slot: six Grey header cells titled "Table title", no checkbox. */
-const figmaCells = (count: number) =>
+/** Figma's Slot: Grey header cells titled "Table title", no checkbox; the trailing arrow is each cell's own. */
+const figmaCells = (count: number, trailingIcon = false) =>
   Array.from({ length: count }, (_, index) => (
-    <FinTableHeaderCell key={index} type="grey" checkbox={false}>
+    <FinTableHeaderCell key={index} type="grey" checkbox={false} trailingIcon={trailingIcon}>
       Table title
     </FinTableHeaderCell>
   ));
@@ -23,6 +23,7 @@ type Selection = 'none' | 'some' | 'all';
 
 interface Args extends Pick<FinTableHeaderRowProps, 'selectCell'> {
   columns: number;
+  trailingIcon: boolean;
   selection: Selection;
 }
 
@@ -35,10 +36,14 @@ const KNOWN_CONTRAST_ISSUES = ['html[data-theme="dark"] th[data-type="grey"] [da
 /** INTERNAL: part of the table (FinTable). Matches Figma's properties (DESIGN.md §9). */
 const meta: Meta<Args> = {
   title: 'Internal/Table/Header row',
-  args: { selectCell: true, columns: 6, selection: 'none' },
+  args: { selectCell: true, columns: 6, trailingIcon: false, selection: 'none' },
   argTypes: {
     selectCell: { control: 'boolean', description: 'Figma `Select Cell`' },
     columns: { control: { type: 'number', min: 1, max: 10 }, description: 'Figma `Cell Slot` (the header cells)' },
+    trailingIcon: {
+      control: 'boolean',
+      description: 'Figma `Show trailing icon` on the header cells (a prop of each FinTableHeaderCell, so per column in code)',
+    },
     selection: {
       control: 'inline-radio',
       options: ['none', 'some', 'all'],
@@ -46,7 +51,7 @@ const meta: Meta<Args> = {
     },
   },
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  render: ({ columns, selection, ...args }) => (
+  render: ({ columns, trailingIcon, selection, ...args }) => (
     <Header>
       <FinTableHeaderRow
         {...args}
@@ -54,7 +59,7 @@ const meta: Meta<Args> = {
         indeterminate={selection === 'some'}
         onCheckedChange={() => undefined}
       >
-        {figmaCells(columns)}
+        {figmaCells(columns, trailingIcon)}
       </FinTableHeaderRow>
     </Header>
   ),

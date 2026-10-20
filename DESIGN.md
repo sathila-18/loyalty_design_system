@@ -2454,7 +2454,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 **Accessibility:** a native `<tr>` of `<th scope="col">`s; the select column is named "Select" (hidden) and its checkbox "Select all rows", announced as mixed when `indeterminate`. Contrast: as §9.41 (Grey title in Dark 4.08:1, accepted).
 
-**Built (20 Oct 2026).** Storybook (Internal/Table/Header row): Playground (Select Cell, number of columns, selection none / some / all), Figma, Without select cell, Example. Checked against Figma in a browser: 48 tall, select cell 72 with the checkbox 24 from the left, 12 from the top; titles Label/Medium 14/21 `#474748`, 24 from each cell's left, 13.5 from the top; Grey `#ededed` (Dark `#363636`); the six columns share the rest equally (172 each at 1104 wide, Figma 169.3 at 1088). a11y: no violations in Light or Dark apart from the accepted Grey titles in Dark.
+**Built (20 Oct 2026).** Storybook (Internal/Table/Header row): Playground (Select Cell, number of columns, Show trailing icon on the header cells, selection none / some / all; the arrow is a FinTableHeaderCell prop, so per column in code), Figma, Without select cell, Example. Checked against Figma in a browser: 48 tall, select cell 72 with the checkbox 24 from the left, 12 from the top; titles Label/Medium 14/21 `#474748`, 24 from each cell's left, 13.5 from the top; Grey `#ededed` (Dark `#363636`); the six columns share the rest equally (172 each at 1104 wide, Figma 169.3 at 1088). a11y: no violations in Light or Dark apart from the accepted Grey titles in Dark.
 
 Template:
 
