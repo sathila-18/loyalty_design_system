@@ -36,6 +36,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('isFinFlagCountry');
   });
 
+  it('exports FinListStandard, but not the list bases it is built from', () => {
+    expect(ui).toHaveProperty('FinListStandard');
+  });
+
   it('exports FinTable, but not the table parts it is built from', () => {
     expect(ui).toHaveProperty('FinTable');
   });

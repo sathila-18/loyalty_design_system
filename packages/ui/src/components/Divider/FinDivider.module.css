@@ -7,13 +7,16 @@
   border: 0;
 }
 
-/* 1px line: a hairline border, not a size (there's no Size-1; decided 15 Oct 2026). */
+/*
+ * 1px line: a hairline border, not a size (there's no Size-1; decided 15 Oct 2026). `--divider-color` lets a parent
+ * in a state set the line's token (a Disabled list row uses border-disabled); default border-default.
+ */
 .divider[data-type="divider"][data-orientation="horizontal"] {
-  border-block-start: 1px solid var(--fin-border-default);
+  border-block-start: 1px solid var(--divider-color, var(--fin-border-default));
 }
 
 .divider[data-type="divider"][data-orientation="vertical"] {
-  border-inline-start: 1px solid var(--fin-border-default);
+  border-inline-start: 1px solid var(--divider-color, var(--fin-border-default));
 }
 
 .divider[data-type="section-divider"] {

@@ -1,0 +1,92 @@
+/*
+ * FinListStandard (DESIGN.md §9). Figma List-standard on List-base (FinListItem): Hovered bg-secondary (interactive
+ * rows only), Selected bg-active, Selected+hovered bg-active-hover; Disabled: title and caption
+ * text-disabled-on_bg, description text-disabled, icon fg-disabled, line border-disabled. No pressed look; the
+ * standard focus ring inside the row (decided 20 Oct 2026). Caption and chevron 6 (Space-S) apart. Description
+ * Body/Medium (Small: Body/Small) text-secondary.
+ */
+
+.row {
+  position: relative;
+}
+
+.row[data-interactive] {
+  cursor: pointer;
+}
+
+.row[data-interactive]:hover {
+  background-color: var(--fin-bg-secondary);
+}
+
+.row[data-selected] {
+  background-color: var(--fin-bg-active);
+}
+
+.row[data-selected][data-interactive]:hover {
+  background-color: var(--fin-bg-active-hover);
+}
+
+.row[data-disabled] {
+  --divider-color: var(--fin-border-disabled);
+}
+
+/* The title keeps the base's text style; a link or button title is reset so it looks the same. */
+.title {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+}
+
+/* A link or button row: the title's link or button covers the whole row, so the row is one target. */
+.action {
+  cursor: pointer;
+}
+
+.action::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+}
+
+.action:focus-visible {
+  outline: 0;
+}
+
+.action:focus-visible::after {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -2px;
+}
+
+.row[data-disabled] .title,
+.row[data-disabled] .caption {
+  color: var(--fin-text-disabled-on-bg);
+}
+
+.row[data-disabled] .action {
+  cursor: default;
+}
+
+.description {
+  margin: 0;
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-secondary);
+  overflow-wrap: break-word;
+}
+
+.row[data-size="small"] .description {
+  font: var(--fin-font-body-small);
+}
+
+.row[data-disabled] .description {
+  color: var(--fin-text-disabled);
+}
+
+.trailing {
+  display: flex;
+  gap: var(--fin-space-s);
+  align-items: center;
+}
