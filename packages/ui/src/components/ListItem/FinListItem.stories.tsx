@@ -92,7 +92,7 @@ export const AllParts: Story = {
 export const Slots: Story = {
   render: () => (
     <div className={styles.frame}>
-      <FinListItem leading={<FinAvatar size="large" initials="AP" />} title="Ann Perera" trailing={<FinBadge tone="success">Gold</FinBadge>}>
+      <FinListItem leading={<FinAvatar size="medium" initials="AP" />} title="Ann Perera" trailing={<FinBadge tone="success">Gold</FinBadge>}>
         ann.perera@email.com
       </FinListItem>
       <FinListItem size="small" leading={<FinFlag country="LK" decorative />} title="Sri Lanka" trailingAccessory={false} showBody={false} />

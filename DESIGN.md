@@ -2707,7 +2707,7 @@ Forwards `ref` (presentational, no `'use client'`).
 **API (internal):**
 
 ```tsx
-<FinListItem title="Ann Perera" leading={<FinAvatar size="large" initials="AP" />} trailing={<FinBadge tone="success">Gold</FinBadge>}>
+<FinListItem title="Ann Perera" leading={<FinAvatar size="medium" initials="AP" />} trailing={<FinBadge tone="success">Gold</FinBadge>}>
   ann.perera@email.com
 </FinListItem>
 ```
