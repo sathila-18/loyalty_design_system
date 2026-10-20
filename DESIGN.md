@@ -667,7 +667,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 48 | `Main Selection` | Side nav | `3140:10997` | `FinSideNavItem` | Side nav `24px`, sub selection, `24px` icon · State · Expanded · Type: Full/Minimized · Expanded slot | 🔴 depends on #32 | ⬜ |
 | 49 | `Header notification` | Header | `3178:24467` | `FinHeaderNotificationButton` | 48px bg, Badge - indicator, `24px` · State (runtime: Default/Hovered/Disabled) · Notification: Dot/Number | 🔴 broken set: duplicate variant `State=Hovered, Notification=Dot` (§10 #17) | ⬜ |
 | 50 | `Table header cell` | Table | `3151:14941` | `FinTableHeaderCell` | Base-Checkbox, Label · `Type`: White/Grey (was `Property 1`) · Slot · Show checkbox / title / trailing icon · `<th>`; no hover · **internal**, part of the table (§9.41) | ⚠️ (trailing arrow raw `#626262` → `fg-secondary`) | ✅ |
-| 51 | `Table - Cell` | Table | `3151:14990` | `FinTableCell` | Base-Checkbox, Badge-primary, all-button (checked 15 Oct 2026: uses Badge-primary, not Badge-base directly) · Default/Badge/Link (`Property 1`) · Leading accessories and content slots · Show action button | ⚠️ | ⬜ |
+| 51 | `Table - Cell` | Table | `3151:14990` | `FinTableCell` | Base-Checkbox, Badge-primary, all-button (checked 15 Oct 2026: uses Badge-primary, not Badge-base directly) · `Type`: Default/Badge/Link (was `Property 1`) · Leading accessories, Content and Action slots · Show leading accessories / content / action button · `<td>`; Content slot takes any component · **internal**, part of the table (§9.43) | ⚠️ (raw 14 font size, raw Electric-Indigo-600 icon, Link underline override) | ✅ |
 
 ### 8.4 Organisms
 
@@ -2456,6 +2456,48 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 **Built (20 Oct 2026).** Storybook (Internal/Table/Header row): Playground (Select Cell, number of columns, Show trailing icon on the header cells, selection none / some / all; the arrow is a FinTableHeaderCell prop, so per column in code), Figma, Without select cell, Example. Checked against Figma in a browser: 48 tall, select cell 72 with the checkbox 24 from the left, 12 from the top; titles Label/Medium 14/21 `#474748`, 24 from each cell's left, 13.5 from the top; Grey `#ededed` (Dark `#363636`); the six columns share the rest equally (172 each at 1104 wide, Figma 169.3 at 1088). a11y: no violations in Light or Dark apart from the accepted Grey titles in Dark.
 
+### 9.43 FinTableCell (Table - Cell) — internal
+
+**Figma:** page **Table**, component set `Table - Cell` `3151:14990`: `Type` = Default / Badge / Link, `Show leading accessories` (on), `Show content` (on), `Show action button` (off), and three slots: **Leading accessories** (Base-Checkbox), **Content slot** (Default: text "Table cell text", Body/Medium, `text-secondary`, one line with "…"; Badge: Badge-primary "Text here"; Link: all-button XSmall Tertiary "Text here" with an underline override) and **Action Slot** (`24px` `edit` icon). 174 × 56; padding 0 / `Space-3XL`, gap `Space-M`, centred; no fill (the Table row draws fill and hover). In the Table row the first cell shows only the checkbox (72 wide), as in the Header row. **Internal**, under Internal/Table; used by the Table row (§8 #71) and FinTable.
+
+**Decided 20 Oct 2026:** (1) the badge's colour is its nested Badge-primary `State`, so it's `badgeTone` (every FinBadge tone); (2) Link is a real link (`<a href>`, `linkAs` for a router's link component) styled as in Figma: Button/Medium, `text-action`, underlined, padding `Space-S` / `Space-XL`; Figma has no hover or focus for it, so hover is `text-hovered` and focus the buttons' ring (§10 #6); (3) the action is an icon-only button, 24 × 24 with no padding (Figma's size), `fg-action`, hover `fg-hovered`, focus ring 2px out; (4) the **Content slot takes any component**: Default, Badge and Link are the common kinds (`type` styles text), and other content (avatar, flag, chip…) is shown as given, so new kinds need no change to the cell; (5) an empty cell shows nothing.
+
+**Figma → code:**
+
+| Figma | Prop | Notes |
+|---|---|---|
+| `Type` = Default / Badge / Link | `type: 'default' \| 'badge' \| 'link'` (default `'default'`) | How text content is shown; other content is shown as given |
+| `Show leading accessories` (on) | `leadingAccessories` (default `true`) | |
+| Leading accessories slot (Base-Checkbox) | `leading` (default: the row checkbox) | FinCheckboxBase: `checked`, `onCheckedChange`, `checkboxLabel` (default "Select row") |
+| `Show content` (on) | `showContent` (default `true`) | |
+| Content slot | `children` | Text: Default Body/Medium `text-secondary`; Badge FinBadge; Link `<a>` |
+| Badge-primary `State` (nested) | `badgeTone` (default `'primary'`) | Every FinBadge tone |
+| — | `href`, `linkAs` (default `'a'`) | Link type |
+| `Show action button` (off) | `action` (default `false`) | |
+| Action Slot (`24px` `edit`) | `actionIcon` (default `'edit'`) | Any `finIcons` name |
+| — | `actionLabel` (required with `action`), `onAction` | The button's name and click |
+| — | `ref`, `className`, other `td` attributes | |
+
+**Tokens used:** height `--fin-size-56`, padding `--fin-space-3xl`, gap `--fin-space-m`; text `--fin-font-body-medium` + `--fin-text-secondary` (Figma's raw 14 → the Body/Medium style); link `--fin-font-button-medium`, `--fin-text-action` (hover `--fin-text-hovered`), padding `--fin-space-s` / `--fin-space-xl`, radius `--fin-radius-s`; action `--fin-size-24`, `--fin-fg-action` (Figma's raw `Electric-Indigo-600` `#5953E8` → token; hover `--fin-fg-hovered`), radius `--fin-radius-xs`; focus `--fin-border-focused`. The checkbox and badge bring their own.
+
+**API (internal):**
+
+```tsx
+<tr>
+  <FinTableCell showContent={false} checked={selected} onCheckedChange={toggle} />
+  <FinTableCell leadingAccessories={false}>Ann Perera</FinTableCell>
+  <FinTableCell type="badge" badgeTone="success" leadingAccessories={false}>Active</FinTableCell>
+  <FinTableCell type="link" href="/members/1" linkAs={Link} leadingAccessories={false} action actionLabel="Edit member" onAction={edit}>View profile</FinTableCell>
+  <FinTableCell leadingAccessories={false}><FinAvatar size="xsmall" initials="AP" /></FinTableCell>
+</tr>
+```
+
+`'use client'` (event handlers, forwards `ref`).
+
+**Accessibility:** a native `<td>`; the checkbox is named "Select row" (pass the row's name, e.g. "Select Ann Perera"); the link is a native link; the action is a native `<button type="button">` named by `actionLabel`, 24 × 24 (the minimum target), with a visible focus ring. Contrast: text, link and icon pass in both themes; the badge's `disabled` tone is the accepted exception (§9.10).
+
+**Built (20 Oct 2026).** Storybook (Internal/Table/Table cell): Playground (controls match Figma: Type, Show leading accessories, Show content, content, badge tone, Show action button, action icon), Types (Figma), With action, Badge tones, Select cell, Other content (avatar, flag), Long content. Checked against Figma in a browser: 56 tall, checkbox 24 / 16 from the cell's top left, content 56 from the left; text Body/Medium 14/21 `#656566`, 17.5 from the top; badge 26 tall; link 36 tall, Button/Medium 14/24 `#625bff`, underlined, text 16 in; action 24 × 24 `#625bff`, 8 after the content, centred (16 from the top; Figma's hidden slot sits at 14); Dark uses the Dark tokens; long text in a 160 column ends in "…". a11y: no violations in Light or Dark apart from the accepted `disabled` badge.
+
 Template:
 
 ```
@@ -2495,7 +2537,7 @@ Template:
 | 18 | Input bases decided (13 Oct 2026): `Input field-base` (`49:5734`) for single-line fields, `Input field-textArea-base` (`3094:26567`) for text areas, `Input-OTP-base` (`49:5843`) for OTP. | Input field | ✅ Decided |
 | 19 | `Accordion-bare-base`, `List-base` and `List-fill-base` use a `20px` component whose main component isn't on any page (deleted or moved). | Accordion, List | 🔧 Fix in Figma |
 | 20 | **Clashing name:** `24px` on the Side nav page clashes with the icon size `24px`. (Renamed 13 Oct 2026: `Frame 5` → `sub selection`, Dialog `Frame 3` → `Dialog box`, Header `Frame 1707478998` → `Main header`, `Frame 1707478999` → `Header notification`, Table parts.) | Side nav | 🔧 Fix in Figma |
-| 21 | **Typos and inconsistent names:** `Pregress` (Spinner); `SIze`/`Mediu` (Flag sizes); `Contry selecter`; `Distructive` (Input field-textArea-base); `Xsmall` vs `XSmall` (Avatar, Chips-base); `state` lowercase (Input field-select, Multi select); Snackbar has a property with no name; Empty state has both `Icon slot` and `Icon Slot`; Accordion-bare-base has `Trailing accessory` twice; several `Property 1` properties. Code uses the corrected spelling. The `64px` icon state names (`Variant3`, `Errorr`) were fixed in Figma on 14 Oct 2026. | Components | 🔧 Fix in Figma |
+| 21 | **Typos and inconsistent names:** `Pregress` (Spinner); `SIze`/`Mediu` (Flag sizes); `Contry selecter`; `Sells Slot` and `Property 1` (Table row); `Distructive` (Input field-textArea-base); `Xsmall` vs `XSmall` (Avatar, Chips-base); `state` lowercase (Input field-select, Multi select); Snackbar has a property with no name; Empty state has both `Icon slot` and `Icon Slot`; Accordion-bare-base has `Trailing accessory` twice; several `Property 1` properties. Code uses the corrected spelling. The `64px` icon state names (`Variant3`, `Errorr`) were fixed in Figma on 14 Oct 2026. | Components | 🔧 Fix in Figma |
 | 22 | `Side Menu`: 8 text layers have no text style. | Side nav | 🔧 Fix in Figma |
 | 23 | Icon names checked against Material Symbols Rounded (14 Oct 2026): all 29 §6.4 names render, but four are old Material Icons names. **Decided:** code uses the current names: `camera_alt` → `photo_camera`, `payment` → `credit_card`, `perm_identity` → `person`, `warning_amber` → `warning` (same glyph as `warning`, so one registry entry). List in §6.4. Figma icons will be updated by design later; for icons, code is the source of truth (§6.1). | Icons | ✅ Decided (14 Oct 2026) |
 | 24 | Overlay `Mobile` variant is out of scope; only `Desktop` is built. | Overlays | ✅ Decided (13 Oct 2026) |
@@ -2532,6 +2574,7 @@ Template:
 
 > **Where we are (20 Oct 2026)**
 > - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; approved 19 Oct 2026) and `FinSegmentBase` (§9.33, internal; approved 19 Oct 2026) and `FinSegmentedButton` (§9.34, public; approved 19 Oct 2026) and `FinFlag` (§9.35, public; approved 19 Oct 2026) and `FinCountrySelector` (§9.36, internal, trigger only; approved 19 Oct 2026) and `FinPaginationItem` (§9.37, internal; approved 19 Oct 2026) and `FinRowCountSelect` (§9.38, internal, trigger only; approved 19 Oct 2026) and `FinPagination` (§9.39, public; approved 19 Oct 2026) and `FinTableFooter` (§9.40, internal; approved 19 Oct 2026) and `FinTableHeaderCell` (§9.41, internal; approved 19 Oct 2026) and `FinTableHeaderRow` (§9.42, internal; approved 20 Oct 2026). Everything is merged into `main`.
+> - **Built, waiting for approval:** `FinTableCell` (§9.43, internal, on `feat/table-cell`).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -2643,3 +2686,4 @@ Template:
 | 20 Oct 2026 | 0.2 | `Title row` renamed `Header row` in Figma (§8 #72, node `3151:15203`); code name `FinTableHeaderRow` unchanged. |
 | 20 Oct 2026 | 0.2 | **`FinTableHeaderRow` built** (§8 #72, §9.42), internal under Internal/Table: a `<tr>` with Figma's `Select Cell` (Grey select cell, "select all" checkbox) and `Cell Slot` (`children`); Figma typos `Select Sell` / `Sell Slot` fixed in Figma. Decided: header cells are Grey; the row fills the table and FinTable owns column widths (fixed, flexible, minimum; horizontal scroll; "…"), recorded in §8 #74. §10 #3: Grey title in Dark accepted. |
 | 20 Oct 2026 | 0.2 | `FinTableHeaderRow` approved by design and merged into `main`. |
+| 20 Oct 2026 | 0.2 | **`FinTableCell` built** (§8 #51, §9.43), internal under Internal/Table: a `<td>` with Figma's `Type` (Default / Badge / Link), leading accessories (row checkbox), content and action button. Decided: `badgeTone` for the nested badge; Link is a real link (`linkAs` for routers), underlined; the action is a 24 icon-only button; the Content slot takes any component. Figma raw values → tokens: text size 14 → Body/Medium, icon `#5953E8` → `fg-action`. §10 #21: Table row `Sells Slot` and `Property 1`. |

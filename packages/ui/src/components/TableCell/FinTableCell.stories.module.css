@@ -1,0 +1,18 @@
+/* Layout for the FinTableCell stories only (not part of the component). */
+
+.table {
+  border-collapse: collapse;
+}
+
+/* A fixed-width column (160), to show long content ending in "…". */
+.fixed {
+  table-layout: fixed;
+  width: calc(var(--fin-size-80) * 2);
+}
+
+/* Content made of several components, side by side (the "other content" example). */
+.group {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+}

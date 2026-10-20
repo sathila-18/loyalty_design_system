@@ -1,0 +1,86 @@
+/*
+ * FinTableCell (DESIGN.md §9). Figma: 56 tall, padding 0 / 24 (Space-3XL), gap 8 (Space-M), centred, no fill (the
+ * row draws fill and hover). Default text is Body/Medium text-secondary (Figma's raw 14 → the Body/Medium style).
+ * Link is the all-button XSmall Tertiary look with an underline: Button/Medium, text-action, padding 6 / 16.
+ * The action is a bare 24 icon button: fg-action (Figma raw Electric-Indigo-600 → token), hover fg-hovered.
+ */
+
+.cell {
+  padding: 0;
+  vertical-align: middle;
+}
+
+.inner {
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+  height: var(--fin-size-56);
+  padding: 0 var(--fin-space-3xl);
+}
+
+.leading {
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+/* The content can shrink, so long text ends in "…" instead of widening the column. */
+.content {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.text {
+  overflow: hidden;
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-secondary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link {
+  overflow: hidden;
+  padding: var(--fin-space-s) var(--fin-space-xl);
+  border-radius: var(--fin-radius-s);
+  font: var(--fin-font-button-medium);
+  color: var(--fin-text-action);
+  text-decoration: underline;
+  text-overflow: ellipsis;
+  text-underline-position: from-font;
+  white-space: nowrap;
+}
+
+/* No hover or focus design for the link: text-hovered, and the buttons' ring (§10 #6). */
+.link:hover {
+  color: var(--fin-text-hovered);
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -1px;
+}
+
+.action {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-24);
+  height: var(--fin-size-24);
+  padding: 0;
+  border: 0;
+  border-radius: var(--fin-radius-xs);
+  background: none;
+  color: var(--fin-fg-action);
+  cursor: pointer;
+}
+
+.action:hover {
+  color: var(--fin-fg-hovered);
+}
+
+.action:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
