@@ -1,0 +1,6 @@
+/* Layout for the FinTableHeaderRow stories only (not part of the component). */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
