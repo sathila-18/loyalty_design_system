@@ -6,7 +6,7 @@ import { FinPaymentIcon, type FinPaymentMethod } from '../../payment';
 import { FinCheckboxBase } from '../CheckboxBase';
 import type { FinListItemSize } from '../ListItem';
 import type { FinListRadioItemSide, FinListRadioType } from '../ListRadio';
-import { FinListStandard } from '../ListStandard';
+import { ListStandardRow } from '../ListStandard/FinListStandard';
 import styles from './FinListCheckbox.module.css';
 
 /** As the radio list's `Type`: what sits beside the title. */
@@ -94,13 +94,9 @@ export interface FinListCheckboxProps {
   className?: string;
 }
 
-/**
- * A checkbox list row (DESIGN.md §9), the radio list's twin on List-standard: the checkbox on the left, then an
- * optional flag or payment logo (next to it or at the far right), the title and description. The whole row is the
- * checkbox's label: clicking anywhere ticks it; Selected (`bg-active`) when ticked; the focus ring goes around the row.
- * Use inside FinListCheckboxGroup. Code first (§10 #55). **Public:** Components/List.
- */
-export function FinListCheckbox({
+/** The row behind FinListCheckbox and FinListCheckboxFilled (internal; FinListCheckboxFilled is in ../ListCheckboxFilled). */
+export function FinListCheckboxRow({
+  filled = false,
   value,
   title,
   description,
@@ -115,7 +111,7 @@ export function FinListCheckbox({
   onCheckedChange,
   indeterminate = false,
   className,
-}: FinListCheckboxProps) {
+}: FinListCheckboxProps & { filled?: boolean }) {
   const group = useContext(CheckboxGroupContext);
   const id = useId();
   const disabled = disabledProp || (group?.disabled ?? false);
@@ -149,7 +145,8 @@ export function FinListCheckbox({
   );
 
   return (
-    <FinListStandard
+    <ListStandardRow
+      filled={filled}
       className={className}
       size={size}
       title={title}
@@ -168,4 +165,14 @@ export function FinListCheckbox({
       {...(description !== undefined && description !== null ? { description } : {})}
     />
   );
+}
+
+/**
+ * A checkbox list row (DESIGN.md §9), the radio list's twin on List-standard: the checkbox on the left, then an
+ * optional flag or payment logo (next to it or at the far right), the title and description. The whole row is the
+ * checkbox's label: clicking anywhere ticks it; Selected (`bg-active`) when ticked; the focus ring goes around the row.
+ * Use inside FinListCheckboxGroup. Code first (§10 #55). **Public:** Components/List.
+ */
+export function FinListCheckbox(props: FinListCheckboxProps) {
+  return <FinListCheckboxRow {...props} />;
 }

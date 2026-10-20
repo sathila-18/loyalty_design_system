@@ -20,7 +20,7 @@ interface Args {
 
 /** A radio list: choose one row. Matches Figma's properties (DESIGN.md §9). */
 const meta: Meta<Args> = {
-  title: 'Components/List/List radio',
+  title: 'Components/List/Plain/List radio',
   args: { type: 'default', itemSide: 'leading', description: true, size: 'large', disabled: false },
   argTypes: {
     type: { control: 'inline-radio', options: ['default', 'country', 'payment'], description: 'Figma `Type`' },

@@ -8,6 +8,7 @@ import { FinPaymentIcon, type FinPaymentMethod } from '../../payment';
 import { FinAvatar, type FinAvatarProps } from '../Avatar';
 import { FinCaption } from '../Caption';
 import { FinListItem, type FinListItemProps } from '../ListItem';
+import { FinListItemFilled } from '../ListItemFilled';
 import styles from './FinListStandard.module.css';
 
 /** Figma `Leading accessory`. */
@@ -67,13 +68,11 @@ export interface FinListStandardProps
 }
 
 /**
- * A standard list row (Figma List-standard; DESIGN.md §9), built on FinListItem: an optional leading accessory, the
- * title and description, and an optional caption and chevron. Hovered `bg-secondary` (interactive rows only),
- * Selected `bg-active`, Selected + hovered `bg-active-hover`, Disabled greyed with a `border-disabled` line; no pressed
- * look; the standard focus ring inside the row. A link or button row is one big target (the title's link or button
- * covers the row), so the row keeps its list semantics (`as="li"`). **Public:** Components/List.
+ * The shared row behind FinListStandard and the list family (radio, checkbox, toggle), plain (List-base) or `filled`
+ * (List_fill-base: a card, Selected = 1px `border-active` edge, no fill). Internal: use the public components.
  */
-export function FinListStandard({
+export function ListStandardRow({
+  filled = false,
   title,
   description,
   leadingAccessory = 'none',
@@ -96,7 +95,8 @@ export function FinListStandard({
   onClick,
   className,
   ...rest
-}: FinListStandardProps) {
+}: FinListStandardProps & { filled?: boolean }) {
+  const Base = filled ? FinListItemFilled : FinListItem;
   const generatedId = useId();
   const descriptionId = descriptionIdProp ?? generatedId;
   const interactive = (behavior !== 'static' || labelFor !== undefined) && !disabled;
@@ -143,13 +143,14 @@ export function FinListStandard({
   const hasTrailing = trailing !== undefined || caption !== undefined || chevron;
 
   return (
-    <FinListItem
+    <Base
       {...rest}
       className={className ? `${styles.row} ${className}` : styles.row}
       data-selected={selected ? '' : undefined}
       data-disabled={disabled ? '' : undefined}
       data-interactive={interactive ? '' : undefined}
       data-control={labelFor !== undefined ? '' : undefined}
+      data-filled={filled ? '' : undefined}
       {...(behavior === 'option'
         ? { role: 'option', 'aria-selected': selected, 'aria-disabled': disabled || undefined, ...(disabled ? {} : { onClick }) }
         : {})}
@@ -174,6 +175,17 @@ export function FinListStandard({
           {description}
         </p>
       )}
-    </FinListItem>
+    </Base>
   );
+}
+
+/**
+ * A standard list row (Figma List-standard; DESIGN.md §9), built on FinListItem: an optional leading accessory, the
+ * title and description, and an optional caption and chevron. Hovered `bg-secondary` (interactive rows only),
+ * Selected `bg-active`, Selected + hovered `bg-active-hover`, Disabled greyed with a `border-disabled` line; no pressed
+ * look; the standard focus ring inside the row. A link or button row is one big target (the title's link or button
+ * covers the row), so the row keeps its list semantics (`as="li"`). **Public:** Components/List.
+ */
+export function FinListStandard(props: FinListStandardProps) {
+  return <ListStandardRow {...props} />;
 }

@@ -16,7 +16,7 @@ interface Args {
 
 /** Settings rows with a toggle. Matches Figma's properties (DESIGN.md §9). */
 const meta: Meta<Args> = {
-  title: 'Components/List/List toggle',
+  title: 'Components/List/Plain/List toggle',
   args: { state: 'off', leadingAccessory: 'none', description: true, size: 'large' },
   argTypes: {
     state: { control: 'inline-radio', options: ['off', 'on', 'disabled'], description: 'Figma `State` (Selected is on; Hovered is the mouse)' },

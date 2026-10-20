@@ -60,6 +60,11 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinListToggle');
   });
 
+  it('exports the filled lists, but not the shared rows', () => {
+    for (const name of ['FinListStandardFilled', 'FinListRadioFilled', 'FinListCheckboxFilled', 'FinListToggleFilled']) expect(ui).toHaveProperty(name);
+    for (const name of ['ListStandardRow', 'FinListRadioRow', 'FinListCheckboxRow', 'FinListToggleRow']) expect(ui).not.toHaveProperty(name);
+  });
+
   it('exports FinTable, but not the table parts it is built from', () => {
     expect(ui).toHaveProperty('FinTable');
   });

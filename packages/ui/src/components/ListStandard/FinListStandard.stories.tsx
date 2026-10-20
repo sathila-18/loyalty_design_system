@@ -30,7 +30,7 @@ interface Args {
 const KNOWN_CONTRAST_ISSUES = ['li[data-disabled]', 'html[data-theme="dark"] li[data-selected] [data-thickness]'];
 
 const meta: Meta<Args> = {
-  title: 'Components/List/List standard',
+  title: 'Components/List/Plain/List standard',
   args: { state: 'default', size: 'large', description: true, chevron: false, leadingAccessory: 'none', caption: false, behavior: 'link' },
   argTypes: {
     state: { control: 'inline-radio', options: ['default', 'selected', 'disabled'], description: 'Figma `State` (Hovered is the mouse)' },

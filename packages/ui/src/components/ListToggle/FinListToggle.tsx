@@ -4,7 +4,7 @@ import { useId, type ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import type { FinListItemProps, FinListItemSize } from '../ListItem';
-import { FinListStandard } from '../ListStandard';
+import { ListStandardRow } from '../ListStandard/FinListStandard';
 import { FinToggle } from '../Toggle';
 
 /** Figma `Leading accessory`. */
@@ -36,13 +36,9 @@ export interface FinListToggleProps extends Pick<FinListItemProps, 'as'> {
   className?: string;
 }
 
-/**
- * A settings row with a toggle (Figma List-toggle; DESIGN.md §9), on List-standard: an optional leading icon, the title
- * and description, and FinToggle (small, 40 × 24) on the right. The whole row is the toggle's label: clicking anywhere
- * switches it; the focus ring goes around the row. Unlike the radio and checkbox lists, **on has no Selected fill**
- * (as Figma): the row only shows the grey hover. Each row is its own setting (no group). **Public:** Components/List.
- */
-export function FinListToggle({
+/** The row behind FinListToggle and FinListToggleFilled (internal; FinListToggleFilled is in ../ListToggleFilled). */
+export function FinListToggleRow({
+  filled = false,
   title,
   description,
   leadingAccessory = 'none',
@@ -56,7 +52,7 @@ export function FinListToggle({
   name,
   as,
   className,
-}: FinListToggleProps) {
+}: FinListToggleProps & { filled?: boolean }) {
   const id = useId();
   const hasDescription = description !== undefined && description !== null;
 
@@ -65,7 +61,8 @@ export function FinListToggle({
     leadingNode = <FinIcon name={icon} size={24} color={disabled ? 'disabled' : 'primary'} />;
 
   return (
-    <FinListStandard
+    <ListStandardRow
+      filled={filled}
       {...(as ? { as } : {})}
       className={className}
       size={size}
@@ -96,4 +93,13 @@ export function FinListToggle({
   );
 }
 
-export type { FinListItemSize as FinListToggleSize };
+
+/**
+ * A settings row with a toggle (Figma List-toggle; DESIGN.md §9), on List-standard: an optional leading icon, the title
+ * and description, and FinToggle (small, 40 × 24) on the right. The whole row is the toggle's label: clicking anywhere
+ * switches it; the focus ring goes around the row. Unlike the radio and checkbox lists, **on has no Selected fill**
+ * (as Figma): the row only shows the grey hover. Each row is its own setting (no group). **Public:** Components/List.
+ */
+export function FinListToggle(props: FinListToggleProps) {
+  return <FinListToggleRow {...props} />;
+}

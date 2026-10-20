@@ -20,7 +20,7 @@ interface Args {
 
 /** A checkbox list: tick any rows. Code first, the radio list's twin (no Figma component yet, DESIGN.md §10 #55). */
 const meta: Meta<Args> = {
-  title: 'Components/List/List checkbox',
+  title: 'Components/List/Plain/List checkbox',
   args: { type: 'default', itemSide: 'leading', description: true, size: 'large', disabled: false },
   argTypes: {
     type: { control: 'inline-radio', options: ['default', 'country', 'payment'], description: 'Type (as the radio list)' },

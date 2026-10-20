@@ -4,7 +4,7 @@ import { createContext, useContext, useId, type HTMLAttributes, type ReactNode }
 import { FinFlag, type FinFlagCountry } from '../../flags';
 import { FinPaymentIcon, type FinPaymentMethod } from '../../payment';
 import type { FinListItemSize } from '../ListItem';
-import { FinListStandard } from '../ListStandard';
+import { ListStandardRow } from '../ListStandard/FinListStandard';
 import { FinRadio } from '../Radio';
 import styles from './FinListRadio.module.css';
 
@@ -96,13 +96,9 @@ export interface FinListRadioProps {
   className?: string;
 }
 
-/**
- * A radio list row (Figma List-radio_button; DESIGN.md §9), on List-standard: the radio on the left, then an optional
- * flag or payment logo (next to the radio or at the far right), the title and description. The whole row is the
- * radio's label: clicking anywhere chooses it; Selected (`bg-active`) when chosen; the focus ring goes around the row.
- * Use inside FinListRadioGroup. **Public:** Components/List.
- */
-export function FinListRadio({
+/** The row behind FinListRadio and FinListRadioFilled (internal; FinListRadioFilled is in ../ListRadioFilled). */
+export function FinListRadioRow({
+  filled = false,
   value,
   title,
   description,
@@ -117,7 +113,7 @@ export function FinListRadio({
   name: nameProp,
   onChange,
   className,
-}: FinListRadioProps) {
+}: FinListRadioProps & { filled?: boolean }) {
   const group = useContext(RadioGroupContext);
   const id = useId();
   const disabled = disabledProp || (group?.disabled ?? false);
@@ -146,7 +142,8 @@ export function FinListRadio({
   );
 
   return (
-    <FinListStandard
+    <ListStandardRow
+      filled={filled}
       className={className}
       size={size}
       title={title}
@@ -165,4 +162,14 @@ export function FinListRadio({
       {...(description !== undefined && description !== null ? { description } : {})}
     />
   );
+}
+
+/**
+ * A radio list row (Figma List-radio_button; DESIGN.md §9), on List-standard: the radio on the left, then an optional
+ * flag or payment logo (next to the radio or at the far right), the title and description. The whole row is the
+ * radio's label: clicking anywhere chooses it; Selected (`bg-active`) when chosen; the focus ring goes around the row.
+ * Use inside FinListRadioGroup. **Public:** Components/List.
+ */
+export function FinListRadio(props: FinListRadioProps) {
+  return <FinListRadioRow {...props} />;
 }
