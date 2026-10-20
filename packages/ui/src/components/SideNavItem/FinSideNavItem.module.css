@@ -1,0 +1,94 @@
+/*
+ * FinSideNavItem (DESIGN.md §9). Figma Main Selection: padding 12 (Space-L) / 16 (Space-XL), gap 12 (Space-L),
+ * radius M, Label/Medium text-secondary; chevron 24 fg-secondary (Figma raw #626262), fg-active when selected (raw
+ * #5953E8). Default has no fill (the nav's bg-secondary shows); Hovered bg-tertiary, Pressed bg-neutral;
+ * Selected - BG bg-primary + text-action (no hover change); Selected text-action. Sub items 4 (Space-XS) below,
+ * 8 (Space-M) apart. Minimized: the icon only (56 × 48). No Focused design: a 2px border-focused ring inside.
+ */
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+}
+
+.header {
+  position: relative;
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: center;
+  width: 100%;
+  padding: var(--fin-space-l) var(--fin-space-xl);
+  border: 0;
+  border-radius: var(--fin-radius-m);
+  background-color: transparent;
+  color: var(--fin-text-secondary);
+  font: var(--fin-font-label-medium);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.header:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -2px;
+}
+
+/* Minimized: the icon only (56 × 48). */
+.header[data-type="minimized"] {
+  width: auto;
+  align-self: flex-start;
+}
+
+.header:hover {
+  background-color: var(--fin-bg-tertiary);
+}
+
+.header:active {
+  background-color: var(--fin-bg-neutral);
+}
+
+.header[data-selected] {
+  color: var(--fin-text-action);
+}
+
+/* Selected - BG: the current place; white, and no change on hover or press. */
+.header[data-selected="item"],
+.header[data-selected="item"]:hover,
+.header[data-selected="item"]:active {
+  background-color: var(--fin-bg-primary);
+}
+
+/* One line, ending in "…" when it doesn't fit (as the sub items). */
+.label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Minimized: the label stays the item's name for screen readers. */
+.header[data-type="minimized"] .label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.chevron {
+  display: flex;
+  flex: none;
+  color: var(--fin-fg-secondary);
+}
+
+.header[data-selected] .chevron {
+  color: var(--fin-fg-active);
+}
+
+.subItems {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+}

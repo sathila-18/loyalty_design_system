@@ -1,0 +1,22 @@
+/* Layout for the FinSideNavItem stories only (not part of the component). */
+
+/* A side nav column on the nav's bg-secondary: Full 280 wide (16 padding, as the Side Menu), Minimized narrow. */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+  width: calc(var(--fin-size-56) * 5 + 2 * var(--fin-space-xl));
+  padding: var(--fin-space-xl);
+  background-color: var(--fin-bg-secondary);
+}
+
+.nav[data-type="minimized"] {
+  width: auto;
+  align-self: flex-start;
+}
+
+.row {
+  display: flex;
+  gap: var(--fin-space-3xl);
+  align-items: flex-start;
+}
