@@ -695,9 +695,9 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 69 | `Main header` | Header | `3178:24570` | `FinHeader` | all-button, Text Box, Header notification · Notification, Back button, Description | 🔴 depends on #49 | ⬜ |
 | 70 | `Side Menu` | Side nav | `3142:11871` | `FinSideNav` | Main Selection, List-base, Avatar, Text Box, all-button · Menu (8 sections) | 🔴 unstyled text, remote `Frame 3`/`image` (§10 #22, #25) | ⬜ |
 | 71 | `Table row` | Table | `3151:15248` | `FinTableRow` | Table - Cell, Base-Checkbox · Default/Hovered/Selected/Selected-Hovered (hover is runtime; Selected is a prop) | ⚠️ | ⬜ |
-| 72 | `Title row` | Table | `3151:15203` | `FinTableHeaderRow` | Table header cell, Base-Checkbox, Label | ⚠️ | ⬜ |
+| 72 | `Header row` | Table | `3151:15203` | `FinTableHeaderRow` | Table header cell, Base-Checkbox, Label | ⚠️ | ⬜ |
 | 73 | `Table footer` | Table | `3151:14830` | `FinTableFooter` | Row count dropdown, Pagination group · pages and summary worked out from `totalRows` / `rowsPerPage` · **internal**, part of the table (§9.40); the row count menu waits for the List component (§10 #49) | ⚠️ | ✅ |
-| 74 | — (code only; in Figma the table is assembled on each screen) | Table | — | `FinTable` | **Code-only organism** composed from Title row, Table row, Table footer: columns and rows as data, row selection (select all / indeterminate), footer pagination. No Figma node, so it only uses the parts above and adds no new visuals. See §9 when built. | ✅ (after #50–73) | ⬜ |
+| 74 | — (code only; in Figma the table is assembled on each screen) | Table | — | `FinTable` | **Code-only organism** composed from Header row, Table row, Table footer: columns and rows as data, row selection (select all / indeterminate), footer pagination. No Figma node, so it only uses the parts above and adds no new visuals. See §9 when built. | ✅ (after #50–73) | ⬜ |
 
 ### 8.5 Assets (exported, not built as components)
 
@@ -2391,7 +2391,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 ### 9.41 FinTableHeaderCell (Table header cell) — internal
 
-**Figma:** page **Table**, component set `Table header cell` `3151:14941`: `Type` = White / Grey (was `Property 1`), `Show checkbox` (on), `Show title` (on), `Show trailing icon` (off), and a **Slot** holding a Label (Label/Medium, `text-tertiary`, "Table title"). 151 × 48; padding 0 / `Space-3XL`, gap `Space-L`, centred; Grey fills `bg-tertiary`, White has none; checkbox is Base-Checkbox (24); trailing icon `keyboard_arrow_down` 24, raw `#626262` (→ `fg-secondary`, the same colour in Light). **Internal**, under Internal/Table; used by the Title row (§8 #72) and FinTable.
+**Figma:** page **Table**, component set `Table header cell` `3151:14941`: `Type` = White / Grey (was `Property 1`), `Show checkbox` (on), `Show title` (on), `Show trailing icon` (off), and a **Slot** holding a Label (Label/Medium, `text-tertiary`, "Table title"). 151 × 48; padding 0 / `Space-3XL`, gap `Space-L`, centred; Grey fills `bg-tertiary`, White has none; checkbox is Base-Checkbox (24); trailing icon `keyboard_arrow_down` 24, raw `#626262` (→ `fg-secondary`, the same colour in Light). **Internal**, under Internal/Table; used by the Header row (§8 #72) and FinTable.
 
 **Decided 19 Oct 2026:** (1) the trailing arrow is **display-only** for now; it becomes a sort control or a filter menu once design adds those states (§10 #50); (2) long titles stay on one line and end in "…"; (3) **no hover** or other states on the cell (the checkbox keeps its own).
 
@@ -2607,3 +2607,4 @@ Template:
 | 19 Oct 2026 | 0.2 | `FinTableFooter` approved by design and merged into `main`. |
 | 19 Oct 2026 | 0.2 | **`FinTableHeaderCell` built** (§8 #50, §9.41), internal under Internal/Table: a `<th>` with Figma's `Type` (White / Grey), `checkbox`, `showTitle`, Slot (`children`) and `trailingIcon`; arrow display-only, no hover. Figma's raw arrow `#626262` → `fg-secondary`. §10 #3: Grey title in Dark 4.08:1 (to decide). §10 #50 added (sort and filter design). |
 | 19 Oct 2026 | 0.2 | `FinTableHeaderCell` approved by design and merged into `main` (Grey title in Dark, §10 #3, still to decide). |
+| 20 Oct 2026 | 0.2 | `Title row` renamed `Header row` in Figma (§8 #72, node `3151:15203`); code name `FinTableHeaderRow` unchanged. |

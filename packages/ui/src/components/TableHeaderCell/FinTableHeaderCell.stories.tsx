@@ -22,7 +22,7 @@ interface Args extends Pick<FinTableHeaderCellProps, 'type' | 'checkbox' | 'show
  */
 const KNOWN_CONTRAST_ISSUES = ['html[data-theme="dark"] th[data-type="grey"] [data-size]'];
 
-/** INTERNAL: part of the table (Title row, FinTable). Matches Figma's properties (DESIGN.md §9). */
+/** INTERNAL: part of the table (Header row, FinTable). Matches Figma's properties (DESIGN.md §9). */
 const meta: Meta<Args> = {
   title: 'Internal/Table/Table header cell',
   args: { type: 'white', checkbox: true, showTitle: true, title: 'Table title', trailingIcon: false },
