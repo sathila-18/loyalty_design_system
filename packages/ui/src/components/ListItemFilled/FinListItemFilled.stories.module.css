@@ -1,0 +1,15 @@
+/* Layout for the FinListItemFilled stories only (not part of the component). */
+
+/* A 360 column, close to Figma's 375 frame (also used as the list in the Group story). */
+.frame {
+  width: calc(var(--fin-size-120) * 3);
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-3xl);
+  align-items: flex-start;
+}

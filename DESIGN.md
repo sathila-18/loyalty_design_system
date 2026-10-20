@@ -685,7 +685,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 57 | `Search` | Search | `440:5164` | `FinSearchField` | **Input field-base** · State · Sticky | ⚠️ (after #52) | ⬜ |
 | 58 | `File uploads` | Input field | `775:4280` | `FinFileUpload` | 40px bg, 48px bg, Text Box, all-button · Size: Large/Small | ⚠️ | ⬜ |
 | 59 | `List-base` | List | `77:10185` | `FinListItem` | **Base.** 40px bg, Label, Text Box, Divider · `Size` · leading / trailing accessory slots (preferred instances per scenario), top label, title + extra icon (swappable `20px`), body slot, divider · no states (§7.2) · **internal** (§9.49) | ⚠️ (Small title bound to H6 variables at 14/21 → Label/Medium) | ✅ |
-| 60 | `List_fill-base` (was `List-fill-base`; new node 20 Oct 2026, was `3169:6327`) | List | `3494:14233` | `FinListItemFilled` | **Base.** List-base in a frame (`bg-primary`, `border-subtle`, `Radius-L`, padding `Space-XL`), no divider · Avatar (leading default), Label, Text Box · slots · `Size` | ⚠️ (Small ignores `Show leading accessory`, §10 #53) | ⬜ |
+| 60 | `List_fill-base` (was `List-fill-base`; new node 20 Oct 2026, was `3169:6327`) | List | `3494:14233` | `FinListItemFilled` | **Base.** List-base in a frame (`bg-primary`, `border-subtle`, `Radius-L`, padding `Space-XL`), no divider · Avatar (leading default), Label, Text Box · slots · `Size` · filled items together 12 apart · no states · **internal** (§9.50) | ⚠️ (Small ignores `Show leading accessory`, §10 #53) | ✅ |
 | 61 | `Accordion-frame-base` | Accordion | `555:1767` | `FinAccordionFramed` | **Base.** Text Box, Badge-primary, Label · slots | ✅ | ⬜ |
 | 62 | `Accordion-bare-base` | Accordion | `555:1968` | `FinAccordion` | **Base.** Text Box, Badge-primary, Label, Divider · slots | 🔴 missing `20px` main (§10 #19) | ⬜ |
 | 63 | `Notification` | Notification banners | `77:10612` | `FinNotificationBanner` | all-button, icons · Type: Info/Success/Error/Warning/Neutral | ⚠️ (§10 #16) | ⬜ |
@@ -2718,6 +2718,31 @@ Presentational (no `'use client'`).
 
 **Built (20 Oct 2026).** Storybook (Internal/List/List base): Playground (every Figma property), Sizes (Figma), All parts, Slots (avatar, flag, badge), Group (lists of items, the last without a divider; items without a body centred). Checked against Figma in a browser (in a 360 column): Large 82 tall, Small 76; leading 40 at 16 / 16; text column 52 after it; title 16/24 (Small 14/21) `#19191a`, body 28 (Small 25) below the title's top, 14/21 (Small 12/18) `#656566`; extra icon 20 at the end of the title row, 2 down; trailing arrow 24 at the right edge; divider 16 below the content; without a body the title and arrow are centred on the 40 accessory (both 36 from the top at Large); in a group the last item has no divider and single items keep it; Dark uses the Dark tokens. a11y: no violations in Light or Dark.
 
+### 9.50 FinListItemFilled (List_fill-base) — internal
+
+**Figma:** page **List**, component set `List_fill-base` `3494:14233` (new 20 Oct 2026; was `List-fill-base` `3169:6327`): List-base's parts in a frame. `Size` = Large / Small; `Show leading accessory` (on; default an `Avatar` Image Medium, 40) with its slot; `Show top label`, the title with `Show extra icon`, `Show body content` with its slot, `Show trailing accessory` (`keyboard_arrow_right` 24) with its slot; **no divider**. Frame: `bg-primary`, 1px `border-subtle` (inside), `Radius-L`, padding `Space-XL` all round. Large 375 × 81, Small 375 × 75. Small always shows the avatar (§10 #53). **Internal**, under Internal/List.
+
+**Decided 20 Oct 2026:** (1) built **on FinListItem** (same parts, slots and rules: no states, centred without a body); it only adds the frame, removes the divider and defaults the leading accessory to a 40 avatar; (2) **filled items shown together sit 12 (`Space-L`) apart** (the item adds it to the one after it, so a stack needs no container spacing); (3) `leadingAccessory` works on both sizes (§10 #53); (4) the border is drawn inside the frame (inset shadow, as Badge and Chip), so the size matches Figma.
+
+**Figma → code:** as FinListItem (§9.49), without `divider`; the leading default is `FinAvatar size="medium"` (pass `leading` with a photo, initials or anything else).
+
+**Tokens used:** padding `--fin-space-xl`, border `--fin-border-subtle` (1px inset), radius `--fin-radius-l`, fill `--fin-bg-primary`, gap between items `--fin-space-l`. Everything else from FinListItem.
+
+**API (internal):**
+
+```tsx
+<ul>
+  <FinListItemFilled as="li" title="Ann Perera" leading={<FinAvatar size="medium" src={photo} />}>ann.perera@email.com</FinListItemFilled>
+  <FinListItemFilled as="li" title="Ravi Fernando" leading={<FinAvatar size="medium" initials="RF" />}>ravi.fernando@email.com</FinListItemFilled>
+</ul>
+```
+
+Presentational (no `'use client'`).
+
+**Accessibility:** as FinListItem: plain content (`div`, or `li` in a list); the components built on it add roles and keyboard behaviour. Contrast as FinListItem, on `bg-primary`.
+
+**Built (20 Oct 2026).** Storybook (Internal/List/List fill base): Playground (every Figma property), Sizes (Figma), Group (items 12 apart, one without a body centred). Checked against Figma in a browser (in a 360 column): Large 81 tall, Small 75; avatar 40 at 16 / 16, title 52 after it, arrow 16 from the right edge; 1px `#ededed` border inside, radius 16, white (Dark `#19191a` with `#363636`); stacked items 12 apart. a11y: no violations in Light or Dark.
+
 Template:
 
 ```
@@ -2797,7 +2822,7 @@ Template:
 
 > **Where we are (20 Oct 2026)**
 > - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; approved 19 Oct 2026) and `FinSegmentBase` (§9.33, internal; approved 19 Oct 2026) and `FinSegmentedButton` (§9.34, public; approved 19 Oct 2026) and `FinFlag` (§9.35, public; approved 19 Oct 2026) and `FinCountrySelector` (§9.36, internal, trigger only; approved 19 Oct 2026) and `FinPaginationItem` (§9.37, internal; approved 19 Oct 2026) and `FinRowCountSelect` (§9.38, internal, trigger only; approved 19 Oct 2026) and `FinPagination` (§9.39, public; approved 19 Oct 2026) and `FinTableFooter` (§9.40, internal; approved 19 Oct 2026) and `FinTableHeaderCell` (§9.41, internal; approved 19 Oct 2026) and `FinTableHeaderRow` (§9.42, internal; approved 20 Oct 2026) and `FinTableCell` (§9.43, internal; approved 20 Oct 2026) and `FinTableRow` (§9.44, internal; approved 20 Oct 2026) and `FinTable` (§9.45, public; approved 20 Oct 2026) and `FinSideNavIcon` (§9.46, internal; approved 20 Oct 2026) and `FinSideNavSubItem` (§9.47, internal; approved 20 Oct 2026) and `FinSideNavItem` (§9.48, internal; approved 20 Oct 2026). Everything is merged into `main`.
-> - **Built, waiting for approval:** `FinListItem` (§9.49, internal, on `feat/list-item`).
+> - **Built, waiting for approval:** `FinListItem` (§9.49, internal, on `feat/list-item`) and `FinListItemFilled` (§9.50, internal, on `feat/list-item-filled`, built on it).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -2926,3 +2951,4 @@ Template:
 | 20 Oct 2026 | 0.2 | **`FinListItem` built** (§8 #59, §9.49), internal under Internal/List: Figma's `Size`, leading / trailing accessory slots, top label, title with a swappable extra icon, body slot and divider; no states. §10 #19 fixed for List-base (Figma updated: extra icon is the Icon sizes `20px`, top label icon removed). Small title → Label/Medium. |
 | 20 Oct 2026 | 0.2 | `FinListItem`: without a body, the title and trailing accessory are centred on the leading accessory; **rule: the last of several items shown together has no divider**; `as="li"` for lists (§9.49). |
 | 20 Oct 2026 | 0.2 | List fill base is a new component in Figma: `List_fill-base` `3494:14233` (was `List-fill-base` `3169:6327`); §8 #60 updated, §10 #19 fixed for it, §10 #53 added (Small ignores `Show leading accessory`). |
+| 20 Oct 2026 | 0.2 | **`FinListItemFilled` built** (§8 #60, §9.50), internal under Internal/List: FinListItem in a frame (`bg-primary`, inset `border-subtle`, `Radius-L`, padding `Space-XL`), no divider, avatar by default. Decided: filled items together sit 12 (`Space-L`) apart. |
