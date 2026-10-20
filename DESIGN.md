@@ -539,7 +539,7 @@ Many components in Figma follow a **base → mapped** structure:
 | `List-base`, `List-fill-base` | (bases; used directly by Side Menu, no mapped components yet) |
 | `Accordion-frame-base`, `Accordion-bare-base` | (bases only; no mapped components yet) |
 
-**List and Accordion bases (design note, 13 Oct 2026).** These are bases even though nothing is mapped from them yet. They have no interaction states in Figma today (no hover, pressed or selected). Build them as bases with **no hover or selected styling** for now, but keep the structure ready for states: the root element must be able to take `data-selected` and be interactive later (as a `button` or link through the `as` prop) without changing the markup or slots. When design adds states, or a mapped list item needs them, they are added to the **base**, not to the mapped component. Don't invent states before design adds them.
+**List and Accordion bases (design note, 13 Oct 2026).** These are bases even though nothing is mapped from them yet. They have no interaction states in Figma today (no hover, pressed or selected). Build them as bases with **no hover or selected styling**. ~~When design adds states, they are added to the base~~ (replaced 20 Oct 2026 by the rule below: states go on the components built on the base). Don't invent states before design adds them.
 
 **Rule: bases have no interaction states (decided 20 Oct 2026).** Hover, pressed, selected and focus never go on a base (List, Accordion or any other); they belong to the components built on it (a menu row, a list row), which add them in their own CSS. A base only provides the layout, parts and slots.
 
