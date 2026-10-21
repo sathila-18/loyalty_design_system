@@ -46,6 +46,25 @@ describe('FinPasswordField', () => {
     expect(input()).toHaveValue('secret');
   });
 
+  it('a click on the eye keeps focus in the input, so typing carries on', async () => {
+    const user = userEvent.setup();
+    render(<FinPasswordField label="Password" />);
+    await user.click(input());
+    await user.keyboard('sec');
+    await user.click(screen.getByRole('button', { name: 'Show password' }));
+    expect(input()).toHaveFocus();
+    await user.keyboard('ret');
+    expect(input()).toHaveValue('secret');
+  });
+
+  it('a click on the eye of an empty field leaves it unfocused', async () => {
+    const user = userEvent.setup();
+    render(<FinPasswordField label="Password" />);
+    await user.click(screen.getByRole('button', { name: 'Show password' }));
+    expect(document.body).toHaveFocus();
+    expect(input()).toHaveAttribute('type', 'text');
+  });
+
   it('can start shown, or be controlled', async () => {
     const user = userEvent.setup();
     const onShowPasswordChange = vi.fn();

@@ -15,6 +15,9 @@
  * Small (code only, Figma doesn't have it yet; decided 21 Oct 2026): box 40 tall, padding 8 / 16 (Space-M /
  * Space-XL), icons 20 (the default chevron, the country selector's arrow; the slots take 20 icons); text unchanged.
  *
+ * Focused is the input (or `control`) having focus, not a button in an accessory slot (the password eye): reaching
+ * that shows only its own focus ring (decided 21 Oct 2026).
+ *
  * The label sits on no background: the border, ring and halo are fieldsets whose legend (the label's text, invisible)
  * cuts a gap in them, so whatever surface is behind the field shows (decided 21 Oct 2026). The ring geometry (1px,
  * 2px) is hairline widths, as the focus rings elsewhere.
@@ -41,7 +44,7 @@
 }
 
 /* Complete: filled and not focused. */
-.root:is([data-filled], :has(.input:not(:placeholder-shown))):not([data-error], [data-disabled], :has(.content:focus-within)) {
+.root:is([data-filled], :has(.input:not(:placeholder-shown))):not([data-error], [data-disabled], :has(.content > :not(.accessory):focus-within)) {
   --input-border: var(--fin-border-strong);
 }
 
@@ -59,7 +62,7 @@
 }
 
 /* Hovered: only an empty field that isn't focused (Figma has Hovered for those only). */
-.root:not([data-disabled], [data-filled], :has(.input:not(:placeholder-shown))) .field:hover:not(:has(.content:focus-within)) {
+.root:not([data-disabled], [data-filled], :has(.input:not(:placeholder-shown))) .field:hover:not(:has(.content > :not(.accessory):focus-within)) {
   background-color: var(--fin-bg-secondary);
 }
 
@@ -139,7 +142,7 @@
 /* While the label shows, the divider starts under it, so a long label never sits on the line (Figma's short label
    ends before it). */
 .root:is([data-filled], :has(.input:not(:placeholder-shown))) .divider,
-.field:has(.content:focus-within) .divider {
+.field:has(.content > :not(.accessory):focus-within) .divider {
   margin-block-start: var(--fin-space-m);
 }
 
@@ -179,8 +182,8 @@
   display: none;
 }
 
-.field:has(.content:focus-within) .ring,
-.field:has(.content:focus-within) .halo {
+.field:has(.content > :not(.accessory):focus-within) .ring,
+.field:has(.content > :not(.accessory):focus-within) .halo {
   display: block;
 }
 
@@ -219,12 +222,12 @@
 }
 
 .root:is([data-filled], :has(.input:not(:placeholder-shown))) .label,
-.field:has(.content:focus-within) .label {
+.field:has(.content > :not(.accessory):focus-within) .label {
   opacity: 1;
 }
 
 .root:is([data-filled], :has(.input:not(:placeholder-shown))) .notch,
-.field:has(.content:focus-within) .notch {
+.field:has(.content > :not(.accessory):focus-within) .notch {
   max-width: 100%;
 }
 
