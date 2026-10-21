@@ -684,7 +684,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 52a | `Input field-textArea-base` | Input field | `3094:26567` | `FinTextAreaBase` | **Base** for multi-line fields. Type: Default/Destructive (`Distructive`) · Label, Helper text, Placeholder, Caret, Focus ring · Helper text and Placeholder slots | ⚠️ (§10 #16) | ⬜ |
 | 52b | `Input field-base` (text area) | Input field | `3097:27497` | _(provisional)_ `FinTextArea` | **Input field-textArea-base**, Helper text | 🔴 broken set and duplicate name (§10 #17) | ⬜ |
 | 53 | `Input field-standard` | Input field | `52:2629` | `FinTextField` | **Input field-base**, Payment Icons (FinPaymentIcon), Country selector · Type (code `variant`): Default/Mobile number/Payment · State (runtime) · Trailing icon (code `trailingIcon`) · Error · Small size (code only) · dial code from the country, card brand from the number · **public** (§9.59) | ⚠️ (§10 #58 (5)–(6)) | ✅ |
-| 54 | `Input field-password` | Input field | `60:7165` | `FinPasswordField` | **Input field-base** · Show password · Error | ⚠️ (after #52) | ⬜ |
+| 54 | `Input field-password` | Input field | `60:7165` | `FinPasswordField` | **Input field-base** · State (runtime) · Show password (code `showPassword` / `defaultShowPassword`, the eye button) · Error · Small size (code only) · **public** (§9.60) | ⚠️ (§10 #58 (1), (3), (4)) | ✅ |
 | 55 | `Input field-select` | Input field | `537:2736` | `FinSelectField` | **Input field-base** | ⚠️ (after #52) | ⬜ |
 | 56 | `Input field-Multi select` | Input field | `922:6170` | `FinMultiSelectField` | **Input field-base**, Chips-base | ⚠️ (after #52) | ⬜ |
 | 57 | `Search` | Search | `440:5164` | `FinSearchField` | **Input field-base** · State · Sticky | ⚠️ (after #52) | ⬜ |
@@ -3064,6 +3064,36 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Built (21 Oct 2026).** Storybook (Components/Input field/Text field): Playground, Types (Figma), States (Figma), Sizes, Focused, Mobile number, Payment, Payment typing, Form. Checked against Figma in a browser: 343 × 74, box 48, Default input at 16, Mobile number +94 after the divider, Payment logo 38 × 24 at 16 (Figma 34.5, §9.52) and the value 8 after it; Light and Dark. The Label "Usage" and Helper text "With a field" stories now use FinTextField instead of stand-in inputs. a11y: no violations apart from disabled helper text (exempt, as §9.20).
 
+### 9.60 FinPasswordField (Input field-password) — public
+
+**Figma:** page **Input field**, component set `Input field-password` `60:7165` (read 21 Oct 2026, 22 variants): `State` = Enabled / Hovered / Focused / Typing / Complete / Disabled × `Show password` (False / True) × `Error` (no Disabled + Error). Every variant is Input field-base `Type=Default` (§9.58): 343 × 74, the 48 box. The trailing slot holds a 24 eye: `visibility_off` while the password is hidden, `visibility` while it's shown (`fg-secondary`; `State=Disabled` when disabled). Hidden: dots; shown: the text. Placeholder "Password". No hover or pressed look for the eye. Inconsistencies in §10 #58 (1), (3), (4).
+
+**Decided 21 Oct 2026:** (1) the icon follows Figma: it shows the **current state** (`visibility_off` hidden, `visibility` shown). (2) The eye is a native `<button>` whose **name always says the action**: "Show password" while hidden, "Hide password" while shown (no `aria-pressed`, so the name and state never contradict); `showLabel` / `hideLabel` change the words (for a PIN). (3) **No hover style**: the pointer cursor only, and the standard focus ring (2px `border-focused`, 2 out) when it's reached with the keyboard. (4) **Focus stays on the button** after pressing it, so a keyboard user can press it again. (5) `Show password` is `showPassword` (controlled) / `defaultShowPassword` (default hidden), with `onShowPasswordChange`. (6) `autoComplete` defaults to `current-password`; use `new-password` when setting one, so password managers offer to save it. (7) Small (code only): a 20 eye.
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `State` | runtime (the base's CSS); `disabled` (also disables the eye) |
+| `Show password` | `showPassword` / `defaultShowPassword`, `onShowPasswordChange` |
+| `Error` | `error` |
+| Label, placeholder, helper text (base) | `label` (required), `placeholder`, `helperText` |
+| — (code only) | `size: 'large' \| 'small'`; `showLabel` / `hideLabel`; the input's own attributes (`value`, `onChange`, `name`, `autoComplete`…), `ref` |
+
+**Tokens used:** `--fin-radius-xs` and `--fin-border-focused` (the eye's focus ring); the rest from FinInputBase (§9.58).
+
+**API:**
+
+```tsx
+<FinPasswordField label="Password" placeholder="Password" />
+<FinPasswordField label="New password" autoComplete="new-password" helperText="At least 8 characters" />
+<FinPasswordField label="Password" showPassword={shown} onShowPasswordChange={setShown} />
+```
+
+**Accessibility:** a native `type="password"` input (`type="text"` while shown) with its label and helper text, as FinInputBase. The eye is a `<button type="button">` after the input in tab order, named by its action; Enter and Space press it; disabled with the field.
+
+**Built (21 Oct 2026).** Storybook (Components/Input field/Password field): Playground, States (Figma), Sizes, Typing, Eye button focused, Form. Checked against Figma in a browser: 343 × 74, box 48, the eye 24 at 16 from the right and 12 down, input 279 wide; hidden and shown, Enabled, Complete, Disabled and Error in Light and Dark. a11y: no violations apart from disabled helper text (exempt, as §9.20).
+
 Template:
 
 ```
@@ -3150,7 +3180,8 @@ Template:
 > - **Done:** setup S1–S6, `FinIcon` (§9.1), `FinIconContainer` (§9.2), `FinDivider` (§9.3), `FinAvatar` (§9.4), `FinAvatarGroup` (§9.5), `FinProfileImage` (§9.6), `FinOnlineIndicator` (§9.7), `FinBadgeIndicator` (§9.8), `FinBadgeBase` (§9.9) and `FinBadge` (§9.10, with the tones added to FinBadgeBase, which is now internal). `FinIndicatorDot` (§9.11, internal), `FinPageIndicator` (§9.12) `FinOverlay` (§9.13) `FinToggle` (§9.14) `FinRadio` (§9.15) `FinProgressBar` (§9.16) `FinSpinner` (§9.17) `FinSlider` (§9.18) `FinLabel` (§9.19) `FinHelperText` (§9.20) `FinTextBox` (§9.21) `FinBarWithText` (§9.22) `FinSpinnerWithText` (§9.23), `FinCaption` (§9.24), `FinButtonBase` (§9.25, internal; approved 19 Oct 2026) and `FinWhiteButton` (§9.26, internal; approved 19 Oct 2026) and `FinDestructiveButton` (§9.27, internal; approved 19 Oct 2026) and `FinButton` (§9.28, public; approved 19 Oct 2026) and `FinCheckboxBase` (§9.29, internal; approved 19 Oct 2026) and `FinCheckbox` (§9.30, public; approved 19 Oct 2026) and `FinChipBase` (§9.31, internal; approved 19 Oct 2026) and the three chips `FinAssistChip`, `FinFilterChip`, `FinInputChip` (§9.32, public; approved 19 Oct 2026) and `FinSegmentBase` (§9.33, internal; approved 19 Oct 2026) and `FinSegmentedButton` (§9.34, public; approved 19 Oct 2026) and `FinFlag` (§9.35, public; approved 19 Oct 2026) and `FinCountrySelector` (§9.36, internal, trigger only; approved 19 Oct 2026) and `FinPaginationItem` (§9.37, internal; approved 19 Oct 2026) and `FinRowCountSelect` (§9.38, internal, trigger only; approved 19 Oct 2026) and `FinPagination` (§9.39, public; approved 19 Oct 2026) and `FinTableFooter` (§9.40, internal; approved 19 Oct 2026) and `FinTableHeaderCell` (§9.41, internal; approved 19 Oct 2026) and `FinTableHeaderRow` (§9.42, internal; approved 20 Oct 2026) and `FinTableCell` (§9.43, internal; approved 20 Oct 2026) and `FinTableRow` (§9.44, internal; approved 20 Oct 2026) and `FinTable` (§9.45, public; approved 20 Oct 2026) and `FinSideNavIcon` (§9.46, internal; approved 20 Oct 2026) and `FinSideNavSubItem` (§9.47, internal; approved 20 Oct 2026) and `FinSideNavItem` (§9.48, internal; approved 20 Oct 2026) and `FinListItem` (§9.49, internal; approved 20 Oct 2026) and `FinListItemFilled` (§9.50, internal; approved 20 Oct 2026) and `FinListStandard` (§9.51, public; approved 20 Oct 2026) and `FinPaymentIcon` (§9.52, public; approved 20 Oct 2026) and `FinListRadio` / `FinListRadioGroup` (§9.53, public; approved 20 Oct 2026) and `FinListCheckbox` / `FinListCheckboxGroup` (§9.54, public, code first; approved 20 Oct 2026) and `FinListToggle` (§9.55, public; approved 20 Oct 2026) and the filled lists `FinListStandardFilled`, `FinListRadioFilled`, `FinListCheckboxFilled`, `FinListToggleFilled` (§9.56, public, code first; approved 20 Oct 2026). Everything is merged into `main`.
 > - **Also done:** `FinSideNav` (§9.57, public; approved 21 Oct 2026), merged into `main`.
 > - **Approved and merged (21 Oct 2026):** `FinInputBase` (§9.58, internal), with the code-only Small size.
-> - **Approved and merged (21 Oct 2026):** `FinTextField` (§9.59). Next: FinPasswordField, then select, multi select and search, one at a time.
+> - **Approved and merged (21 Oct 2026):** `FinTextField` (§9.59).
+> - **Built, waiting for design review (21 Oct 2026):** `FinPasswordField` (§9.60) on branch `feat/password-field`. Next: select, multi select and search, one at a time.
 > - **Next:** the next component named by design.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
@@ -3306,3 +3337,4 @@ Template:
 | 21 Oct 2026 | 0.2 | `FinInputBase` approved by design and merged into `main`. |
 | 21 Oct 2026 | 0.2 | **`FinTextField` built** (§8 #53, §9.59), public under Components/Input field/Text field, on FinInputBase: `variant` (Default / Mobile number / Payment), `trailingIcon`, `error`, `size`; Mobile number's dial code from `libphonenumber-js` (`finDialCodes`, new dev dependency, `pnpm dial-codes`, §6.1); Payment's logo from FinPaymentIcon, its brand from the number, the digits grouped as typed. FinInputBase: the Mobile number divider starts under a visible label. Label and Helper text stories use FinTextField. §10 #58 (5)–(7) added. |
 | 21 Oct 2026 | 0.2 | `FinTextField` approved by design and merged into `main`. |
+| 21 Oct 2026 | 0.2 | **`FinPasswordField` built** (§8 #54, §9.60), public under Components/Input field/Password field, on FinInputBase: `showPassword` / `defaultShowPassword` (the eye button, named by its action, no hover, focus stays on it), `error`, `size`, `autoComplete` default `current-password`. |

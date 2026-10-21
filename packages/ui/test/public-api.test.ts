@@ -77,6 +77,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinSideNav');
   });
 
+  it('exports FinPasswordField', () => {
+    expect(ui).toHaveProperty('FinPasswordField');
+  });
+
   it('exports FinTextField and the dial codes, but not its FinInputBase base', () => {
     expect(ui).toHaveProperty('FinTextField');
     expect(ui).toHaveProperty('finDialCodes');
