@@ -45,8 +45,8 @@ export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputEle
 }
 
 /**
- * The base of the single-line fields (Figma Input field-base; DESIGN.md §9): a 56 box (radius M, 1px border,
- * padding 16, gap 8) with the leading accessory, prefix, input, suffix and trailing accessory, the label on the top
+ * The base of the single-line fields (Figma Input field-base; DESIGN.md §9): a 48 box (radius M, 1px border,
+ * padding 12 / 16, gap 8) with the leading accessory, prefix, input, suffix and trailing accessory, the label on the top
  * border and the helper text 8 below. **The states are the browser's** (decided 21 Oct 2026), the same for every
  * field built on it: Hovered (`bg-secondary`, empty fields only), Focused and Typing (the label, caret and focus
  * ring), Complete (the label, `border-strong`), Disabled; Error changes the colors. The border is cut where the label

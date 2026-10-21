@@ -1,7 +1,8 @@
 /*
  * FinInputBase (DESIGN.md §9). Figma Input field-base, with the states from Input field-standard and -password:
- * box 56 tall (16 padding around the 24 content), radius M, 1px border; content gap 8 (Space-M); helper text 8 below,
- * 16 in from the sides. Value Body/Large text-primary, placeholder text-placeholder, prefix and suffix Body/Large
+ * box 48 tall (padding 12 / 16, Space-L / Space-XL, around the 24 content; 56 until 21 Oct 2026), radius M, 1px
+ * border; content gap 8 (Space-M); Mobile number: the content starts 8 (Space-M) after the divider; helper text 8
+ * below, 16 in from the sides. Value Body/Large text-primary, placeholder text-placeholder, prefix and suffix Body/Large
  * text-tertiary, icons fg-secondary, caret fg-brand. Label Label/Small text-tertiary on the top border, 16 in, with
  * 4 (Space-XS; Figma raw 4) each side.
  *
@@ -65,7 +66,11 @@
   gap: var(--fin-space-m);
   align-items: center;
   min-width: 0;
-  padding: var(--fin-space-xl);
+  padding: var(--fin-space-l) var(--fin-space-xl);
+}
+
+.root[data-variant="mobile-number"] .content {
+  padding-inline-start: var(--fin-space-m);
 }
 
 .input {
