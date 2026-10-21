@@ -1,0 +1,60 @@
+/* Layout for the FinSideNav stories only (not part of the component). */
+
+.frame {
+  display: flex;
+  min-height: 100dvh;
+}
+
+/* A shorter nav for the galleries and the long-content story (the real one is the window's height). */
+.short {
+  height: calc(var(--fin-size-120) * 6);
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-3xl);
+  padding: var(--fin-space-3xl);
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+  margin: 0;
+}
+
+.caption {
+  max-width: calc(var(--fin-size-56) * 5);
+  font: var(--fin-font-label-small);
+  color: var(--fin-text-secondary);
+}
+
+.menu {
+  display: flex;
+}
+
+/* The logo placeholder: the 40 image (Figma Logo sizes) and "Company Name" (Title/Medium, decided 21 Oct 2026). */
+.logo {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: center;
+  min-width: 0;
+}
+
+.logoImage {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-40);
+  height: var(--fin-size-40);
+}
+
+.companyName {
+  overflow: hidden;
+  font: var(--fin-font-title-medium);
+  color: var(--fin-text-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

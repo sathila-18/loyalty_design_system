@@ -18,6 +18,7 @@ export const finIcons = [
   'dock_to_right',
   'edit',
   'home',
+  'image',
   'info',
   'keyboard_arrow_down',
   'keyboard_arrow_right',

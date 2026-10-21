@@ -1,0 +1,156 @@
+/*
+ * FinSideNav (DESIGN.md §9). Figma Side Menu: bg-secondary, padding 24 (Space-3XL) / 16 (Space-XL), full height; the
+ * top (header and menu, 24 / Space-3XL apart) and the user at the bottom, at least 40 (Space-6XL, Figma raw 40) apart.
+ * Expanded 312: the menu column is 280 wide (Main Selection; no Size-280 token, so 5 × Size-56). Minimized 88: a 56
+ * column. Header 48 tall: logo on the left, the collapse button on the right (centred when minimized). Sections 8
+ * (Space-M, Figma raw 8) apart. User row: List-base Small with padding 12 (Space-L) / 0, name Label/Medium
+ * text-primary, email Body/Medium text-secondary, both one line with "…". No right border (decided 21 Oct 2026).
+ * Expand / collapse: a width transition (decided 21 Oct 2026; raw duration and M3 standard easing until motion
+ * tokens exist, §5), none for people who prefer reduced motion.
+ */
+
+.nav {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  flex: none;
+  gap: var(--fin-space-6xl);
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: calc(var(--fin-size-56) * 5 + 2 * var(--fin-space-xl));
+  height: 100dvh;
+  padding: var(--fin-space-3xl) var(--fin-space-xl);
+  overflow: hidden;
+  background-color: var(--fin-bg-secondary);
+  transition: width 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.nav[data-type="minimized"] {
+  width: calc(var(--fin-size-56) + 2 * var(--fin-space-xl));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+}
+
+.top {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  min-height: 0;
+}
+
+.header {
+  display: flex;
+  flex: none;
+  gap: var(--fin-space-m);
+  align-items: center;
+  justify-content: space-between;
+  height: var(--fin-size-48);
+}
+
+.nav[data-type="minimized"] .header {
+  justify-content: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* Taller than the window: the menu scrolls on its own, the header and user stay put. */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.menuItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav[data-type="minimized"] .menuItem {
+  align-items: center;
+}
+
+.footer {
+  flex: none;
+}
+
+.profile {
+  position: relative;
+  padding: var(--fin-space-l) 0;
+}
+
+.name,
+.email {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.email {
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-secondary);
+}
+
+/* The name's link or button covers the whole row, so the row is one target (as List-standard). */
+.action {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.action::after {
+  position: absolute;
+  border-radius: var(--fin-radius-m);
+  content: "";
+  inset: 0;
+}
+
+.action:focus-visible {
+  outline: 0;
+}
+
+.action:focus-visible::after {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -2px;
+}
+
+.profileMinimized {
+  display: flex;
+  justify-content: center;
+  padding: var(--fin-space-l) 0;
+}
+
+.avatarAction {
+  display: flex;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fin-radius-full);
+  background: none;
+  cursor: pointer;
+}
+
+.avatarAction:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}

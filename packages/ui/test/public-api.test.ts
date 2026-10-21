@@ -73,6 +73,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinPagination');
   });
 
+  it('exports FinSideNav, but not the side nav parts it is built from', () => {
+    expect(ui).toHaveProperty('FinSideNav');
+  });
+
   it.each(INTERNAL_BASES)('does not export the internal base %s', (name) => {
     expect(ui).not.toHaveProperty(name);
   });
