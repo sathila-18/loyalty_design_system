@@ -12,6 +12,9 @@
  * border-strong; Disabled: border-disabled, text-disabled, fg-disabled (no error look). Error: border-error, ring
  * border-error with a bg-error-secondary halo.
  *
+ * Small (code only, Figma doesn't have it yet; decided 21 Oct 2026): box 40 tall, padding 8 / 16 (Space-M /
+ * Space-XL), icons 20 (the default chevron, the country selector's arrow; the slots take 20 icons); text unchanged.
+ *
  * The label sits on no background: the border, ring and halo are fieldsets whose legend (the label's text, invisible)
  * cuts a gap in them, so whatever surface is behind the field shows (decided 21 Oct 2026). The ring geometry (1px,
  * 2px) is hairline widths, as the focus rings elsewhere.
@@ -67,6 +70,10 @@
   align-items: center;
   min-width: 0;
   padding: var(--fin-space-l) var(--fin-space-xl);
+}
+
+.root[data-size="small"] .content {
+  padding-block: var(--fin-space-m);
 }
 
 .root[data-variant="mobile-number"] .content {

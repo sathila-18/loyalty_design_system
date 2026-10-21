@@ -1,7 +1,7 @@
 /*
  * FinCountrySelector (DESIGN.md §9). The trigger only: a Small flag and a 24px down arrow. Figma binds the gap to
  * another library (Mobile/Component/icon-text, 8); code uses Space-M. 48 tall on its own, as Figma (the input field
- * will set its own height). Hover and focus design come with the input field.
+ * will set its own height); `size="small"` (code only) has a 20 arrow and 8 above and below. Hover and focus design come with the input field.
  */
 
 .selector {
@@ -14,6 +14,11 @@
   border: 0;
   background: none;
   cursor: pointer;
+}
+
+/* Small (code only, for the Small input field): 8 above and below, a 20 arrow. */
+.selector[data-size="small"] {
+  padding-block: var(--fin-space-m);
 }
 
 .selector:disabled {

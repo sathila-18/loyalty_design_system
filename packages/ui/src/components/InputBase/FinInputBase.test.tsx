@@ -69,6 +69,17 @@ describe('FinInputBase', () => {
     expect(screen.queryByText('keyboard_arrow_down')).toBeNull();
   });
 
+  it('is large by default; small gives the select chevron and the country arrow a 20 size', () => {
+    const { container, rerender } = render(<FinInputBase label="Tier" variant="select" />);
+    expect(container.firstElementChild).toHaveAttribute('data-size', 'large');
+    expect(screen.getByText('keyboard_arrow_down')).toHaveAttribute('data-size', '24');
+    rerender(<FinInputBase label="Tier" variant="select" size="small" />);
+    expect(container.firstElementChild).toHaveAttribute('data-size', 'small');
+    expect(screen.getByText('keyboard_arrow_down')).toHaveAttribute('data-size', '20');
+    rerender(<FinInputBase label="Mobile number" variant="mobile-number" size="small" />);
+    expect(screen.getByText('keyboard_arrow_down')).toHaveAttribute('data-size', '20');
+  });
+
   it('mobile number: the country selector comes first and reports clicks', async () => {
     const user = userEvent.setup();
     const onCountryClick = vi.fn();

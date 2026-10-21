@@ -2,11 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { userEvent } from 'storybook/test';
 import { FinIcon } from '../../icons/FinIcon';
 import { finIcons, type FinIconName } from '../../icons/finIcons';
-import { FinInputBase, type FinInputBaseVariant } from './FinInputBase';
+import { FinInputBase, type FinInputBaseSize, type FinInputBaseVariant } from './FinInputBase';
 import styles from './FinInputBase.stories.module.css';
 
 interface Args {
   variant: FinInputBaseVariant;
+  size: FinInputBaseSize;
   label: string;
   placeholder: string;
   value: string;
@@ -22,7 +23,8 @@ interface Args {
   disabled: boolean;
 }
 
-const icon = (name: 'none' | FinIconName) => (name === 'none' ? undefined : <FinIcon name={name} size={24} />);
+const icon = (name: 'none' | FinIconName, size: FinInputBaseSize = 'large') =>
+  name === 'none' ? undefined : <FinIcon name={name} size={size === 'small' ? 20 : 24} />;
 
 /**
  * A disabled field's helper text is inactive by design (WCAG exempts the text of disabled controls), as the Helper
@@ -39,6 +41,7 @@ const meta: Meta<Args> = {
   parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
   args: {
     variant: 'default',
+    size: 'large',
     label: 'Label',
     placeholder: 'Placeholder text',
     value: '',
@@ -59,6 +62,11 @@ const meta: Meta<Args> = {
       options: ['default', 'payment', 'mobile-number', 'select'],
       description: 'Figma `Type`',
     },
+    size: {
+      control: 'inline-radio',
+      options: ['large', 'small'],
+      description: 'Large 48 (Figma) or Small 40 (code only)',
+    },
     label: { control: 'text', description: 'Figma `Show Label` (on the border when focused or filled)' },
     placeholder: { control: 'text', description: 'Figma `Show Placeholder text`' },
     value: { control: 'text', description: 'A starting value (Complete)' },
@@ -78,6 +86,7 @@ const meta: Meta<Args> = {
       <FinInputBase
         key={args.value}
         variant={args.variant}
+        size={args.size}
         label={args.label}
         placeholder={args.placeholder}
         defaultValue={args.value}
@@ -85,8 +94,8 @@ const meta: Meta<Args> = {
         disabled={args.disabled}
         {...(args.showPrefix ? { prefix: args.prefix } : {})}
         {...(args.showSuffix ? { suffix: args.suffix } : {})}
-        {...(args.leadingAccessory !== 'none' ? { leading: icon(args.leadingAccessory) } : {})}
-        {...(args.trailingAccessory !== 'none' ? { trailing: icon(args.trailingAccessory) } : {})}
+        {...(args.leadingAccessory !== 'none' ? { leading: icon(args.leadingAccessory, args.size) } : {})}
+        {...(args.trailingAccessory !== 'none' ? { trailing: icon(args.trailingAccessory, args.size) } : {})}
         {...(args.showHelperText ? { helperText: args.helperText } : {})}
       />
     </div>
@@ -119,6 +128,27 @@ export const Types: Story = {
             placeholder="Placeholder text"
             error={error}
             {...(variant === 'select' ? {} : { trailing: icon('person') })}
+            helperText="Helper text here"
+          />
+        )),
+      )}
+    </div>
+  ),
+};
+
+/** Large (48, Figma) and Small (40, code only): less padding above and below and 20 icons; the text is the same. */
+export const Sizes: Story = {
+  render: () => (
+    <div className={styles.grid}>
+      {(['large', 'small'] as const).map((size) =>
+        VARIANTS.map(({ variant, name }) => (
+          <FinInputBase
+            key={`${variant}-${size}`}
+            variant={variant}
+            size={size}
+            label={`${name}, ${size}`}
+            placeholder="Placeholder text"
+            {...(variant === 'select' ? {} : { trailing: icon('person', size) })}
             helperText="Helper text here"
           />
         )),

@@ -15,11 +15,19 @@ import styles from './FinInputBase.module.css';
  */
 export type FinInputBaseVariant = 'default' | 'payment' | 'mobile-number' | 'select';
 
-export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix' | 'children'> {
+/**
+ * The box's height: `large` 48 (Figma) or `small` 40 (code only; Figma doesn't have it yet, decided 21 Oct 2026).
+ * Small has less padding above and below and 20 icons; the text is the same.
+ */
+export type FinInputBaseSize = 'large' | 'small';
+
+export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix' | 'children' | 'size'> {
   /** The field's name (Figma Label). Always the input's label; shown on the border when focused or filled. */
   label: string;
   /** Figma `Type`. Default `default`. */
   variant?: FinInputBaseVariant;
+  /** `large` (default, the 48 box) or `small` (the 40 box, code only). Small fields take 20 icons in their slots. */
+  size?: FinInputBaseSize;
   /** Figma `Destructive`: the error look (red border, ring and helper text) and `aria-invalid`. */
   error?: boolean;
   /** Figma `Show Placeholder text` and its text. Shown while the field is empty and not focused. */
@@ -28,7 +36,7 @@ export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputEle
   prefix?: string;
   /** Figma `Show Suffix`: text after the value (for example "%"). Hidden without it. */
   suffix?: string;
-  /** Figma `Show Leading accessory` and Leading slot: a 24 icon or other component before the value. */
+  /** Figma `Show Leading accessory` and Leading slot: a 24 icon (20 when `small`) or other component before the value. */
   leading?: ReactNode;
   /** Figma `Show Trailing accessory` and Trailing slot. Select shows `keyboard_arrow_down` without it. */
   trailing?: ReactNode;
@@ -47,7 +55,7 @@ export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputEle
 /**
  * The base of the single-line fields (Figma Input field-base; DESIGN.md §9): a 48 box (radius M, 1px border,
  * padding 12 / 16, gap 8) with the leading accessory, prefix, input, suffix and trailing accessory, the label on the top
- * border and the helper text 8 below. **The states are the browser's** (decided 21 Oct 2026), the same for every
+ * border and the helper text 8 below; `size="small"` is a 40 box (padding 8 / 16, 20 icons; code only). **The states are the browser's** (decided 21 Oct 2026), the same for every
  * field built on it: Hovered (`bg-secondary`, empty fields only), Focused and Typing (the label, caret and focus
  * ring), Complete (the label, `border-strong`), Disabled; Error changes the colors. The border is cut where the label
  * sits, so it shows whatever surface is behind it. `ref` and other attributes go to the input.
@@ -57,6 +65,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
   {
     label,
     variant = 'default',
+    size = 'large',
     error = false,
     placeholder,
     prefix,
@@ -79,7 +88,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
   const generatedId = useId();
   const id = idProp ?? generatedId;
   const helperId = `${id}-helper`;
-  const trailingContent = trailing ?? (variant === 'select' ? <FinIcon name="keyboard_arrow_down" size={24} /> : undefined);
+  const trailingContent = trailing ?? (variant === 'select' ? <FinIcon name="keyboard_arrow_down" size={size === 'small' ? 20 : 24} /> : undefined);
   const hasHelper = helperText !== undefined && helperText !== null && helperText !== false;
   // The notch in the border: the label's text, invisible, so the gap is exactly as wide as the label.
   const notch = (
@@ -93,6 +102,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
       className={className ? `${styles.root} ${className}` : styles.root}
       style={style}
       data-variant={variant}
+      data-size={size}
       data-error={error && !disabled ? '' : undefined}
       data-disabled={disabled ? '' : undefined}
       data-filled={filled ? '' : undefined}
@@ -104,6 +114,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
             <FinCountrySelector
               className={styles.country}
               country={country}
+              size={size}
               disabled={disabled}
               {...(onCountryClick ? { onClick: onCountryClick } : {})}
             />
