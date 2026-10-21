@@ -1,0 +1,214 @@
+/*
+ * FinInputBase (DESIGN.md §9). Figma Input field-base, with the states from Input field-standard and -password:
+ * box 56 tall (16 padding around the 24 content), radius M, 1px border; content gap 8 (Space-M); helper text 8 below,
+ * 16 in from the sides. Value Body/Large text-primary, placeholder text-placeholder, prefix and suffix Body/Large
+ * text-tertiary, icons fg-secondary, caret fg-brand. Label Label/Small text-tertiary on the top border, 16 in, with
+ * 4 (Space-XS; Figma raw 4) each side.
+ *
+ * States (decided 21 Oct 2026): Enabled border-default, placeholder only; Hovered bg-secondary (empty, not focused);
+ * Focused and Typing: the label, placeholder hidden, the ring (2px border-focused over the border and a 2px bg-active
+ * halo outside it, as Figma's 2px outside stroke and 4px spread); Complete (filled, not focused): the label,
+ * border-strong; Disabled: border-disabled, text-disabled, fg-disabled (no error look). Error: border-error, ring
+ * border-error with a bg-error-secondary halo.
+ *
+ * The label sits on no background: the border, ring and halo are fieldsets whose legend (the label's text, invisible)
+ * cuts a gap in them, so whatever surface is behind the field shows (decided 21 Oct 2026). The ring geometry (1px,
+ * 2px) is hairline widths, as the focus rings elsewhere.
+ */
+
+.root {
+  --input-border: var(--fin-border-default);
+  --input-ring: var(--fin-border-focused);
+  --input-halo: var(--fin-bg-active);
+  --input-icon: var(--fin-fg-secondary);
+  --input-label: var(--fin-text-tertiary);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+  width: 100%;
+  min-width: 0;
+}
+
+.root[data-error] {
+  --input-border: var(--fin-border-error);
+  --input-ring: var(--fin-border-error);
+  --input-halo: var(--fin-bg-error-secondary);
+}
+
+/* Complete: filled and not focused. */
+.root:is([data-filled], :has(.input:not(:placeholder-shown))):not([data-error], [data-disabled], :has(.content:focus-within)) {
+  --input-border: var(--fin-border-strong);
+}
+
+.root[data-disabled] {
+  --input-border: var(--fin-border-disabled);
+  --input-icon: var(--fin-fg-disabled);
+  --input-label: var(--fin-text-disabled);
+}
+
+.field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  border-radius: var(--fin-radius-m);
+}
+
+/* Hovered: only an empty field that isn't focused (Figma has Hovered for those only). */
+.root:not([data-disabled], [data-filled], :has(.input:not(:placeholder-shown))) .field:hover:not(:has(.content:focus-within)) {
+  background-color: var(--fin-bg-secondary);
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  gap: var(--fin-space-m);
+  align-items: center;
+  min-width: 0;
+  padding: var(--fin-space-xl);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: var(--fin-size-24);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  color: var(--fin-text-primary);
+  font: var(--fin-font-body-large);
+  caret-color: var(--fin-fg-brand);
+}
+
+.input::placeholder {
+  color: var(--fin-text-placeholder);
+  opacity: 1;
+}
+
+/* Focused: the label takes over from the placeholder. */
+.input:focus::placeholder {
+  color: transparent;
+}
+
+.input:disabled,
+.input:disabled::placeholder {
+  color: var(--fin-text-disabled);
+}
+
+.affix {
+  flex: none;
+  color: var(--fin-text-tertiary);
+  font: var(--fin-font-body-large);
+}
+
+.root[data-disabled] .affix {
+  color: var(--fin-text-disabled);
+}
+
+.accessory {
+  display: flex;
+  flex: none;
+  align-items: center;
+  color: var(--input-icon);
+}
+
+/* Mobile number: the country selector fills the box's height; the divider takes the border's color. */
+.country {
+  align-self: stretch;
+  border-radius: var(--fin-radius-m) 0 0 var(--fin-radius-m);
+}
+
+.divider {
+  --divider-color: var(--input-border);
+}
+
+/* Border, ring and halo: fieldsets laid over the box, each cut by the label's notch. */
+.outline,
+.ring,
+.halo {
+  position: absolute;
+  min-width: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.outline {
+  inset: 0;
+  padding: 0 calc(var(--fin-space-xl) - 1px);
+  border: 1px solid var(--input-border);
+  border-radius: var(--fin-radius-m);
+}
+
+.ring {
+  inset: -1px;
+  padding: 0 calc(var(--fin-space-xl) - 1px);
+  border: 2px solid var(--input-ring);
+  border-radius: calc(var(--fin-radius-m) + 1px);
+}
+
+.halo {
+  inset: -3px;
+  padding: 0 calc(var(--fin-space-xl) + 1px);
+  border: 2px solid var(--input-halo);
+  border-radius: calc(var(--fin-radius-m) + 3px);
+}
+
+.ring,
+.halo {
+  display: none;
+}
+
+.field:has(.content:focus-within) .ring,
+.field:has(.content:focus-within) .halo {
+  display: block;
+}
+
+/* The notch: as wide as the label (its text and 4 each side), closed until the label shows. */
+.notch {
+  display: block;
+  float: none;
+  max-width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  font: var(--fin-font-label-small);
+  white-space: nowrap;
+  visibility: hidden;
+}
+
+.notch > span {
+  padding: 0 var(--fin-space-xs);
+}
+
+/* The label on the border: hidden (still the input's name) until the field is focused or filled. */
+.label {
+  position: absolute;
+  top: 0;
+  left: var(--fin-space-xl);
+  max-width: calc(100% - 2 * var(--fin-space-xl));
+  padding: 0 var(--fin-space-xs);
+  overflow: hidden;
+  color: var(--input-label);
+  font: var(--fin-font-label-small);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transform: translateY(-50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.root:is([data-filled], :has(.input:not(:placeholder-shown))) .label,
+.field:has(.content:focus-within) .label {
+  opacity: 1;
+}
+
+.root:is([data-filled], :has(.input:not(:placeholder-shown))) .notch,
+.field:has(.content:focus-within) .notch {
+  max-width: 100%;
+}
+
+.helper {
+  padding: 0 var(--fin-space-xl);
+}
