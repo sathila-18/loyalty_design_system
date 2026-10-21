@@ -25,7 +25,8 @@
     "test": "pnpm icons && vitest run",
     "test:watch": "pnpm icons && vitest",
     "icons": "node scripts/subset-icons.ts && node scripts/copy-flags.ts",
-    "payment-icons": "node scripts/update-payment-icons.ts"
+    "payment-icons": "node scripts/update-payment-icons.ts",
+    "dial-codes": "node scripts/dial-codes.ts"
   },
   "peerDependencies": {
     "react": "^19.0.0",
@@ -45,6 +46,7 @@
     "flag-icons": "7.5.0",
     "harfbuzzjs": "1.6.2",
     "jsdom": "30.1.1",
+    "libphonenumber-js": "1.13.3",
     "material-symbols": "0.47.5",
     "postcss": "8.5.28",
     "postcss-custom-media": "12.0.2",

@@ -40,3 +40,4 @@ export * from './components/ListRadioFilled';
 export * from './components/ListCheckboxFilled';
 export * from './components/ListToggleFilled';
 export * from './components/SideNav';
+export * from './components/TextField';

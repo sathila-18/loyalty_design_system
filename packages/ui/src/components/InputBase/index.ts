@@ -1,1 +1,1 @@
-export { FinInputBase, type FinInputBaseProps, type FinInputBaseVariant } from './FinInputBase';
+export { FinInputBase, type FinInputBaseProps, type FinInputBaseSize, type FinInputBaseVariant } from './FinInputBase';

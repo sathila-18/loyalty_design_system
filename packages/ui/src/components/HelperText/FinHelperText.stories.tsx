@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { FinTextField } from '../TextField';
 import { FinHelperText, type FinHelperTextTone } from './FinHelperText';
 import styles from './FinHelperText.stories.module.css';
 
@@ -62,16 +63,14 @@ export const States: Story = {
 
 /**
  * Under a field: the input points to the message with `aria-describedby`, so it's read when the person reaches the
- * field. Long messages wrap; the icon stays beside the first line.
+ * field. Long messages wrap; the icon stays beside the first line. (FinTextField also shows its own helper text, without
+ * the icon, with `helperText`.)
  */
 export const WithAField: Story = {
   name: 'With a field',
   render: () => (
     <div className={styles.field}>
-      <label htmlFor="story-card" className={styles.label}>
-        Card number
-      </label>
-      <input id="story-card" className={styles.input} aria-invalid="true" aria-describedby="story-card-help" defaultValue="4111 1111" />
+      <FinTextField variant="payment" label="Card number" error aria-describedby="story-card-help" defaultValue="41111111" />
       <FinHelperText id="story-card-help" tone="error">
         This card number is too short. Enter all 16 digits printed on the front of the card, without spaces or dashes.
       </FinHelperText>

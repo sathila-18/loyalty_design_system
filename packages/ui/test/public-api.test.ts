@@ -77,6 +77,11 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinSideNav');
   });
 
+  it('exports FinTextField and the dial codes, but not its FinInputBase base', () => {
+    expect(ui).toHaveProperty('FinTextField');
+    expect(ui).toHaveProperty('finDialCodes');
+  });
+
   it.each(INTERNAL_BASES)('does not export the internal base %s', (name) => {
     expect(ui).not.toHaveProperty(name);
   });

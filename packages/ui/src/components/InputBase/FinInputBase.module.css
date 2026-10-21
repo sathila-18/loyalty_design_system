@@ -136,6 +136,13 @@
   --divider-color: var(--input-border);
 }
 
+/* While the label shows, the divider starts under it, so a long label never sits on the line (Figma's short label
+   ends before it). */
+.root:is([data-filled], :has(.input:not(:placeholder-shown))) .divider,
+.field:has(.content:focus-within) .divider {
+  margin-block-start: var(--fin-space-m);
+}
+
 /* Border, ring and halo: fieldsets laid over the box, each cut by the label's notch. */
 .outline,
 .ring,

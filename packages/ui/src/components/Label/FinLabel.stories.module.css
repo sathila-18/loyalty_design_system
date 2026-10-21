@@ -23,19 +23,12 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--fin-space-s);
+  gap: var(--fin-space-xl);
 }
 
-/* A plain stand-in field for the demo (the real input field is built later). */
+/* The field, 343 wide, as Figma. */
 .input {
-  width: calc(var(--fin-size-120) * 2);
-  height: var(--fin-size-40);
-  padding: 0 var(--fin-space-m);
-  border: 1px solid var(--fin-border-default);
-  border-radius: var(--fin-radius-s);
-  background-color: var(--fin-bg-primary);
-  font: var(--fin-font-body-medium);
-  color: var(--fin-text-primary);
+  width: calc(var(--fin-size-56) * 6 + var(--fin-space-s) + var(--fin-space-xxs) / 2);
 }
 
 .narrow {

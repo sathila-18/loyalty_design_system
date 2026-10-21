@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { FinTextField } from '../TextField';
 import { FinLabel, type FinLabelSize } from './FinLabel';
 import styles from './FinLabel.stories.module.css';
 
@@ -51,17 +52,18 @@ export const Sizes: Story = {
 };
 
 /**
- * Plain text by default (captions, table headings); a real `<label>` linked to a field with `htmlFor`
- * (clicking it focuses the field). The dot's meaning depends on the screen, so `badgeLabel` says it.
+ * Plain text by default (captions, table headings, a heading over a group of fields); a real `<label>` linked to a
+ * control with `htmlFor` (clicking it focuses the control). Text fields bring their own label (on the border), so here
+ * FinLabel heads the group. The dot's meaning depends on the screen, so `badgeLabel` says it.
  */
 export const Usage: Story = {
   render: () => (
     <div className={styles.usage}>
       <div className={styles.field}>
-        <FinLabel htmlFor="story-email" badge badgeLabel="Required">
-          Email address
+        <FinLabel badge badgeLabel="Required">
+          Contact details
         </FinLabel>
-        <input id="story-email" type="email" className={styles.input} />
+        <FinTextField label="Email address" type="email" placeholder="name@email.com" className={styles.input} />
       </div>
       <FinLabel size="small" badge badgeLabel="Unread">
         Notifications
