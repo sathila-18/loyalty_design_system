@@ -3212,7 +3212,7 @@ Template:
 > - **Approved and merged (21 Oct 2026):** `FinInputBase` (§9.58, internal), with the code-only Small size.
 > - **Approved and merged (21 Oct 2026):** `FinTextField` (§9.59).
 > - **Approved and merged (21 Oct 2026):** `FinPasswordField` (§9.60).
-> - **Built, waiting for design review (21 Oct 2026):** `FinSearchField` (§9.61) on branch `feat/search-field`. FinSelectField and FinMultiSelectField are on hold until the menus are built (§10 #49).
+> - **Approved and merged (21 Oct 2026):** `FinSearchField` (§9.61). FinSelectField and FinMultiSelectField are on hold until the menus are built (§10 #49).
 > - **Next:** the next component named by design.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
@@ -3371,3 +3371,4 @@ Template:
 | 21 Oct 2026 | 0.2 | **`FinPasswordField` built** (§8 #54, §9.60), public under Components/Input field/Password field, on FinInputBase: `showPassword` / `defaultShowPassword` (the eye button, named by its action, no hover, a click keeps focus in the input, Tab focus stays on it), `error`, `size`, `autoComplete` default `current-password`. |
 | 21 Oct 2026 | 0.2 | `FinPasswordField` approved by design and merged into `main`. |
 | 21 Oct 2026 | 0.2 | **`FinSearchField` built** (§8 #57, §9.61), public under Components/Search/Search field, on FinInputBase (new `showLabel`, Figma `Show Label`): the label never shown, a `search` icon, a clear button (filled `cancel`, Escape too), the base's hover and focus. Search's `Sticky` and shadow removed in Figma by design. FinSelectField and FinMultiSelectField on hold until the menus. |
+| 21 Oct 2026 | 0.2 | `FinSearchField` approved by design and merged into `main`. |
