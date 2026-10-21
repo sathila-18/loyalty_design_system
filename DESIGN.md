@@ -3181,7 +3181,7 @@ Template:
 > - **Also done:** `FinSideNav` (§9.57, public; approved 21 Oct 2026), merged into `main`.
 > - **Approved and merged (21 Oct 2026):** `FinInputBase` (§9.58, internal), with the code-only Small size.
 > - **Approved and merged (21 Oct 2026):** `FinTextField` (§9.59).
-> - **Built, waiting for design review (21 Oct 2026):** `FinPasswordField` (§9.60) on branch `feat/password-field`. Next: select, multi select and search, one at a time.
+> - **Approved and merged (21 Oct 2026):** `FinPasswordField` (§9.60). Next: select, multi select and search, one at a time.
 > - **Next:** the next component named by design.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
@@ -3338,3 +3338,4 @@ Template:
 | 21 Oct 2026 | 0.2 | **`FinTextField` built** (§8 #53, §9.59), public under Components/Input field/Text field, on FinInputBase: `variant` (Default / Mobile number / Payment), `trailingIcon`, `error`, `size`; Mobile number's dial code from `libphonenumber-js` (`finDialCodes`, new dev dependency, `pnpm dial-codes`, §6.1); Payment's logo from FinPaymentIcon, its brand from the number, the digits grouped as typed. FinInputBase: the Mobile number divider starts under a visible label. Label and Helper text stories use FinTextField. §10 #58 (5)–(7) added. |
 | 21 Oct 2026 | 0.2 | `FinTextField` approved by design and merged into `main`. |
 | 21 Oct 2026 | 0.2 | **`FinPasswordField` built** (§8 #54, §9.60), public under Components/Input field/Password field, on FinInputBase: `showPassword` / `defaultShowPassword` (the eye button, named by its action, no hover, a click keeps focus in the input, Tab focus stays on it), `error`, `size`, `autoComplete` default `current-password`. |
+| 21 Oct 2026 | 0.2 | `FinPasswordField` approved by design and merged into `main`. |
