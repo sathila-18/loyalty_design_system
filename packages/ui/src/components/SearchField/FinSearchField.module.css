@@ -1,0 +1,23 @@
+/*
+ * FinSearchField (DESIGN.md §9). Only the clear button; the field is FinInputBase. The button is the filled `cancel`
+ * icon itself, as Figma (24, or 20 when small), in the field's icon color. No hover look (as the password eye): the
+ * pointer cursor only, and the standard focus ring when it's reached with the keyboard.
+ */
+
+.clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fin-radius-full);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.clear:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}

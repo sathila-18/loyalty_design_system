@@ -1,0 +1,19 @@
+/* Layout for the FinSearchField stories only (not part of the component). Fields 343 wide, as Figma. */
+
+.column {
+  width: calc(var(--fin-size-56) * 6 + var(--fin-space-s) + var(--fin-space-xxs) / 2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, calc(var(--fin-size-56) * 6 + var(--fin-space-s) + var(--fin-space-xxs) / 2));
+  gap: var(--fin-space-6xl) var(--fin-space-3xl);
+}
+
+/* The form rule: stacked fields 24 apart. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  width: calc(var(--fin-size-56) * 6 + var(--fin-space-s) + var(--fin-space-xxs) / 2);
+}

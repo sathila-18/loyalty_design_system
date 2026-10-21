@@ -6,7 +6,7 @@ import { FinInputBase, type FinInputBaseProps } from '../InputBase';
 import styles from './FinPasswordField.module.css';
 
 export interface FinPasswordFieldProps
-  extends Omit<FinInputBaseProps, 'variant' | 'prefix' | 'suffix' | 'leading' | 'trailing' | 'control' | 'filled' | 'country' | 'onCountryClick' | 'type'> {
+  extends Omit<FinInputBaseProps, 'variant' | 'prefix' | 'suffix' | 'leading' | 'trailing' | 'control' | 'filled' | 'country' | 'onCountryClick' | 'type' | 'showLabel'> {
   /** Figma `Show password`: the password as plain text (controlled). */
   showPassword?: boolean;
   /** Whether the password starts shown (uncontrolled). Default hidden. */

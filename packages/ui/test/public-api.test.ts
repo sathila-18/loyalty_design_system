@@ -77,6 +77,10 @@ describe('public API', () => {
     expect(ui).toHaveProperty('FinSideNav');
   });
 
+  it('exports FinSearchField', () => {
+    expect(ui).toHaveProperty('FinSearchField');
+  });
+
   it('exports FinPasswordField', () => {
     expect(ui).toHaveProperty('FinPasswordField');
   });

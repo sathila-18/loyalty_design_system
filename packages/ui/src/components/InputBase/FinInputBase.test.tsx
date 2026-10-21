@@ -103,6 +103,12 @@ describe('FinInputBase', () => {
     expect(ref.current).toHaveAttribute('name', 'email');
   });
 
+  it('with showLabel off, the label still names the input but has no notch', () => {
+    const { container } = render(<FinInputBase label="Search" showLabel={false} defaultValue="gold" />);
+    expect(screen.getByRole('textbox', { name: 'Search' })).toBeInTheDocument();
+    expect(container.querySelector('legend')).toBeNull();
+  });
+
   it('keeps the border, ring and notch away from screen readers', () => {
     const { container } = render(<FinInputBase label="Email" />);
     for (const fieldset of container.querySelectorAll('fieldset')) expect(fieldset).toHaveAttribute('aria-hidden', 'true');

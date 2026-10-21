@@ -102,6 +102,12 @@
   opacity: 1;
 }
 
+/* A search input (FinSearchField) uses its own clear button, not the browser's. */
+.input::-webkit-search-cancel-button,
+.input::-webkit-search-decoration {
+  appearance: none;
+}
+
 /* Focused: the label takes over from the placeholder. */
 .input:focus::placeholder {
   color: transparent;
@@ -229,6 +235,16 @@
 .root:is([data-filled], :has(.input:not(:placeholder-shown))) .notch,
 .field:has(.content > :not(.accessory):focus-within) .notch {
   max-width: 100%;
+}
+
+/* Show Label off (Search): read by screen readers, never shown. */
+.hiddenLabel {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
 }
 
 .helper {

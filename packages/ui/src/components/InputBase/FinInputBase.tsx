@@ -24,6 +24,8 @@ export type FinInputBaseSize = 'large' | 'small';
 export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix' | 'children' | 'size'> {
   /** The field's name (Figma Label). Always the input's label; shown on the border when focused or filled. */
   label: string;
+  /** Figma `Show Label`. Off: the label is never shown (no notch), but it still names the input (Search). Default on. */
+  showLabel?: boolean;
   /** Figma `Type`. Default `default`. */
   variant?: FinInputBaseVariant;
   /** `large` (default, the 48 box) or `small` (the 40 box, code only). Small fields take 20 icons in their slots. */
@@ -64,6 +66,7 @@ export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputEle
 export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(function FinInputBase(
   {
     label,
+    showLabel = true,
     variant = 'default',
     size = 'large',
     error = false,
@@ -91,11 +94,11 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
   const trailingContent = trailing ?? (variant === 'select' ? <FinIcon name="keyboard_arrow_down" size={size === 'small' ? 20 : 24} /> : undefined);
   const hasHelper = helperText !== undefined && helperText !== null && helperText !== false;
   // The notch in the border: the label's text, invisible, so the gap is exactly as wide as the label.
-  const notch = (
+  const notch = showLabel ? (
     <legend className={styles.notch}>
       <span>{label}</span>
     </legend>
-  );
+  ) : null;
 
   return (
     <div
@@ -150,7 +153,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
         <fieldset className={styles.ring} aria-hidden="true">
           {notch}
         </fieldset>
-        <label className={styles.label} htmlFor={id}>
+        <label className={showLabel ? styles.label : styles.hiddenLabel} htmlFor={id}>
           {label}
         </label>
       </div>
