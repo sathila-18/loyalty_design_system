@@ -69,6 +69,38 @@ describe('FinTable', () => {
     expect(screen.getByRole('button', { name: /^Rows per page:\s*25$/ })).toBeInTheDocument();
   });
 
+  it('sorts by a column: ascending, descending, then back to the original order; back to page 1', async () => {
+    const user = userEvent.setup();
+    const onSortChange = vi.fn();
+    const sortable: FinTableColumn<Member>[] = [{ key: 'name', header: 'Name', sortable: true }, columns[1]!];
+    render(<FinTable label="Members" columns={sortable} rows={members} getRowId={(m) => m.id} defaultPage={2} onSortChange={onSortChange} />);
+    const sortButton = screen.getByRole('button', { name: /^Name/ });
+    await user.click(sortButton);
+    expect(onSortChange).toHaveBeenLastCalledWith({ key: 'name', direction: 'ascending' });
+    expect(screen.getByRole('columnheader', { name: /Name/ })).toHaveAttribute('aria-sort', 'ascending');
+    expect(within(bodyRows()[1]!).getByText('Member 2')).toBeInTheDocument();
+    await user.click(sortButton);
+    expect(within(bodyRows()[0]!).getByText('Member 23')).toBeInTheDocument();
+    await user.click(sortButton);
+    expect(onSortChange).toHaveBeenLastCalledWith(null);
+    expect(within(bodyRows()[0]!).getByText('Member 1')).toBeInTheDocument();
+  });
+
+  it('filters by a column from its down arrow, counting only the matching rows', async () => {
+    const user = userEvent.setup();
+    const onFiltersChange = vi.fn();
+    const filterable: FinTableColumn<Member>[] = [columns[0]!, { ...columns[1]!, filter: {} }];
+    render(<FinTable label="Members" columns={filterable} rows={members} getRowId={(m) => m.id} onFiltersChange={onFiltersChange} />);
+    await user.click(screen.getByRole('button', { name: 'Filter Status' }));
+    expect(screen.getAllByRole('checkbox', { name: /Active|Inactive/ })).toHaveLength(2);
+    await user.click(screen.getByRole('checkbox', { name: 'Inactive' }));
+    await user.click(screen.getByRole('button', { name: 'Apply' }));
+    expect(onFiltersChange).toHaveBeenCalledWith({ status: ['Inactive'] });
+    expect(bodyRows()).toHaveLength(10);
+    expect(screen.getByText('Showing 1–10 of 11 entries in page 1')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Filter Status, 1 selected' })).toBeInTheDocument();
+  });
+
   it('shows the given rows as the current page (server pagination)', () => {
     render(
       <FinTable label="Members" columns={columns} rows={members.slice(10, 20)} totalRows={95} page={2} getRowId={(m) => m.id} />,

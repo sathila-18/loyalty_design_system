@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ReactNode } from 'react';
-import { FinTableHeaderCell, type FinTableHeaderCellProps } from './FinTableHeaderCell';
+import { useState, type ReactNode } from 'react';
+import { FinTableHeaderCell, type FinTableHeaderCellProps, type FinTableSortDirection } from './FinTableHeaderCell';
 import styles from './FinTableHeaderCell.stories.module.css';
 
 /** A header cell is a `<th>`, so each story puts it in a one-row table. */
@@ -14,6 +14,8 @@ const Header = ({ children, className = styles.table }: { children: ReactNode; c
 
 interface Args extends Pick<FinTableHeaderCellProps, 'type' | 'checkbox' | 'showTitle' | 'trailingIcon'> {
   title: string;
+  sortable: boolean;
+  filterable: boolean;
 }
 
 /**
@@ -22,23 +24,39 @@ interface Args extends Pick<FinTableHeaderCellProps, 'type' | 'checkbox' | 'show
  */
 const KNOWN_CONTRAST_ISSUES = ['html[data-theme="dark"] th[data-type="grey"] [data-size]'];
 
+const FILTER_OPTIONS = ['Active', 'Inactive', 'Pending'].map((value) => ({ value, label: value }));
+
 /** INTERNAL: part of the table (Header row, FinTable). Matches Figma's properties (DESIGN.md §9). */
 const meta: Meta<Args> = {
   title: 'Internal/Table/Table header cell',
-  args: { type: 'white', checkbox: true, showTitle: true, title: 'Table title', trailingIcon: false },
+  args: { type: 'white', checkbox: true, showTitle: true, title: 'Table title', trailingIcon: false, sortable: false, filterable: false },
   argTypes: {
     type: { control: 'inline-radio', options: ['white', 'grey'], description: 'Figma `Type`' },
     checkbox: { control: 'boolean', description: 'Figma `Show checkbox`' },
     showTitle: { control: 'boolean', description: 'Figma `Show title` (off: hidden on screen, still read out)' },
     title: { control: 'text', description: 'Figma Slot (the column title)' },
-    trailingIcon: { control: 'boolean', description: 'Figma `Show trailing icon`' },
+    trailingIcon: { control: 'boolean', description: 'Figma `Show trailing icon` (display only)', if: { arg: 'filterable', truthy: false } },
+    sortable: { control: 'boolean', description: 'Code first: the title sorts (none → ascending → descending)' },
+    filterable: { control: 'boolean', description: 'Code first: the down arrow opens the filter menu' },
   },
   parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  render: ({ title, ...args }) => (
-    <Header>
-      <FinTableHeaderCell {...args}>{title}</FinTableHeaderCell>
-    </Header>
-  ),
+  render: function Playground({ title, sortable, filterable, ...args }) {
+    const [sort, setSort] = useState<FinTableSortDirection>('none');
+    const [filter, setFilter] = useState<string[]>([]);
+    return (
+      <div className={styles.stage}>
+        <Header>
+          <FinTableHeaderCell
+            {...args}
+            {...(sortable ? { sort, onSortChange: setSort } : {})}
+            {...(filterable ? { filter: { options: FILTER_OPTIONS, value: filter, onApply: setFilter } } : {})}
+          >
+            {title}
+          </FinTableHeaderCell>
+        </Header>
+      </div>
+    );
+  },
 };
 export default meta;
 

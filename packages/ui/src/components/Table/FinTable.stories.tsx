@@ -29,17 +29,19 @@ const makeMembers = (count: number): Member[] =>
 const TONES = { Active: 'success', Inactive: 'neutral', Pending: 'warning' } as const;
 
 const columns = (onEditTier: (m: Member) => void = () => undefined): FinTableColumn<Member>[] => [
-  { key: 'name', header: 'Customer', minWidth: 160 },
+  { key: 'name', header: 'Customer', minWidth: 160, sortable: true },
   { key: 'card', header: 'Card number', minWidth: 160 },
-  { key: 'status', header: 'Status', type: 'badge', badgeTone: (m) => TONES[m.status], width: 140, trailingIcon: true },
+  { key: 'status', header: 'Status', type: 'badge', badgeTone: (m) => TONES[m.status], width: 160, filter: {} },
   {
     key: 'tier',
     header: 'Tier',
-    width: 160,
-    trailingIcon: true,
+    width: 200,
+    sortable: true,
+    sortValue: (m) => TIERS.indexOf(m.tier),
+    filter: { multiple: false },
     action: { label: (m) => `Edit ${m.name}'s tier`, onAction: onEditTier },
   },
-  { key: 'points', header: 'Points', width: 120, value: (m) => m.points.toLocaleString('en-US') },
+  { key: 'points', header: 'Points', width: 140, sortable: true, sortValue: (m) => m.points, value: (m) => m.points.toLocaleString('en-US') },
   { key: 'profile', header: 'Profile', type: 'link', width: 180, value: () => 'View profile', href: (m) => `#member-${m.id}` },
 ];
 
@@ -122,6 +124,43 @@ export const Members: Story = {
         />
         <p className={styles.readout}>
           Selected: {selected.length} · Details opened: {opened} · Tier edited: {edited}
+        </p>
+      </>
+    );
+  },
+};
+
+/**
+ * Sort and filter (code first, 22 Oct 2026): click Customer, Tier or Points to sort (ascending, descending, off; the
+ * icon turns purple). The down arrow on Status (checkboxes) and Tier (radios) opens the column's filter menu; Apply
+ * filters the rows, and the arrow stays purple while a filter is applied. Both go back to page 1.
+ */
+export const SortAndFilter: Story = {
+  name: 'Sort and filter',
+  parameters: { controls: { disable: true } },
+  render: function SortAndFilter() {
+    const [sort, setSort] = useState('none');
+    const [filters, setFilters] = useState('none');
+    return (
+      <>
+        <FinTable
+          label="Members"
+          columns={columns()}
+          rows={makeMembers(45)}
+          getRowId={(m) => m.id}
+          getRowLabel={(m) => m.name}
+          onSortChange={(next) => setSort(next ? `${next.key} ${next.direction}` : 'none')}
+          onFiltersChange={(next) =>
+            setFilters(
+              Object.entries(next)
+                .filter(([, values]) => values.length > 0)
+                .map(([key, values]) => `${key}: ${values.join(', ')}`)
+                .join(' · ') || 'none',
+            )
+          }
+        />
+        <p className={styles.readout}>
+          Sort: {sort} · Filters: {filters}
         </p>
       </>
     );

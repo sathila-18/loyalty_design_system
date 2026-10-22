@@ -5,6 +5,8 @@
  */
 export const finIcons = [
   'arrow_back',
+  'arrow_downward',
+  'arrow_upward',
   'assignment',
   'cancel',
   'check',
@@ -32,6 +34,7 @@ export const finIcons = [
   'search',
   'sports_esports',
   'supervised_user_circle',
+  'unfold_more',
   'visibility',
   'visibility_off',
   'warning',

@@ -5,12 +5,22 @@ import type { FinIconName } from '../../icons/finIcons';
 import type { FinBadgeTone } from '../BadgeBase';
 import { FinTableCell, type FinTableCellType } from '../TableCell';
 import { FinTableFooter } from '../TableFooter';
+import type { FinTableFilterOption } from '../TableColumnFilter';
 import { FinTableHeaderCell } from '../TableHeaderCell';
 import { FinTableHeaderRow } from '../TableHeaderRow';
 import { FinTableRow } from '../TableRow';
 import styles from './FinTable.module.css';
 
 export type FinTableRowId = string | number;
+
+/** The table's sort: one column at a time. */
+export interface FinTableSort {
+  key: string;
+  direction: 'ascending' | 'descending';
+}
+
+/** Each column's applied filter values, by column key. */
+export type FinTableFilters = Record<string, string[]>;
 
 /** One column: its header, how each row's value is shown, and its width (DESIGN.md §9). */
 export interface FinTableColumn<Row> {
@@ -40,8 +50,17 @@ export interface FinTableColumn<Row> {
   width?: number;
   /** Minimum width in px for a flexible column; below it the table scrolls sideways. */
   minWidth?: number;
-  /** The header's trailing arrow (display only until sort and filter are designed, §10 #50). */
+  /** The header's trailing arrow, display only (Figma `Show trailing icon`). `filter` makes it the filter instead. */
   trailingIcon?: boolean;
+  /** Sortable by clicking its title (code first, 22 Oct 2026). */
+  sortable?: boolean;
+  /** What to sort by. Default the value when it's text or a number, else `row[key]`. */
+  sortValue?: (row: Row) => string | number | Date;
+  /**
+   * Filterable from the header's down arrow (code first, 22 Oct 2026). `options` default: the column's distinct
+   * values; `multiple` (default true): checkboxes, false: radios; `value`: a row's filter value (default as `sortValue`).
+   */
+  filter?: { options?: FinTableFilterOption[]; multiple?: boolean; value?: (row: Row) => string };
 }
 
 export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'onChange'> {
@@ -83,9 +102,37 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
   defaultPage?: number;
   /** Called with the new page. */
   onPageChange?: (page: number) => void;
+  /** The sort (controlled), or `null` for none. */
+  sort?: FinTableSort | null;
+  /** The sort at the start (uncontrolled). */
+  defaultSort?: FinTableSort | null;
+  /** Called with the new sort (or `null`). */
+  onSortChange?: (sort: FinTableSort | null) => void;
+  /** The applied filters (controlled). */
+  filters?: FinTableFilters;
+  /** The filters at the start (uncontrolled). */
+  defaultFilters?: FinTableFilters;
+  /** Called with the filters when a column's filter is applied. */
+  onFiltersChange?: (filters: FinTableFilters) => void;
 }
 
 const isText = (value: unknown): value is string | number => typeof value === 'string' || typeof value === 'number';
+
+/** A column's raw value for a row: its `value()` when that's text or a number, else `row[key]`. */
+function rawValue<Row>(column: FinTableColumn<Row>, row: Row): unknown {
+  const shown = column.value?.(row);
+  return isText(shown) ? shown : (row as Record<string, unknown>)[column.key];
+}
+
+const sortKey = <Row,>(column: FinTableColumn<Row>, row: Row) => column.sortValue?.(row) ?? (rawValue(column, row) as string | number);
+const filterKey = <Row,>(column: FinTableColumn<Row>, row: Row) => column.filter?.value?.(row) ?? String(rawValue(column, row) ?? '');
+
+/** Numbers and dates by value, text alphabetically with numbers inside it in order ("Item 2" before "Item 10"). */
+function compare(a: string | number | Date, b: string | number | Date): number {
+  if (a instanceof Date && b instanceof Date) return a.getTime() - b.getTime();
+  if (typeof a === 'number' && typeof b === 'number') return a - b;
+  return String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: 'base' });
+}
 
 const columnStyle = (width: number) => ({ '--fin-table-column-width': `${width}px` }) as CSSProperties;
 
@@ -117,6 +164,12 @@ function FinTableInner<Row>(
     page,
     defaultPage = 1,
     onPageChange,
+    sort: sortProp,
+    defaultSort = null,
+    onSortChange,
+    filters: filtersProp,
+    defaultFilters = {},
+    onFiltersChange,
     className,
     ...rest
   }: FinTableProps<Row>,
@@ -130,7 +183,27 @@ function FinTableInner<Row>(
   };
 
   const serverPaged = totalRows !== undefined;
-  const total = serverPaged ? totalRows : rows.length;
+
+  // Sort and filter (code first, 22 Oct 2026): done here on the rows, or only reported with server pagination.
+  const [innerSort, setInnerSort] = useState<FinTableSort | null>(defaultSort);
+  const sort = sortProp === undefined ? innerSort : sortProp;
+  const [innerFilters, setInnerFilters] = useState<FinTableFilters>(defaultFilters);
+  const filters = filtersProp ?? innerFilters;
+  let shownRows = rows;
+  if (!serverPaged) {
+    shownRows = rows.filter((row) =>
+      columns.every((column) => {
+        const values = filters[column.key];
+        return !column.filter || !values || values.length === 0 || values.includes(filterKey(column, row));
+      }),
+    );
+    const sortColumn = sort ? columns.find((column) => column.key === sort.key) : undefined;
+    if (sort && sortColumn) {
+      const direction = sort.direction === 'ascending' ? 1 : -1;
+      shownRows = [...shownRows].sort((a, b) => direction * compare(sortKey(sortColumn, a), sortKey(sortColumn, b)));
+    }
+  }
+  const total = serverPaged ? totalRows : shownRows.length;
   const [innerPerPage, setInnerPerPage] = useState(defaultRowsPerPage);
   const perPage = Math.max(1, Math.floor(rowsPerPage ?? innerPerPage));
   const pageCount = Math.max(1, Math.ceil(total / perPage));
@@ -149,7 +222,23 @@ function FinTableInner<Row>(
     changePage(Math.floor(firstRow / next) + 1);
   };
 
-  const pageRows = serverPaged ? rows : rows.slice((current - 1) * perPage, current * perPage);
+  // A new sort or filter starts again from the first page.
+  const changeSort = (next: FinTableSort | null) => {
+    if (sortProp === undefined) setInnerSort(next);
+    onSortChange?.(next);
+    changePage(1);
+  };
+  const changeFilter = (key: string, values: string[]) => {
+    const next = { ...filters, [key]: values };
+    if (filtersProp === undefined) setInnerFilters(next);
+    onFiltersChange?.(next);
+    changePage(1);
+  };
+  const filterOptions = (column: FinTableColumn<Row>): FinTableFilterOption[] =>
+    column.filter?.options ??
+    [...new Set(rows.map((row) => filterKey(column, row)))].sort(compare).map((value) => ({ value, label: value }));
+
+  const pageRows = serverPaged ? rows : shownRows.slice((current - 1) * perPage, current * perPage);
   const pageIds = pageRows.map(getRowId);
   const selectedOnPage = pageIds.filter((id) => selected.includes(id)).length;
   const selecting = selectable && selected.length > 0;
@@ -194,7 +283,29 @@ function FinTableInner<Row>(
               onCheckedChange={toggleAll}
             >
               {columns.map((column) => (
-                <FinTableHeaderCell key={column.key} type="grey" checkbox={false} trailingIcon={column.trailingIcon ?? false}>
+                <FinTableHeaderCell
+                  key={column.key}
+                  type="grey"
+                  checkbox={false}
+                  trailingIcon={column.trailingIcon ?? false}
+                  {...(column.sortable
+                    ? {
+                        sort: sort?.key === column.key ? sort.direction : 'none',
+                        onSortChange: (direction: 'none' | 'ascending' | 'descending') =>
+                          changeSort(direction === 'none' ? null : { key: column.key, direction }),
+                      }
+                    : {})}
+                  {...(column.filter
+                    ? {
+                        filter: {
+                          options: filterOptions(column),
+                          value: filters[column.key] ?? [],
+                          onApply: (values: string[]) => changeFilter(column.key, values),
+                          ...(column.filter.multiple !== undefined ? { multiple: column.filter.multiple } : {}),
+                        },
+                      }
+                    : {})}
+                >
                   {column.header}
                 </FinTableHeaderCell>
               ))}

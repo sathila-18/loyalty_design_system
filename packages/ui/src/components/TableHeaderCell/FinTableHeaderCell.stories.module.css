@@ -9,3 +9,8 @@
   table-layout: fixed;
   width: calc(var(--fin-size-80) * 2);
 }
+
+/* Room below the header for the filter menu. */
+.stage {
+  min-height: calc(var(--fin-size-120) * 4);
+}

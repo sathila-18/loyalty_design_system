@@ -45,3 +45,44 @@
   flex: none;
   color: var(--fin-fg-secondary);
 }
+
+/* Sortable (code first, 22 Oct 2026): the title and its 20 sort icon as one button, 4 apart. The title keeps its
+ * colour; the icon is fg-secondary (hover fg-hovered, pressed fg-pressed) and purple (fg-action) once sorted. */
+.sort {
+  display: inline-flex;
+  gap: var(--fin-space-xs);
+  align-items: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fin-radius-xs);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.sort:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+.sortIcon {
+  display: flex;
+  flex: none;
+  color: var(--fin-fg-secondary);
+}
+
+.sort:hover .sortIcon {
+  color: var(--fin-fg-hovered);
+}
+
+.sort:active .sortIcon {
+  color: var(--fin-fg-pressed);
+}
+
+.sort[data-sorted] .sortIcon {
+  color: var(--fin-fg-action);
+}

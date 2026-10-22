@@ -4,9 +4,17 @@ import { forwardRef, type ReactNode, type ThHTMLAttributes } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import { FinCheckboxBase } from '../CheckboxBase';
 import { FinLabel } from '../Label';
+import { FinTableColumnFilter, type FinTableColumnFilterProps } from '../TableColumnFilter';
 import styles from './FinTableHeaderCell.module.css';
 
 export type FinTableHeaderCellType = 'white' | 'grey';
+
+/** A column's sort: `none` (sortable, not sorted), `ascending` or `descending`. */
+export type FinTableSortDirection = 'none' | 'ascending' | 'descending';
+
+/** Clicking the title cycles none → ascending → descending → none (decided 22 Oct 2026). */
+const NEXT_SORT: Record<FinTableSortDirection, FinTableSortDirection> = { none: 'ascending', ascending: 'descending', descending: 'none' };
+const SORT_ICON = { none: 'unfold_more', ascending: 'arrow_upward', descending: 'arrow_downward' } as const;
 
 export interface FinTableHeaderCellProps extends Omit<ThHTMLAttributes<HTMLTableCellElement>, 'children'> {
   /** Figma `Type`: White (no fill) or Grey (`bg-tertiary`). Default white. */
@@ -25,8 +33,16 @@ export interface FinTableHeaderCellProps extends Omit<ThHTMLAttributes<HTMLTable
   showTitle?: boolean;
   /** Figma Slot: the column title. Text is shown as Label/Medium (one line, "…" when narrow); other content as given. */
   children?: ReactNode;
-  /** Figma `Show trailing icon`: a down arrow after the title. Display only for now (sort / filter later, §10). */
+  /** Figma `Show trailing icon`: a down arrow after the title. Display only, unless `filter` makes it the filter. */
   trailingIcon?: boolean;
+  /**
+   * Sortable (code first, 22 Oct 2026): the title becomes a button with a sort icon after it, and the header gets
+   * `aria-sort`. Called with the next direction (none → ascending → descending → none).
+   */
+  sort?: FinTableSortDirection;
+  onSortChange?: (sort: FinTableSortDirection) => void;
+  /** Filterable (code first, 22 Oct 2026): the down arrow opens the column's filter menu. */
+  filter?: Omit<FinTableColumnFilterProps, 'label'> & { label?: string };
 }
 
 /**
@@ -46,6 +62,9 @@ export const FinTableHeaderCell = forwardRef<HTMLTableCellElement, FinTableHeade
     showTitle = true,
     children,
     trailingIcon = false,
+    sort,
+    onSortChange,
+    filter,
     scope = 'col',
     className,
     ...rest
@@ -53,9 +72,18 @@ export const FinTableHeaderCell = forwardRef<HTMLTableCellElement, FinTableHeade
   ref,
 ) {
   const title = typeof children === 'string' || typeof children === 'number' ? <FinLabel>{children}</FinLabel> : children;
+  const text = typeof children === 'string' || typeof children === 'number' ? String(children) : '';
+  const sortable = sort !== undefined;
 
   return (
-    <th {...rest} ref={ref} scope={scope} data-type={type} className={className ? `${styles.cell} ${className}` : styles.cell}>
+    <th
+      {...rest}
+      ref={ref}
+      scope={scope}
+      data-type={type}
+      aria-sort={sort === 'ascending' || sort === 'descending' ? sort : undefined}
+      className={className ? `${styles.cell} ${className}` : styles.cell}
+    >
       <div className={styles.content}>
         {checkbox && (
           <FinCheckboxBase
@@ -66,12 +94,27 @@ export const FinTableHeaderCell = forwardRef<HTMLTableCellElement, FinTableHeade
             {...(checked !== undefined && !onCheckedChange ? { readOnly: true } : {})}
           />
         )}
-        {children !== undefined && children !== null && (
-          <span className={styles.slot} data-hidden={showTitle ? undefined : ''}>
-            {title}
-          </span>
+        {sortable ? (
+          // The title and its sort icon are one button; the icon is fg-secondary, purple once sorted.
+          <button type="button" className={styles.sort} data-sorted={sort !== 'none' || undefined} onClick={() => onSortChange?.(NEXT_SORT[sort])}>
+            <span className={styles.slot} data-hidden={showTitle ? undefined : ''}>
+              {title}
+            </span>
+            <span className={styles.sortIcon}>
+              <FinIcon name={SORT_ICON[sort]} size={20} />
+            </span>
+          </button>
+        ) : (
+          children !== undefined &&
+          children !== null && (
+            <span className={styles.slot} data-hidden={showTitle ? undefined : ''}>
+              {title}
+            </span>
+          )
         )}
-        {trailingIcon && (
+        {filter ? (
+          <FinTableColumnFilter {...filter} label={filter.label ?? text} />
+        ) : trailingIcon && (
           <span className={styles.trailing}>
             <FinIcon name="keyboard_arrow_down" size={24} />
           </span>

@@ -13,6 +13,15 @@ const inTable = (cell: ReactNode) =>
     </table>,
   );
 
+/** A header row for tests that re-render the same cell. */
+const Row = ({ children }: { children: ReactNode }) => (
+  <table>
+    <thead>
+      <tr>{children}</tr>
+    </thead>
+  </table>
+);
+
 describe('FinTableHeaderCell', () => {
   it('is a column header with a "select all" checkbox and the title (Figma defaults)', () => {
     inTable(<FinTableHeaderCell>Table title</FinTableHeaderCell>);
@@ -76,5 +85,57 @@ describe('FinTableHeaderCell', () => {
     expect(ref.current?.tagName).toBe('TH');
     expect(ref.current).toHaveClass('extra');
     expect(screen.getByText('Custom').tagName).toBe('STRONG');
+  });
+
+  it('sortable: the title is a button that cycles none → ascending → descending → none, with aria-sort', async () => {
+    const user = userEvent.setup();
+    const onSortChange = vi.fn();
+    const { rerender } = render(
+      <Row>
+        <FinTableHeaderCell checkbox={false} sort="none" onSortChange={onSortChange}>
+          Points
+        </FinTableHeaderCell>
+      </Row>,
+    );
+    const header = screen.getByRole('columnheader');
+    expect(header).not.toHaveAttribute('aria-sort');
+    expect(screen.getByText('unfold_more')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /Points/ }));
+    expect(onSortChange).toHaveBeenLastCalledWith('ascending');
+    rerender(
+      <Row>
+        <FinTableHeaderCell checkbox={false} sort="ascending" onSortChange={onSortChange}>
+          Points
+        </FinTableHeaderCell>
+      </Row>,
+    );
+    expect(header).toHaveAttribute('aria-sort', 'ascending');
+    expect(screen.getByText('arrow_upward')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /Points/ }));
+    expect(onSortChange).toHaveBeenLastCalledWith('descending');
+    rerender(
+      <Row>
+        <FinTableHeaderCell checkbox={false} sort="descending" onSortChange={onSortChange}>
+          Points
+        </FinTableHeaderCell>
+      </Row>,
+    );
+    expect(header).toHaveAttribute('aria-sort', 'descending');
+    await user.click(screen.getByRole('button', { name: /Points/ }));
+    expect(onSortChange).toHaveBeenLastCalledWith('none');
+  });
+
+  it('filterable: the down arrow is a button that opens the column filter', async () => {
+    const user = userEvent.setup();
+    const onApply = vi.fn();
+    render(
+      <Row>
+        <FinTableHeaderCell checkbox={false} filter={{ options: [{ value: 'a', label: 'Active' }], value: [], onApply }}>
+          Status
+        </FinTableHeaderCell>
+      </Row>,
+    );
+    await user.click(screen.getByRole('button', { name: 'Filter Status' }));
+    expect(screen.getByRole('dialog', { name: 'Filter Status' })).toBeInTheDocument();
   });
 });

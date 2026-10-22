@@ -1,1 +1,6 @@
-export { FinTableHeaderCell, type FinTableHeaderCellProps, type FinTableHeaderCellType } from './FinTableHeaderCell';
+export {
+  FinTableHeaderCell,
+  type FinTableHeaderCellProps,
+  type FinTableHeaderCellType,
+  type FinTableSortDirection,
+} from './FinTableHeaderCell';
