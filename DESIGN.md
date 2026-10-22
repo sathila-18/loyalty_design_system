@@ -3318,7 +3318,7 @@ Template:
 > - **Approved and merged (21 Oct 2026):** `FinSearchField` (§9.61). FinSelectField and FinMultiSelectField are on hold until the menus are built (§10 #49).
 > - **Approved and merged (22 Oct 2026):** `FinHeaderNotificationButton` (§9.62).
 > - **Approved and merged (22 Oct 2026):** `FinHeader` (§9.63).
-> - **Built, awaiting approval (22 Oct 2026):** `FinMenu` (§9.64), on `feat/menu`. Next after it: the row count and country menus (§10 #49), then the select fields.
+> - **Approved and merged (22 Oct 2026):** `FinMenu` (§9.64), with `Shadow/Menu` and the list rows' `divider`. Next after it: the row count and country menus (§10 #49), then the select fields.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3484,3 +3484,4 @@ Template:
 | 22 Oct 2026 | 0.2 | **`FinMenu` built** (§8 #75, §9.64), public under Components/Menu: one menu for every scenario (`kind` action / filter / navigation), any rows in its slot, `FinMenuDivider`, `footer`, placement 4 from the trigger with Floating UI (new dependency, approved), window-bound height or `maxHeight`, widths. New **`Shadow/Menu`** (`--fin-shadow-menu`, Sticky values; §4.2), code first. List rows gain `divider` and List-standard `behavior="menuitem"` (§9.51). §10 #59 added. |
 | 22 Oct 2026 | 0.2 | **List rule extended (§9.49):** any list item without a divider gets 16 (`Space-XL`) of bottom padding, not only the last of a group. FinMenu: a filter menu holds one list type (chosen in the stories' controls); the Menu stories' controls rebuilt (each story shows only what it uses). |
 | 22 Oct 2026 | 0.2 | FinMenu: the focus ring shows only with the keyboard. Opened with a pointer (or open by default), focus goes to the menu itself; opened with Enter, Space or the arrow keys, to the first row (§9.64 (8)). |
+| 22 Oct 2026 | 0.2 | `FinMenu` approved by design and merged into `main`. |
