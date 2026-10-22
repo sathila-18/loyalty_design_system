@@ -19,14 +19,16 @@ interface Args {
   error: boolean;
   disabled: boolean;
   country: FinFlagCountry;
+  showDialCodes: boolean;
   paymentMethod: 'auto' | FinPaymentMethod;
 }
 
 /**
  * A disabled field's helper text is inactive by design (WCAG exempts the text of disabled controls), as the Helper
- * text stories (DESIGN.md §9.20). Only disabled helper text is left out of the a11y check.
+ * text stories (DESIGN.md §9.20). The country menu's dial code on the Selected row in Dark is the accepted List-standard
+ * caption exception (4.48:1, §10 #3, as the List stories). Only those are left out of the a11y check.
  */
-const KNOWN_CONTRAST_ISSUES = ['[data-tone="disabled"]'];
+const KNOWN_CONTRAST_ISSUES = ['[data-tone="disabled"]', 'html[data-theme="dark"] li[data-selected] [data-thickness]'];
 
 /**
  * A single-line text field (Figma Input field-standard). Hover, focus and type in it to see the states; Payment groups a
@@ -47,6 +49,7 @@ const meta: Meta<Args> = {
     error: false,
     disabled: false,
     country: 'LK',
+    showDialCodes: true,
     paymentMethod: 'auto',
   },
   argTypes: {
@@ -60,7 +63,8 @@ const meta: Meta<Args> = {
     helperText: { control: 'text', if: { arg: 'showHelperText' } },
     error: { control: 'boolean', description: 'Figma `Error`' },
     disabled: { control: 'boolean', description: 'Figma `State=Disabled`' },
-    country: { control: 'select', options: Object.keys(finFlags), if: { arg: 'variant', eq: 'mobile-number' } },
+    country: { control: 'select', options: Object.keys(finFlags), description: 'The country at the start (`defaultCountry`); the menu changes it', if: { arg: 'variant', eq: 'mobile-number' } },
+    showDialCodes: { control: 'boolean', description: 'The dial codes in the country menu', if: { arg: 'variant', eq: 'mobile-number' } },
     paymentMethod: {
       control: 'select',
       options: ['auto', ...Object.keys(finPaymentMethods)],
@@ -71,7 +75,7 @@ const meta: Meta<Args> = {
   render: (args) => (
     <div className={styles.column}>
       <FinTextField
-        key={`${args.variant}-${args.value}`}
+        key={`${args.variant}-${args.value}-${args.country}`}
         variant={args.variant}
         size={args.size}
         label={args.label}
@@ -79,7 +83,8 @@ const meta: Meta<Args> = {
         defaultValue={args.value}
         error={args.error}
         disabled={args.disabled}
-        country={args.country}
+        defaultCountry={args.country}
+        showDialCodes={args.showDialCodes}
         {...(args.paymentMethod !== 'auto' ? { paymentMethod: args.paymentMethod } : {})}
         {...(args.trailingIcon !== 'none' ? { trailingIcon: args.trailingIcon } : {})}
         {...(args.showHelperText ? { helperText: args.helperText } : {})}
@@ -177,16 +182,37 @@ export const Focused: Story = {
   },
 };
 
-/** Mobile number: the dial code follows the chosen country (from libphonenumber-js). */
+/**
+ * Mobile number: the dial code follows the chosen country (from libphonenumber-js). Click a flag to open the country
+ * menu: search by name, ISO code or dial code, as wide as the field and 4 below it.
+ */
 export const MobileNumber: Story = {
   name: 'Mobile number',
+  parameters: { controls: { disable: true } },
   render: () => (
     <div className={styles.stack}>
       {(['LK', 'GB', 'AE', 'US'] as const).map((country) => (
-        <FinTextField key={country} variant="mobile-number" label={`Mobile number, ${finFlags[country]}`} country={country} placeholder="Phone number" />
+        <FinTextField key={country} variant="mobile-number" label={`Mobile number, ${finFlags[country]}`} defaultCountry={country} placeholder="Phone number" />
       ))}
     </div>
   ),
+};
+
+/** The country menu open: the search field has focus, the chosen country (Sri Lanka) is Selected and in view. */
+export const CountryMenu: Story = {
+  name: 'Country menu',
+  args: { variant: 'mobile-number', label: 'Mobile number', placeholder: '77 123 4567', showHelperText: false },
+  parameters: { controls: { include: ['country', 'showDialCodes', 'size'] } },
+  decorators: [
+    (Story) => (
+      <div className={styles.menuStage}>
+        <Story />
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    await userEvent.click(canvasElement.querySelector<HTMLButtonElement>('button[aria-haspopup="listbox"]')!);
+  },
 };
 
 /** Payment: type a card number. The digits are grouped as you type and the brand's logo comes from the first digits. */

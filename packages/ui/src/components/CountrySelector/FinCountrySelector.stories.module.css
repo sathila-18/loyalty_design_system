@@ -6,3 +6,8 @@
   gap: var(--fin-space-xl);
   align-items: center;
 }
+
+/* Room below the selector for its menu. */
+.stage {
+  min-height: calc(var(--fin-size-120) * 5);
+}

@@ -59,6 +59,13 @@ export interface FinMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
   children: ReactNode;
   /** Kept at the bottom while the content scrolls (filter buttons). Code first: Figma has one slot (22 Oct 2026). */
   footer?: ReactNode;
+  /**
+   * Kept at the top while the content scrolls (a search field). Code first (22 Oct 2026). In a select menu, a field
+   * here takes focus on open; ArrowDown moves into the options and Enter chooses the first one.
+   */
+  header?: ReactNode;
+  /** Placed against, and `width="trigger"` measured from, this element instead of the trigger (a field's box). */
+  anchor?: HTMLElement | null;
   /** Controlled open state. */
   open?: boolean;
   /** Uncontrolled: open at first. Default `false`. */
@@ -117,6 +124,8 @@ export function FinMenu({
   trigger,
   children,
   footer,
+  header,
+  anchor,
   open: openProp,
   defaultOpen = false,
   onOpenChange,
@@ -153,7 +162,7 @@ export function FinMenu({
 
   const { x, y, isPositioned } = useFloating<HTMLElement>({
     open,
-    elements: { reference: triggerEl, floating: menuEl },
+    elements: { reference: anchor ?? triggerEl, floating: menuEl },
     placement,
     strategy: 'fixed',
     whileElementsMounted: autoUpdate,
@@ -197,8 +206,12 @@ export function FinMenu({
     const current = menuEl.querySelector<HTMLElement>(
       kind === 'select' ? '[role="option"][aria-selected="true"]' : '[aria-current="page"]',
     );
-    const target =
-      focusOnOpen === 'container'
+    // A select with a search field: the field, and the chosen option scrolled into view.
+    const field = menuEl.querySelector<HTMLElement>('[data-menu-header] input');
+    if (kind === 'select' && field) current?.scrollIntoView?.({ block: 'center' });
+    const target = field
+      ? field
+      : focusOnOpen === 'container'
         ? menuEl.querySelector<HTMLElement>('[data-menu-focus]') ?? menuEl
         : kind === 'select' && current
           ? current
@@ -268,17 +281,38 @@ export function FinMenu({
   };
 
   const onMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Escape') {
+    // A search field's Escape first clears its text (it prevents the default); the next one closes.
+    if (event.key === 'Escape' && !event.defaultPrevented) {
       event.preventDefault();
       event.stopPropagation();
       close(true);
       return;
     }
-    if (kind === 'filter') return;
+    if (kind === 'filter' || event.key === 'Escape') return;
+    const inHeader = (event.target as HTMLElement).closest('[data-menu-header]') !== null;
+    if (inHeader) {
+      // In the search field: only ArrowDown / ArrowUp (into the options) and Enter (the first option) are the menu's.
+      const list = items();
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveFocus(event.key === 'ArrowDown' ? 1 : -1);
+      } else if (event.key === 'Enter' && kind === 'select' && list[0]) {
+        event.preventDefault();
+        list[0].click();
+      } else if (event.key === 'Tab' && !event.shiftKey && kind === 'select') {
+        close(true);
+      }
+      return;
+    }
     const keys: Record<string, 1 | -1 | 'first' | 'last'> = { ArrowDown: 1, ArrowUp: -1, Home: 'first', End: 'last' };
     const step = keys[event.key];
     const option = kind === 'select' ? (document.activeElement as HTMLElement | null)?.closest<HTMLElement>('[role="option"]') : null;
-    if (step !== undefined) {
+    const headerField = menuEl?.querySelector<HTMLElement>('[data-menu-header] input');
+    if (step === -1 && headerField && items()[0] === document.activeElement) {
+      // Up from the first option: back to the search field.
+      event.preventDefault();
+      headerField.focus();
+    } else if (step !== undefined) {
       event.preventDefault();
       moveFocus(step);
     } else if (option && (event.key === 'Enter' || event.key === ' ')) {
@@ -410,6 +444,11 @@ export function FinMenu({
           {...(kind === 'filter' ? { role: 'dialog', id: menuId, tabIndex: -1, ...name } : {})}
         >
           <MenuKindContext.Provider value={kind}>
+            {header !== undefined && header !== null && (
+              <div className={styles.header} data-menu-header>
+                {header}
+              </div>
+            )}
             <div className={styles.content}>{body}</div>
           </MenuKindContext.Provider>
           {footer !== undefined && footer !== null && <div className={styles.footer}>{footer}</div>}

@@ -80,6 +80,13 @@
   display: block;
 }
 
+/* Code first (22 Oct 2026): content kept at the top (a search field), a line below. */
+.header {
+  flex: none;
+  padding: var(--fin-space-l);
+  border-bottom: 1px solid var(--fin-border-subtle);
+}
+
 /* Code first (22 Oct 2026): buttons kept at the bottom, a line above, right aligned. */
 .footer {
   display: flex;

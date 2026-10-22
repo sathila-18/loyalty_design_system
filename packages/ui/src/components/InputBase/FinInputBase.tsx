@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useId, type InputHTMLAttributes, type MouseEventHandler, type ReactNode } from 'react';
+import { forwardRef, useId, useState, type InputHTMLAttributes, type ReactNode } from 'react';
 import type { FinFlagCountry } from '../../flags/finFlags';
 import { FinIcon } from '../../icons/FinIcon';
 import { FinCountrySelector } from '../CountrySelector';
@@ -46,8 +46,10 @@ export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputEle
   helperText?: ReactNode;
   /** Mobile number: the chosen country (Figma Contry selecter). Default `LK`, as Figma. */
   country?: FinFlagCountry;
-  /** Mobile number: called when the country selector is clicked (the country menu waits for §10 #49). */
-  onCountryClick?: MouseEventHandler<HTMLButtonElement>;
+  /** Mobile number: called with the country chosen in the country menu. */
+  onCountryChange?: (country: FinFlagCountry) => void;
+  /** Mobile number: the dial codes as captions in the country menu. Default on. */
+  showDialCodes?: boolean;
   /** Figma Place holder slot: another control in place of the input (a select's value, chips). It needs `id`. */
   control?: ReactNode;
   /** With `control`: whether it has a value (the input works this out itself). */
@@ -77,7 +79,8 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
     trailing,
     helperText,
     country = 'LK',
-    onCountryClick,
+    onCountryChange,
+    showDialCodes,
     control,
     filled,
     id: idProp,
@@ -88,6 +91,8 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
   },
   ref,
 ) {
+  // The box: the country menu lines up with it and takes its width (DESIGN.md §9.64).
+  const [fieldEl, setFieldEl] = useState<HTMLDivElement | null>(null);
   const generatedId = useId();
   const id = idProp ?? generatedId;
   const helperId = `${id}-helper`;
@@ -111,7 +116,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
       data-filled={filled ? '' : undefined}
       data-control={control ? '' : undefined}
     >
-      <div className={styles.field}>
+      <div ref={setFieldEl} className={styles.field}>
         {variant === 'mobile-number' && (
           <>
             <FinCountrySelector
@@ -119,7 +124,9 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
               country={country}
               size={size}
               disabled={disabled}
-              {...(onCountryClick ? { onClick: onCountryClick } : {})}
+              menuAnchor={fieldEl}
+              {...(onCountryChange ? { onCountryChange } : {})}
+              {...(showDialCodes !== undefined ? { showDialCodes } : {})}
             />
             <FinDivider orientation="vertical" decorative className={styles.divider} />
           </>

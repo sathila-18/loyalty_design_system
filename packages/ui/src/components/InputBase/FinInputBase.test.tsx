@@ -80,12 +80,13 @@ describe('FinInputBase', () => {
     expect(screen.getByText('keyboard_arrow_down')).toHaveAttribute('data-size', '20');
   });
 
-  it('mobile number: the country selector comes first and reports clicks', async () => {
+  it('mobile number: the country selector comes first and reports the country chosen in its menu', async () => {
     const user = userEvent.setup();
-    const onCountryClick = vi.fn();
-    render(<FinInputBase label="Mobile number" variant="mobile-number" country="GB" onCountryClick={onCountryClick} />);
+    const onCountryChange = vi.fn();
+    render(<FinInputBase label="Mobile number" variant="mobile-number" country="GB" onCountryChange={onCountryChange} />);
     await user.click(screen.getByRole('button', { name: 'Country, United Kingdom' }));
-    expect(onCountryClick).toHaveBeenCalledOnce();
+    await user.click(screen.getByRole('option', { name: /France/ }));
+    expect(onCountryChange).toHaveBeenCalledWith('FR');
     expect(screen.getByRole('textbox', { name: 'Mobile number' })).toBeInTheDocument();
   });
 

@@ -48,12 +48,15 @@ describe('FinTextField', () => {
       expect(screen.getByText('+971')).toBeInTheDocument();
     });
 
-    it('reports country clicks', async () => {
+    it('changes the country from its menu, and the dial code with it (uncontrolled)', async () => {
       const user = userEvent.setup();
-      const onCountryClick = vi.fn();
-      render(<FinTextField variant="mobile-number" label="Mobile number" onCountryClick={onCountryClick} />);
+      const onCountryChange = vi.fn();
+      render(<FinTextField variant="mobile-number" label="Mobile number" onCountryChange={onCountryChange} />);
       await user.click(screen.getByRole('button', { name: 'Country, Sri Lanka' }));
-      expect(onCountryClick).toHaveBeenCalledOnce();
+      await user.type(screen.getByRole('searchbox'), 'united kingdom{Enter}');
+      expect(onCountryChange).toHaveBeenCalledWith('GB');
+      expect(screen.getByRole('button', { name: 'Country, United Kingdom' })).toBeInTheDocument();
+      expect(screen.getByText('+44')).toBeInTheDocument();
     });
   });
 

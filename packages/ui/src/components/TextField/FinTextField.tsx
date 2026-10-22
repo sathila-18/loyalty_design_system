@@ -2,6 +2,7 @@
 
 import { forwardRef, useState, type ChangeEvent } from 'react';
 import { finDialCodes } from '../../flags/finDialCodes';
+import type { FinFlagCountry } from '../../flags/finFlags';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinPaymentIcon } from '../../payment/FinPaymentIcon';
@@ -20,6 +21,8 @@ export interface FinTextFieldProps
   trailingIcon?: FinIconName;
   /** Payment: the card's brand logo. Without it, the brand is worked out from the number's first digits. */
   paymentMethod?: FinPaymentMethod;
+  /** Mobile number: the country at the start (uncontrolled). Default `LK`, as Figma. `country` controls it. */
+  defaultCountry?: FinFlagCountry;
 }
 
 // After reformatting, put the caret back after the same number of digits it was after.
@@ -39,10 +42,30 @@ const caretAfterDigits = (formatted: string, digits: number) => {
  * Controlled or uncontrolled like a native input; `ref` and other attributes go to the input.
  */
 export const FinTextField = forwardRef<HTMLInputElement, FinTextFieldProps>(function FinTextField(
-  { variant = 'default', size = 'large', trailingIcon, paymentMethod, country = 'LK', value, defaultValue, onChange, disabled = false, ...rest },
+  {
+    variant = 'default',
+    size = 'large',
+    trailingIcon,
+    paymentMethod,
+    country: countryProp,
+    defaultCountry = 'LK',
+    onCountryChange,
+    value,
+    defaultValue,
+    onChange,
+    disabled = false,
+    ...rest
+  },
   ref,
 ) {
   const isPayment = variant === 'payment';
+  // Mobile number: the country chosen in the menu (controlled with `country` + `onCountryChange`, or kept here).
+  const [ownCountry, setOwnCountry] = useState<FinFlagCountry>(defaultCountry);
+  const country = countryProp ?? ownCountry;
+  const changeCountry = (next: FinFlagCountry) => {
+    if (countryProp === undefined) setOwnCountry(next);
+    onCountryChange?.(next);
+  };
   const [typedDigits, setTypedDigits] = useState(() => (isPayment ? cardDigits(String(defaultValue ?? '')) : ''));
   const digits = isPayment && value !== undefined && value !== null ? cardDigits(String(value)) : typedDigits;
 
@@ -75,6 +98,7 @@ export const FinTextField = forwardRef<HTMLInputElement, FinTextFieldProps>(func
       variant={variant}
       size={size}
       country={country}
+      onCountryChange={changeCountry}
       disabled={disabled}
       onChange={handleChange}
       {...(value !== undefined ? { value: isPayment && value !== null ? formatCardNumber(String(value)) : value } : {})}
