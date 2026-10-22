@@ -37,7 +37,8 @@ export type FinMenuKind = 'action' | 'filter' | 'navigation' | 'select';
 /** `content`: fits its content, never narrower than the trigger. `trigger`: the trigger's width (fields). Or any CSS length. */
 export type FinMenuWidth = 'content' | 'trigger' | (string & {});
 
-export type FinMenuPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end';
+/** Where it opens from its trigger (or anchor); `right-*` (beside it) added 22 Oct 2026 for the minimized side nav. */
+export type FinMenuPlacement = 'bottom-start' | 'bottom-end' | 'top-start' | 'top-end' | 'right-start' | 'right-end';
 
 /** The props FinMenu gives its trigger (also accepted by a trigger render function). */
 export interface FinMenuTriggerProps {

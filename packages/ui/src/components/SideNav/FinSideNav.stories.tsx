@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type MouseEvent, type ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import avatarSample from '../Avatar/avatar-sample.jpg';
-import { FinSideNav, type FinSideNavProps, type FinSideNavSection, type FinSideNavType } from './FinSideNav';
+import { FinSideNav, type FinSideNavMenuItem, type FinSideNavProps, type FinSideNavSection, type FinSideNavType } from './FinSideNav';
 import styles from './FinSideNav.stories.module.css';
 
 /** The Figma Side Menu's menu. */
@@ -41,6 +41,14 @@ const SECTIONS: FinSideNavSection[] = [
 
 const STATIC_PROFILE = { name: 'Olivia James', email: 'oliviajames@email.com', src: avatarSample, initials: 'OJ' };
 const PROFILE = { ...STATIC_PROFILE, href: '#account' };
+/** The account menu's items (an example: they follow the product). */
+const ACCOUNT_MENU: FinSideNavMenuItem[] = [
+  { label: 'My profile', icon: 'person', onSelect: () => {} },
+  { label: 'Notifications', icon: 'notifications', onSelect: () => {} },
+  { label: 'Settings', icon: 'settings', onSelect: () => {} },
+  { label: 'Log out', icon: 'logout', onSelect: () => {}, separator: true },
+];
+const MENU_PROFILE = { ...STATIC_PROFILE, menu: ACCOUNT_MENU };
 
 /**
  * A stand-in for the product logo (Figma Logo sizes, Small, Coloured, With text): the `image` placeholder and
@@ -88,7 +96,7 @@ interface Args {
   menu: string;
   showLogo: boolean;
   showProfile: boolean;
-  profileAction: 'link' | 'none';
+  profileAction: 'menu' | 'link' | 'none';
 }
 
 /**
@@ -102,7 +110,7 @@ const KNOWN_CONTRAST_ISSUES = ['[data-selected="sub-item"]'];
 const meta: Meta<Args> = {
   title: 'Components/Side nav/Side menu',
   parameters: { layout: 'fullscreen', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  args: { type: 'expanded', menu: '#dashboard', showLogo: true, showProfile: true, profileAction: 'link' },
+  args: { type: 'expanded', menu: '#dashboard', showLogo: true, showProfile: true, profileAction: 'menu' },
   argTypes: {
     type: { control: 'inline-radio', options: ['expanded', 'minimized'], description: 'Figma `Type` (click the button to change it)' },
     menu: {
@@ -112,7 +120,11 @@ const meta: Meta<Args> = {
     },
     showLogo: { control: 'boolean', description: 'The `logo` slot (a placeholder here)' },
     showProfile: { control: 'boolean', description: 'The `profile` (the user at the bottom)' },
-    profileAction: { control: 'inline-radio', options: ['link', 'none'], description: 'The profile row is a link (with the chevron) or static' },
+    profileAction: {
+      control: 'inline-radio',
+      options: ['menu', 'link', 'none'],
+      description: 'The profile row opens an account menu (`profile.menu`), is a link (with the chevron), or is static',
+    },
   },
   render: function Render({ type, menu, showLogo, showProfile, profileAction }) {
     const [ownType, setOwnType] = useState(type);
@@ -130,7 +142,7 @@ const meta: Meta<Args> = {
             type={ownType}
             onTypeChange={setOwnType}
             {...(showLogo ? { logo: <LogoPlaceholder /> } : {})}
-            {...(showProfile ? { profile: profileAction === 'link' ? PROFILE : STATIC_PROFILE } : {})}
+            {...(showProfile ? { profile: profileAction === 'menu' ? MENU_PROFILE : profileAction === 'link' ? PROFILE : STATIC_PROFILE } : {})}
           />
         )}
       </Routed>
