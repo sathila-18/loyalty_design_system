@@ -49,6 +49,15 @@
   width: var(--menu-width);
 }
 
+/*
+ * The menu itself takes focus when opened with a pointer (the list, the nav or the filter dialog): no ring there, as
+ * the rows show theirs once the keyboard is used.
+ */
+.focusTarget:focus,
+.menu[role="dialog"]:focus {
+  outline: none;
+}
+
 /* Figma `conten` slot: no padding or gap; scrolls when the menu is at its limit. */
 .content {
   display: flex;

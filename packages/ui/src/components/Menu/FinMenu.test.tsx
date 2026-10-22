@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
@@ -30,7 +30,7 @@ beforeAll(() => {
 });
 
 describe('FinMenu', () => {
-  it('opens from its trigger as a menu named by the trigger, focusing the first action', async () => {
+  it('opens from its trigger as a menu named by the trigger; a click focuses the menu itself (no ring on a row)', async () => {
     const user = userEvent.setup();
     render(<ActionMenu />);
     const trigger = screen.getByRole('button', { name: 'Actions' });
@@ -41,14 +41,26 @@ describe('FinMenu', () => {
     const menu = screen.getByRole('menu', { name: 'Actions' });
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
     expect(trigger).toHaveAttribute('aria-controls', menu.id);
-    expect(screen.getByRole('menuitem', { name: 'View' })).toHaveFocus();
+    expect(menu).toHaveFocus();
     expect(screen.getByRole('separator')).toBeInTheDocument();
+  });
+
+  it('opened with Enter or Space, focuses the first action', async () => {
+    const user = userEvent.setup();
+    render(<ActionMenu />);
+    screen.getByRole('button', { name: 'Actions' }).focus();
+    await user.keyboard('{Enter}');
+    expect(screen.getByRole('menuitem', { name: 'View' })).toHaveFocus();
+    await user.keyboard('{Escape} ');
+    expect(screen.getByRole('menuitem', { name: 'View' })).toHaveFocus();
   });
 
   it('moves between actions with the arrow keys, Home and End, skipping disabled ones', async () => {
     const user = userEvent.setup();
     render(<ActionMenu />);
     await user.click(screen.getByRole('button', { name: 'Actions' }));
+    await user.keyboard('{ArrowDown}');
+    expect(screen.getByRole('menuitem', { name: 'View' })).toHaveFocus();
     await user.keyboard('{ArrowDown}');
     expect(screen.getByRole('menuitem', { name: 'Edit' })).toHaveFocus();
     await user.keyboard('{ArrowDown}');
@@ -75,7 +87,7 @@ describe('FinMenu', () => {
     render(<ActionMenu onEdit={onEdit} />);
     const trigger = screen.getByRole('button', { name: 'Actions' });
     await user.click(trigger);
-    await user.keyboard('{ArrowDown}{Enter}');
+    await user.keyboard('{ArrowDown}{ArrowDown}{Enter}');
     expect(onEdit).toHaveBeenCalledTimes(1);
     expect(screen.queryByRole('menu')).toBeNull();
     expect(trigger).toHaveFocus();
@@ -101,7 +113,7 @@ describe('FinMenu', () => {
     expect(screen.queryByRole('menu')).toBeNull();
   });
 
-  it('is a navigation of links that closes when one is chosen, focusing the current page on open', async () => {
+  it('is a navigation of links that closes when one is chosen; opened with the keyboard, the current page has focus', async () => {
     const user = userEvent.setup();
     render(
       <FinMenu kind="navigation" trigger={<FinButton>Programme</FinButton>}>
@@ -111,7 +123,8 @@ describe('FinMenu', () => {
     );
     const trigger = screen.getByRole('button', { name: 'Programme' });
     expect(trigger).not.toHaveAttribute('aria-haspopup');
-    await user.click(trigger);
+    trigger.focus();
+    await user.keyboard('{Enter}');
     expect(screen.getByRole('navigation', { name: 'Programme' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Rewards' })).toHaveFocus();
     await user.keyboard('{ArrowUp}');
@@ -148,7 +161,8 @@ describe('FinMenu', () => {
     const trigger = screen.getByRole('button', { name: 'Filters' });
     expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
     await user.click(trigger);
-    expect(screen.getByRole('dialog', { name: 'Member filters' })).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Member filters' })).toHaveFocus();
+    await user.tab();
     expect(screen.getByRole('checkbox', { name: 'Gold' })).toHaveFocus();
     await user.keyboard(' ');
     await user.click(screen.getByRole('checkbox', { name: 'Silver' }));
@@ -168,6 +182,8 @@ describe('FinMenu', () => {
         <button type="button">After</button>
       </>,
     );
+    // Wait for the menu to take focus once it's placed, then Tab out from its last button.
+    await waitFor(() => expect(screen.getByRole('dialog')).toHaveFocus());
     screen.getByRole('button', { name: 'Apply' }).focus();
     await user.tab();
     expect(screen.queryByRole('dialog')).toBeNull();

@@ -124,12 +124,17 @@ export function FinMenu({
   const open = openProp ?? openState;
   const triggerId = useId();
   const menuId = useId();
-  // Where focus goes when the menu opens from the arrow keys (state, so nothing reads a ref during render).
-  const [focusOnOpen, setFocusOnOpen] = useState<'first' | 'last' | null>(null);
+  /**
+   * Where focus goes when the menu opens. Opened with the keyboard: the first (or last) row, with its focus ring.
+   * Opened with a pointer, or by the app: the menu itself (`container`), so no ring shows until the keyboard is used;
+   * the arrow keys and Tab work from there. State, so nothing reads a ref during render.
+   */
+  const [focusOnOpen, setFocusOnOpen] = useState<'first' | 'last' | 'container'>('container');
 
   const setOpen = useCallback(
     (next: boolean) => {
       if (openProp === undefined) setOpenState(next);
+      if (!next) setFocusOnOpen('container');
       onOpenChange?.(next);
     },
     [openProp, onOpenChange],
@@ -183,7 +188,14 @@ export function FinMenu({
     if (!open || !menuEl || !isPositioned) return;
     const list = items();
     const current = menuEl.querySelector<HTMLElement>('[aria-current="page"]');
-    const target = focusOnOpen === 'last' ? list.at(-1) : kind === 'navigation' && current ? current : list[0];
+    const target =
+      focusOnOpen === 'container'
+        ? menuEl.querySelector<HTMLElement>('[data-menu-focus]') ?? menuEl
+        : focusOnOpen === 'last'
+          ? list.at(-1)
+          : kind === 'navigation' && current
+            ? current
+            : list[0];
     target?.focus();
     // Only when it's first placed after opening, not on later changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -212,9 +224,14 @@ export function FinMenu({
   const moveFocus = (step: 1 | -1 | 'first' | 'last') => {
     const list = items();
     if (list.length === 0) return;
+    // -1: focus is on the menu itself (opened with a pointer), so ArrowDown goes to the first row, ArrowUp the last.
     const index = list.indexOf(document.activeElement as HTMLElement);
     const next =
-      step === 'first' ? 0 : step === 'last' ? list.length - 1 : (index + step + list.length) % list.length;
+      step === 'first' || (index === -1 && step === 1)
+        ? 0
+        : step === 'last' || (index === -1 && step === -1)
+          ? list.length - 1
+          : (index + step + list.length) % list.length;
     list[next]?.focus();
   };
 
@@ -259,8 +276,9 @@ export function FinMenu({
     'aria-expanded': open,
     'aria-controls': open ? menuId : undefined,
     'aria-haspopup': kind === 'action' ? 'menu' : kind === 'filter' ? 'dialog' : undefined,
-    onClick: () => {
-      setFocusOnOpen(null);
+    // A click from Enter or Space has no pointer (`detail` 0): keyboard, so the first row gets focus and its ring.
+    onClick: (event) => {
+      setFocusOnOpen(event.detail === 0 ? 'first' : 'container');
       setOpen(!open);
     },
     onKeyDown: (event) => {
@@ -309,13 +327,13 @@ export function FinMenu({
   let body: ReactNode;
   if (kind === 'action')
     body = (
-      <ul role="menu" id={menuId} {...name} className={styles.list}>
+      <ul role="menu" id={menuId} {...name} className={`${styles.list} ${styles.focusTarget}`} tabIndex={-1} data-menu-focus>
         {children}
       </ul>
     );
   else if (kind === 'navigation')
     body = (
-      <nav id={menuId} {...name}>
+      <nav id={menuId} {...name} className={styles.focusTarget} tabIndex={-1} data-menu-focus>
         <ul className={styles.list}>{children}</ul>
       </nav>
     );
@@ -343,7 +361,7 @@ export function FinMenu({
             focusInside.current = true;
           }}
           onBlur={onMenuBlur}
-          {...(kind === 'filter' ? { role: 'dialog', id: menuId, ...name } : {})}
+          {...(kind === 'filter' ? { role: 'dialog', id: menuId, tabIndex: -1, ...name } : {})}
         >
           <MenuKindContext.Provider value={kind}>
             <div className={styles.content}>{body}</div>
