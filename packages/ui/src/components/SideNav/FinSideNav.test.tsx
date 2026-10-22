@@ -173,4 +173,42 @@ describe('FinSideNav', () => {
     render(<FinSideNav sections={SECTIONS} aria-label="Admin" />);
     expect(screen.getByRole('navigation', { name: 'Admin' })).toBeInTheDocument();
   });
+
+  it('profile menu: the user row opens an account menu (expanded), its arrow up while open', async () => {
+    const user = userEvent.setup();
+    const onLogOut = vi.fn();
+    render(
+      <FinSideNav
+        sections={SECTIONS}
+        type="expanded"
+        profile={{
+          name: 'Olivia James',
+          email: 'olivia@email.com',
+          menu: [
+            { label: 'Settings', icon: 'settings', onSelect: () => {} },
+            { label: 'Log out', icon: 'logout', onSelect: onLogOut, separator: true },
+          ],
+        }}
+      />,
+    );
+    const row = screen.getByRole('button', { name: 'Olivia James' });
+    expect(row).toHaveAttribute('aria-haspopup', 'menu');
+    expect(row.closest('[data-size]')).toHaveTextContent('keyboard_arrow_down');
+    await user.click(row);
+    expect(screen.getByRole('menu', { name: 'Account' })).toBeInTheDocument();
+    expect(row.closest('[data-size]')).toHaveTextContent('keyboard_arrow_up');
+    expect(screen.getByRole('separator')).toBeInTheDocument();
+    await user.click(screen.getByRole('menuitem', { name: 'Log out' }));
+    expect(onLogOut).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole('menu')).toBeNull();
+  });
+
+  it('profile menu when minimized: the avatar opens it', async () => {
+    const user = userEvent.setup();
+    render(
+      <FinSideNav sections={SECTIONS} type="minimized" profile={{ name: 'Olivia James', menu: [{ label: 'Settings', onSelect: () => {} }] }} />,
+    );
+    await user.click(screen.getByRole('button', { name: 'Olivia James' }));
+    expect(screen.getByRole('menuitem', { name: 'Settings' })).toBeInTheDocument();
+  });
 });

@@ -1,5 +1,6 @@
 export {
   FinSideNav,
+  type FinSideNavMenuItem,
   type FinSideNavPage,
   type FinSideNavProfile,
   type FinSideNavProps,

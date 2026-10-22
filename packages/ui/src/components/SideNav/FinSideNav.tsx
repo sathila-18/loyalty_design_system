@@ -1,11 +1,14 @@
 'use client';
 
 import { finBreakpoint } from '@finspace-loyalty/tokens/breakpoints';
-import { useEffect, useState, type ElementType, type HTMLAttributes, type MouseEvent, type ReactNode } from 'react';
+import { Fragment, useEffect, useState, type ElementType, type HTMLAttributes, type MouseEvent, type ReactNode } from 'react';
+import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinAvatar } from '../Avatar';
 import { FinButton } from '../Button';
 import { FinListItem } from '../ListItem';
+import { FinListStandard } from '../ListStandard';
+import { FinMenu, FinMenuDivider } from '../Menu';
 import { FinSideNavItem, type FinSideNavItemSelected } from '../SideNavItem';
 import { FinSideNavSubItem } from '../SideNavSubItem';
 import styles from './FinSideNav.module.css';
@@ -39,6 +42,21 @@ export interface FinSideNavProfile {
   /** Where the row goes (for example the account page). With `href` or `onClick` the row shows the chevron. */
   href?: string;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
+  /**
+   * An account menu (code first, 22 Oct 2026): tapping the row (or the avatar when minimized) opens an action menu of
+   * these items instead of going anywhere. Takes the place of `href` / `onClick`.
+   */
+  menu?: FinSideNavMenuItem[];
+}
+
+/** One item in the account menu. */
+export interface FinSideNavMenuItem {
+  label: string;
+  icon?: FinIconName;
+  onSelect: () => void;
+  disabled?: boolean;
+  /** A line before this item, to group the ones after it (for example Log out). */
+  separator?: boolean;
 }
 
 export interface FinSideNavProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
@@ -142,7 +160,25 @@ export function FinSideNav({
   const avatar = profile
     ? { size: 'medium' as const, ...(profile.src !== undefined ? { src: profile.src } : {}), ...(profile.initials !== undefined ? { initials: profile.initials } : {}) }
     : undefined;
-  const profileAction = profile && (profile.href !== undefined ? Link : profile.onClick ? 'button' : undefined);
+  const profileAction = profile && !profile.menu && (profile.href !== undefined ? Link : profile.onClick ? 'button' : undefined);
+  // The account menu lines up with the user's area when expanded, and opens beside the nav when minimized.
+  const [navEl, setNavEl] = useState<HTMLElement | null>(null);
+  const [footerEl, setFooterEl] = useState<HTMLDivElement | null>(null);
+  const accountItems = profile?.menu?.map((item, index) => (
+    <Fragment key={`${item.label}-${index}`}>
+      {item.separator && index > 0 && <FinMenuDivider />}
+      <FinListStandard
+        as="li"
+        size="small"
+        behavior="menuitem"
+        divider={false}
+        title={item.label}
+        {...(item.icon ? { leadingAccessory: 'icon' as const, icon: item.icon } : {})}
+        disabled={item.disabled ?? false}
+        onClick={item.onSelect}
+      />
+    </Fragment>
+  ));
   const profileActionProps = profile
     ? profile.href !== undefined
       ? { href: profile.href, onClick: profile.onClick }
@@ -150,7 +186,7 @@ export function FinSideNav({
     : {};
 
   return (
-    <nav {...rest} aria-label={ariaLabel} className={className ? `${styles.nav} ${className}` : styles.nav} data-type={type}>
+    <nav {...rest} ref={setNavEl} aria-label={ariaLabel} className={className ? `${styles.nav} ${className}` : styles.nav} data-type={type}>
       <div className={styles.top}>
         <div className={styles.header}>
           {expanded && logo && <div className={styles.logo}>{logo}</div>}
@@ -208,8 +244,53 @@ export function FinSideNav({
         </ul>
       </div>
       {profile && (
-        <div className={styles.footer}>
-          {expanded ? (
+        <div ref={setFooterEl} className={styles.footer}>
+          {profile.menu && expanded ? (
+            <FinMenu
+              placement="top-start"
+              width="trigger"
+              anchor={footerEl}
+              label="Account"
+              trigger={(menuProps) => (
+                <FinListItem
+                  className={styles.profile}
+                  size="small"
+                  divider={false}
+                  data-interactive=""
+                  leading={<FinAvatar {...avatar} />}
+                  title={
+                    <button {...menuProps} type="button" className={`${styles.name} ${styles.action}`}>
+                      {profile.name}
+                    </button>
+                  }
+                  showBody={profile.email !== undefined}
+                  trailing={
+                    // A dropdown: down, and up while the menu is open (as every dropdown).
+                    <FinIcon name={menuProps['aria-expanded'] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} size={24} color="secondary" />
+                  }
+                >
+                  {profile.email !== undefined ? <span className={styles.email}>{profile.email}</span> : undefined}
+                </FinListItem>
+              )}
+            >
+              {accountItems}
+            </FinMenu>
+          ) : profile.menu ? (
+            <div className={styles.profileMinimized} data-interactive="">
+              <FinMenu
+                placement="right-end"
+                anchor={navEl}
+                label="Account"
+                trigger={(menuProps) => (
+                  <button {...menuProps} type="button" className={styles.avatarAction} aria-label={profile.name}>
+                    <FinAvatar {...avatar} />
+                  </button>
+                )}
+              >
+                {accountItems}
+              </FinMenu>
+            </div>
+          ) : expanded ? (
             <FinListItem
               className={styles.profile}
               size="small"
