@@ -8,14 +8,15 @@ import type { FinPaymentMethod } from '../../payment/finPaymentMethods';
 const BRANDS: { method: FinPaymentMethod; prefixes: (string | [number, number])[]; groups: number[] }[] = [
   { method: 'amex', prefixes: ['34', '37'], groups: [4, 6, 5] },
   { method: 'dinersclub', prefixes: ['36', '38', '39', [300, 305]], groups: [4, 6, 4] },
-  { method: 'discover', prefixes: ['6011', [644, 649], '65'], groups: [4, 4, 4, 4, 3] },
-  { method: 'maestro', prefixes: ['5018', '5020', '5038', '5893', '6304', '6759', '6761', '6762', '6763'], groups: [4, 4, 4, 4, 3] },
+  { method: 'discover', prefixes: ['6011', [644, 649], '65'], groups: [4, 4, 4, 4] },
+  { method: 'maestro', prefixes: ['5018', '5020', '5038', '5893', '6304', '6759', '6761', '6762', '6763'], groups: [4, 4, 4, 4] },
   { method: 'mastercard', prefixes: [[51, 55], [2221, 2720]], groups: [4, 4, 4, 4] },
-  { method: 'unionpay', prefixes: ['62', '81'], groups: [4, 4, 4, 4, 3] },
-  { method: 'visa', prefixes: ['4'], groups: [4, 4, 4, 4, 3] },
+  { method: 'unionpay', prefixes: ['62', '81'], groups: [4, 4, 4, 4] },
+  { method: 'visa', prefixes: ['4'], groups: [4, 4, 4, 4] },
 ];
 
-const DEFAULT_GROUPS = [4, 4, 4, 4, 3];
+/** At most 16 digits for every card (decided by design 22 Oct 2026); American Express (15) and Diners Club (14) are shorter. */
+const DEFAULT_GROUPS = [4, 4, 4, 4];
 
 const matches = (digits: string, prefix: string | [number, number]) => {
   if (typeof prefix === 'string') return digits.startsWith(prefix);

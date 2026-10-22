@@ -23,9 +23,11 @@ describe('card numbers', () => {
     expect(formatCardNumber('378282246310005')).toBe('3782 822463 10005');
   });
 
-  it('keeps only digits, up to the brand’s length', () => {
+  it('keeps only digits, up to the brand’s length and never more than 16', () => {
     expect(cardDigits('4242-4242 abc')).toBe('42424242');
     expect(cardDigits('3782822463100059999')).toBe('378282246310005');
-    expect(cardDigits('42424242424242424242424')).toHaveLength(19);
+    expect(cardDigits('42424242424242424242424')).toHaveLength(16);
+    expect(cardDigits('62000000000000000000')).toHaveLength(16);
+    expect(cardDigits('99999999999999999999')).toHaveLength(16);
   });
 });

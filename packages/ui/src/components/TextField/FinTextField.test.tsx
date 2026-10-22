@@ -71,6 +71,23 @@ describe('FinTextField', () => {
       expect(input).toHaveValue('4242 4242 4242 4242');
     });
 
+    it('takes at most 16 digits, typed or pasted, for every card (American Express 15)', async () => {
+      const user = userEvent.setup();
+      render(<FinTextField variant="payment" label="Card number" />);
+      const input = screen.getByRole('textbox', { name: 'Card number' });
+      await user.type(input, '4242424242424242999');
+      expect(input).toHaveValue('4242 4242 4242 4242');
+      await user.clear(input);
+      await user.paste('6011 0000 0000 0004 123');
+      expect(input).toHaveValue('6011 0000 0000 0004');
+      await user.clear(input);
+      await user.type(input, '1234567890123456789');
+      expect(input).toHaveValue('1234 5678 9012 3456');
+      await user.clear(input);
+      await user.type(input, '3782822463100059');
+      expect(input).toHaveValue('3782 822463 10005');
+    });
+
     it('shows the default card until the brand is known, then its logo', async () => {
       const user = userEvent.setup();
       render(<FinTextField variant="payment" label="Card number" />);
