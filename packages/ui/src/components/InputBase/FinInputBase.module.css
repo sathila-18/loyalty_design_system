@@ -108,14 +108,17 @@
   appearance: none;
 }
 
-/* Focused: the label takes over from the placeholder. */
-.input:focus::placeholder {
-  color: transparent;
-}
-
 .input:disabled,
 .input:disabled::placeholder {
   color: var(--fin-text-disabled);
+}
+
+/*
+ * Focused: the label takes over from the placeholder. Without a visible label (FinSearchField) the placeholder stays
+ * (decided by design 22 Oct 2026).
+ */
+.input:not([data-label-hidden]):focus::placeholder {
+  color: transparent;
 }
 
 .affix {

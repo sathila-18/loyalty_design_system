@@ -115,4 +115,11 @@ describe('FinInputBase', () => {
     for (const fieldset of container.querySelectorAll('fieldset')) expect(fieldset).toHaveAttribute('aria-hidden', 'true');
     expect(screen.queryByRole('group')).toBeNull();
   });
+
+  it('marks a field without a visible label, so its placeholder stays when focused', () => {
+    const { rerender } = render(<FinInputBase label="Search" showLabel={false} placeholder="Search" />);
+    expect(screen.getByRole('textbox')).toHaveAttribute('data-label-hidden');
+    rerender(<FinInputBase label="Email" placeholder="name@email.com" />);
+    expect(screen.getByRole('textbox')).not.toHaveAttribute('data-label-hidden');
+  });
 });

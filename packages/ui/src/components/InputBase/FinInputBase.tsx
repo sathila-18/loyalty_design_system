@@ -140,6 +140,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
               ref={ref}
               id={id}
               className={styles.input}
+              data-label-hidden={showLabel ? undefined : ''}
               disabled={disabled}
               // The label and its notch show once the input has a value (`:placeholder-shown` is false), so there's
               // always a placeholder, even an empty one.

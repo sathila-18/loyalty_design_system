@@ -8,7 +8,7 @@ import styles from './FinSearchField.module.css';
 export interface FinSearchFieldProps
   extends Omit<
     FinInputBaseProps,
-    'variant' | 'prefix' | 'suffix' | 'leading' | 'trailing' | 'control' | 'filled' | 'country' | 'onCountryClick' | 'type' | 'error' | 'helperText' | 'showLabel'
+    'variant' | 'prefix' | 'suffix' | 'leading' | 'trailing' | 'control' | 'filled' | 'country' | 'onCountryChange' | 'showDialCodes' | 'type' | 'error' | 'helperText' | 'showLabel'
   > {
   /** What's searched, read by screen readers ("Search members"). Never shown (Figma Search has no label). */
   label: string;
