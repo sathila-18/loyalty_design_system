@@ -38,7 +38,8 @@ export const FinAssistChip = forwardRef<HTMLButtonElement, FinAssistChipProps>(f
       size={size}
       disabled={disabled}
       variant={expanded ? 'selected' : 'unselected-border'}
-      {...(dropdown ? { trailingIcon: 'keyboard_arrow_down' as const } : {})}
+      // The arrow points up while its menu is open, as every dropdown (22 Oct 2026).
+      {...(dropdown ? { trailingIcon: expanded ? ('keyboard_arrow_up' as const) : ('keyboard_arrow_down' as const) } : {})}
     />
   );
 });

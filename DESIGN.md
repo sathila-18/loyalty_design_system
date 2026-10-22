@@ -2132,6 +2132,8 @@ All `'use client'`. Exports also the type `FinChipSize`.
 
 **Accessibility:** Assist: a button; with a menu, `aria-haspopup` and `aria-expanded`. Filter: a toggle button (`aria-pressed`); name groups of filters (`role="group"` + `aria-label`, or Chips-group later). Input: the value is text, the ✕ is a named button; disabled skips it. Contrast: as §9.31; Selected text (open Assist chip, Selected Filter chip) is accepted (§10 #3), hover and press too; disabled is exempt (disabled Input chips are left out of the a11y check because the chip itself is a span).
 
+**Menu (22 Oct 2026):** the Assist chip's dropdown opens a FinMenu (§9.64); for a single choice such as a date range, a **select menu** (the chosen one Selected and shown on the chip, choosing closes it). **While the menu is open the arrow points up** (`keyboard_arrow_up`, as every dropdown) and the chip is Selected (as before). The "With a menu" story now uses the real menu (the stand-in list is gone).
+
 **Built (19 Oct 2026).** Storybook (Components/Chips): Assist chip (Playground, States in every size, With a menu), Filter chip (Playground, States (Figma) in every size, Filters group, Focused), Input chip (Playground, Sizes, In a field: remove with the ✕ or Delete / Backspace, focus moves on). Checked against Figma Chips in a browser: 60.6 × 33 (Figma 61 × 33); all 8 states equal Figma in Light (Hovered and Pressed with a real mouse); Dark uses the Dark tokens. ✕: 16 × 16 with a 24 hit area, Delete removes and focus moves to the next ✕. a11y: no violations in Light or Dark apart from the accepted ones above.
 
 ### 9.33 FinSegmentBase (Segmented_button-base) — internal
@@ -3545,3 +3547,4 @@ Template:
 | 22 Oct 2026 | 0.2 | Table cell Link: no side padding, so its text lines up with the header's (it started 16 in); 36 tall (§9.43, §10 #61). |
 | 22 Oct 2026 | 0.2 | Table cell action (the pencil) is the icon button (FinButton Tertiary XSmall, icon only), with its hover and pressed fills (§9.43). The header's filter arrow stays as it is (design). |
 | 22 Oct 2026 | 0.2 | Table cell fixes (the link lines up with the header; the pencil is the icon button) approved by design and merged into `main`. |
+| 22 Oct 2026 | 0.2 | Assist chip: its "With a menu" story uses FinMenu (a select menu of date ranges) instead of a stand-in list; the dropdown arrow points up while open (§9.32). |
