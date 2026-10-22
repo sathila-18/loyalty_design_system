@@ -672,7 +672,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black/Basic | ⚠️ (§10 #16) | ⬜ |
 | 47 | `Pagination group` | Table | `3151:14607` | `FinPagination` | **Pagination item**; its arrows (all-button instances with a grey outline override in Figma) are drawn by FinPagination itself (§9.39) · public, Components/Pagination | ⚠️ | ✅ |
 | 48 | `Main Selection` | Side nav | `3140:10997` | `FinSideNavItem` | Side nav `Icon`, sub selection, `24px` icon · `State` (Hovered / Pressed in CSS; Selected - BG / Selected → `selected: 'item' \| 'sub-item'`) · `Expanded` · `Type`: Full/Minimized · `Show dropdown` from the sub items · Expanded slot · **internal**, part of the side nav (§9.48) | ⚠️ (raw chevron colors, §10 #52) | ✅ |
-| 49 | `Header notification` | Header | `3178:24467` | `FinHeaderNotificationButton` | 48px bg, Badge - indicator, `24px` · State (runtime: Default/Hovered/Disabled) · Notification: Dot/Number | 🔴 broken set: duplicate variant `State=Hovered, Notification=Dot` (§10 #17) | ⬜ |
+| 49 | `Header notification` | Header | `3178:24467` | `FinHeaderNotificationButton` | 48px bg, Badge - indicator, `24px` · State (runtime: Default/Hovered/Pressed/Disabled) · Notification: None/Dot/Number · **public** (§9.62) | ⚠️ (48px bg padding `Spacing 8px` from another library → `--fin-space-m`) | ✅ |
 | 50 | `Table header cell` | Table | `3151:14941` | `FinTableHeaderCell` | Base-Checkbox, Label · `Type`: White/Grey (was `Property 1`) · Slot · Show checkbox / title / trailing icon · `<th>`; no hover · **internal**, part of the table (§9.41) | ⚠️ (trailing arrow raw `#626262` → `fg-secondary`) | ✅ |
 | 51 | `Table - Cell` | Table | `3151:14990` | `FinTableCell` | Base-Checkbox, Badge-primary, all-button (checked 15 Oct 2026: uses Badge-primary, not Badge-base directly) · `Type`: Default/Badge/Link (was `Property 1`) · Leading accessories, Content and Action slots · Show leading accessories / content / action button · `<td>`; Content slot takes any component · **internal**, part of the table (§9.43) | ⚠️ (raw 14 font size, raw Electric-Indigo-600 icon, Link underline override) | ✅ |
 
@@ -704,7 +704,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 66 | `Button dock` | Button dock | `75:5858` | `FinButtonDock` | Text Box, all-button · Sticky · Accessory slot | ✅ | ⬜ |
 | 67 | `Side sheet` | Side sheet | `3120:30707` | `FinSideSheet` | Text Box, Badge-primary, all-button, Button dock · Body slot · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13) | 🔴 remote `Views / Dividers` (§10 #25) | ⬜ |
 | 68 | `Dialog box` | Dialog | `3234:11710` | `FinDialog` | Text Box, all-button, `24px` · Body slot · Leading button, Primary/Secondary buttons, Trailing buttons, Trailing icon · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13) | ✅ | ⬜ |
-| 69 | `Main header` | Header | `3178:24570` | `FinHeader` | all-button, Text Box, Header notification · Notification, Back button, Description | 🔴 depends on #49 | ⬜ |
+| 69 | `Main header` | Header | `3178:24570` | `FinHeader` | all-button, Text Box, Header notification · Notification, Back button, Description | ✅ (#49 built 22 Oct 2026) | ⬜ |
 | 70 | `Side Menu` | Side nav | `3142:11871` | `FinSideNav` | Main Selection, List-base, Avatar, Text Box, all-button · `Menu` (8; from `currentHref`) · `Type`: Expanded/Minimized → `type` · `logo` slot (Logo sizes is from another library, §10 #25) · `profile` · **public** (§9.57) | ⚠️ (raw gaps 8 / 40 → `Space-M` / `Space-6XL`; logo from another library, a slot in code) | ✅ |
 | 71 | `Table row` | Table | `3151:15248` | `FinTableRow` | Table - Cell, Base-Checkbox · `State` (was `Property 1`): Default/Hovered/Selected/Selected - Hovered (hover is CSS; Selected is `selected`) · `Select Cell`, `Cell Slot` (was `Sells Slot`) · `<tr>`, `onRowClick` opens details · **internal**, part of the table (§9.44) | ✅ | ✅ |
 | 72 | `Header row` | Table | `3151:15203` | `FinTableHeaderRow` | Table header cell, Base-Checkbox, Label · `Select Cell`, `Cell Slot` (were `Select Sell` / `Sell Slot`) · `<tr>`, Grey cells, no width of its own · **internal**, part of the table (§9.42) | ✅ | ✅ |
@@ -3124,6 +3124,34 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Built (21 Oct 2026).** Storybook (Components/Search/Search field): Playground, States (Figma), Focus, Typing, Sizes, Filtering. Checked against Figma in a browser: 343 × 48, `search` at 16 / 12, the input 279 wide at 48 (247 with the clear button), `cancel` 16 from the right; Enabled and Complete in Light and Dark; clearing empties the box and keeps focus in it. a11y: no violations.
 
+### 9.62 FinHeaderNotificationButton (Header notification) — public
+
+**Figma:** page **Header**, component set `Header notification` `3178:24467` (re-read 22 Oct 2026, 10 variants): `State` = Default / Hovered / Pressed / Disabled × `Notification` = Dot / Number / None (Disabled only with Dot, and it shows no badge). A `48px bg` instance (48 circle, `Radius-Full`, padding `Spacing 8px` from another library) with its fill swapped to `bg-action-secondary` (`_hovered` / `_pressed`; Disabled `bg-disabled`), holding the 24 `notifications` icon in `fg-action` / `fg-hovered` / `fg-pressed` (Disabled `fg-disabled-on_bg`). The badge is a `Badge - indicator` (Small, Red): Dot 6 × 6 at 30 / 12; Number "99+" at 24 / −4, growing right.
+
+**Decided 22 Oct 2026:** (1) a **disabled button never shows a badge**, whatever `notification` is. (2) `notification="number"` with a count of 0 (or none) shows no badge, as FinBadgeIndicator. (3) The circle is drawn by the button itself, not FinIconContainer: its tones can't express the action-secondary fill or the hover and pressed states, and its circle isn't interactive. FinIcon and FinBadgeIndicator are reused as they are.
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `State` Default / Hovered / Pressed / Disabled | runtime (`:hover`, `:active`, `:disabled`); `disabled` |
+| `Notification` None / Dot / Number | `notification: 'none' \| 'dot' \| 'number'` (default `'dot'`, as Figma) |
+| The "99+" number | `count`, `max` (default 99), passed to FinBadgeIndicator |
+| — (code only) | `label` (default "Notifications"); the button's own attributes (`onClick`…), `ref` |
+
+**Tokens used:** circle `--fin-size-48`, `--fin-radius-full`, padding `--fin-space-m`; fills `--fin-bg-action-secondary` / `-hovered` / `-pressed`, `--fin-bg-disabled`; icon `--fin-fg-action` / `--fin-fg-hovered` / `--fin-fg-pressed`, `--fin-fg-disabled-on-bg`; dot at `--fin-size-12` from the top and right; number at `--fin-size-24` from the left, `--fin-space-xs` above the top; focus ring 2px `--fin-border-focused`, 2 out (no Focused design, §10 #6).
+
+**API:**
+
+```tsx
+<FinHeaderNotificationButton notification="number" count={unread} onClick={openNotifications} />
+<FinHeaderNotificationButton notification="none" />
+```
+
+**Accessibility:** a native `<button type="button">`; Enter and Space press it; disabled is native (not focusable). Its name says the unread state: "Notifications", "Notifications, unread" (dot) or "Notifications, 3 unread" (`label` changes the first word); the icon and badge are hidden from screen readers. 48 × 48 target.
+
+**Built (22 Oct 2026).** Storybook (Components/Header/Header notification): Playground, Variants (Figma), Counts, Focused. Checked against Figma in a browser: 48 × 48; Default `#efefff` / `#625bff`, Hovered `#ceccff` / `#5953e8`, Pressed `#b7b4ff` / `#4641b5`, Disabled `#e9e9e9` / `#969696`; dot 6 × 6 at 30 / 12, number at 24 / −4; Light and Dark. a11y: no violations apart from the number badge in Dark (Red 3.97:1, the accepted §10 #3 exception, skipped as in §9.8).
+
 Template:
 
 ```
@@ -3159,7 +3187,7 @@ Template:
 | 14 | The Material Symbols Rounded variable font is **5.4 MB** (full font, shipped in S4). **Decided 14 Oct 2026:** the build generates a subset font automatically from the `finIcons` registry (no hand-made font files); adding an icon is a one-line registry change. The subset keeps only the registry's icons, the letters and ligature rules that spell them, and each icon's **filled alternate** (the font swaps 19 of the first 28 icons to a separate `.fill` glyph when `FILL` reaches 1, through `FeatureVariations`; leaving them out breaks filled icons). `FILL` stays variable (0–1); `wght` 300, `opsz` 24 and `GRAD` 0 are fixed (§6.2). Prototype with the 28 §6.4 icons: **6.4 KB** woff2, identical to the full font outlined and filled. `FinIcon` isn't done until the full font is replaced. | Icons | ✅ Decided: part of `FinIcon` |
 | 15 | Motion: plan is to adopt Material 3 easing and duration pairs (see §5). | §5 | ⏳ Deferred |
 | 16 | **Typography bound to another library** (the scan shows `Body L` in `Input field-textArea-base`, `Button M` in `Notification`, `Caption L` in `Plain Tooltip` coming from a non-Loyalty collection). **Decision (13 Oct 2026):** not a blocker. When building, use the Loyalty text style token with the same name (`--fin-font-body-large`, etc.) and list the mapping for the designer's approval first (§8 legend). | Components | ✅ Decided |
-| 17 | **Broken component sets** ("Component set has existing errors"): `Header notification` (`3178:24467`) has two variants named `State=Hovered, Notification=Dot` (the last one is probably meant to be `Hovered, Number`; `Disabled, Number` is also missing). The text area set `Input field-base` (`3097:27497`) has the same name as the real base `49:5734`; rename it (for example `Input field-textArea`). | Header, Input field | 🔧 Fix in Figma |
+| 17 | **Broken component sets** ("Component set has existing errors"): ~~`Header notification` (`3178:24467`) has two variants named `State=Hovered, Notification=Dot`~~ **fixed 22 Oct 2026** (now `Hovered, Number`, plus Pressed and Notification=None; a disabled button never shows a badge, so there's no `Disabled, Number`; §9.62). The text area set `Input field-base` (`3097:27497`) has the same name as the real base `49:5734`; rename it (for example `Input field-textArea`). | Header, Input field | 🔧 Fix in Figma |
 | 18 | Input bases decided (13 Oct 2026): `Input field-base` (`49:5734`) for single-line fields, `Input field-textArea-base` (`3094:26567`) for text areas, `Input-OTP-base` (`49:5843`) for OTP. | Input field | ✅ Decided |
 | 19 | `Accordion-bare-base`, `List-base` and `List-fill-base` use a `20px` component whose main component isn't on any page (deleted or moved). **List-base fixed 20 Oct 2026** (the extra icon is now the Icon sizes `20px`; the top label's icon was removed); **List_fill-base fixed 20 Oct 2026** (new component `3494:14233`). Accordion-bare-base to re-check when built. | Accordion, List | 🔧 Fix in Figma (List bases ✅) |
 | 20 | **Clashing name:** `24px` on the Side nav page clashed with the icon size `24px`; **renamed `Icon` 20 Oct 2026**. (Renamed 13 Oct 2026: `Frame 5` → `sub selection`, Dialog `Frame 3` → `Dialog box`, Header `Frame 1707478998` → `Main header`, `Frame 1707478999` → `Header notification`, Table parts.) | Side nav | ✅ Fixed (20 Oct 2026) |
@@ -3213,7 +3241,7 @@ Template:
 > - **Approved and merged (21 Oct 2026):** `FinTextField` (§9.59).
 > - **Approved and merged (21 Oct 2026):** `FinPasswordField` (§9.60).
 > - **Approved and merged (21 Oct 2026):** `FinSearchField` (§9.61). FinSelectField and FinMultiSelectField are on hold until the menus are built (§10 #49).
-> - **Next:** the next component named by design.
+> - **Built, awaiting approval (22 Oct 2026):** `FinHeaderNotificationButton` (§9.62), on `feat/header-notification`.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3372,3 +3400,4 @@ Template:
 | 21 Oct 2026 | 0.2 | `FinPasswordField` approved by design and merged into `main`. |
 | 21 Oct 2026 | 0.2 | **`FinSearchField` built** (§8 #57, §9.61), public under Components/Search/Search field, on FinInputBase (new `showLabel`, Figma `Show Label`): the label never shown, a `search` icon, a clear button (filled `cancel`, Escape too), the base's hover and focus. Search's `Sticky` and shadow removed in Figma by design. FinSelectField and FinMultiSelectField on hold until the menus. |
 | 21 Oct 2026 | 0.2 | `FinSearchField` approved by design and merged into `main`. |
+| 22 Oct 2026 | 0.2 | **`FinHeaderNotificationButton` built** (§8 #49, §9.62), public under Components/Header/Header notification, after design fixed the set (§10 #17) and added Pressed and Notification=None: `notification` none / dot / number, `count`, `max`, `label`; a disabled button shows no badge. |

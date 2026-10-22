@@ -43,3 +43,4 @@ export * from './components/SideNav';
 export * from './components/TextField';
 export * from './components/PasswordField';
 export * from './components/SearchField';
+export * from './components/HeaderNotificationButton';

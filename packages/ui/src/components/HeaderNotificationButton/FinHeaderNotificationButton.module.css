@@ -1,0 +1,64 @@
+/*
+ * FinHeaderNotificationButton (DESIGN.md §9). A 48 circle with the 24 bell centred (Figma `48px bg`, its fill swapped
+ * to bg-action-secondary; padding Space-M, bound to another library in Figma). The badge is FinBadgeIndicator (Small,
+ * red), placed over the top-right of the circle. No animation (§5).
+ */
+
+.button {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-48);
+  height: var(--fin-size-48);
+  margin: 0;
+  padding: var(--fin-space-m);
+  border: 0;
+  border-radius: var(--fin-radius-full);
+  background-color: var(--fin-bg-action-secondary);
+  color: var(--fin-fg-action);
+  cursor: pointer;
+}
+
+/* No Focused design: the default ring, 2px border-focused, 2px out (§10 #6). */
+.button:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+/* Figma State=Disabled (no badge). */
+.button:disabled {
+  background-color: var(--fin-bg-disabled);
+  color: var(--fin-fg-disabled-on-bg);
+  cursor: default;
+}
+
+/* Figma State=Hovered. */
+.button:hover:enabled {
+  background-color: var(--fin-bg-action-secondary-hovered);
+  color: var(--fin-fg-hovered);
+}
+
+/* Figma State=Pressed. */
+.button:active:enabled {
+  background-color: var(--fin-bg-action-secondary-pressed);
+  color: var(--fin-fg-pressed);
+}
+
+.badge {
+  position: absolute;
+  display: flex;
+}
+
+/* Notification=Dot: a 6 dot, 12 from the top and the right. */
+.button[data-notification="dot"] .badge {
+  top: var(--fin-size-12);
+  right: var(--fin-size-12);
+}
+
+/* Notification=Number: starts at the circle's centre line, 4 above its top; grows to the right. */
+.button[data-notification="number"] .badge {
+  top: calc(var(--fin-space-xs) * -1);
+  left: var(--fin-size-24);
+}

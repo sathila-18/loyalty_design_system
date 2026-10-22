@@ -1,0 +1,14 @@
+/* Layout for the FinHeaderNotificationButton stories only (not part of the component). */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, max-content);
+  gap: var(--fin-space-3xl);
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  gap: var(--fin-space-3xl);
+  align-items: center;
+}

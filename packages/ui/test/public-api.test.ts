@@ -26,6 +26,10 @@ describe('public API', () => {
     for (const name of ['FinAssistChip', 'FinFilterChip', 'FinInputChip']) expect(ui).toHaveProperty(name);
   });
 
+  it('exports FinHeaderNotificationButton', () => {
+    expect(ui).toHaveProperty('FinHeaderNotificationButton');
+  });
+
   it('exports FinSegmentedButton, but not its FinSegmentBase base', () => {
     expect(ui).toHaveProperty('FinSegmentedButton');
   });
