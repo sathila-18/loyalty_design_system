@@ -1,7 +1,9 @@
 /*
- * FinTableRowActions (DESIGN.md §9). The "more actions" button: a bare 24 icon button (as the table cell's action and
- * the header's filter arrow), fg-secondary; hover fg-hovered, pressed fg-pressed; purple (fg-action) while its menu
- * is open (decided 22 Oct 2026). Code first: no Figma design yet.
+ * FinTableRowActions (DESIGN.md §9). The "more actions" button works as the icon button (all-button XSmall Tertiary,
+ * Only Icon; decided by design 22 Oct 2026): a 32 square (padding Space-S, a 20 icon), Radius-S; hover
+ * bg-action-secondary_hovered with fg-hovered, pressed bg-action-secondary_pressed with fg-pressed. At rest the icon
+ * is fg-secondary (not the Tertiary purple), and while its menu is open it's purple (fg-action) on bg-action-secondary.
+ * Code first: no Figma design yet.
  */
 
 .button {
@@ -10,27 +12,31 @@
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0;
+  padding: var(--fin-space-s);
   border: 0;
-  border-radius: var(--fin-radius-xs);
-  background: none;
+  border-radius: var(--fin-radius-s);
+  background-color: transparent;
   color: var(--fin-fg-secondary);
   cursor: pointer;
 }
 
+/* The buttons' ring (FinButtonBase): 2px border-focused, 1px in. */
 .button:focus-visible {
   outline: 2px solid var(--fin-border-focused);
-  outline-offset: 2px;
+  outline-offset: -1px;
+}
+
+.button[aria-expanded="true"] {
+  background-color: var(--fin-bg-action-secondary);
+  color: var(--fin-fg-action);
 }
 
 .button:hover {
+  background-color: var(--fin-bg-action-secondary-hovered);
   color: var(--fin-fg-hovered);
 }
 
 .button:active {
+  background-color: var(--fin-bg-action-secondary-pressed);
   color: var(--fin-fg-pressed);
-}
-
-.button[aria-expanded="true"] {
-  color: var(--fin-fg-action);
 }

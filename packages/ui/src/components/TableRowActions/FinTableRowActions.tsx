@@ -31,8 +31,9 @@ export interface FinTableRowActionsProps {
 }
 
 /**
- * A row's "more actions" button (code first, 22 Oct 2026; DESIGN.md §9): a 24 `more_vert` icon button, fg-secondary,
- * purple (fg-action) while its menu is open, that opens an action menu (FinMenu `kind="action"`) of the row's actions.
+ * A row's "more actions" button (code first, 22 Oct 2026; DESIGN.md §9): a `more_vert` icon button that works as the
+ * icon button (XSmall Tertiary Only Icon: 32 square, hover and pressed fills), fg-secondary at rest and purple while
+ * its menu is open, that opens an action menu (FinMenu `kind="action"`) of the row's actions.
  * **Internal:** part of the table (FinTable `rowActions`).
  */
 export function FinTableRowActions({ label, actions, placement = 'bottom-end' }: FinTableRowActionsProps) {
@@ -41,7 +42,7 @@ export function FinTableRowActions({ label, actions, placement = 'bottom-end' }:
       placement={placement}
       trigger={(menuProps) => (
         <button {...menuProps} type="button" className={styles.button} aria-label={label}>
-          <FinIcon name="more_vert" size={24} />
+          <FinIcon name="more_vert" size={20} />
         </button>
       )}
     >

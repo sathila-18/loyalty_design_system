@@ -17,10 +17,11 @@
 
 /*
  * The row's line is its border, so borders are collapsed. Min width comes from the columns (set in TSX), plus the
- * select and ⋮ columns when shown (each a 24 control with 24 either side: 72).
+ * select column (a 24 checkbox with 24 either side: 72) and the ⋮ column (a 32 button with 24 either side: 80).
  */
 .table {
   --table-narrow-column: calc(var(--fin-size-24) + 2 * var(--fin-space-3xl));
+  --table-actions-column: calc(var(--fin-size-32) + 2 * var(--fin-space-3xl));
   --table-select: var(--fin-size-0);
   --table-actions: var(--fin-size-0);
 
@@ -35,7 +36,7 @@
 }
 
 .table[data-row-actions] {
-  --table-actions: var(--table-narrow-column);
+  --table-actions: var(--table-actions-column);
 }
 
 /* The select column: the checkbox and its padding either side (24 + 24 + 24 = 72). */
@@ -43,9 +44,9 @@
   width: var(--table-narrow-column);
 }
 
-/* The ⋮ column (row actions, code first 22 Oct 2026): the same 72. */
+/* The ⋮ column (row actions, code first 22 Oct 2026): the 32 icon button with 24 either side (80). */
 .actionsColumn {
-  width: var(--table-narrow-column);
+  width: var(--table-actions-column);
 }
 
 /*
