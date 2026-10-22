@@ -22,7 +22,7 @@ export interface FinCountrySelectorProps extends Omit<ButtonHTMLAttributes<HTMLB
   label?: string;
   /** The search field's name for screen readers. Default "Search countries". */
   searchLabel?: string;
-  /** The search field's placeholder. Default "Search". */
+  /** The search field's placeholder. Default "Search by country or code". */
   searchPlaceholder?: string;
   /** Shown when nothing matches the search. Default "No countries found". */
   noResultsText?: string;
@@ -47,7 +47,7 @@ export const FinCountrySelector = forwardRef<HTMLButtonElement, FinCountrySelect
     showDialCodes = true,
     label = 'Country',
     searchLabel = 'Search countries',
-    searchPlaceholder = 'Search',
+    searchPlaceholder = 'Search by country or code',
     noResultsText = 'No countries found',
     menuAnchor,
     size = 'large',
@@ -81,10 +81,15 @@ export const FinCountrySelector = forwardRef<HTMLButtonElement, FinCountrySelect
           </p>
         </>
       }
-      trigger={
+      trigger={({ ref: menuRef, ...menuProps }) => (
         <button
           {...rest}
-          ref={ref}
+          {...menuProps}
+          ref={(node) => {
+            menuRef(node);
+            if (typeof ref === 'function') ref(node);
+            else if (ref) ref.current = node;
+          }}
           type={type}
           disabled={disabled}
           className={className ? `${styles.selector} ${className}` : styles.selector}
@@ -93,10 +98,11 @@ export const FinCountrySelector = forwardRef<HTMLButtonElement, FinCountrySelect
         >
           <FinFlag country={country} size="small" disabled={disabled} decorative />
           <span className={styles.chevron}>
-            <FinIcon name="keyboard_arrow_down" size={size === 'small' ? 20 : 24} />
+            {/* Up while the menu is open (decided 22 Oct 2026). */}
+            <FinIcon name={menuProps['aria-expanded'] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} size={size === 'small' ? 20 : 24} />
           </span>
         </button>
-      }
+      )}
     >
       {countries.map((code) => (
         <FinListStandard

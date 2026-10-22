@@ -20,6 +20,7 @@ describe('FinRowCountSelect', () => {
     const select = screen.getByRole('button', { name: /^Filas por página:\s*25$/ });
     await user.click(select);
     expect(select).toHaveAttribute('aria-expanded', 'true');
+    expect(select.querySelector('[translate="no"]')).toHaveTextContent('keyboard_arrow_up');
     const listbox = screen.getByRole('listbox', { name: 'Filas por página' });
     expect(listbox).toHaveFocus();
     expect(screen.getAllByRole('option').map((o) => o.textContent)).toEqual(['10', '25', '50', '100']);

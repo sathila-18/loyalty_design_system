@@ -34,15 +34,26 @@ export const FinRowCountSelect = forwardRef<HTMLButtonElement, FinRowCountSelect
       kind="select"
       width="trigger"
       label={label.replace(/:\s*$/, '')}
-      trigger={
-        <button {...rest} ref={ref} type={type} className={className ? `${styles.select} ${className}` : styles.select}>
+      trigger={({ ref: menuRef, ...menuProps }) => (
+        <button
+          {...rest}
+          {...menuProps}
+          ref={(node) => {
+            menuRef(node);
+            if (typeof ref === 'function') ref(node);
+            else if (ref) ref.current = node;
+          }}
+          type={type}
+          className={className ? `${styles.select} ${className}` : styles.select}
+        >
           <span className={styles.label}>{label}</span>
           <span className={styles.value}>{value}</span>
           <span className={styles.chevron}>
-            <FinIcon name="keyboard_arrow_down" size={24} />
+            {/* Up while the menu is open (decided 22 Oct 2026). */}
+            <FinIcon name={menuProps['aria-expanded'] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} size={24} />
           </span>
         </button>
-      }
+      )}
     >
       {options.map((count) => (
         <FinListStandard

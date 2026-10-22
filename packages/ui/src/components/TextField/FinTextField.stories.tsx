@@ -100,7 +100,7 @@ export const Playground: Story = {};
 
 const VARIANTS: { variant: FinTextFieldVariant; name: string; value: string; placeholder: string }[] = [
   { variant: 'default', name: 'Default', value: 'Olivia James', placeholder: 'Placeholder text' },
-  { variant: 'mobile-number', name: 'Mobile number', value: '77 123 4567', placeholder: '77 123 4567' },
+  { variant: 'mobile-number', name: 'Mobile number', value: '77 123 4567', placeholder: 'Mobile number' },
   { variant: 'payment', name: 'Payment', value: '4242424242424242', placeholder: '0000 0000 0000 0000' },
 ];
 
@@ -192,16 +192,16 @@ export const MobileNumber: Story = {
   render: () => (
     <div className={styles.stack}>
       {(['LK', 'GB', 'AE', 'US'] as const).map((country) => (
-        <FinTextField key={country} variant="mobile-number" label={`Mobile number, ${finFlags[country]}`} defaultCountry={country} placeholder="Phone number" />
+        <FinTextField key={country} variant="mobile-number" label="Mobile number" defaultCountry={country} placeholder="Mobile number" />
       ))}
     </div>
   ),
 };
 
-/** The country menu open: the search field has focus, the chosen country (Sri Lanka) is Selected and in view. */
+/** The country menu open: the chosen country (Sri Lanka) Selected and in view; the search in its default state. */
 export const CountryMenu: Story = {
   name: 'Country menu',
-  args: { variant: 'mobile-number', label: 'Mobile number', placeholder: '77 123 4567', showHelperText: false },
+  args: { variant: 'mobile-number', label: 'Mobile number', placeholder: 'Mobile number', showHelperText: false },
   parameters: { controls: { include: ['country', 'showDialCodes', 'size'] } },
   decorators: [
     (Story) => (
@@ -247,7 +247,7 @@ export const Form: Story = {
     <form className={styles.stack} onSubmit={(event) => event.preventDefault()}>
       <FinTextField label="Full name" placeholder="Full name" autoComplete="name" />
       <FinTextField label="Email" placeholder="name@email.com" type="email" autoComplete="email" helperText="We'll send the receipt here" />
-      <FinTextField variant="mobile-number" label="Mobile number" placeholder="77 123 4567" />
+      <FinTextField variant="mobile-number" label="Mobile number" placeholder="Mobile number" />
       <FinTextField variant="payment" label="Card number" placeholder="0000 0000 0000 0000" />
     </form>
   ),

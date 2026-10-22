@@ -18,26 +18,32 @@ describe('FinCountrySelector', () => {
     expect(trigger.querySelector('[translate="no"]')).toHaveTextContent('keyboard_arrow_down');
   });
 
-  it('opens the country menu: a search field with focus, every country with its dial code, the chosen one selected', async () => {
+  it('opens the country menu: a search (not focused), every country with its dial code, the chosen one selected', async () => {
     const user = userEvent.setup();
     render(<FinCountrySelector country="LK" label="Phone country" />);
     const trigger = screen.getByRole('button', { name: 'Phone country, Sri Lanka' });
     await user.click(trigger);
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('searchbox', { name: 'Search countries' })).toHaveFocus();
+    expect(trigger.querySelector('[translate="no"]')).toHaveTextContent('keyboard_arrow_up');
+    const search = screen.getByRole('searchbox', { name: 'Search countries' });
+    expect(search).not.toHaveFocus();
+    expect(search).toHaveAttribute('placeholder', 'Search by country or code');
     const listbox = screen.getByRole('listbox', { name: 'Phone country' });
+    expect(listbox).toHaveFocus();
     const lk = screen.getByRole('option', { name: /Sri Lanka/ });
     expect(lk).toHaveAttribute('aria-selected', 'true');
     expect(lk).toHaveTextContent('+94');
     expect(listbox.querySelectorAll('[role="option"]').length).toBeGreaterThan(200);
   });
 
-  it('filters as you type: by name, ISO code or dial code; says when nothing matches', async () => {
+  it('filters as you type (typing in the open menu goes into the search): by name, ISO code or dial code', async () => {
     const user = userEvent.setup();
     render(<FinCountrySelector country="LK" />);
     await user.click(screen.getByRole('button'));
     const search = screen.getByRole('searchbox');
-    await user.type(search, 'lanka');
+    await user.keyboard('lanka');
+    expect(search).toHaveFocus();
+    expect(search).toHaveValue('lanka');
     expect(screen.getAllByRole('option').map((o) => o.textContent)).toEqual([expect.stringContaining('Sri Lanka')]);
     await user.clear(search);
     await user.type(search, 'gb');

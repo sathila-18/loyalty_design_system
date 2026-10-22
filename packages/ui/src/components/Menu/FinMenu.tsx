@@ -60,8 +60,8 @@ export interface FinMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
   /** Kept at the bottom while the content scrolls (filter buttons). Code first: Figma has one slot (22 Oct 2026). */
   footer?: ReactNode;
   /**
-   * Kept at the top while the content scrolls (a search field). Code first (22 Oct 2026). In a select menu, a field
-   * here takes focus on open; ArrowDown moves into the options and Enter chooses the first one.
+   * Kept at the top while the content scrolls (a search field). Code first (22 Oct 2026). In a select menu, typing
+   * moves into a field here (it isn't focused on open); ArrowDown moves into the options and Enter chooses the first.
    */
   header?: ReactNode;
   /** Placed against, and `width="trigger"` measured from, this element instead of the trigger (a field's box). */
@@ -206,12 +206,12 @@ export function FinMenu({
     const current = menuEl.querySelector<HTMLElement>(
       kind === 'select' ? '[role="option"][aria-selected="true"]' : '[aria-current="page"]',
     );
-    // A select with a search field: the field, and the chosen option scrolled into view.
+    // A select with a search field: the chosen option scrolled into view. The field stays in its default state (not
+    // focused, decided 22 Oct 2026); typing moves into it (see onMenuKeyDown).
     const field = menuEl.querySelector<HTMLElement>('[data-menu-header] input');
     if (kind === 'select' && field) current?.scrollIntoView?.({ block: 'center' });
-    const target = field
-      ? field
-      : focusOnOpen === 'container'
+    const target =
+      focusOnOpen === 'container'
         ? menuEl.querySelector<HTMLElement>('[data-menu-focus]') ?? menuEl
         : kind === 'select' && current
           ? current
@@ -319,6 +319,9 @@ export function FinMenu({
       // An option isn't a button: Enter and Space choose it as a click does.
       event.preventDefault();
       option.click();
+    } else if (kind === 'select' && headerField && event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      // With a search field, typing goes into it (the character lands there) and filters.
+      headerField.focus();
     } else if (kind === 'select' && event.key.length === 1 && /\S/.test(event.key)) {
       typeAhead(event.key);
     } else if (event.key === 'Tab' && (kind === 'action' || kind === 'select')) {
