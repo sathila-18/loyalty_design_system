@@ -34,14 +34,21 @@ const KNOWN_CONTRAST_ISSUES = ['[data-tone="disabled"]', 'html[data-theme="dark"
  * A single-line text field (Figma Input field-standard). Hover, focus and type in it to see the states; Payment groups a
  * card number as you type and shows its brand.
  */
+/** Each Type's label and placeholder in the Playground. */
+const TYPE_TEXT: Record<FinTextFieldVariant, { label: string; placeholder: string }> = {
+  default: { label: 'Label', placeholder: 'Placeholder text' },
+  'mobile-number': { label: 'Mobile number', placeholder: 'Mobile number' },
+  payment: { label: 'Label', placeholder: 'Placeholder text' },
+};
+
 const meta: Meta<Args> = {
   title: 'Components/Input field/Text field',
   parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
   args: {
     variant: 'default',
     size: 'large',
-    label: 'Label',
-    placeholder: 'Placeholder text',
+    label: '',
+    placeholder: '',
     value: '',
     trailingIcon: 'none',
     showHelperText: true,
@@ -55,8 +62,8 @@ const meta: Meta<Args> = {
   argTypes: {
     variant: { control: 'inline-radio', options: ['default', 'mobile-number', 'payment'], description: 'Figma `Type`' },
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Large 48 (Figma) or Small 40 (code only)' },
-    label: { control: 'text' },
-    placeholder: { control: 'text' },
+    label: { control: 'text', description: 'Empty: the Type\'s own (Mobile number: "Mobile number")' },
+    placeholder: { control: 'text', description: 'Empty: the Type\'s own (Mobile number: "Mobile number")' },
     value: { control: 'text', description: 'A starting value (Complete)' },
     trailingIcon: { control: 'select', options: ['none', ...finIcons], description: 'Figma `Trailing icon` and its icon' },
     showHelperText: { control: 'boolean' },
@@ -74,12 +81,13 @@ const meta: Meta<Args> = {
   },
   render: (args) => (
     <div className={styles.column}>
+      {/* Each Type has its own label and placeholder unless the controls give one (decided 22 Oct 2026). */}
       <FinTextField
         key={`${args.variant}-${args.value}-${args.country}`}
         variant={args.variant}
         size={args.size}
-        label={args.label}
-        placeholder={args.placeholder}
+        label={args.label || TYPE_TEXT[args.variant].label}
+        placeholder={args.placeholder || TYPE_TEXT[args.variant].placeholder}
         defaultValue={args.value}
         error={args.error}
         disabled={args.disabled}
