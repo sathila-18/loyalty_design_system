@@ -1,0 +1,73 @@
+/*
+ * FinAppShell (DESIGN.md §9). Code only: the screens draw it each time (Programme Configuration, 1920 × 1080). The
+ * page is bg-secondary (the side nav's); the side nav on the left, full height; the content panel 8 (Space-M) from
+ * the top, right and bottom, bg-primary, Radius-L, clipped. In the panel the header stays at the top and only the
+ * content scrolls (decided 22 Oct 2026), padding 36 (Space-5XL) above, 24 (Space-3XL) at the sides and below.
+ */
+
+.shell {
+  position: relative;
+  display: flex;
+  height: 100dvh;
+  background-color: var(--fin-bg-secondary);
+}
+
+.panel {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  margin: var(--fin-space-m) var(--fin-space-m) var(--fin-space-m) 0;
+  overflow: hidden;
+  border-radius: var(--fin-radius-l);
+  background-color: var(--fin-bg-primary);
+}
+
+.main {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: var(--fin-space-5xl) var(--fin-space-3xl) var(--fin-space-3xl);
+  overflow: auto;
+}
+
+/*
+ * The content area is a tab stop (it scrolls on its own, so keyboard users must reach it to scroll it). Its ring shows
+ * only with the keyboard, inside the panel.
+ */
+.main:focus {
+  outline: 0;
+}
+
+.main:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -2px;
+}
+
+/*
+ * "Skip to content" (code first, §10 #63): the first thing Tab reaches. Hidden until focused, then shown at the top
+ * left over the side nav: a bg-primary pill, Label/Medium text-action, Shadow/Menu, the standard focus ring.
+ */
+.skip {
+  position: absolute;
+  z-index: 2;
+  top: var(--fin-space-m);
+  left: var(--fin-space-m);
+  padding: var(--fin-space-m) var(--fin-space-xl);
+  border-radius: var(--fin-radius-full);
+  background-color: var(--fin-bg-primary);
+  color: var(--fin-text-action);
+  font: var(--fin-font-label-medium);
+  text-decoration: none;
+  box-shadow: var(--fin-shadow-menu);
+  clip-path: inset(50%);
+}
+
+.skip:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+  clip-path: none;
+}
+
+.skip:focus:not(:focus-visible) {
+  clip-path: none;
+}

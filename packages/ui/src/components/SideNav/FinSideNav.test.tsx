@@ -153,10 +153,12 @@ describe('FinSideNav', () => {
     expect(onClick).toHaveBeenCalledOnce();
   });
 
-  it('minimized: the user is the avatar, still named', () => {
-    render(<FinSideNav sections={SECTIONS} type="minimized" profile={{ ...PROFILE, href: '/account' }} />);
-    expect(screen.getByRole('link', { name: 'Olivia James' })).toHaveAttribute('href', '/account');
+  it('minimized: the user is the avatar, still named; with initials showing, the name starts with them', () => {
+    const { rerender } = render(<FinSideNav sections={SECTIONS} type="minimized" profile={{ ...PROFILE, href: '/account' }} />);
+    expect(screen.getByRole('link', { name: 'OJ, Olivia James' })).toHaveAttribute('href', '/account');
     expect(screen.queryByText('oliviajames@email.com')).toBeNull();
+    rerender(<FinSideNav sections={SECTIONS} type="minimized" profile={{ ...PROFILE, src: '/olivia.jpg', href: '/account' }} />);
+    expect(screen.getByRole('link', { name: 'Olivia James' })).toBeInTheDocument();
   });
 
   it('uses the router link component for every link', () => {

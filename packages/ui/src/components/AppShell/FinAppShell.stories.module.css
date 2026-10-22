@@ -1,0 +1,38 @@
+/* Layout for the FinAppShell stories only (not part of the component): sample blocks, 32 (Space-4XL) apart. */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-4xl);
+}
+
+.block {
+  padding: var(--fin-space-3xl);
+  border-radius: var(--fin-radius-m);
+  background-color: var(--fin-bg-secondary);
+}
+
+/* The logo placeholder (as the side nav stories). */
+.logo {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: center;
+  min-width: 0;
+}
+
+.logoImage {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-40);
+  height: var(--fin-size-40);
+}
+
+.companyName {
+  overflow: hidden;
+  font: var(--fin-font-title-medium);
+  color: var(--fin-text-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

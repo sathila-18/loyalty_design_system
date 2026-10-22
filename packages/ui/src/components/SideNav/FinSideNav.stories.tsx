@@ -22,7 +22,7 @@ const SECTIONS: FinSideNavSection[] = [
     label: 'Gamification',
     pages: [
       { label: 'Badge management', href: '#gamification/badges' },
-      { label: 'Focus & Learning', href: '#gamification/learning' },
+      { label: 'Focus & learning', href: '#gamification/learning' },
     ],
   },
   { icon: 'desktop_windows', label: 'System configuration', href: '#system-configuration' },
@@ -31,12 +31,12 @@ const SECTIONS: FinSideNavSection[] = [
     icon: 'supervised_user_circle',
     label: 'User management',
     pages: [
-      { label: 'User Roles', href: '#users/roles' },
-      { label: 'System Users', href: '#users/system' },
+      { label: 'User roles', href: '#users/roles' },
+      { label: 'System users', href: '#users/system' },
     ],
   },
   // Figma says "Audit Trial"; the spelling is corrected here.
-  { icon: 'plagiarism', label: 'System audit', pages: [{ label: 'Audit Trail', href: '#audit/trail' }] },
+  { icon: 'plagiarism', label: 'System audit', pages: [{ label: 'Audit trail', href: '#audit/trail' }] },
 ];
 
 const STATIC_PROFILE = { name: 'Olivia James', email: 'oliviajames@email.com', src: avatarSample, initials: 'OJ' };
@@ -59,7 +59,7 @@ const LogoPlaceholder = () => (
     <span className={styles.logoImage}>
       <FinIcon name="image" size={36} color="brand" />
     </span>
-    <span className={styles.companyName}>Company Name</span>
+    <span className={styles.companyName}>Company name</span>
   </span>
 );
 

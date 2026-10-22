@@ -113,7 +113,7 @@ export const States: Story = {
 const SECTIONS: { label: string; icon: FinIconName; subItems?: string[] }[] = [
   { label: 'Dashboard', icon: 'home' },
   { label: 'Loyalty management', icon: 'person', subItems: ['Program configuration', 'Tier management', 'Reward catalog'] },
-  { label: 'Gamification', icon: 'person', subItems: ['Badge management', 'Focus & Learning'] },
+  { label: 'Gamification', icon: 'person', subItems: ['Badge management', 'Focus & learning'] },
   { label: 'System configuration', icon: 'desktop_windows' },
 ];
 

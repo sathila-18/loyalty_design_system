@@ -160,6 +160,9 @@ export function FinSideNav({
   const avatar = profile
     ? { size: 'medium' as const, ...(profile.src !== undefined ? { src: profile.src } : {}), ...(profile.initials !== undefined ? { initials: profile.initials } : {}) }
     : undefined;
+  // The minimized avatar's name: when it shows initials (no photo), they're its visible text, so the name starts with
+  // them for voice control ("click OJ"; WCAG 2.5.3): "OJ, Olivia James".
+  const avatarName = profile && (profile.src === undefined && profile.initials ? `${profile.initials}, ${profile.name}` : profile.name);
   const profileAction = profile && !profile.menu && (profile.href !== undefined ? Link : profile.onClick ? 'button' : undefined);
   // The account menu lines up with the user's area when expanded, and opens beside the nav when minimized.
   const [navEl, setNavEl] = useState<HTMLElement | null>(null);
@@ -283,7 +286,7 @@ export function FinSideNav({
                 anchor={navEl}
                 label="Account"
                 trigger={(menuProps) => (
-                  <button {...menuProps} type="button" className={styles.avatarAction} aria-label={profile.name}>
+                  <button {...menuProps} type="button" className={styles.avatarAction} aria-label={avatarName}>
                     <FinAvatar {...avatar} />
                   </button>
                 )}
@@ -315,7 +318,7 @@ export function FinSideNav({
           ) : (
             <div className={styles.profileMinimized} data-interactive={profileAction ? '' : undefined}>
               {profileAction ? (
-                <ProfileAction as={profileAction} {...profileActionProps} className={styles.avatarAction} aria-label={profile.name}>
+                <ProfileAction as={profileAction} {...profileActionProps} className={styles.avatarAction} aria-label={avatarName}>
                   <FinAvatar {...avatar} />
                 </ProfileAction>
               ) : (

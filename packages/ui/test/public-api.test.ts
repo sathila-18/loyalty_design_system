@@ -26,6 +26,10 @@ describe('public API', () => {
     for (const name of ['FinAssistChip', 'FinFilterChip', 'FinInputChip']) expect(ui).toHaveProperty(name);
   });
 
+  it('exports FinAppShell', () => {
+    expect(ui).toHaveProperty('FinAppShell');
+  });
+
   it('exports FinMenu and FinMenuDivider', () => {
     expect(ui).toHaveProperty('FinMenu');
     expect(ui).toHaveProperty('FinMenuDivider');

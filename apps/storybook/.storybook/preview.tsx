@@ -73,8 +73,17 @@ const preview: Preview = {
     },
     // Page background comes from the theme (reset.css), not Storybook's backgrounds tool.
     backgrounds: { disable: true },
+    // The page widths (DESIGN.md §4.4): every page is checked at these. Figma's screens are 1920 × 1080.
+    viewport: {
+      options: {
+        desktop1920: { name: '1920 × 1080 (Figma)', styles: { width: '1920px', height: '1080px' }, type: 'desktop' },
+        desktop1440: { name: '1440 × 900', styles: { width: '1440px', height: '900px' }, type: 'desktop' },
+        desktop1280: { name: '1280 × 800', styles: { width: '1280px', height: '800px' }, type: 'desktop' },
+        desktop1024: { name: '1024 × 768 (side nav minimized)', styles: { width: '1024px', height: '768px' }, type: 'desktop' },
+      },
+    },
     options: {
-      storySort: { order: ['Foundations', ['Colors', 'Typography', 'Spacing', 'Radius', 'Shadows', 'Grid', 'Breakpoints', 'Palette (reference only)'], 'Components', 'Internal'] },
+      storySort: { order: ['Foundations', ['Colors', 'Typography', 'Spacing', 'Radius', 'Shadows', 'Grid', 'Breakpoints', 'Palette (reference only)'], 'Pages', 'Components', 'Internal'] },
     },
   },
 };
