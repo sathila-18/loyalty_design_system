@@ -49,17 +49,45 @@ describe('FinTableColumnFilter', () => {
     expect(screen.getByRole('checkbox', { name: 'Active' })).not.toBeChecked();
   });
 
-  it('single choice uses radios; many values get a search', async () => {
+  it('radios apply on selection, with no Reset or Apply; "All" clears the filter', async () => {
+    const user = userEvent.setup();
+    const onApply = vi.fn();
+    const { rerender } = render(<FinTableColumnFilter label="Tier" options={OPTIONS} value={[]} onApply={onApply} multiple={false} />);
+    await user.click(screen.getByRole('button', { name: 'Filter Tier' }));
+    expect(screen.queryByRole('button', { name: 'Apply' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Reset' })).toBeNull();
+    expect(screen.getByRole('radio', { name: 'All' })).toBeChecked();
+    await user.click(screen.getByRole('radio', { name: 'Pending' }));
+    expect(onApply).toHaveBeenLastCalledWith(['Pending']);
+    expect(screen.queryByRole('dialog')).toBeNull();
+    rerender(<FinTableColumnFilter label="Tier" options={OPTIONS} value={['Pending']} onApply={onApply} multiple={false} />);
+    await user.click(screen.getByRole('button', { name: /Filter Tier/ }));
+    expect(screen.getByRole('radio', { name: 'Pending' })).toBeChecked();
+    await user.click(screen.getByRole('radio', { name: 'All' }));
+    expect(onApply).toHaveBeenLastCalledWith([]);
+  });
+
+  it('radios chosen with the arrow keys apply as they move, and the menu stays open', async () => {
+    const user = userEvent.setup();
+    const onApply = vi.fn();
+    render(<FinTableColumnFilter label="Tier" options={OPTIONS} value={[]} onApply={onApply} multiple={false} />);
+    await user.click(screen.getByRole('button', { name: 'Filter Tier' }));
+    screen.getByRole('radio', { name: 'All' }).focus();
+    await user.keyboard('{ArrowDown}');
+    expect(onApply).toHaveBeenLastCalledWith(['Active']);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('many values get a search (the "All" radio hides while searching)', async () => {
     const user = userEvent.setup();
     const many = Array.from({ length: 12 }, (_, i) => ({ value: `v${i}`, label: `Campaign ${i + 1}` }));
     const onApply = vi.fn();
     render(<FinTableColumnFilter label="Campaign" options={many} value={[]} onApply={onApply} multiple={false} />);
     await user.click(screen.getByRole('button', { name: 'Filter Campaign' }));
-    expect(screen.getAllByRole('radio')).toHaveLength(12);
+    expect(screen.getAllByRole('radio')).toHaveLength(13);
     await user.type(screen.getByRole('searchbox', { name: 'Search Campaign' }), '11');
     expect(screen.getAllByRole('radio')).toHaveLength(1);
     await user.click(screen.getByRole('radio', { name: 'Campaign 11' }));
-    await user.click(screen.getByRole('button', { name: 'Apply' }));
     expect(onApply).toHaveBeenCalledWith(['v10']);
   });
 });
