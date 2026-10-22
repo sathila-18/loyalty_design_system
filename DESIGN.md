@@ -3495,3 +3495,4 @@ Template:
 | 22 Oct 2026 | 0.2 | Country menu changes (design): the search isn't focused on open (focus on the list; typing moves into the search), placeholder "Search by country or code"; the dropdown arrow points up while a menu is open (country selector and Rows per page); the Mobile number stories use "Mobile number" as label and placeholder. |
 | 22 Oct 2026 | 0.2 | The Rows per page menu and the country menu approved by design and merged into `main`. |
 | 22 Oct 2026 | 0.2 | FinTextField Payment: **at most 16 digits** for every card (design); brands that allowed 19 (Visa, Discover, Maestro, UnionPay, unknown) stop at 16, grouped 4-4-4-4; American Express (15) and Diners Club (14) unchanged (§9.59). |
+| 22 Oct 2026 | 0.2 | Payment field 16-digit limit approved by design and merged into `main`. |
