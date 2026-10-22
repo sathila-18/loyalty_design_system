@@ -4,13 +4,20 @@
  * cell is a Table cell with only the checkbox (72 wide). The cells draw their own content (FinTableCell).
  */
 
-/* The line is the row's border, so the table needs border-collapse: collapse (FinTable sets it). */
+/*
+ * The line is the row's border, so the table needs border-collapse: collapse (FinTable sets it). It's also
+ * `--fin-table-row-line`, so a cell fixed while the table scrolls sideways can draw it (22 Oct 2026).
+ */
 .row {
-  border-bottom: 1px solid var(--fin-border-default);
+  --fin-table-row-line: var(--fin-border-default);
+
+  border-bottom: 1px solid var(--fin-table-row-line);
 }
 
 /* Rule (decided 20 Oct 2026): the last row never has a line under it. */
 .row:last-child {
+  --fin-table-row-line: transparent;
+
   border-bottom: 0;
 }
 

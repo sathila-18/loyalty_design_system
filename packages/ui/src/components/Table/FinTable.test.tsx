@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { FinTable, type FinTableColumn } from './FinTable';
@@ -138,6 +138,20 @@ describe('FinTable', () => {
     const cells = within(bodyRows()[0]!).getAllByRole('cell');
     expect(within(cells[1]!).getByRole('button', { name: 'More actions for Member 1' })).toBeInTheDocument();
     expect(cells[0]!.querySelector('input[type="checkbox"]')).not.toBeNull();
+  });
+
+  it('marks when content is scrolled under the fixed ⋮ column, for its shadow', () => {
+    render(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} rowActions={[{ label: 'Edit', onSelect: () => {} }]} />);
+    const scroller = screen.getByRole('table').parentElement!;
+    Object.defineProperty(scroller, 'scrollWidth', { configurable: true, value: 1200 });
+    Object.defineProperty(scroller, 'clientWidth', { configurable: true, value: 600 });
+    fireEvent.scroll(scroller);
+    expect(scroller).toHaveAttribute('data-hidden-end');
+    expect(scroller).not.toHaveAttribute('data-hidden-start');
+    scroller.scrollLeft = 600;
+    fireEvent.scroll(scroller);
+    expect(scroller).not.toHaveAttribute('data-hidden-end');
+    expect(scroller).toHaveAttribute('data-hidden-start');
   });
 
   it('shows the given rows as the current page (server pagination)', () => {

@@ -51,15 +51,37 @@
 
 /*
  * Kept in place while the table scrolls sideways: the ⋮ column on the right (end), or on the left after the select
- * column (start, which then stays too). Painted with the row's fill (`--fin-table-row-bg`, set by FinTableRow on
- * hover and selection; bg-primary otherwise); a Grey header cell keeps its own fill.
+ * column (start, which then stays too). Its fill is the row's (`--fin-table-row-bg`, set by FinTableRow on hover and
+ * selection; bg-primary otherwise). A fixed cell sits above the table's lines, so it draws its row's line itself
+ * (`--fin-table-row-line`; none on the last row): 1px centred on its bottom edge, where the table draws it; its fill
+ * stops half a pixel short at the top and bottom, so the line between two rows isn't covered. A header cell keeps
+ * its own (Grey) fill; the header has no line.
  */
 .stickyEnd,
 .stickyStart,
 .stickySelect {
   position: sticky;
   z-index: 1;
-  background-color: var(--fin-table-row-bg, var(--fin-bg-primary));
+}
+
+th:is(.stickyEnd, .stickyStart, .stickySelect) {
+  background-color: var(--fin-bg-primary);
+}
+
+td:is(.stickyEnd, .stickyStart, .stickySelect) {
+  background:
+    linear-gradient(var(--fin-table-row-bg, var(--fin-bg-primary)), var(--fin-table-row-bg, var(--fin-bg-primary)))
+    center / 100% calc(100% - 1px) no-repeat;
+}
+
+td:is(.stickyEnd, .stickyStart, .stickySelect)::after {
+  position: absolute;
+  right: 0;
+  bottom: calc(-1px / 2);
+  left: 0;
+  height: 1px;
+  background-color: var(--fin-table-row-line, transparent);
+  content: "";
 }
 
 .stickyEnd {
@@ -77,4 +99,29 @@
 
 .fixedColumn {
   width: var(--fin-table-column-width);
+}
+
+/*
+ * While content passes under the fixed column, it casts Shadow/Sticky sideways (decided by design 22 Oct 2026, for
+ * consistency with Sticky): on the left of a column fixed at the end, on the right of one fixed at the start.
+ * Table cells can't cast a shadow in a collapsed-border table, so an empty layer the size of the cell does (a shadow
+ * only paints outside its box, so the cell and its line show as before); it's clipped to that side, so the shadow
+ * doesn't fall on the rows above and below.
+ */
+.scroll[data-hidden-end] .stickyEnd::before,
+.scroll[data-hidden-start] .stickyStart::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  inset: 0;
+}
+
+.scroll[data-hidden-end] .stickyEnd::before {
+  box-shadow: var(--fin-shadow-sticky-end);
+  clip-path: inset(0 0 0 calc(-1 * var(--fin-space-3xl)));
+}
+
+.scroll[data-hidden-start] .stickyStart::before {
+  box-shadow: var(--fin-shadow-sticky-start);
+  clip-path: inset(0 calc(-1 * var(--fin-space-3xl)) 0 0);
 }

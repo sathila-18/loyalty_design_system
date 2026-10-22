@@ -11,6 +11,8 @@
   --fin-shadow-panel-sheets: 0 2px 10px 0 rgb(0 0 0 / 4%); /* Shadow/Panel_sheets */
   --fin-shadow-sticky: 0 -2px 16px 0 rgb(0 0 0 / 8%); /* Shadow/Sticky */
   --fin-shadow-menu: 0 -2px 16px 0 rgb(0 0 0 / 8%); /* Shadow/Menu (added 22 Oct 2026; same values as Sticky) */
+  --fin-shadow-sticky-end: -2px 0 16px 0 rgb(0 0 0 / 8%); /* Shadow/Sticky sideways: fixed on the right, falls left (22 Oct 2026) */
+  --fin-shadow-sticky-start: 2px 0 16px 0 rgb(0 0 0 / 8%); /* Shadow/Sticky sideways: fixed on the left, falls right (22 Oct 2026) */
 
   /* §4.3 Layout grids. Desktop-sm and Desktop-lg are identical today. */
   --fin-grid-columns: 12;

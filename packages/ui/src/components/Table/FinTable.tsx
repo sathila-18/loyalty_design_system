@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useState, type CSSProperties, type ElementType, type HTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useEffect, useState, type CSSProperties, type ElementType, type HTMLAttributes, type ReactNode } from 'react';
 import type { FinIconName } from '../../icons/finIcons';
 import type { FinBadgeTone } from '../BadgeBase';
 import { FinTableCell, type FinTableCellType } from '../TableCell';
@@ -291,6 +291,26 @@ function FinTableInner<Row>(
   const fixedTotal = columns.reduce((sum, column) => sum + (column.width ?? 0), 0);
   const tableStyle = { '--fin-table-min-width': `${fixedTotal + flexMin * flexible.length}px` } as CSSProperties;
 
+  // Whether content is scrolled under the fixed ⋮ column (start or end), for its shadow. Set on the scroll element
+  // directly as it scrolls or resizes, so scrolling doesn't re-render the table.
+  const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!scrollEl) return;
+    const update = () => {
+      const max = scrollEl.scrollWidth - scrollEl.clientWidth;
+      scrollEl.toggleAttribute('data-hidden-start', scrollEl.scrollLeft > 0);
+      scrollEl.toggleAttribute('data-hidden-end', scrollEl.scrollLeft < max - 1);
+    };
+    update();
+    scrollEl.addEventListener('scroll', update, { passive: true });
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update);
+    observer?.observe(scrollEl);
+    return () => {
+      scrollEl.removeEventListener('scroll', update);
+      observer?.disconnect();
+    };
+  }, [scrollEl]);
+
   // The ⋮ column stays in place while the table scrolls sideways: at the end on the right, at the start on the left
   // (with the select column, which then stays too).
   const actionsAt = rowActions ? rowActionsPosition : undefined;
@@ -329,7 +349,7 @@ function FinTableInner<Row>(
 
   return (
     <div {...rest} ref={ref} className={className ? `${styles.root} ${className}` : styles.root}>
-      <div className={styles.scroll}>
+      <div ref={setScrollEl} className={styles.scroll}>
         <table
           className={styles.table}
           aria-label={label}
