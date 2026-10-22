@@ -14,7 +14,7 @@ interface Args {
 /** INTERNAL: part of the side nav (Main Selection, FinSideNav). Matches Figma's properties (DESIGN.md §9). */
 const meta: Meta<Args> = {
   title: 'Internal/Side nav/Sub selection',
-  args: { label: 'Text Here', selected: false },
+  args: { label: 'Text here', selected: false },
   argTypes: {
     label: { control: 'text', description: 'The label (one line, "…" when narrow)' },
     selected: { control: 'boolean', description: 'Figma `state=Selected` (Hovered and Pressed are the mouse)' },
@@ -38,9 +38,9 @@ export const States: Story = {
   name: 'States (Figma)',
   render: () => (
     <Nav>
-      <FinSideNavSubItem href="#">Text Here</FinSideNavSubItem>
+      <FinSideNavSubItem href="#">Text here</FinSideNavSubItem>
       <FinSideNavSubItem href="#" selected>
-        Text Here
+        Text here
       </FinSideNavSubItem>
     </Nav>
   ),

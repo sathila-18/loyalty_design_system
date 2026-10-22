@@ -10,33 +10,33 @@ const SECTIONS: FinSideNavSection[] = [
   { icon: 'home', label: 'Dashboard', href: '#dashboard' },
   {
     icon: 'loyalty',
-    label: 'Loyalty Management',
+    label: 'Loyalty management',
     pages: [
-      { label: 'Program Configuration', href: '#loyalty/program' },
-      { label: 'Tier Management', href: '#loyalty/tiers' },
-      { label: 'Reward Catalog', href: '#loyalty/rewards' },
+      { label: 'Program configuration', href: '#loyalty/program' },
+      { label: 'Tier management', href: '#loyalty/tiers' },
+      { label: 'Reward catalog', href: '#loyalty/rewards' },
     ],
   },
   {
     icon: 'sports_esports',
     label: 'Gamification',
     pages: [
-      { label: 'Badge Management', href: '#gamification/badges' },
+      { label: 'Badge management', href: '#gamification/badges' },
       { label: 'Focus & Learning', href: '#gamification/learning' },
     ],
   },
-  { icon: 'desktop_windows', label: 'System Configuration', href: '#system-configuration' },
-  { icon: 'assignment', label: 'Report Management', href: '#reports' },
+  { icon: 'desktop_windows', label: 'System configuration', href: '#system-configuration' },
+  { icon: 'assignment', label: 'Report management', href: '#reports' },
   {
     icon: 'supervised_user_circle',
-    label: 'User Management',
+    label: 'User management',
     pages: [
       { label: 'User Roles', href: '#users/roles' },
       { label: 'System Users', href: '#users/system' },
     ],
   },
   // Figma says "Audit Trial"; the spelling is corrected here.
-  { icon: 'plagiarism', label: 'System Audit', pages: [{ label: 'Audit Trail', href: '#audit/trail' }] },
+  { icon: 'plagiarism', label: 'System audit', pages: [{ label: 'Audit Trail', href: '#audit/trail' }] },
 ];
 
 const STATIC_PROFILE = { name: 'Olivia James', email: 'oliviajames@email.com', src: avatarSample, initials: 'OJ' };
@@ -82,13 +82,13 @@ function Routed({ start, children }: { start?: string; children: (href: string |
 /** Figma `Menu`: which place is current. */
 const MENUS: { name: string; current: string; open?: string }[] = [
   { name: 'Dashboard', current: '#dashboard' },
-  { name: 'Loyalty Management', current: '#dashboard', open: 'Loyalty Management' },
-  { name: 'Loyalty Management - Program Configuration', current: '#loyalty/program' },
+  { name: 'Loyalty management', current: '#dashboard', open: 'Loyalty management' },
+  { name: 'Loyalty management - Program configuration', current: '#loyalty/program' },
   { name: 'Gamification', current: '#dashboard', open: 'Gamification' },
-  { name: 'System Configuration', current: '#system-configuration' },
-  { name: 'Report Management', current: '#reports' },
-  { name: 'User Management', current: '#dashboard', open: 'User Management' },
-  { name: 'System Audit', current: '#dashboard', open: 'System Audit' },
+  { name: 'System configuration', current: '#system-configuration' },
+  { name: 'Report management', current: '#reports' },
+  { name: 'User management', current: '#dashboard', open: 'User management' },
+  { name: 'System audit', current: '#dashboard', open: 'System audit' },
 ];
 
 interface Args {

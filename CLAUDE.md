@@ -69,6 +69,12 @@ The app is React today and may move to Next.js. Components must work in both:
 - Components use the `Fin` prefix in PascalCase (`FinButton`, `FinTextField`). Code names follow `DESIGN.md` §8.
 - Where a Figma name has a typo, use the corrected spelling in code and keep the Figma name in `DESIGN.md`.
 
+### Text: sentence case
+- **All text content is in sentence case** (decided 22 Oct 2026): only the first word and proper names start with a capital. That's every label, title, heading, button, menu item, placeholder, helper text, message and default string in components, stories and pages: "Add programme configuration", "Rows per page", "Loyalty management", not "Add Programme Configuration".
+- Proper names keep their capitals: people ("Olivia James"), countries ("Sri Lanka"), brands ("American Express"), and acronyms ("VIP", "LKR").
+- Figma screens often use Title Case; write the text in sentence case anyway and note the difference (`DESIGN.md` §10 #65).
+- Figma property names quoted in Storybook control descriptions (`Show Leading Icon`) are names, not text content; keep them as Figma has them.
+
 ### Figma
 - **Figma is read-only.** Never create, edit, rename or delete anything in the Figma files. Only read and screenshot. If something in Figma needs changing, tell the designer.
 - **Out of scope:** pages under "🔒 Do not use" in the component file (Cards, Notes, Image ratios, Tabs), and the Overlay `Mobile` variant. Never use a component from those pages, even inside another component.
@@ -82,6 +88,7 @@ Real screens from the Figma screens file (`9eRxGGC7YQ6TPzi5PHYCgw`, page **Admin
 - **Only our components and tokens.** Page CSS (`<Page>.module.css`) is for layout only: grid, sections and spacing between blocks, with tokens. Stylelint applies. No one-off buttons, colours or custom versions of existing components in a page.
 - **Gaps are reported, not improvised.** If a screen needs a component that isn't built, a variant or option code doesn't have, or a value that isn't a token, list it for the designer instead of building something ad hoc.
 - **Figma screens may be out of date.** If a screen uses a detached or older version of a component, or differs from the built component, flag the difference. Don't copy it.
+- **Sentence case** for every text on a page, whatever the screen shows (see "Text: sentence case").
 - **Fake data only, defined in the story files:** realistic, with edge cases (long names, empty states, many rows, and error states where the design shows them).
 - **Widths:** check every page at **1920, 1440, 1280 and 1024** (Storybook viewport options; the side nav collapses below 1280, §2). Compare with Figma at 1920, and report how each layout behaves at the smaller widths, especially anything that breaks or wraps badly.
 - **Light and Dark:** every page is checked in both themes and passes the a11y checks in both.

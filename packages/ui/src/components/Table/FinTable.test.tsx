@@ -154,6 +154,25 @@ describe('FinTable', () => {
     expect(scroller).toHaveAttribute('data-hidden-start');
   });
 
+  it('shows a toolbar above the table: a small search and the main action', async () => {
+    const user = userEvent.setup();
+    const onAction = vi.fn();
+    render(
+      <FinTable
+        label="Members"
+        columns={columns}
+        rows={members}
+        getRowId={(m) => m.id}
+        toolbar={{ search: { label: 'Search members' }, actionLabel: 'Add member', onAction }}
+      />,
+    );
+    const search = screen.getByRole('searchbox', { name: 'Search members' });
+    expect(search.compareDocumentPosition(screen.getByRole('table')) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(search.closest('[data-size]')).toHaveAttribute('data-size', 'small');
+    await user.click(screen.getByRole('button', { name: 'Add member' }));
+    expect(onAction).toHaveBeenCalledTimes(1);
+  });
+
   it('shows the given rows as the current page (server pagination)', () => {
     render(
       <FinTable label="Members" columns={columns} rows={members.slice(10, 20)} totalRows={95} page={2} getRowId={(m) => m.id} />,

@@ -41,10 +41,14 @@ interface Args {
   actionLabel: string;
 }
 
+/**
+ * INTERNAL: part of the table (FinTable `toolbar`); these stories exist to check it against Figma's Table Header
+ * (DESIGN.md §9.67). Pages use FinTable with a toolbar.
+ */
 const meta: Meta<Args> = {
-  title: 'Components/Table/Table toolbar',
+  title: 'Internal/Table/Table toolbar',
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  args: { showSearch: true, placeholder: 'Search segment', showFilter: true, showButton: true, actionLabel: 'Add Programme Configuration' },
+  args: { showSearch: true, placeholder: 'Search segment', showFilter: true, showButton: true, actionLabel: 'Action' },
   argTypes: {
     showSearch: { control: 'boolean', description: 'Figma `Show search` (`search`)' },
     placeholder: { control: 'text', description: "The search's placeholder", if: { arg: 'showSearch' } },
@@ -54,17 +58,13 @@ const meta: Meta<Args> = {
   },
   render: function Playground({ showSearch, placeholder, showFilter, showButton, actionLabel }) {
     const [query, setQuery] = useState('');
-    const [added, setAdded] = useState(0);
     return (
       <div className={styles.stage}>
         <FinTableToolbar
           {...(showSearch ? { search: { label: 'Search segments', placeholder, value: query, onChange: (e) => setQuery(e.target.value) } } : {})}
           {...(showFilter ? { filters: <SegmentFilter /> } : {})}
-          {...(showButton ? { actionLabel, onAction: () => setAdded((n) => n + 1) } : {})}
+          {...(showButton ? { actionLabel } : {})}
         />
-        <p className={styles.readout}>
-          Search: “{query}” · Add pressed: {added}
-        </p>
       </div>
     );
   },
@@ -73,7 +73,7 @@ export default meta;
 
 type Story = StoryObj<Args>;
 
-/** Every Figma option on, as the Programme Configuration screen. */
+/** Every Figma option on; the button's text is a placeholder ("Action"). */
 export const Playground: Story = {};
 
 /** Each part on its own: search only, filters and button only, button only. */
@@ -82,8 +82,8 @@ export const Options: Story = {
   render: () => (
     <div className={styles.stack}>
       <FinTableToolbar search={{ label: 'Search members', placeholder: 'Search members' }} />
-      <FinTableToolbar filters={<SegmentFilter />} actionLabel="Add member" />
-      <FinTableToolbar actionLabel="Add reward" />
+      <FinTableToolbar filters={<SegmentFilter />} actionLabel="Action" />
+      <FinTableToolbar actionLabel="Action" />
     </div>
   ),
 };
@@ -102,7 +102,7 @@ export const FilterChips: Story = {
           <FinFilterChip>Expiring soon</FinFilterChip>
         </>
       }
-      actionLabel="Add reward"
+      actionLabel="Action"
     />
   ),
 };
@@ -117,7 +117,7 @@ export const Narrow: Story = {
           <FinTableToolbar
             search={{ label: 'Search segments', placeholder: 'Search segment' }}
             filters={<SegmentFilter />}
-            actionLabel="Add Programme Configuration"
+            actionLabel="Action"
           />
         </div>
       ))}

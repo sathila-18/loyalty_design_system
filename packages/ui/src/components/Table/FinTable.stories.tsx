@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type CSSProperties } from 'react';
+import { FinAssistChip } from '../AssistChip';
+import { FinListStandard } from '../ListStandard';
+import { FinMenu } from '../Menu';
 import { FinTable, type FinTableColumn, type FinTableRowId } from './FinTable';
 import styles from './FinTable.stories.module.css';
 
@@ -126,6 +129,52 @@ export const Members: Story = {
           Selected: {selected.length} · Details opened: {opened} · Tier edited: {edited}
         </p>
       </>
+    );
+  },
+};
+
+/**
+ * With a toolbar (`toolbar`, Figma Table Header, §9.67): a search (here it narrows the rows by name), a filter slot
+ * (a Large Assist chip with a select menu) and the main action, 32 above the table.
+ */
+export const WithToolbar: Story = {
+  name: 'With toolbar',
+  parameters: { controls: { disable: true } },
+  render: function WithToolbar() {
+    const [query, setQuery] = useState('');
+    const [status, setStatus] = useState('All statuses');
+    const all = makeMembers(45);
+    const rows = all.filter(
+      (m) => m.name.toLowerCase().includes(query.trim().toLowerCase()) && (status === 'All statuses' || m.status === status),
+    );
+    return (
+      <FinTable
+        label="Members"
+        columns={columns()}
+        rows={rows}
+        getRowId={(m) => m.id}
+        getRowLabel={(m) => m.name}
+        toolbar={{
+          search: { label: 'Search members', placeholder: 'Search member', value: query, onChange: (e) => setQuery(e.target.value) },
+          filters: (
+            <FinMenu
+              kind="select"
+              label="Status"
+              placement="bottom-end"
+              trigger={(menuProps) => (
+                <FinAssistChip {...menuProps} size="large" dropdown expanded={menuProps['aria-expanded']}>
+                  {status}
+                </FinAssistChip>
+              )}
+            >
+              {['All statuses', ...STATUSES].map((s) => (
+                <FinListStandard key={s} as="li" size="small" behavior="option" divider={false} title={s} selected={s === status} onClick={() => setStatus(s)} />
+              ))}
+            </FinMenu>
+          ),
+          actionLabel: 'Add member',
+        }}
+      />
     );
   },
 };

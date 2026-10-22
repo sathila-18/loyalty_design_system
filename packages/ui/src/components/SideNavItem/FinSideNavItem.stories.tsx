@@ -13,7 +13,7 @@ const Nav = ({ children, type = 'full' }: { children: ReactNode; type?: FinSideN
 );
 
 const subItems = (current?: string) =>
-  ['Program Configuration', 'Tier Management', 'Reward Catalog'].map((name) => (
+  ['Program configuration', 'Tier management', 'Reward catalog'].map((name) => (
     <FinSideNavSubItem key={name} href="#" selected={name === current}>
       {name}
     </FinSideNavSubItem>
@@ -39,7 +39,7 @@ const KNOWN_CONTRAST_ISSUES = ['[data-selected="sub-item"]'];
 const meta: Meta<Args> = {
   title: 'Internal/Side nav/Main selection',
   parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  args: { icon: 'person', label: 'Text Here', selected: 'none', expanded: false, type: 'full', subItems: true },
+  args: { icon: 'person', label: 'Text here', selected: 'none', expanded: false, type: 'full', subItems: true },
   argTypes: {
     icon: { control: 'select', options: finIcons, description: 'The item icon (Figma Icon)' },
     label: { control: 'text', description: 'The label (one line, "…" when narrow)' },
@@ -62,7 +62,7 @@ const meta: Meta<Args> = {
         {...(selected === 'none' ? {} : { selected })}
         {...(withSubItems ? {} : { href: '#' })}
       >
-        {withSubItems ? subItems(selected === 'sub-item' ? 'Program Configuration' : undefined) : null}
+        {withSubItems ? subItems(selected === 'sub-item' ? 'Program configuration' : undefined) : null}
       </FinSideNavItem>
     </Nav>
   ),
@@ -92,7 +92,7 @@ export const States: Story = {
           {subItems()}
         </FinSideNavItem>
         <FinSideNavItem icon="person" label="Selected, expanded" selected="sub-item" expanded>
-          {subItems('Program Configuration')}
+          {subItems('Program configuration')}
         </FinSideNavItem>
       </Nav>
       <Nav type="minimized">
@@ -112,9 +112,9 @@ export const States: Story = {
 
 const SECTIONS: { label: string; icon: FinIconName; subItems?: string[] }[] = [
   { label: 'Dashboard', icon: 'home' },
-  { label: 'Loyalty Management', icon: 'person', subItems: ['Program Configuration', 'Tier Management', 'Reward Catalog'] },
-  { label: 'Gamification', icon: 'person', subItems: ['Badge Management', 'Focus & Learning'] },
-  { label: 'System Configuration', icon: 'desktop_windows' },
+  { label: 'Loyalty management', icon: 'person', subItems: ['Program configuration', 'Tier management', 'Reward catalog'] },
+  { label: 'Gamification', icon: 'person', subItems: ['Badge management', 'Focus & Learning'] },
+  { label: 'System configuration', icon: 'desktop_windows' },
 ];
 
 /**
@@ -123,7 +123,7 @@ const SECTIONS: { label: string; icon: FinIconName; subItems?: string[] }[] = [
  */
 export const Example: Story = {
   render: function Example() {
-    const [current, setCurrent] = useState<{ section: string; page?: string }>({ section: 'Loyalty Management', page: 'Program Configuration' });
+    const [current, setCurrent] = useState<{ section: string; page?: string }>({ section: 'Loyalty management', page: 'Program configuration' });
     return (
       <Nav>
         {SECTIONS.map(({ label, icon, subItems: pages }) => {

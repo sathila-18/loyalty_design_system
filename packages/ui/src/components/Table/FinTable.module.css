@@ -11,6 +11,11 @@
   min-width: 0;
 }
 
+/* The toolbar is 32 above the table (Figma: Space-4XL): the root's 16 plus 16 more. */
+.toolbar {
+  margin-bottom: var(--fin-space-xl);
+}
+
 .scroll {
   overflow-x: auto;
 }

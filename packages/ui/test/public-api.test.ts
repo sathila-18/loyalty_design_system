@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import * as ui from '../src';
 
 // DESIGN.md §7.2 rule 4: bases are internal unless DESIGN.md says otherwise. The package entry point must not expose them.
-const INTERNAL_BASES = ['FinBadgeBase', 'FinIndicatorDot', 'FinButtonBase', 'FinWhiteButton', 'FinDestructiveButton', 'FinCheckboxBase', 'FinChipBase', 'FinSegmentBase', 'FinCountrySelector', 'FinPaginationItem', 'FinRowCountSelect', 'FinTableFooter', 'FinTableHeaderCell', 'FinTableHeaderRow', 'FinTableCell', 'FinTableRow', 'FinSideNavIcon', 'FinSideNavSubItem', 'FinSideNavItem', 'FinListItem', 'FinListItemFilled', 'FinInputBase', 'FinTableColumnFilter', 'FinTableRowActions'];
+const INTERNAL_BASES = ['FinBadgeBase', 'FinIndicatorDot', 'FinButtonBase', 'FinWhiteButton', 'FinDestructiveButton', 'FinCheckboxBase', 'FinChipBase', 'FinSegmentBase', 'FinCountrySelector', 'FinPaginationItem', 'FinRowCountSelect', 'FinTableFooter', 'FinTableHeaderCell', 'FinTableHeaderRow', 'FinTableCell', 'FinTableRow', 'FinSideNavIcon', 'FinSideNavSubItem', 'FinSideNavItem', 'FinListItem', 'FinListItemFilled', 'FinInputBase', 'FinTableColumnFilter', 'FinTableRowActions', 'FinTableToolbar'];
 
 describe('public API', () => {
   it('exports FinBadge and the shared tone list, but not FinBadgeBase', () => {
@@ -24,10 +24,6 @@ describe('public API', () => {
 
   it('exports the three chips, but not their FinChipBase base', () => {
     for (const name of ['FinAssistChip', 'FinFilterChip', 'FinInputChip']) expect(ui).toHaveProperty(name);
-  });
-
-  it('exports FinTableToolbar', () => {
-    expect(ui).toHaveProperty('FinTableToolbar');
   });
 
   it('exports FinMenu and FinMenuDivider', () => {

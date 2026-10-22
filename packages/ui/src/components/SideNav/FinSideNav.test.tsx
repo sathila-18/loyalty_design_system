@@ -8,13 +8,13 @@ const SECTIONS: FinSideNavSection[] = [
   { icon: 'home', label: 'Dashboard', href: '/' },
   {
     icon: 'loyalty',
-    label: 'Loyalty Management',
+    label: 'Loyalty management',
     pages: [
-      { label: 'Program Configuration', href: '/loyalty/program' },
-      { label: 'Tier Management', href: '/loyalty/tiers' },
+      { label: 'Program configuration', href: '/loyalty/program' },
+      { label: 'Tier management', href: '/loyalty/tiers' },
     ],
   },
-  { icon: 'sports_esports', label: 'Gamification', pages: [{ label: 'Badge Management', href: '/gamification/badges' }] },
+  { icon: 'sports_esports', label: 'Gamification', pages: [{ label: 'Badge management', href: '/gamification/badges' }] },
 ];
 
 const PROFILE = { name: 'Olivia James', email: 'oliviajames@email.com', initials: 'OJ' };
@@ -44,14 +44,14 @@ describe('FinSideNav', () => {
     render(<FinSideNav sections={SECTIONS} currentHref="/" />);
     expect(within(nav()).getAllByRole('listitem')).toHaveLength(3);
     expect(screen.getByRole('link', { name: 'Dashboard' })).toHaveAttribute('href', '/');
-    expect(screen.getByRole('button', { name: 'Loyalty Management' })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByRole('button', { name: 'Loyalty management' })).toHaveAttribute('aria-expanded', 'false');
   });
 
   it('marks the current page and opens only its section', () => {
     render(<FinSideNav sections={SECTIONS} currentHref="/loyalty/tiers" />);
-    expect(screen.getByRole('button', { name: 'Loyalty Management' })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('button', { name: 'Loyalty management' })).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByRole('button', { name: 'Gamification' })).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.getByRole('link', { name: 'Tier Management' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'Tier management' })).toHaveAttribute('aria-current', 'page');
     expect(screen.getByRole('link', { name: 'Dashboard' })).not.toHaveAttribute('aria-current');
   });
 
@@ -63,13 +63,13 @@ describe('FinSideNav', () => {
   it('opening a section closes the others; clicking the open one closes it', async () => {
     const user = userEvent.setup();
     render(<FinSideNav sections={SECTIONS} currentHref="/loyalty/tiers" />);
-    const loyalty = screen.getByRole('button', { name: 'Loyalty Management' });
+    const loyalty = screen.getByRole('button', { name: 'Loyalty management' });
     const gamification = screen.getByRole('button', { name: 'Gamification' });
 
     await user.click(gamification);
     expect(gamification).toHaveAttribute('aria-expanded', 'true');
     expect(loyalty).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.getByRole('link', { name: 'Badge Management' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Badge management' })).toBeInTheDocument();
 
     await user.click(gamification);
     expect(gamification).toHaveAttribute('aria-expanded', 'false');
@@ -79,7 +79,7 @@ describe('FinSideNav', () => {
     const { rerender } = render(<FinSideNav sections={SECTIONS} currentHref="/" />);
     rerender(<FinSideNav sections={SECTIONS} currentHref="/gamification/badges" />);
     expect(screen.getByRole('button', { name: 'Gamification' })).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('link', { name: 'Badge Management' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'Badge management' })).toHaveAttribute('aria-current', 'page');
   });
 
   it('shows the logo only when expanded', async () => {
@@ -164,7 +164,7 @@ describe('FinSideNav', () => {
       return <a {...props} ref={ref} data-router="">{props.children}</a>;
     });
     render(<FinSideNav sections={SECTIONS} currentHref="/loyalty/program" linkAs={RouterLink} profile={{ ...PROFILE, href: '/account' }} />);
-    for (const name of ['Dashboard', 'Program Configuration', 'Olivia James']) {
+    for (const name of ['Dashboard', 'Program configuration', 'Olivia James']) {
       expect(screen.getByRole('link', { name })).toHaveAttribute('data-router');
     }
   });

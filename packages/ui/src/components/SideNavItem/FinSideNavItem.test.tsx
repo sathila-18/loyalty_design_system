@@ -7,8 +7,8 @@ import { FinSideNavItem } from './FinSideNavItem';
 
 const subItems = (
   <>
-    <FinSideNavSubItem href="/loyalty/program">Program Configuration</FinSideNavSubItem>
-    <FinSideNavSubItem href="/loyalty/tiers">Tier Management</FinSideNavSubItem>
+    <FinSideNavSubItem href="/loyalty/program">Program configuration</FinSideNavSubItem>
+    <FinSideNavSubItem href="/loyalty/tiers">Tier management</FinSideNavSubItem>
   </>
 );
 
@@ -28,11 +28,11 @@ describe('FinSideNavItem', () => {
 
   it('with sub items, is a closed button with a down chevron and no sub items shown', () => {
     render(
-      <FinSideNavItem icon="person" label="Loyalty Management">
+      <FinSideNavItem icon="person" label="Loyalty management">
         {subItems}
       </FinSideNavItem>,
     );
-    const button = screen.getByRole('button', { name: 'Loyalty Management' });
+    const button = screen.getByRole('button', { name: 'Loyalty management' });
     expect(button).toHaveAttribute('aria-expanded', 'false');
     expect(button).toHaveTextContent('keyboard_arrow_down');
     expect(screen.queryByRole('link')).toBeNull();
@@ -40,36 +40,36 @@ describe('FinSideNavItem', () => {
 
   it('when expanded, shows the sub items under an open button with an up chevron', () => {
     render(
-      <FinSideNavItem icon="person" label="Loyalty Management" selected="sub-item" expanded>
+      <FinSideNavItem icon="person" label="Loyalty management" selected="sub-item" expanded>
         {subItems}
       </FinSideNavItem>,
     );
-    const button = screen.getByRole('button', { name: 'Loyalty Management' });
+    const button = screen.getByRole('button', { name: 'Loyalty management' });
     expect(button).toHaveAttribute('aria-expanded', 'true');
     expect(button).toHaveTextContent('keyboard_arrow_up');
     const region = document.getElementById(button.getAttribute('aria-controls') ?? '');
-    expect(region).toContainElement(screen.getByRole('link', { name: 'Tier Management' }));
+    expect(region).toContainElement(screen.getByRole('link', { name: 'Tier management' }));
   });
 
   it('reports clicks on the button (the side nav decides what opens)', async () => {
     const user = userEvent.setup();
     const onClick = vi.fn();
     render(
-      <FinSideNavItem icon="person" label="Loyalty Management" onClick={onClick}>
+      <FinSideNavItem icon="person" label="Loyalty management" onClick={onClick}>
         {subItems}
       </FinSideNavItem>,
     );
-    await user.click(screen.getByRole('button', { name: 'Loyalty Management' }));
+    await user.click(screen.getByRole('button', { name: 'Loyalty management' }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   it('when minimized, shows only the icon, keeps the name and never shows sub items', () => {
     render(
-      <FinSideNavItem icon="person" label="Loyalty Management" type="minimized" expanded>
+      <FinSideNavItem icon="person" label="Loyalty management" type="minimized" expanded>
         {subItems}
       </FinSideNavItem>,
     );
-    const button = screen.getByRole('button', { name: 'Loyalty Management' });
+    const button = screen.getByRole('button', { name: 'Loyalty management' });
     expect(button).not.toHaveAttribute('aria-expanded');
     expect(button).not.toHaveTextContent('keyboard_arrow');
     expect(screen.queryByRole('link')).toBeNull();

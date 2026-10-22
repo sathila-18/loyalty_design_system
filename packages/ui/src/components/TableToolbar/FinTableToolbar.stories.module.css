@@ -11,12 +11,6 @@
   gap: var(--fin-space-4xl);
 }
 
-.readout {
-  margin-top: var(--fin-space-xl);
-  font: var(--fin-font-body-small);
-  color: var(--fin-text-tertiary);
-}
-
 /* Container widths for the Narrow story: 1080, 720 and 560. */
 .wide {
   max-width: calc(var(--fin-size-120) * 9);

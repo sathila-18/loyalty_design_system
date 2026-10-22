@@ -10,6 +10,7 @@ import { FinTableHeaderCell } from '../TableHeaderCell';
 import { FinTableHeaderRow } from '../TableHeaderRow';
 import { FinTableRow } from '../TableRow';
 import { FinTableRowActions } from '../TableRowActions';
+import { FinTableToolbar, type FinTableToolbarProps } from '../TableToolbar';
 import styles from './FinTable.module.css';
 
 export type FinTableRowId = string | number;
@@ -140,6 +141,11 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
   rowActionsLabel?: (row: Row) => string;
   /** The ⋮ column's name for screen readers (its header is empty on screen). Default "Actions". */
   rowActionsHeader?: string;
+  /**
+   * The toolbar above the table (Figma Table Header, §9.67): a search, a filter slot and the main action, 32 above
+   * the table (22 Oct 2026). Without it, none.
+   */
+  toolbar?: FinTableToolbarProps;
 }
 
 const isText = (value: unknown): value is string | number => typeof value === 'string' || typeof value === 'number';
@@ -200,6 +206,7 @@ function FinTableInner<Row>(
     rowActionsPosition = 'end',
     rowActionsLabel,
     rowActionsHeader = 'Actions',
+    toolbar,
     className,
     ...rest
   }: FinTableProps<Row>,
@@ -349,6 +356,7 @@ function FinTableInner<Row>(
 
   return (
     <div {...rest} ref={ref} className={className ? `${styles.root} ${className}` : styles.root}>
+      {toolbar && <FinTableToolbar {...toolbar} className={toolbar.className ? `${styles.toolbar} ${toolbar.className}` : styles.toolbar} />}
       <div ref={setScrollEl} className={styles.scroll}>
         <table
           className={styles.table}
