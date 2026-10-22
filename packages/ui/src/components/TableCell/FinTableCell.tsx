@@ -1,9 +1,9 @@
 'use client';
 
 import { forwardRef, type ElementType, type MouseEvent, type ReactNode, type TdHTMLAttributes } from 'react';
-import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinBadge } from '../Badge';
+import { FinButton } from '../Button';
 import type { FinBadgeTone } from '../BadgeBase';
 import { FinCheckboxBase } from '../CheckboxBase';
 import styles from './FinTableCell.module.css';
@@ -44,7 +44,7 @@ interface FinTableCellOwnProps extends Omit<TdHTMLAttributes<HTMLTableCellElemen
 type FinTableCellActionProps =
   | { action?: false; actionIcon?: never; actionLabel?: never; onAction?: never }
   | {
-      /** Figma `Show action button`: a 24 icon-only button after the content. Default off. */
+      /** Figma `Show action button`: an icon button after the content (XSmall Tertiary, icon only). Default off. */
       action: true;
       /** The action's icon (Figma Action slot). Default `edit`. */
       actionIcon?: FinIconName;
@@ -112,9 +112,11 @@ export const FinTableCell = forwardRef<HTMLTableCellElement, FinTableCellProps>(
         )}
         {showContent && children !== undefined && children !== null && <span className={styles.content}>{content}</span>}
         {action && (
-          <button type="button" className={styles.action} aria-label={actionLabel} onClick={onAction}>
-            <FinIcon name={actionIcon} size={24} />
-          </button>
+          // The icon button (all-button XSmall Tertiary, Only Icon; decided by design 22 Oct 2026): its hover and
+          // pressed fills, a 32 square with a 20 icon; the label is hidden and names it.
+          <FinButton variant="tertiary" size="xsmall" icon="only-icon" iconName={actionIcon} onClick={onAction}>
+            {actionLabel}
+          </FinButton>
         )}
       </div>
     </td>

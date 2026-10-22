@@ -3,7 +3,7 @@
  * row draws fill and hover). Default text is Body/Medium text-secondary (Figma's raw 14 → the Body/Medium style).
  * Link is the all-button XSmall Tertiary look with an underline: Button/Medium, text-action, padding 6 / 0 (no side
  * padding, so its text lines up with the header's; 22 Oct 2026).
- * The action is a bare 24 icon button: fg-action (Figma raw Electric-Indigo-600 → token), hover fg-hovered.
+ * The action is FinButton's icon button (XSmall Tertiary, icon only, 22 Oct 2026): its own states and ring.
  */
 
 .cell {
@@ -67,26 +67,3 @@
   outline-offset: -1px;
 }
 
-.action {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: var(--fin-size-24);
-  height: var(--fin-size-24);
-  padding: 0;
-  border: 0;
-  border-radius: var(--fin-radius-xs);
-  background: none;
-  color: var(--fin-fg-action);
-  cursor: pointer;
-}
-
-.action:hover {
-  color: var(--fin-fg-hovered);
-}
-
-.action:focus-visible {
-  outline: 2px solid var(--fin-border-focused);
-  outline-offset: 2px;
-}
