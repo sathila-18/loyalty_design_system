@@ -3540,3 +3540,4 @@ Template:
 | 22 Oct 2026 | 0.2 | Table sort and filter (with radios applying on selection) approved by design and merged into `main`. |
 | 22 Oct 2026 | 0.2 | **Table row actions built** (code first, design's brief; §9.66, §8 #77, §10 #60): FinTable `rowActions` (per table or per row), `rowActionsPosition` (end / start after the select column), an empty-headed ⋮ column fixed while the table scrolls sideways, opening an action menu; the ⋮ purple while open. FinTableRow exposes its fill as `--fin-table-row-bg`; FinTableRow / FinTableHeaderRow take `selectCellClassName`. Icon `more_vert` added. |
 | 22 Oct 2026 | 0.2 | Row actions ⋮ works as the icon button (design): XSmall Tertiary Only Icon (32 square, 20 icon) with its hover and pressed fills; grey at rest, purple on `bg-action-secondary` while open; the column 80 wide (§9.66). |
+| 22 Oct 2026 | 0.2 | Table row actions approved by design and merged into `main`. |
