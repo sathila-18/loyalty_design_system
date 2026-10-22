@@ -1,0 +1,31 @@
+/* Layout for the FinTableToolbar stories only (not part of the component). */
+
+/* Room below for the select menu. */
+.stage {
+  min-height: calc(var(--fin-size-120) * 3);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-4xl);
+}
+
+.readout {
+  margin-top: var(--fin-space-xl);
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-tertiary);
+}
+
+/* Container widths for the Narrow story: 1080, 720 and 560. */
+.wide {
+  max-width: calc(var(--fin-size-120) * 9);
+}
+
+.medium {
+  max-width: calc(var(--fin-size-120) * 6);
+}
+
+.narrow {
+  max-width: calc(var(--fin-size-120) * 4 + var(--fin-size-80));
+}

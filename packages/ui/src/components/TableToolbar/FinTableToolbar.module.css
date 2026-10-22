@@ -1,0 +1,38 @@
+/*
+ * FinTableToolbar (DESIGN.md §9). Figma Table header: a row, bottom aligned, the two sides apart. Left: the Search,
+ * 343 wide (Size-343, generated for it 22 Oct 2026), shrinking when there isn't room. Right: the Filter slot and the
+ * button, 12 (Space-L) apart, centred, never shrinking. The parts bring their own look.
+ */
+
+.toolbar {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.start {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.search {
+  width: var(--fin-size-343);
+  max-width: 100%;
+}
+
+.end {
+  display: flex;
+  flex: none;
+  gap: var(--fin-space-l);
+  align-items: center;
+}
+
+/* Figma Filter slot: its chips, 4 (Space-XS) apart (Figma Chips-group). */
+.filters {
+  display: flex;
+  gap: var(--fin-space-xs);
+  align-items: center;
+}

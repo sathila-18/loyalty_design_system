@@ -4,6 +4,7 @@
  * the icon font to exactly this list (scripts/subset-icons.ts). Add an icon here, in order.
  */
 export const finIcons = [
+  'add',
   'arrow_back',
   'arrow_downward',
   'arrow_upward',

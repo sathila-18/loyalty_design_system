@@ -27,7 +27,8 @@ const BREAKPOINTS: Record<string, string> = {
   'Size-1440': 'xl',
   'Size-1920': 'xxl',
 };
-const SKIPPED_SIZES = new Set(['Size-343', 'Size-375']);
+/** Mobile widths, not used on desktop. `Size-343` is generated since 22 Oct 2026 (the table toolbar's search, §9). */
+const SKIPPED_SIZES = new Set(['Size-375']);
 /** `Body L` → `body-large` (text style `Body/Large`, §3.4). */
 const SIZE_WORDS: Record<string, string> = { XL: 'xlarge', L: 'large', M: 'medium', S: 'small' };
 const TYPE_PARTS: Record<string, string> = {
