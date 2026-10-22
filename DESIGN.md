@@ -3272,7 +3272,7 @@ Template:
 > - **Approved and merged (21 Oct 2026):** `FinPasswordField` (§9.60).
 > - **Approved and merged (21 Oct 2026):** `FinSearchField` (§9.61). FinSelectField and FinMultiSelectField are on hold until the menus are built (§10 #49).
 > - **Approved and merged (22 Oct 2026):** `FinHeaderNotificationButton` (§9.62).
-> - **Built, awaiting approval (22 Oct 2026):** `FinHeader` (§9.63), on `feat/header`.
+> - **Approved and merged (22 Oct 2026):** `FinHeader` (§9.63).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3434,3 +3434,4 @@ Template:
 | 22 Oct 2026 | 0.2 | **`FinHeaderNotificationButton` built** (§8 #49, §9.62), public under Components/Header/Header notification, after design fixed the set (§10 #17) and added Pressed and Notification=None: `notification` none / dot / number, `count`, `max`, `label`; a disabled button shows no badge. |
 | 22 Oct 2026 | 0.2 | `FinHeaderNotificationButton` approved by design and merged into `main`. |
 | 22 Oct 2026 | 0.2 | **`FinHeader` built** (§8 #69, §9.63), public under Components/Header/Main header: `heading` (one line, "…"), `bodyContent` slot, back button, notification button. FinTextBox gets the code-only `truncateHeading` (§9.21). |
+| 22 Oct 2026 | 0.2 | `FinHeader` approved by design and merged into `main`. |
