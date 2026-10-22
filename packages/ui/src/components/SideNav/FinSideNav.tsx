@@ -257,6 +257,7 @@ export function FinSideNav({
                   size="small"
                   divider={false}
                   data-interactive=""
+                  data-open={menuProps['aria-expanded'] ? '' : undefined}
                   leading={<FinAvatar {...avatar} />}
                   title={
                     <button {...menuProps} type="button" className={`${styles.name} ${styles.action}`}>

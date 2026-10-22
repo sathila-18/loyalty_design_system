@@ -93,6 +93,25 @@
   padding: var(--fin-space-l) 0;
 }
 
+/*
+ * A user row that does something (a link, a button or the account menu): the nav items' look (decided by design
+ * 22 Oct 2026; List-standard's hover is the nav's own bg-secondary): their padding and radius, hover bg-tertiary,
+ * pressed bg-neutral, and the hover fill while its menu is open. Its avatar then lines up with the items' icons.
+ */
+.profile[data-interactive] {
+  padding: var(--fin-space-l) var(--fin-space-xl);
+  border-radius: var(--fin-radius-m);
+}
+
+.profile[data-interactive]:hover,
+.profile[data-open] {
+  background-color: var(--fin-bg-tertiary);
+}
+
+.profile[data-interactive]:active {
+  background-color: var(--fin-bg-neutral);
+}
+
 .name,
 .email {
   display: block;
