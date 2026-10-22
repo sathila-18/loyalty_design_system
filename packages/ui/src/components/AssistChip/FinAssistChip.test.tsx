@@ -46,6 +46,7 @@ describe('FinAssistChip', () => {
     const chip = screen.getByRole('button');
     expect(chip).toHaveAttribute('data-variant', 'selected');
     expect(chip).toHaveAttribute('aria-expanded', 'true');
+    expect(icons(chip)).toContain('keyboard_arrow_up');
     expect(chip).toHaveAttribute('aria-haspopup', 'dialog');
     rerender(
       <FinAssistChip dropdown expanded={false}>

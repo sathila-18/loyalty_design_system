@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import type { FinChipSize } from '../ChipBase';
 import { chipLeadingArgs, chipLeadingArgTypes, withChipLeading, type ChipLeadingArgs } from '../ChipBase/chipStoryControls';
+import { FinListStandard } from '../ListStandard';
+import { FinMenu } from '../Menu';
 import { FinAssistChip, type FinAssistChipProps } from './FinAssistChip';
 import styles from './FinAssistChip.stories.module.css';
 
@@ -61,37 +63,33 @@ export const States: Story = {
   ),
 };
 
-const RANGES = ['Last 7 days', 'Last 30 days', 'Last 90 days'];
+const RANGES = ['Today', 'Last 7 days', 'Last 30 days', 'Last 90 days', 'This year'];
 
-/** Opens a picker: Selected while it's open. The menu here is a stand-in for the demo only. */
+/**
+ * The chip opening a menu (FinMenu, `kind="select"`; DESIGN.md §9.64): a date range is one choice, so the chosen one
+ * is Selected and shown on the chip; choosing closes the menu. While the menu is open the chip is Selected and its
+ * arrow points up. Click it, or focus it and press Enter, Space or an arrow key.
+ */
 export const WithMenu: Story = {
   name: 'With a menu',
+  parameters: { controls: { disable: true } },
   render: function WithMenuStory() {
-    const [open, setOpen] = useState(false);
-    const [range, setRange] = useState(RANGES[1]!);
+    const [range, setRange] = useState(RANGES[2]!);
     return (
       <div className={styles.menuDemo}>
-        <FinAssistChip dropdown expanded={open} aria-controls="range-menu" onClick={() => setOpen((o) => !o)}>
-          {range}
-        </FinAssistChip>
-        {open && (
-          <ul id="range-menu" className={styles.menu} aria-label="Date range">
-            {RANGES.map((r) => (
-              <li key={r}>
-                <button
-                  type="button"
-                  className={styles.option}
-                  onClick={() => {
-                    setRange(r);
-                    setOpen(false);
-                  }}
-                >
-                  {r}
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+        <FinMenu
+          kind="select"
+          label="Date range"
+          trigger={(menuProps) => (
+            <FinAssistChip {...menuProps} dropdown expanded={menuProps['aria-expanded']}>
+              {range}
+            </FinAssistChip>
+          )}
+        >
+          {RANGES.map((r) => (
+            <FinListStandard key={r} as="li" size="small" behavior="option" divider={false} title={r} selected={r === range} onClick={() => setRange(r)} />
+          ))}
+        </FinMenu>
       </div>
     );
   },
