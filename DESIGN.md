@@ -3544,3 +3544,4 @@ Template:
 | 22 Oct 2026 | 0.2 | Table row actions approved by design and merged into `main`. |
 | 22 Oct 2026 | 0.2 | Table cell Link: no side padding, so its text lines up with the header's (it started 16 in); 36 tall (§9.43, §10 #61). |
 | 22 Oct 2026 | 0.2 | Table cell action (the pencil) is the icon button (FinButton Tertiary XSmall, icon only), with its hover and pressed fills (§9.43). The header's filter arrow stays as it is (design). |
+| 22 Oct 2026 | 0.2 | Table cell fixes (the link lines up with the header; the pencil is the icon button) approved by design and merged into `main`. |
