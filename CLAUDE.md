@@ -74,6 +74,20 @@ The app is React today and may move to Next.js. Components must work in both:
 - **Out of scope:** pages under "🔒 Do not use" in the component file (Cards, Notes, Image ratios, Tabs), and the Overlay `Mobile` variant. Never use a component from those pages, even inside another component.
 - **Don't build a component marked 🔴 in `DESIGN.md` §8.** Tell the designer which §10 item blocks it.
 
+## Pages (Storybook)
+
+Real screens from the Figma screens file (`9eRxGGC7YQ6TPzi5PHYCgw`, page **Admin UIs**), built as Storybook pages to test the system end to end. The list, widths and status are in `DESIGN.md` §8.6 and §4.4.
+
+- **Where:** in the Storybook app only (`apps/storybook/src/pages/<area>/`), never in `@finspace-loyalty/ui`, so pages are never shipped with the library. Titles `Pages/<Area>/<Page>`, the areas following the side nav (for example `Pages/Loyalty Management/Programme Configuration`).
+- **Only our components and tokens.** Page CSS (`<Page>.module.css`) is for layout only: grid, sections and spacing between blocks, with tokens. Stylelint applies. No one-off buttons, colours or custom versions of existing components in a page.
+- **Gaps are reported, not improvised.** If a screen needs a component that isn't built, a variant or option code doesn't have, or a value that isn't a token, list it for the designer instead of building something ad hoc.
+- **Figma screens may be out of date.** If a screen uses a detached or older version of a component, or differs from the built component, flag the difference. Don't copy it.
+- **Fake data only, defined in the story files:** realistic, with edge cases (long names, empty states, many rows, and error states where the design shows them).
+- **Widths:** check every page at **1920, 1440, 1280 and 1024** (Storybook viewport options; the side nav collapses below 1280, §2). Compare with Figma at 1920, and report how each layout behaves at the smaller widths, especially anything that breaks or wraps badly.
+- **Light and Dark:** every page is checked in both themes and passes the a11y checks in both.
+- **The real shell:** use the real layout components (side nav, header, grid) for the page shell, never a recreated version. If a shell component is missing, say so.
+- **One screen at a time:** plan, wait for the go-ahead, build one page, show it in Storybook, and wait before the next.
+
 ## When to stop and ask
 
 Stop and ask the designer, rather than deciding yourself, when:
@@ -106,6 +120,7 @@ packages/ui/                         ← @finspace-loyalty/ui
     Fin<Name>.test.tsx
     index.ts
 apps/storybook/                      ← Storybook (theme + brand toolbar, Foundations pages)
+  src/pages/<area>/                  ← Pages: real screens from Figma (see "Pages"), never in the library
 DESIGN.md                            ← the spec
 CLAUDE.md                            ← this file
 ```

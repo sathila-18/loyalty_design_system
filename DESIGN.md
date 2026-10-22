@@ -413,6 +413,19 @@ _Re-checked 13 Oct 2026. Three styles in Figma, plus `Shadow/Menu` (code first, 
 
 Both grids are the same today. Hand-written in `styles.css` as `--fin-grid-columns`, `--fin-grid-gutter` and `--fin-grid-margin` (gutter and margin use `var(--fin-space-3xl)`).
 
+### 4.4 Page widths (added 22 Oct 2026)
+
+The Figma screens are designed at **1920 × 1080**. Every Storybook page (§8.6) is checked at these four widths, which are also Storybook viewport options:
+
+| Width | Height | Side nav (§2) | Notes |
+|---|---|---|---|
+| 1920 | 1080 | Expanded (312) | Figma's frame; pages are compared with Figma here |
+| 1440 | 900 | Expanded | Same layout as 1920 today |
+| 1280 | 800 | Expanded | The smallest width with the expanded nav (`Size-1280`) |
+| 1024 | 768 | Minimized (88) | Below 1280 the nav collapses |
+
+Behaviour between and below these widths that Figma doesn't show (scrolling, sticky parts, wrapping, tables wider than the space) is decided per page and recorded in §8.6.
+
 ---
 
 ## 5. Motion
@@ -729,6 +742,27 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 **Payment icons (decided 20 Oct 2026):** brand logos come from Shopify's open-source **`activemerchant/payment_icons`** (MIT; the logos themselves are the brands' trademarks, shown to say a method is accepted). It isn't on npm, so the version is pinned in `src/payment/finPaymentMethods.ts` (`FIN_PAYMENT_LIBRARY`, today `v1.7.69`) and **`pnpm payment-icons`** copies the registered logos and the library's `MIT-LICENSE` into `src/payment/library/`, removing logos no longer registered; the files are **committed**, so builds never fetch. **To get newer logos:** bump the version, run the script, review the diff. **To add a library brand:** one registry line (`library: '<file name>'`), then run the script. **To add our own logo** (a local brand, or a newer logo the library doesn't have yet): put the SVG in `src/payment/custom/<file>.svg` and add a registry line (`custom: '<file>'`); a custom logo can replace a library one. A test fails if a registered method has no file. **Custom logo template:** a 38 × 24 SVG (`viewBox="0 0 38 24"`), the card's corners at radius 3 with the brand's background or white with a 1px `#000` 7% outline (as the library's cards), the logo centred with at least 3 of space on every side; no text outside the card. **Default card:** our own (Figma `Default card`), drawn from tokens (`bg-primary`, 1px `border-subtle`, `Radius-XS`, `credit_card` icon `fg-secondary`, 16 / 20 / 24 / 36 by size); also the fallback for unknown methods and logos that fail to load. Methods (20 Oct 2026): Visa, Mastercard, American Express, Diners Club, Discover, Maestro, UnionPay, PayPal, Apple Pay, Google Pay, Amazon Pay (the library's `amazon`), Alipay (the current logo, for Figma's Alipay and Alipay new), WeChat Pay, UPI, Stripe, Klarna, Affirm, Interac, and the Default card. Dropped: Bitpay, Verifone, IPS (not in the library).
 
 ---
+
+### 8.6 Pages (Storybook; added 22 Oct 2026)
+
+Real screens from the Figma screens file `9eRxGGC7YQ6TPzi5PHYCgw`, page **Admin UIs** (`6:122`), built as Storybook pages in `apps/storybook/src/pages/<area>/` (never in the library; rules in CLAUDE.md "Pages"). Titles `Pages/<Area>/<Page>`, the areas following the side nav. The login options and the Nav Bar section (it only shows the nav collapsing) are out of scope. Widths: §4.4. **Order: one page at a time, Programme Configuration first.**
+
+Components the screens use (status from §8): Side Menu ✅, Main header ✅ (with Header notification ✅), the table parts and FinTable ✅, Search ✅, Text field ✅, Toggle ✅ (Figma still calls some instances `Switch`), Radio ✅, Checkbox ✅, Text Box ✅, Overlay ✅, Button ✅ (Figma still has some `Button-Primary`, an older component); **not built:** **Table Header** (the toolbar above a table, `3313:18577`, newer than this inventory), Side sheet (🔴 §10 #25), Dialog box, Snackbar, Button dock, Input field-select, Notification banner; plus an unidentified "1 2 3 4" step indicator in the Reward catalog form. Each page's own list is checked in detail when it's planned.
+
+| Area | Page (Figma section) | Figma frames | Shows | Status |
+|---|---|---|---|---|
+| Loyalty Management | **Programme Configuration** (`52:9929`) | `312:15165` list, `312:15899` add (side sheet), `328:25843` remove (dialog), `328:26929` removed (snackbar) | Table of configurations per segment; add / edit in a side sheet; remove with a dialog | 🟨 Planned (first) |
+| Loyalty Management | Tier Management (Figma `Tire Configuration`, `52:9930`) | `152:6162`, `345:14560`, `347:15784`, `347:16831`, `347:17774` | List; add and edit in a side sheet; remove | ⬜ |
+| Loyalty Management | Reward Catalog (`52:9931`) | `349:18532` list; `367:19964`, `388:31740`, `388:32199`, `388:32669`, `388:33159`, `402:33879`, `405:34974`, `408:35786`, `409:36106` create form (4 steps); `410:36648`, `410:37938` remove | List; a 4-step create form (fields, radios, checkboxes, toggles, a notification, a small table, button dock); remove | ⬜ |
+| Gamification | Focus Areas (`57:13928`) | `413:39213`, `420:42435`, `420:45368`, `420:46735`, `420:43923`, `420:40932` | Lists; side sheets | ⬜ |
+| Gamification | Badges (`57:14322`) | `420:49815`, `428:51250`, `428:52089`, `428:52801` | List; side sheet; remove | ⬜ |
+| Report Management | Reports (`162:18060`) | `435:90575`, `440:94624` | Report tables with summary text | ⬜ |
+| User Management | System Users (`188:13373`) | `428:53386`, `428:55936`, `428:58428`, `428:60618`, `428:62500`, `428:64429` | List; edit in a side sheet; remove | ⬜ |
+| User Management | Role Management (`196:18060`) | `428:66319`, `428:68571`, `434:74848`, `428:73285`, `434:74877`, `434:77457`, `434:77486`, `434:79954`, `434:81065`, `434:82196` | List; add and edit a role (permission toggles, button dock); remove | ⬜ |
+| System Audit | System Audit (`208:41600`) | `434:83306`, `435:86927`, `435:85266` | Audit log; details side sheet; filters | ⬜ |
+| Dashboard | — | none in Figma | — | ⬜ No design yet |
+
+Status: ⬜ not started · 🟨 planned or in progress · ✅ built and approved.
 
 ## 9. Component specs
 
@@ -3556,3 +3590,4 @@ Template:
 | 22 Oct 2026 | 0.2 | **Side nav account menu** (code first; §9.57, §10 #62): `profile.menu` opens an action menu from the user row (above it, as wide as the user area) or from the avatar when minimized (beside the nav; new FinMenu placements `right-start` / `right-end`); the chevron becomes a dropdown arrow. Icons `settings` and `logout` added. |
 | 22 Oct 2026 | 0.2 | Side nav user row: hover `bg-tertiary`, pressed `bg-neutral`, the hover fill while its account menu is open, with the nav items' padding and radius (design; fixes §10 #57); its avatar now lines up with the items' icons (§9.57). |
 | 22 Oct 2026 | 0.2 | Approved by design and merged into `main`: the fixed table column's sideways Sticky shadow (and its row line), the Assist chip menu (arrow up while open), and the side nav account menu (with the user row's hover and pressed look). |
+| 22 Oct 2026 | 0.2 | **Pages planned** (§8.6, §4.4; CLAUDE.md "Pages"): real screens from the Figma screens file as Storybook pages in `apps/storybook/src/pages/`, checked at 1920 / 1440 / 1280 / 1024 and in Light and Dark; Programme Configuration first. Nothing built yet. |
