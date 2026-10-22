@@ -31,6 +31,14 @@
   overflow-wrap: break-word;
 }
 
+/* One line, ending in "…" (code only, for FinHeader). */
+.textBox[data-truncate-heading] .heading {
+  overflow: hidden;
+  width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Inside a disabled control (Figma Checkbox, State=Disabled). */
 .textBox[data-disabled] .heading,
 .textBox[data-disabled] .description {

@@ -1,0 +1,42 @@
+/*
+ * FinHeader (DESIGN.md §9). Fills its container (Figma's 1368 is only a drawing frame); the height comes from the
+ * padding and content. The bottom line's width is bound to Space-XS in Figma.
+ */
+
+.header {
+  display: flex;
+  gap: var(--fin-space-xl);
+  align-items: center;
+  width: 100%;
+  padding: var(--fin-space-l) var(--fin-space-3xl);
+  border-bottom: var(--fin-space-xs) solid var(--fin-bg-secondary);
+  border-radius: var(--fin-radius-l) var(--fin-radius-l) 0 0;
+  background-color: var(--fin-bg-primary);
+}
+
+/* The back button and the text. */
+.main {
+  display: flex;
+  flex: 1 1 0;
+  gap: var(--fin-space-l);
+  align-items: center;
+  min-width: 0;
+}
+
+/* The title, then the body content 4 below (Figma `text content`). */
+.text {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+  justify-content: center;
+  min-width: 0;
+}
+
+/* Figma `body content` slot. */
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}

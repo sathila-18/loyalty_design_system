@@ -29,6 +29,8 @@ interface FinTextBoxBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
    * `State=Disabled` overrides its Text Box this way; added 19 Oct 2026).
    */
   disabled?: boolean;
+  /** The heading stays on one line and ends in "…" when it doesn't fit (code only; added 22 Oct 2026 for FinHeader). */
+  truncateHeading?: boolean;
 }
 
 /**
@@ -49,6 +51,7 @@ export function FinTextBox({
   description,
   headingLevel,
   disabled = false,
+  truncateHeading = false,
   labelBadge,
   labelBadgeLabel,
   className,
@@ -56,7 +59,7 @@ export function FinTextBox({
 }: FinTextBoxProps) {
   const Heading = `h${headingLevel ?? Number(type.slice(1))}` as 'h1';
   return (
-    <div {...rest} className={className ? `${styles.textBox} ${className}` : styles.textBox} data-type={type} data-align={align} data-disabled={disabled || undefined}>
+    <div {...rest} className={className ? `${styles.textBox} ${className}` : styles.textBox} data-type={type} data-align={align} data-disabled={disabled || undefined} data-truncate-heading={truncateHeading || undefined}>
       {label !== undefined &&
         (labelBadge ? (
           <FinLabel size={labelSize} badge badgeLabel={labelBadgeLabel}>

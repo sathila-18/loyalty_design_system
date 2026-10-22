@@ -704,7 +704,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 66 | `Button dock` | Button dock | `75:5858` | `FinButtonDock` | Text Box, all-button · Sticky · Accessory slot | ✅ | ⬜ |
 | 67 | `Side sheet` | Side sheet | `3120:30707` | `FinSideSheet` | Text Box, Badge-primary, all-button, Button dock · Body slot · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13) | 🔴 remote `Views / Dividers` (§10 #25) | ⬜ |
 | 68 | `Dialog box` | Dialog | `3234:11710` | `FinDialog` | Text Box, all-button, `24px` · Body slot · Leading button, Primary/Secondary buttons, Trailing buttons, Trailing icon · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13) | ✅ | ⬜ |
-| 69 | `Main header` | Header | `3178:24570` | `FinHeader` | all-button, Text Box, Header notification · Notification, Back button, Description | ✅ (#49 built 22 Oct 2026) | ⬜ |
+| 69 | `Main header` | Header | `3178:24570` | `FinHeader` | all-button, Text Box, Header notification · Show Back Button, `body content` slot (was `Description`), Notification · **public** (§9.63) | ✅ | ✅ |
 | 70 | `Side Menu` | Side nav | `3142:11871` | `FinSideNav` | Main Selection, List-base, Avatar, Text Box, all-button · `Menu` (8; from `currentHref`) · `Type`: Expanded/Minimized → `type` · `logo` slot (Logo sizes is from another library, §10 #25) · `profile` · **public** (§9.57) | ⚠️ (raw gaps 8 / 40 → `Space-M` / `Space-6XL`; logo from another library, a slot in code) | ✅ |
 | 71 | `Table row` | Table | `3151:15248` | `FinTableRow` | Table - Cell, Base-Checkbox · `State` (was `Property 1`): Default/Hovered/Selected/Selected - Hovered (hover is CSS; Selected is `selected`) · `Select Cell`, `Cell Slot` (was `Sells Slot`) · `<tr>`, `onRowClick` opens details · **internal**, part of the table (§9.44) | ✅ | ✅ |
 | 72 | `Header row` | Table | `3151:15203` | `FinTableHeaderRow` | Table header cell, Base-Checkbox, Label · `Select Cell`, `Cell Slot` (were `Select Sell` / `Sell Slot`) · `<tr>`, Grey cells, no width of its own · **internal**, part of the table (§9.42) | ✅ | ✅ |
@@ -1639,6 +1639,7 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 | `Show Description` + text | `description`; shown when passed (a `<p>`) |
 | — | `headingLevel` (1–6): the heading **element** for the page's structure; defaults to the number in `type`; changes the structure only, never the look (decided 15 Oct 2026) |
 | — (Figma Checkbox `State=Disabled` overrides its Text Box) | `disabled`: heading and description use `--fin-text-disabled` (added 19 Oct 2026 for FinCheckbox, §9.30) |
+| — (code only) | `truncateHeading`: the heading stays on one line and ends in "…" (added 22 Oct 2026 for FinHeader, §9.63; off by default) |
 
 **Tokens used:**
 
@@ -3152,6 +3153,35 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Built (22 Oct 2026).** Storybook (Components/Header/Header notification): Playground, Variants (Figma), Counts, Focused. Checked against Figma in a browser: 48 × 48; Default `#efefff` / `#625bff`, Hovered `#ceccff` / `#5953e8`, Pressed `#b7b4ff` / `#4641b5`, Disabled `#e9e9e9` / `#969696`; dot 6 × 6 at 30 / 12, number at 24 / −4; Light and Dark. a11y: no violations apart from the number badge in Dark (Red 3.97:1, the accepted §10 #3 exception, skipped as in §9.8).
 
+### 9.63 FinHeader (Main header) — public
+
+**Figma:** page **Header**, component `Main header` `3178:24570` (re-read 22 Oct 2026, after design's updates): a row, padding `Space-L` / `Space-3XL`, gap `Space-XL`, `bg-primary`, top corners `Radius-L`, a bottom border in `bg-secondary` whose width is bound to `Space-XS` (4); the height hugs the content (87). Left, gap `Space-L`: an all-button (Tertiary, Medium, Only Icon, `arrow_back`; the icon override was removed, so it's `fg-action`) and `text content` (gap `Space-XS`): a Text Box (Headline Large-H4, heading only, "Title") and the **`body content` slot** (default: a Text Box with only its description, Body/Medium `text-secondary`). Right: a Header notification (Number). Booleans: `Show Back Button`, `body content`, `Notification` (all on). Figma's 1368 width is only a drawing frame.
+
+**Decided 22 Oct 2026:** (1) the back arrow is Tertiary as it is (Figma updated). (2) The height comes from the padding and content (Figma updated: padding 12, hug). (3) **A long title stays on one line and ends in "…"**, through FinTextBox's new code-only `truncateHeading` (§9.21); the body content wraps. (4) The title is an `<h1>` by default (`headingLevel`), the root a `<header>`.
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| Title Text Box (H4) | `heading` (required), `headingLevel` (default 1) |
+| `body content` slot + its boolean | `bodyContent?: ReactNode`, shown when passed; a string or number becomes Figma's default, a Text Box description |
+| `Show Back Button` | `backButton` (default `true`), `onBack`, `backLabel` (default "Back", the accessible name) |
+| `Notification` | `notification` (default `true`); `notificationProps` passed to FinHeaderNotificationButton (§9.62) |
+| — (code only) | `className`, other attributes on the `<header>` |
+
+**Tokens used:** `--fin-bg-primary`; padding `--fin-space-l` / `--fin-space-3xl`; gaps `--fin-space-xl` (row), `--fin-space-l` (back button → text), `--fin-space-xs` (title → body content); top corners `--fin-radius-l`; bottom border `--fin-space-xs` `--fin-bg-secondary`. The rest from FinButton (§9.28), FinTextBox (§9.21) and FinHeaderNotificationButton (§9.62).
+
+**API:**
+
+```tsx
+<FinHeader heading="Members" bodyContent="Everyone enrolled in the programme" onBack={goBack} notificationProps={{ notification: 'number', count: unread, onClick: openNotifications }} />
+<FinHeader heading="Summer rewards" bodyContent={<FinBadge tone="success">Active</FinBadge>} backButton={false} />
+```
+
+**Accessibility:** a `<header>` (a banner landmark only when it isn't inside `main`, `article`, `section`…); the title an `<h1>` with its full text even when it's cut off; the back button named "Back" (`backLabel`); the bell named with its unread state (§9.62). Tab order: back, bell.
+
+**Built (22 Oct 2026).** Storybook (Components/Header/Main header): Playground, Options, Long title, Custom body content. Checked against Figma in a browser: 86.6 tall (Figma 87, the 33.6 line height), padding 12 / 24, back button 48 at 24, text at 84, title Headline Large-H4, description Body/Medium `#656566` 4 below, bell 48 at the right edge minus 24; Light and Dark. a11y: no violations apart from the bell's number badge in Dark (§10 #3, as §9.62).
+
 Template:
 
 ```
@@ -3242,6 +3272,7 @@ Template:
 > - **Approved and merged (21 Oct 2026):** `FinPasswordField` (§9.60).
 > - **Approved and merged (21 Oct 2026):** `FinSearchField` (§9.61). FinSelectField and FinMultiSelectField are on hold until the menus are built (§10 #49).
 > - **Approved and merged (22 Oct 2026):** `FinHeaderNotificationButton` (§9.62).
+> - **Built, awaiting approval (22 Oct 2026):** `FinHeader` (§9.63), on `feat/header`.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3402,3 +3433,4 @@ Template:
 | 21 Oct 2026 | 0.2 | `FinSearchField` approved by design and merged into `main`. |
 | 22 Oct 2026 | 0.2 | **`FinHeaderNotificationButton` built** (§8 #49, §9.62), public under Components/Header/Header notification, after design fixed the set (§10 #17) and added Pressed and Notification=None: `notification` none / dot / number, `count`, `max`, `label`; a disabled button shows no badge. |
 | 22 Oct 2026 | 0.2 | `FinHeaderNotificationButton` approved by design and merged into `main`. |
+| 22 Oct 2026 | 0.2 | **`FinHeader` built** (§8 #69, §9.63), public under Components/Header/Main header: `heading` (one line, "…"), `bodyContent` slot, back button, notification button. FinTextBox gets the code-only `truncateHeading` (§9.21). |

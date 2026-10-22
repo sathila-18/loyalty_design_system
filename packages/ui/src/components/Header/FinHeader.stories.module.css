@@ -1,0 +1,11 @@
+/* Layout for the FinHeader stories only (not part of the component). */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}
+
+.narrow {
+  max-width: calc(var(--fin-size-120) * 5);
+}

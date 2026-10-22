@@ -64,4 +64,11 @@ describe('FinTextBox', () => {
     render(<FinTextBox heading="H" className="extra" data-testid="tb" />);
     expect(screen.getByTestId('tb')).toHaveClass('extra');
   });
+
+  it('keeps the heading on one line only with truncateHeading', () => {
+    const { rerender } = render(<FinTextBox heading="H" data-testid="tb" />);
+    expect(screen.getByTestId('tb')).not.toHaveAttribute('data-truncate-heading');
+    rerender(<FinTextBox heading="H" data-testid="tb" truncateHeading />);
+    expect(screen.getByTestId('tb')).toHaveAttribute('data-truncate-heading');
+  });
 });
