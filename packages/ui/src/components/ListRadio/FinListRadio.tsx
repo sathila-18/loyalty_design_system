@@ -93,6 +93,8 @@ export interface FinListRadioProps {
   name?: string;
   /** Outside a group: called when chosen. */
   onChange?: () => void;
+  /** Figma `Show divider` (List-base): the line under the row. Default on; the last of several rows never has one. */
+  divider?: boolean;
   className?: string;
 }
 
@@ -109,6 +111,7 @@ export function FinListRadioRow({
   item,
   disabled: disabledProp = false,
   size: sizeProp,
+  divider,
   checked: checkedProp,
   name: nameProp,
   onChange,
@@ -146,6 +149,7 @@ export function FinListRadioRow({
       filled={filled}
       className={className}
       size={size}
+      {...(filled ? {} : { divider })}
       title={title}
       titleId={`${id}-title`}
       descriptionId={`${id}-description`}

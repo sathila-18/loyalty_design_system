@@ -61,4 +61,9 @@ describe('FinListToggle', () => {
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
     expect(screen.getByRole('switch', { name: 'One' })).toBeChecked();
   });
+
+  it('hides its line with divider={false}', () => {
+    const { container } = render(<FinListToggle title="Email" divider={false} />);
+    expect(container.querySelector('hr')).toBeNull();
+  });
 });

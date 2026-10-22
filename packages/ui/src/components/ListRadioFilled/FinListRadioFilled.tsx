@@ -2,7 +2,7 @@
 
 import { FinListRadioRow, type FinListRadioProps } from '../ListRadio/FinListRadio';
 
-export type FinListRadioFilledProps = FinListRadioProps;
+export type FinListRadioFilledProps = Omit<FinListRadioProps, 'divider'>;
 
 /**
  * The filled (card) version of FinListRadio (DESIGN.md §9): the same row, behaviour and props on List_fill-base: a white card

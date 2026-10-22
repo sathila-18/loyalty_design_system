@@ -33,6 +33,8 @@ export interface FinListToggleProps extends Pick<FinListItemProps, 'as'> {
   size?: FinListItemSize;
   /** The toggle's `name` (form posting). */
   name?: string;
+  /** Figma `Show divider` (List-base): the line under the row. Default on; the last of several rows never has one. */
+  divider?: boolean;
   className?: string;
 }
 
@@ -49,6 +51,7 @@ export function FinListToggleRow({
   onCheckedChange,
   disabled = false,
   size = 'large',
+  divider,
   name,
   as,
   className,
@@ -66,6 +69,7 @@ export function FinListToggleRow({
       {...(as ? { as } : {})}
       className={className}
       size={size}
+      {...(filled ? {} : { divider })}
       title={title}
       titleId={`${id}-title`}
       descriptionId={`${id}-description`}

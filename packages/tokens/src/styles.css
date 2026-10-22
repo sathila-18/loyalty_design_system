@@ -10,6 +10,7 @@
   --fin-shadow-resting-cards: 0 1px 3px 0 rgb(0 0 0 / 5%); /* Shadow/Resting_cards */
   --fin-shadow-panel-sheets: 0 2px 10px 0 rgb(0 0 0 / 4%); /* Shadow/Panel_sheets */
   --fin-shadow-sticky: 0 -2px 16px 0 rgb(0 0 0 / 8%); /* Shadow/Sticky */
+  --fin-shadow-menu: 0 -2px 16px 0 rgb(0 0 0 / 8%); /* Shadow/Menu (added 22 Oct 2026; same values as Sticky) */
 
   /* §4.3 Layout grids. Desktop-sm and Desktop-lg are identical today. */
   --fin-grid-columns: 12;

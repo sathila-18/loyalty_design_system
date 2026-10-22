@@ -2,7 +2,7 @@
 
 import { ListStandardRow, type FinListStandardBehavior, type FinListStandardProps } from '../ListStandard/FinListStandard';
 
-export interface FinListStandardFilledProps extends Omit<FinListStandardProps, 'behavior' | 'chevron'> {
+export interface FinListStandardFilledProps extends Omit<FinListStandardProps, 'behavior' | 'chevron' | 'divider'> {
   /** What the card does: it's always clickable (a link, a button or an option). Default `link`. */
   behavior?: Exclude<FinListStandardBehavior, 'static'>;
 }

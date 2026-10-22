@@ -2,7 +2,7 @@
 
 import { FinListCheckboxRow, type FinListCheckboxProps } from '../ListCheckbox/FinListCheckbox';
 
-export type FinListCheckboxFilledProps = FinListCheckboxProps;
+export type FinListCheckboxFilledProps = Omit<FinListCheckboxProps, 'divider'>;
 
 /**
  * The filled (card) version of FinListCheckbox (DESIGN.md §9): the same row, behaviour and props on List_fill-base: a white card

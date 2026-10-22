@@ -1,0 +1,82 @@
+/*
+ * FinMenu (DESIGN.md §9). Figma standard-menu `Type=Normal`: bg-primary, 1px border-subtle, Radius-M, no padding,
+ * content clipped to the corners, Shadow/Menu. Shown in the top layer (popover) at the position Floating UI works
+ * out, Space-XS from the trigger. No animation (§5).
+ */
+
+.menu {
+  --menu-gap: var(--fin-space-xs);
+  --menu-edge: var(--fin-space-m);
+
+  position: fixed;
+  inset: auto;
+  top: var(--menu-y);
+  left: var(--menu-x);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-height: var(--menu-available-height);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--fin-border-subtle);
+  border-radius: var(--fin-radius-m);
+  background-color: var(--fin-bg-primary);
+  color: var(--fin-text-primary);
+  box-shadow: var(--fin-shadow-menu);
+}
+
+/* Until Floating UI has placed it (one frame), keep it out of sight. */
+.menu:not([data-positioned]) {
+  visibility: hidden;
+}
+
+/* A fixed limit, never past the window. */
+.menu[data-max-height] {
+  max-height: min(var(--menu-max-height), var(--menu-available-height));
+}
+
+/* Width: fits the content but never narrower than the trigger; the trigger's (fields); or a given length. */
+.menu[data-width="content"] {
+  min-width: var(--menu-trigger-width);
+}
+
+.menu[data-width="trigger"] {
+  width: var(--menu-trigger-width);
+}
+
+.menu[data-width="custom"] {
+  width: var(--menu-width);
+}
+
+/* Figma `conten` slot: no padding or gap; scrolls when the menu is at its limit. */
+.content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.separator {
+  display: block;
+}
+
+/* Code first (22 Oct 2026): buttons kept at the bottom, a line above, right aligned. */
+.footer {
+  display: flex;
+  flex: none;
+  gap: var(--fin-space-m);
+  justify-content: flex-end;
+  padding: var(--fin-space-xl);
+  border-top: 1px solid var(--fin-border-subtle);
+}

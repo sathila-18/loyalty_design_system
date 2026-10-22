@@ -91,6 +91,8 @@ export interface FinListCheckboxProps {
   onCheckedChange?: (checked: boolean) => void;
   /** Some (not all) of what this row stands for is ticked: the dash, announced as mixed (for a "select all" row). */
   indeterminate?: boolean;
+  /** Figma `Show divider` (List-base): the line under the row. Default on; the last of several rows never has one. */
+  divider?: boolean;
   className?: string;
 }
 
@@ -107,6 +109,7 @@ export function FinListCheckboxRow({
   item,
   disabled: disabledProp = false,
   size: sizeProp,
+  divider,
   checked: checkedProp,
   onCheckedChange,
   indeterminate = false,
@@ -149,6 +152,7 @@ export function FinListCheckboxRow({
       filled={filled}
       className={className}
       size={size}
+      {...(filled ? {} : { divider })}
       title={title}
       titleId={`${id}-title`}
       descriptionId={`${id}-description`}

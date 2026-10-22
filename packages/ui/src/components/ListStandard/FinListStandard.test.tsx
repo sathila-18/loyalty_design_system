@@ -85,4 +85,27 @@ describe('FinListStandard', () => {
     expect(screen.queryByRole('link')).toBeNull();
     expect(screen.getByText('Locked')).toHaveAttribute('aria-disabled', 'true');
   });
+
+  it('is a menu item (in a role="menu" list): a button with role menuitem, out of the tab order, in a role-less row', async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+    render(
+      <ul role="menu" aria-label="Actions">
+        <FinListStandard as="li" behavior="menuitem" title="Edit" description="Change the details" onClick={onClick} />
+        <FinListStandard as="li" behavior="menuitem" title="Delete" disabled />
+      </ul>,
+    );
+    const item = screen.getByRole('menuitem', { name: 'Edit' });
+    expect(item).toHaveAttribute('tabindex', '-1');
+    expect(item).toHaveAccessibleDescription('Change the details');
+    expect(item.closest('li')).toHaveAttribute('role', 'none');
+    expect(screen.getByRole('menuitem', { name: 'Delete' })).toBeDisabled();
+    await user.click(item);
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('hides its line with divider={false}', () => {
+    const { container } = render(<FinListStandard title="Members" divider={false} />);
+    expect(container.querySelector('hr')).toBeNull();
+  });
 });

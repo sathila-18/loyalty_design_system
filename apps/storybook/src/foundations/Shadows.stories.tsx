@@ -6,8 +6,9 @@ import styles from './Foundations.module.css';
 // Shadows are Figma effect styles, hand-written in @finspace-loyalty/tokens/styles.css (DESIGN.md §4.2).
 const SHADOWS = [
   ['Shadow/Resting_cards', '--fin-shadow-resting-cards', '0 1 3 0, black 5%', 'Cards and surfaces at rest'],
-  ['Shadow/Panel_sheets', '--fin-shadow-panel-sheets', '0 2 10 0, black 4%', 'Panels and menus on the page. Not Dialog box or Side sheet: they sit on FinOverlay.'],
+  ['Shadow/Panel_sheets', '--fin-shadow-panel-sheets', '0 2 10 0, black 4%', 'Panels on the page. Not Dialog box or Side sheet: they sit on FinOverlay.'],
   ['Shadow/Sticky', '--fin-shadow-sticky', '0 −2 16 0, black 8%', 'Sticky bottom elements (falls upward)'],
+  ['Shadow/Menu', '--fin-shadow-menu', '0 −2 16 0, black 8%', 'Menus (FinMenu). Same values as Sticky, its own style so menus never use Sticky.'],
 ] as const;
 
 const meta: Meta = {

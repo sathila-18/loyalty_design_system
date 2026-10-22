@@ -2,7 +2,7 @@
 
 import { FinListToggleRow, type FinListToggleProps } from '../ListToggle/FinListToggle';
 
-export type FinListToggleFilledProps = FinListToggleProps;
+export type FinListToggleFilledProps = Omit<FinListToggleProps, 'divider'>;
 
 /**
  * The filled (card) version of FinListToggle (DESIGN.md §9): the same row, behaviour and props on List_fill-base: a white card

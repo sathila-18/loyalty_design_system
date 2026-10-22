@@ -18,10 +18,10 @@ export type FinListStandardLeading = 'none' | 'icon' | 'flag' | 'payment' | 'ava
  * What the row does, per scenario: `static` shows data; `link` goes somewhere (`href`); `button` runs `onClick`;
  * `option` is a choice in a list box or menu (`role="option"`, Selected is "chosen").
  */
-export type FinListStandardBehavior = 'static' | 'link' | 'button' | 'option';
+export type FinListStandardBehavior = 'static' | 'link' | 'button' | 'option' | 'menuitem';
 
 export interface FinListStandardProps
-  extends Pick<FinListItemProps, 'as' | 'size' | 'className' | 'id' | 'style'> {
+  extends Pick<FinListItemProps, 'as' | 'size' | 'divider' | 'className' | 'id' | 'style'> {
   /** The title (Headline Small-H6, Small: Label/Medium). */
   title: ReactNode;
   /** Figma `Description`: the line under the title. Without it the row is centred. */
@@ -133,6 +133,20 @@ export function ListStandardRow({
         {title}
       </Link>
     );
+  if (behavior === 'menuitem')
+    titleNode = (
+      <button
+        type="button"
+        role="menuitem"
+        tabIndex={-1}
+        className={`${styles.title} ${styles.action}`}
+        disabled={disabled}
+        onClick={onClick}
+        aria-describedby={describedBy}
+      >
+        {title}
+      </button>
+    );
   if (behavior === 'button')
     titleNode = (
       <button type="button" className={`${styles.title} ${styles.action}`} disabled={disabled} onClick={onClick} aria-describedby={describedBy}>
@@ -153,7 +167,9 @@ export function ListStandardRow({
       data-filled={filled ? '' : undefined}
       {...(behavior === 'option'
         ? { role: 'option', 'aria-selected': selected, 'aria-disabled': disabled || undefined, ...(disabled ? {} : { onClick }) }
-        : {})}
+        : behavior === 'menuitem'
+          ? { role: 'none' }
+          : {})}
       leadingAccessory={leadingNode !== undefined}
       leading={leadingNode}
       title={titleNode}

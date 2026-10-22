@@ -390,13 +390,14 @@ Designers use the text styles in Figma; Claude Code reads which style a text lay
 
 ### 4.2 Shadows (effect styles)
 
-_Re-checked 13 Oct 2026. Three styles, all neutral black, no background blur or inner shadow._
+_Re-checked 13 Oct 2026. Three styles in Figma, plus `Shadow/Menu` (code first, 22 Oct 2026); all neutral black, no background blur or inner shadow._
 
 | Style | Layer (x, y, blur, spread, color) | CSS variable | Use |
 |---|---|---|---|
 | `Shadow/Resting_cards` | Drop: 0, 1, 3, 0, `#000000` 5% | `--fin-shadow-resting-cards` | Cards and surfaces at rest |
-| `Shadow/Panel_sheets` | Drop: 0, 2, 10, 0, `#000000` 4% | `--fin-shadow-panel-sheets` | Panels and menus that sit directly on the page. **Not** Dialog box or Side sheet: they have no shadow on purpose, because they render on top of `FinOverlay` (the scrim), which separates them from the page. Their §9 specs must say so when they're built. |
+| `Shadow/Panel_sheets` | Drop: 0, 2, 10, 0, `#000000` 4% | `--fin-shadow-panel-sheets` | Panels that sit directly on the page (menus use `Shadow/Menu`, below). **Not** Dialog box or Side sheet: they have no shadow on purpose, because they render on top of `FinOverlay` (the scrim), which separates them from the page. Their §9 specs must say so when they're built. |
 | `Shadow/Sticky` | Drop: 0, **−2**, 16, 0, `#000000` 8% | `--fin-shadow-sticky` | Sticky bottom elements (the shadow falls upward) |
+| `Shadow/Menu` (**code first**, added 22 Oct 2026; design to add the style in Figma) | Drop: 0, −2, 16, 0, `#000000` 8% (the same values as Sticky) | `--fin-shadow-menu` | Menus (`FinMenu`, §9.64). Panel_sheets was too faint for menus, so they use these values under their own name, never `--fin-shadow-sticky`. |
 
 - Figma's drop-shadow **blur** maps to the CSS `box-shadow` blur value directly.
 - Shadow colors are fixed values in Figma (not variables), so they're the same in Light and Dark (see §10 #5).
@@ -710,6 +711,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 72 | `Header row` | Table | `3151:15203` | `FinTableHeaderRow` | Table header cell, Base-Checkbox, Label · `Select Cell`, `Cell Slot` (were `Select Sell` / `Sell Slot`) · `<tr>`, Grey cells, no width of its own · **internal**, part of the table (§9.42) | ✅ | ✅ |
 | 73 | `Table footer` | Table | `3151:14830` | `FinTableFooter` | Row count dropdown, Pagination group · pages and summary worked out from `totalRows` / `rowsPerPage` · **internal**, part of the table (§9.40); the row count menu waits for the List component (§10 #49) | ⚠️ | ✅ |
 | 74 | — (code only; in Figma the table is assembled on each screen) | Table | — | `FinTable` | **Code-only organism** composed from Header row, Table row, Table footer: columns and rows as data, row selection (select all / indeterminate), footer pagination. No Figma node, so it only uses the parts above and adds no new visuals. **Widths (decided 20 Oct 2026):** the table is 100% of its container (Figma's 1088 is only a drawing frame); each column is **fixed** (checkbox, actions), **flexible** (the default, shares the remaining space) or has a **minimum width**; when the columns don't fit, the table scrolls horizontally; long cell text ends in "…". Header cells are Grey (§9.42). Built: §9.45, **public**, Components/Table. | ✅ (after #50–73) | ✅ |
+| 75 | `standard-menu` (`Type=Normal` `3549:11762`; slot `conten`) | Menu | `3549:12004` | `FinMenu`, `FinMenuDivider` | any list rows (List-standard, -radio_button, checkbox, toggle), Divider, all-button · `kind` (code only: action / filter / navigation), `footer` (code first), width, max height · **public** (§9.64) | ⚠️ (`Shadow/Sticky` → new `Shadow/Menu`; slot typo `conten`; no footer slot yet: §10 #59) | ✅ |
 
 ### 8.5 Assets (exported, not built as components)
 
@@ -2781,7 +2783,8 @@ Presentational (no `'use client'`).
 | `Leading accessory` = None / Icon / Flag / Payment / Avatar | `leadingAccessory: 'none' \| 'icon' \| 'flag' \| 'payment' \| 'avatar'` + `icon` (default `person`), `country`, `paymentMethod` (default `default`), `avatar` (`src`, `initials`, `label`) | `leading` for anything else |
 | `Trailing accessory` = Caption | `caption?: string` | |
 | Size (nested List-base) | `size: 'large' \| 'small'` | |
-| — | `title` (required), `behavior`, `href`, `linkAs`, `onClick`, `as` (`div` / `li`), `className`, `id`, `style` | |
+| — | `title` (required), `behavior`, `href`, `linkAs`, `onClick`, `as` (`div` / `li`), `className`, `id`, `style` | `behavior="menuitem"` added 22 Oct 2026 for FinMenu (§9.64): the title is a `<button role="menuitem">` out of the tab order, the row `role="none"` |
+| List-base `Show divider` (nested) | `divider` (default on) | Added 22 Oct 2026 for menus, on List-standard, -radio_button, checkbox and toggle rows (not the filled ones, which have none); the last of several rows never has one |
 | — | `trailing`, `labelFor`, `titleId`, `descriptionId` | Added 20 Oct 2026 for control rows (radio, checkbox, toggle lists): `labelFor` makes the title the control's label covering the row, with the focus ring around the row |
 
 **Tokens used:** fills `--fin-bg-secondary`, `--fin-bg-active`, `--fin-bg-active-hover`; description `--fin-font-body-medium` (Small `--fin-font-body-small`), `--fin-text-secondary` (Disabled `--fin-text-disabled`); Disabled title and caption `--fin-text-disabled-on-bg`, icon `--fin-fg-disabled`, line `--fin-border-disabled` (through FinDivider's `--divider-color`, added 20 Oct 2026); trailing gap `--fin-space-s`; focus `--fin-border-focused`. The rest from FinListItem, FinIcon, FinFlag, FinAvatar and FinCaption.
@@ -3182,6 +3185,47 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Built (22 Oct 2026).** Storybook (Components/Header/Main header): Playground, Options, Long title, Custom body content. Checked against Figma in a browser: 86.6 tall (Figma 87, the 33.6 line height), padding 12 / 24, back button 48 at 24, text at 84, title Headline Large-H4, description Body/Medium `#656566` 4 below, bell 48 at the right edge minus 24; Light and Dark. a11y: no violations apart from the bell's number badge in Dark (§10 #3, as §9.62).
 
+### 9.64 FinMenu and FinMenuDivider (standard-menu) — public
+
+**Figma:** page **Menu**, component set `standard-menu` `3549:12004`, one variant `Type=Normal` `3549:11762` (added 22 Oct 2026): `bg-primary`, 1px `border-subtle`, `Radius-M`, padding and gap `Space-none`, content clipped, `Shadow/Sticky`; one slot `conten` (sic) holding four List-standard Small rows with descriptions, the last without its line (375 × 303 inside the border). Nothing else: kinds, placement, size limits and the footer are code (§10 #59).
+
+**Decided 22 Oct 2026:** (1) **one menu for every scenario**: the slot takes any rows (standard, radio, checkbox, toggle lists, mixed, any accessories, with or without lines: the rows' new `divider`), `FinMenuDivider` between groups, and buttons. (2) **`kind`** (code only) sets the behaviour: `action` (a trigger reveals actions; one is taken and the menu closes: `role="menu"`, rows `behavior="menuitem"`, arrow keys / Home / End, Enter or click runs it, Tab leaves), `filter` (from a filter chip; controls are adjusted, then applied: a non-modal `dialog`, Tab through the controls, stays open until the app closes it), `navigation` (destinations: a `<nav>` of links, arrow keys too, the current page gets focus). Select menus (fields, row count, country) are added with those components, on this menu. (3) **Placement:** 4 (`Space-XS`) from the trigger, `bottom-start` by default, flips above when there's no room, kept `Space-M` from the window edge; in the top layer (popover), so tables and scrolling containers never clip it; positioned with **Floating UI** (`@floating-ui/react-dom` 2.1.9, MIT, approved; bundled into the build like `libphonenumber-js`, so a dev dependency). (4) **Height:** never past the window (the content scrolls, the footer stays); `maxHeight` for a fixed limit. **Width:** fits the content, at least the trigger's; `trigger` for fields; or any length. (5) **Shadow:** `Shadow/Menu`, a new style with the Sticky values (Panel_sheets was too faint; §4.2). (6) **Footer** (code first): buttons kept at the bottom. (7) Escape and a click outside close it; focus returns to the trigger (also when the app closes it while focus is inside).
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `Type` = Normal | the only look |
+| `conten` slot | `children` |
+| — (code only) | `kind` (default `action`), `trigger` (an element, or a function taking the trigger props), `open` / `defaultOpen` / `onOpenChange`, `label` (default: named by the trigger), `width` (`content` / `trigger` / a length), `maxHeight`, `placement`, `footer`; `FinMenuDivider` |
+
+**Tokens used:** `--fin-bg-primary`, `--fin-text-primary`, 1px `--fin-border-subtle`, `--fin-radius-m`, `--fin-shadow-menu`; gap from the trigger `--fin-space-xs`, from the window edge `--fin-space-m` (read by Floating UI from the CSS); footer padding `--fin-space-xl`, gap `--fin-space-m`, 1px `--fin-border-subtle` above. Rows, dividers and buttons bring their own.
+
+**API:**
+
+```tsx
+<FinMenu trigger={<FinButton variant="secondary" icon="trailing" iconName="keyboard_arrow_down">Member actions</FinButton>}>
+  <FinListStandard as="li" size="small" behavior="menuitem" divider={false} leadingAccessory="icon" icon="edit" title="Edit member" onClick={edit} />
+  <FinMenuDivider />
+  <FinListStandard as="li" size="small" behavior="menuitem" divider={false} leadingAccessory="icon" icon="cancel" title="Deactivate" onClick={deactivate} />
+</FinMenu>
+
+<FinMenu kind="filter" open={open} onOpenChange={setOpen} label="Member filters" trigger={<FinFilterChip selected={applied}>Members</FinFilterChip>}
+  footer={<><FinButton variant="tertiary" size="small" onClick={reset}>Reset</FinButton><FinButton size="small" onClick={apply}>Apply</FinButton></>}>
+  <FinListCheckboxGroup label="Tier" size="small" value={tiers} onValueChange={setTiers}>…</FinListCheckboxGroup>
+</FinMenu>
+
+<FinMenu kind="navigation" trigger={<FinButton variant="tertiary">Programme</FinButton>}>
+  <FinListStandard as="li" size="small" behavior="link" href="/rewards" linkAs={Link} title="Rewards" selected />
+</FinMenu>
+```
+
+`'use client'`.
+
+**Accessibility:** the trigger gets `aria-expanded`, `aria-controls` and `aria-haspopup` (`menu` / `dialog`; none for navigation); ArrowDown / ArrowUp on an action or navigation trigger opens it on the first / last item. Action: `menu` named by the trigger, `menuitem`s (disabled ones skipped), Escape closes and returns focus, Tab closes and moves on. Navigation: a `nav` named by the trigger, the current page (`aria-current`) focused first, choosing a link closes it. Filter: a `dialog` named by `label`, focus on its first control, Tab moves through controls and footer, leaving it closes it. Separators are `role="separator"` in lists.
+
+**Built (22 Oct 2026).** Storybook (Components/Menu/Menu): Playground (kind, rows, descriptions, lines, width), Standard menu (Figma), Action menu, Filter menu, Filter menu with toggles, Navigation menu, Long list, Max height. Checked in a browser: the Figma story 375 × 305 (rows 303, 1px border), `#ffffff` / `#ededed` / 12 radius / Shadow/Menu (Dark `#19191a` / `#363636`); 4 below every trigger; a long list stops at the window edge (8 from it) and scrolls; in a short window the menu shrinks and scrolls; the keyboard flows above; Apply returns focus to the chip. a11y: no violations in Light or Dark. Tests run in jsdom, which can't open popovers, so they show them with a test-only style.
+
 Template:
 
 ```
@@ -3249,7 +3293,7 @@ Template:
 | 46 | **Chips in Figma vs code** (decided 19 Oct 2026): code has three chip types (§9.32). To match in Figma: rename Chips `Type` (Unselected / Selected) to **`Selected` (True / False)**, so "type" isn't used for two things; make **three sets from Chips-base**, `Assist chip`, `Filter chip`, `Input chip` (the current `Chips` becomes `Filter chip`); add the Assist chip's down arrow and open (Selected) state, and the Input chip's ✕ button; add sizes (code has XSmall, Small, Large). Raw `Primary-400` in Chips was removed by design (19 Oct 2026). | Chips | ⏳ Design to add in Figma |
 | 47 | **Avatar in a chip's leading slot** (may come later, 19 Oct 2026): code already takes any content (`leadingAccessory`), and the Storybook controls offer an avatar. The smallest FinAvatar is 24px, so XSmall and Small chips grow (26 → 32, 33 → 36); Large (40) fits. Design to decide the avatar size per chip size (or a smaller avatar) before it's used. | Chips, Avatar | ❓ Design to define |
 | 48 | **Segmented button base, to look at:** (1) **Selected Pressed** fills with `bg-tertiary`, the track's own color, so a pressed selected segment disappears into the track while held. (2) **Dark: Unselected Hovered** uses `text-tertiary` (`#969696`), dimmer than Enabled `text-secondary` (`#b7b7b7`); in Light hover darkens the text. (3) The Selected fill against the track is 1.17:1 Light / 1.45:1 Dark: Selected is shown mostly by the fill change and the darker text. Code follows Figma. | Segmented button | ❓ Design to confirm |
-| 49 | **Country menu (and menus in general) need design** (19 Oct 2026): the country selector opens a small menu of countries built from the List component. Needed first: §10 #19 fixed (List-base's missing `20px`); **row states on the menu row** (hover, selected, keyboard focus; not on List-base, which as a base has no states, §7.2); a **menu container** (surface, radius, shadow, max height and scrolling); a **country row** (flag, name, maybe dial code); optionally a search field at the top (Search, §8 #57). Then: List base → menu → the country selector's menu and the row count menu (§9.38, options such as 10 / 25 / 50 / 100). | List, Input field, Table | ⏳ Design to add in Figma |
+| 49 | **Country menu (and menus in general) need design** (19 Oct 2026): the country selector opens a small menu of countries built from the List component. Needed first: §10 #19 fixed (List-base's missing `20px`); **row states on the menu row** (hover, selected, keyboard focus; not on List-base, which as a base has no states, §7.2); a **menu container** (surface, radius, shadow, max height and scrolling); a **country row** (flag, name, maybe dial code); optionally a search field at the top (Search, §8 #57). Then: List base → menu → the country selector's menu and the row count menu (§9.38, options such as 10 / 25 / 50 / 100). **Update 22 Oct 2026:** the menu container is built (`FinMenu`, §9.64) and List-base is fixed; the row count and country menus are next, built on it (select behaviour: arrow keys, type-ahead, the chosen row Selected). | List, Input field, Table | 🟨 Menu built; row count and country menus next |
 | 50 | **Table header sort and filter need design** (19 Oct 2026): the header cell's trailing arrow will be a sort control or open a filter menu (a category list for the column). Needed: which icon sorts and which filters (and both on one column); sort states (unsorted / ascending / descending); an "active filter" look; hover, pressed and focus for the clickable part (no hover on the cell itself, decided 19 Oct 2026); the filter menu (List, §10 #49). Until then the arrow is display-only (§9.41). Also: the trailing arrow is a raw `#626262` in Figma; code uses `fg-secondary` (bind it). | Table | ⏳ Design to add in Figma |
 | 51 | **Side nav `Icon`:** (1) the icon isn't exposed as an instance swap, so designers override the nested layer; expose it (as all-button, #43). (2) `Type=Selected` should show the **filled** icon (decided 20 Oct 2026; code fills it). (3) Bind the raw colors: Unselected `#626262` → `fg-secondary`, Selected `#5953E8` → `fg-active`. | Side nav | ⏳ Design to update in Figma |
 | 52 | **Main Selection:** (1) the chevron colors are raw: `#626262` → `fg-secondary`, `#5953E8` → `fg-active` (bind them); (2) Selected variants show the **up** chevron even when closed; code points it by open / closed (decided 20 Oct 2026); (3) `Show dropdown` is a separate property, but code shows the chevron whenever the item has sub items (decided 20 Oct 2026). | Side nav | ⏳ Design to update in Figma |
@@ -3259,6 +3303,7 @@ Template:
 | 56 | **Filled (card) lists aren't in Figma yet** (built code first 20 Oct 2026 at design's request): add List_fill-base versions of List-standard (chevron always, caption optional, no static), the radio, checkbox and toggle lists, with Selected as a 1px `border-active` edge and no fill (toggle on: no edge), Disabled a `border-disabled` edge, hover `bg-secondary`. Then re-check code against them. | List | ⏳ Design to add in Figma |
 | 57 | **Side Menu user row has no hover or pressed look** (21 Oct 2026): the row is a link (the chevron), but Figma shows no states, and List-standard's hover (`bg-secondary`) is the nav's own background. Code shows only the cursor and the focus ring. Design to add Hovered / Pressed (for example the Main Selection fills, `bg-tertiary` / `bg-neutral`). Also: the `Logo sizes` component is from another library (§10 #25); bring it into the component file when there's a real logo. | Side nav | ⏳ Design to add in Figma |
 | 58 | **Input field inconsistencies** (found 21 Oct 2026; design to fix as each field is built): (1) Disabled icons: the trailing icon is `State=Disabled` on Payment but `Secondary` on Mobile number and Password (code: `fg-disabled` everywhere). (2) Helper text color: `text-tertiary` on Default and Password, `text-secondary` on Payment and Mobile number (code: FinHelperText Default). (3) Password Enabled and Typing with an error keep the helper `text-tertiary` (code: `text-error`, as the other variants). (4) The password label reads "Password" in some variants and "Label" in others. (5) Input field-standard, Mobile number, Enabled and Hovered with Trailing icon on: 76 tall, with an `info` icon in the helper text; no other variant has it (code: no icon, 74). (6) Input field-standard, six Payment variants without an error (Enabled, Hovered, Disabled, with and without the trailing icon) use Input field-base `Type=Default` instead of `Payment` (they look the same; code uses Payment). (7) Payment's card number groups are 8 apart in Figma; a real input separates them with a space (about 4), so code's groups are slightly closer. (8) Search: each variant's component frame has a raw white fill (`#FFFFFF`) behind the field (code: none, as the other fields, so the field shows its surface). | Input field | 🔧 Fix in Figma (per field) |
+| 59 | **Menu, to add in Figma** (22 Oct 2026, built code first): (1) a new effect style **`Shadow/Menu`** with the Sticky values (0, −2, 16, 0, 8%), applied to `standard-menu` instead of `Shadow/Sticky` (code: `--fin-shadow-menu`, §4.2); (2) rename the slot `conten` → `content`; (3) a **footer slot** for buttons kept at the bottom while the content scrolls (code: `footer`, padding `Space-XL`, gap `Space-M`, right aligned, a 1px `border-subtle` line above; design to confirm the look); (4) the line between groups (`FinMenuDivider`) is full width, not inset like a row's; (5) still open: the **maximum height** (code: up to the window edge, or `maxHeight`) and the **widths** per scenario (code: fits the content, at least the trigger; `trigger` for fields; or any length), to settle once screens are built. | Menu | ⏳ Design to add in Figma |
 
 ---
 
@@ -3273,6 +3318,7 @@ Template:
 > - **Approved and merged (21 Oct 2026):** `FinSearchField` (§9.61). FinSelectField and FinMultiSelectField are on hold until the menus are built (§10 #49).
 > - **Approved and merged (22 Oct 2026):** `FinHeaderNotificationButton` (§9.62).
 > - **Approved and merged (22 Oct 2026):** `FinHeader` (§9.63).
+> - **Built, awaiting approval (22 Oct 2026):** `FinMenu` (§9.64), on `feat/menu`. Next after it: the row count and country menus (§10 #49), then the select fields.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3435,3 +3481,4 @@ Template:
 | 22 Oct 2026 | 0.2 | `FinHeaderNotificationButton` approved by design and merged into `main`. |
 | 22 Oct 2026 | 0.2 | **`FinHeader` built** (§8 #69, §9.63), public under Components/Header/Main header: `heading` (one line, "…"), `bodyContent` slot, back button, notification button. FinTextBox gets the code-only `truncateHeading` (§9.21). |
 | 22 Oct 2026 | 0.2 | `FinHeader` approved by design and merged into `main`. |
+| 22 Oct 2026 | 0.2 | **`FinMenu` built** (§8 #75, §9.64), public under Components/Menu: one menu for every scenario (`kind` action / filter / navigation), any rows in its slot, `FinMenuDivider`, `footer`, placement 4 from the trigger with Floating UI (new dependency, approved), window-bound height or `maxHeight`, widths. New **`Shadow/Menu`** (`--fin-shadow-menu`, Sticky values; §4.2), code first. List rows gain `divider` and List-standard `behavior="menuitem"` (§9.51). §10 #59 added. |
