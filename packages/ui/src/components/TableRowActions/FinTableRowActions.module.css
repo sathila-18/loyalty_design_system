@@ -1,0 +1,36 @@
+/*
+ * FinTableRowActions (DESIGN.md §9). The "more actions" button: a bare 24 icon button (as the table cell's action and
+ * the header's filter arrow), fg-secondary; hover fg-hovered, pressed fg-pressed; purple (fg-action) while its menu
+ * is open (decided 22 Oct 2026). Code first: no Figma design yet.
+ */
+
+.button {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fin-radius-xs);
+  background: none;
+  color: var(--fin-fg-secondary);
+  cursor: pointer;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+.button:hover {
+  color: var(--fin-fg-hovered);
+}
+
+.button:active {
+  color: var(--fin-fg-pressed);
+}
+
+.button[aria-expanded="true"] {
+  color: var(--fin-fg-action);
+}

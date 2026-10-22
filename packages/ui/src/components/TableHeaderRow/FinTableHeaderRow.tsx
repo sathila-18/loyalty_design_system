@@ -7,6 +7,8 @@ import styles from './FinTableHeaderRow.module.css';
 export interface FinTableHeaderRowProps extends Omit<HTMLAttributes<HTMLTableRowElement>, 'children'> {
   /** Figma `Select Cell`: the first cell, Grey, with only the "select all" checkbox. Default on, as in Figma. */
   selectCell?: boolean;
+  /** A class for the select cell (FinTable keeps it in place while the table scrolls sideways). */
+  selectCellClassName?: string;
   /** Whether the "select all" checkbox is ticked (controlled). Leave it out for an uncontrolled checkbox. */
   checked?: boolean;
   /** Some rows selected: the dash, announced as mixed. */
@@ -31,6 +33,7 @@ export interface FinTableHeaderRowProps extends Omit<HTMLAttributes<HTMLTableRow
 export const FinTableHeaderRow = forwardRef<HTMLTableRowElement, FinTableHeaderRowProps>(function FinTableHeaderRow(
   {
     selectCell = true,
+    selectCellClassName,
     checked,
     indeterminate = false,
     onCheckedChange,
@@ -47,7 +50,7 @@ export const FinTableHeaderRow = forwardRef<HTMLTableRowElement, FinTableHeaderR
         <FinTableHeaderCell
           type="grey"
           showTitle={false}
-          className={styles.select}
+          className={selectCellClassName ? `${styles.select} ${selectCellClassName}` : styles.select}
           indeterminate={indeterminate}
           checkboxLabel={checkboxLabel}
           {...(checked !== undefined ? { checked } : {})}

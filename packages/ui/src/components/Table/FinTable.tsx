@@ -9,6 +9,7 @@ import type { FinTableFilterOption } from '../TableColumnFilter';
 import { FinTableHeaderCell } from '../TableHeaderCell';
 import { FinTableHeaderRow } from '../TableHeaderRow';
 import { FinTableRow } from '../TableRow';
+import { FinTableRowActions } from '../TableRowActions';
 import styles from './FinTable.module.css';
 
 export type FinTableRowId = string | number;
@@ -21,6 +22,20 @@ export interface FinTableSort {
 
 /** Each column's applied filter values, by column key. */
 export type FinTableFilters = Record<string, string[]>;
+
+/** One action in a row's "more actions" menu (FinTable `rowActions`). */
+export interface FinTableRowAction<Row> {
+  /** The action's name ("Edit member"). */
+  label: string;
+  /** A leading icon. */
+  icon?: FinIconName;
+  /** Runs the action for the row (the menu closes). */
+  onSelect: (row: Row) => void;
+  /** Shown but unavailable, for every row or per row (for example without permission). */
+  disabled?: boolean | ((row: Row) => boolean);
+  /** A line before this action, to group the ones after it (for example a destructive action). */
+  separator?: boolean;
+}
 
 /** One column: its header, how each row's value is shown, and its width (DESIGN.md §9). */
 export interface FinTableColumn<Row> {
@@ -114,6 +129,17 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
   defaultFilters?: FinTableFilters;
   /** Called with the filters when a column's filter is applied. */
   onFiltersChange?: (filters: FinTableFilters) => void;
+  /**
+   * A "more actions" (⋮) column (code first, 22 Oct 2026): each row's button opens an action menu. The actions, for
+   * every row, or per row (they can differ per table and per row). Without it, no column.
+   */
+  rowActions?: FinTableRowAction<Row>[] | ((row: Row) => FinTableRowAction<Row>[]);
+  /** Where the ⋮ column goes: `end` (default, the last column) or `start` (first, after the select column). */
+  rowActionsPosition?: 'start' | 'end';
+  /** The ⋮ button's name per row. Default "More actions for {row label}". */
+  rowActionsLabel?: (row: Row) => string;
+  /** The ⋮ column's name for screen readers (its header is empty on screen). Default "Actions". */
+  rowActionsHeader?: string;
 }
 
 const isText = (value: unknown): value is string | number => typeof value === 'string' || typeof value === 'number';
@@ -170,6 +196,10 @@ function FinTableInner<Row>(
     filters: filtersProp,
     defaultFilters = {},
     onFiltersChange,
+    rowActions,
+    rowActionsPosition = 'end',
+    rowActionsLabel,
+    rowActionsHeader = 'Actions',
     className,
     ...rest
   }: FinTableProps<Row>,
@@ -261,12 +291,55 @@ function FinTableInner<Row>(
   const fixedTotal = columns.reduce((sum, column) => sum + (column.width ?? 0), 0);
   const tableStyle = { '--fin-table-min-width': `${fixedTotal + flexMin * flexible.length}px` } as CSSProperties;
 
+  // The ⋮ column stays in place while the table scrolls sideways: at the end on the right, at the start on the left
+  // (with the select column, which then stays too).
+  const actionsAt = rowActions ? rowActionsPosition : undefined;
+  const stickyClass = actionsAt === 'start' ? styles.stickyStart : styles.stickyEnd;
+  const selectClass = actionsAt === 'start' ? styles.stickySelect : undefined;
+  const actionsHeader = actionsAt && (
+    <FinTableHeaderCell key="row-actions" type="grey" checkbox={false} showTitle={false} className={stickyClass}>
+      {rowActionsHeader}
+    </FinTableHeaderCell>
+  );
+  const actionsCell = (row: Row, index: number) => {
+    if (!rowActions) return null;
+    const list = typeof rowActions === 'function' ? rowActions(row) : rowActions;
+    return (
+      <FinTableCell
+        key="row-actions"
+        leadingAccessories={false}
+        className={stickyClass}
+        // The menu's clicks stay in the cell: they don't open or select the row.
+        onClick={(event) => event.stopPropagation()}
+      >
+        <FinTableRowActions
+          label={rowActionsLabel ? rowActionsLabel(row) : `More actions for ${rowLabel(row, index)}`}
+          placement={actionsAt === 'start' ? 'bottom-start' : 'bottom-end'}
+          actions={list.map((action) => ({
+            label: action.label,
+            onSelect: () => action.onSelect(row),
+            ...(action.icon ? { icon: action.icon } : {}),
+            ...(action.separator ? { separator: true } : {}),
+            disabled: typeof action.disabled === 'function' ? action.disabled(row) : (action.disabled ?? false),
+          }))}
+        />
+      </FinTableCell>
+    );
+  };
+
   return (
     <div {...rest} ref={ref} className={className ? `${styles.root} ${className}` : styles.root}>
       <div className={styles.scroll}>
-        <table className={styles.table} aria-label={label} style={tableStyle} data-selectable={selectable ? '' : undefined}>
+        <table
+          className={styles.table}
+          aria-label={label}
+          style={tableStyle}
+          data-selectable={selectable ? '' : undefined}
+          data-row-actions={actionsAt}
+        >
           <colgroup>
             {selectable && <col className={styles.selectColumn} />}
+            {actionsAt === 'start' && <col className={styles.actionsColumn} />}
             {columns.map((column) =>
               column.width === undefined ? (
                 <col key={column.key} />
@@ -274,6 +347,7 @@ function FinTableInner<Row>(
                 <col key={column.key} className={styles.fixedColumn} style={columnStyle(column.width)} />
               ),
             )}
+            {actionsAt === 'end' && <col className={styles.actionsColumn} />}
           </colgroup>
           <thead>
             <FinTableHeaderRow
@@ -281,7 +355,9 @@ function FinTableInner<Row>(
               checked={pageIds.length > 0 && selectedOnPage === pageIds.length}
               indeterminate={selectedOnPage > 0 && selectedOnPage < pageIds.length}
               onCheckedChange={toggleAll}
+              {...(selectClass ? { selectCellClassName: selectClass } : {})}
             >
+              {actionsAt === 'start' && actionsHeader}
               {columns.map((column) => (
                 <FinTableHeaderCell
                   key={column.key}
@@ -309,6 +385,7 @@ function FinTableInner<Row>(
                   {column.header}
                 </FinTableHeaderCell>
               ))}
+              {actionsAt === 'end' && actionsHeader}
             </FinTableHeaderRow>
           </thead>
           <tbody>
@@ -324,7 +401,9 @@ function FinTableInner<Row>(
                   onSelectedChange={(on) => toggle(id, on)}
                   checkboxLabel={`Select ${rowLabel(row, index)}`}
                   {...(rowClick ? { onRowClick: rowClick } : {})}
+                  {...(selectClass ? { selectCellClassName: selectClass } : {})}
                 >
+                  {actionsAt === 'start' && actionsCell(row, index)}
                   {columns.map((column) => {
                     const value = column.value ? column.value(row) : ((row as Record<string, unknown>)[column.key] as ReactNode);
                     const tone = typeof column.badgeTone === 'function' ? column.badgeTone(row) : column.badgeTone;
@@ -353,6 +432,7 @@ function FinTableInner<Row>(
                       </FinTableCell>
                     );
                   })}
+                  {actionsAt === 'end' && actionsCell(row, index)}
                 </FinTableRow>
               );
             })}

@@ -15,22 +15,63 @@
   overflow-x: auto;
 }
 
-/* The row's line is its border, so borders are collapsed. Min width comes from the columns (set in TSX). */
+/*
+ * The row's line is its border, so borders are collapsed. Min width comes from the columns (set in TSX), plus the
+ * select and ⋮ columns when shown (each a 24 control with 24 either side: 72).
+ */
 .table {
+  --table-narrow-column: calc(var(--fin-size-24) + 2 * var(--fin-space-3xl));
+  --table-select: var(--fin-size-0);
+  --table-actions: var(--fin-size-0);
+
   width: 100%;
-  min-width: var(--fin-table-min-width);
+  min-width: calc(var(--fin-table-min-width) + var(--table-select) + var(--table-actions));
   border-collapse: collapse;
   table-layout: fixed;
 }
 
-/* With select cells, the minimum also covers the select column. */
 .table[data-selectable] {
-  min-width: calc(var(--fin-table-min-width) + var(--fin-size-24) + 2 * var(--fin-space-3xl));
+  --table-select: var(--table-narrow-column);
+}
+
+.table[data-row-actions] {
+  --table-actions: var(--table-narrow-column);
 }
 
 /* The select column: the checkbox and its padding either side (24 + 24 + 24 = 72). */
 .selectColumn {
-  width: calc(var(--fin-size-24) + 2 * var(--fin-space-3xl));
+  width: var(--table-narrow-column);
+}
+
+/* The ⋮ column (row actions, code first 22 Oct 2026): the same 72. */
+.actionsColumn {
+  width: var(--table-narrow-column);
+}
+
+/*
+ * Kept in place while the table scrolls sideways: the ⋮ column on the right (end), or on the left after the select
+ * column (start, which then stays too). Painted with the row's fill (`--fin-table-row-bg`, set by FinTableRow on
+ * hover and selection; bg-primary otherwise); a Grey header cell keeps its own fill.
+ */
+.stickyEnd,
+.stickyStart,
+.stickySelect {
+  position: sticky;
+  z-index: 1;
+  background-color: var(--fin-table-row-bg, var(--fin-bg-primary));
+}
+
+.stickyEnd {
+  right: 0;
+}
+
+.stickySelect,
+.stickyStart {
+  left: 0;
+}
+
+.table[data-selectable] .stickyStart {
+  left: var(--table-narrow-column);
 }
 
 .fixedColumn {

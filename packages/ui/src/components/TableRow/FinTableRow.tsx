@@ -14,6 +14,8 @@ export interface FinTableRowProps extends Omit<HTMLAttributes<HTMLTableRowElemen
   onSelectedChange?: (selected: boolean) => void;
   /** Figma `Select Cell`: the first cell, with only the row checkbox. Default on, as in Figma. */
   selectCell?: boolean;
+  /** A class for the select cell (FinTable keeps it in place while the table scrolls sideways). */
+  selectCellClassName?: string;
   /** The row checkbox's name for screen readers; pass the row's name ("Select Ann Perera"). Default "Select row". */
   checkboxLabel?: string;
   /**
@@ -38,6 +40,7 @@ export const FinTableRow = forwardRef<HTMLTableRowElement, FinTableRowProps>(fun
     selected = false,
     onSelectedChange,
     selectCell = true,
+    selectCellClassName,
     checkboxLabel = 'Select row',
     onRowClick,
     children,
@@ -76,7 +79,7 @@ export const FinTableRow = forwardRef<HTMLTableRowElement, FinTableRowProps>(fun
       {selectCell && (
         <FinTableCell
           showContent={false}
-          className={styles.select}
+          className={selectCellClassName ? `${styles.select} ${selectCellClassName}` : styles.select}
           checked={selected}
           checkboxLabel={checkboxLabel}
           {...(onSelectedChange ? { onCheckedChange: onSelectedChange } : {})}

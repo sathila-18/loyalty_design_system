@@ -101,6 +101,45 @@ describe('FinTable', () => {
     expect(screen.getByRole('button', { name: 'Filter Status, 1 selected' })).toBeInTheDocument();
   });
 
+  it('row actions: a last ⋮ column with an empty header (named for screen readers) that opens the row\'s menu', async () => {
+    const user = userEvent.setup();
+    const onEdit = vi.fn();
+    const onRowClick = vi.fn();
+    render(
+      <FinTable
+        label="Members"
+        columns={columns}
+        rows={members}
+        getRowId={(m) => m.id}
+        onRowClick={onRowClick}
+        rowActions={(m) => [
+          { label: 'Edit', icon: 'edit', onSelect: onEdit },
+          { label: 'Delete', onSelect: () => {}, disabled: m.id === 1, separator: true },
+        ]}
+      />,
+    );
+    const headers = screen.getAllByRole('columnheader');
+    expect(headers.at(-1)).toHaveAccessibleName('Actions');
+    expect(within(headers.at(-1)!).getByText('Actions').closest('[data-hidden]')).not.toBeNull();
+    const button = screen.getByRole('button', { name: 'More actions for Member 1' });
+    expect(button.closest('td')).toBe(within(bodyRows()[0]!).getAllByRole('cell').at(-1));
+    await user.click(button);
+    expect(screen.getByRole('menuitem', { name: 'Delete' })).toBeDisabled();
+    await user.click(screen.getByRole('menuitem', { name: 'Edit' }));
+    expect(onEdit).toHaveBeenCalledWith(members[0]);
+    expect(onRowClick).not.toHaveBeenCalled();
+    expect(screen.queryByRole('menu')).toBeNull();
+  });
+
+  it('row actions at the start: the ⋮ column comes first, after the select column', () => {
+    render(
+      <FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} rowActionsPosition="start" rowActions={[{ label: 'Edit', onSelect: () => {} }]} />,
+    );
+    const cells = within(bodyRows()[0]!).getAllByRole('cell');
+    expect(within(cells[1]!).getByRole('button', { name: 'More actions for Member 1' })).toBeInTheDocument();
+    expect(cells[0]!.querySelector('input[type="checkbox"]')).not.toBeNull();
+  });
+
   it('shows the given rows as the current page (server pagination)', () => {
     render(
       <FinTable label="Members" columns={columns} rows={members.slice(10, 20)} totalRows={95} page={2} getRowId={(m) => m.id} />,

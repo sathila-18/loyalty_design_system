@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { FinTable, type FinTableColumn, type FinTableRowId } from './FinTable';
 import styles from './FinTable.stories.module.css';
 
@@ -162,6 +162,56 @@ export const SortAndFilter: Story = {
         <p className={styles.readout}>
           Sort: {sort} · Filters: {filters}
         </p>
+      </>
+    );
+  },
+};
+
+/**
+ * Row actions (code first, 22 Oct 2026): a ⋮ column whose button opens the row's action menu. The actions can differ
+ * per row (here, Reactivate only for inactive members, and Deactivate unavailable for pending ones). The column is
+ * last by default or first (after the select column); it stays in place while the table scrolls sideways (narrow the
+ * width control to see it). Clicking ⋮ never opens or selects the row.
+ */
+export const RowActions: StoryObj<{ position: 'start' | 'end'; width: number }> = {
+  name: 'Row actions',
+  args: { position: 'end', width: 900 },
+  argTypes: {
+    position: { control: 'inline-radio', options: ['end', 'start'], description: '`rowActionsPosition`' },
+    width: { control: { type: 'range', min: 480, max: 1400, step: 20 }, description: 'The container width (px, story only)' },
+  },
+  render: function RowActions({ position, width }) {
+    const [done, setDone] = useState('none');
+    return (
+      <>
+        <div className={styles.widthBox} style={{ '--story-width': `${width}px` } as CSSProperties}>
+          <FinTable
+            label="Members"
+            columns={columns()}
+            rows={makeMembers(45)}
+            getRowId={(m) => m.id}
+            getRowLabel={(m) => m.name}
+            onRowClick={(m) => setDone(`opened ${m.name}`)}
+            rowActionsPosition={position}
+            rowActions={(m) => [
+              { label: 'View details', icon: 'visibility', onSelect: () => setDone(`View details: ${m.name}`) },
+              { label: 'Edit member', icon: 'edit', onSelect: () => setDone(`Edit member: ${m.name}`) },
+              { label: 'Assign tier', icon: 'assignment', onSelect: () => setDone(`Assign tier: ${m.name}`) },
+              ...(m.status === 'Inactive'
+                ? [{ label: 'Reactivate', icon: 'check_circle' as const, onSelect: () => setDone(`Reactivate: ${m.name}`), separator: true }]
+                : [
+                    {
+                      label: 'Deactivate',
+                      icon: 'cancel' as const,
+                      onSelect: () => setDone(`Deactivate: ${m.name}`),
+                      disabled: m.status === 'Pending',
+                      separator: true,
+                    },
+                  ]),
+            ]}
+          />
+        </div>
+        <p className={styles.readout}>Last: {done}</p>
       </>
     );
   },

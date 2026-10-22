@@ -26,6 +26,7 @@ export const finIcons = [
   'keyboard_arrow_right',
   'keyboard_arrow_up',
   'loyalty',
+  'more_vert',
   'notifications',
   'person',
   'photo_camera',

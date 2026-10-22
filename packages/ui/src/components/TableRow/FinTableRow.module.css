@@ -14,16 +14,26 @@
   border-bottom: 0;
 }
 
+/*
+ * The fill is also `--fin-table-row-bg`, so a cell that stays put while the table scrolls sideways (FinTable's row
+ * actions) can paint the row's colour over what passes under it (22 Oct 2026).
+ */
 .row:hover {
-  background-color: var(--fin-bg-secondary);
+  --fin-table-row-bg: var(--fin-bg-secondary);
+
+  background-color: var(--fin-table-row-bg);
 }
 
 .row[data-selected] {
-  background-color: var(--fin-bg-active);
+  --fin-table-row-bg: var(--fin-bg-active);
+
+  background-color: var(--fin-table-row-bg);
 }
 
 .row[data-selected]:hover {
-  background-color: var(--fin-bg-active-hover);
+  --fin-table-row-bg: var(--fin-bg-active-hover);
+
+  background-color: var(--fin-table-row-bg);
 }
 
 /* With onRowClick: a pointer, and a ring inside the row when it has keyboard focus (§10 #6). */

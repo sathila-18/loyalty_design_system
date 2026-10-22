@@ -10,3 +10,8 @@
   font: var(--fin-font-body-small);
   color: var(--fin-text-tertiary);
 }
+
+/* The Row actions story's container, as wide as its control says. */
+.widthBox {
+  max-width: var(--story-width);
+}
