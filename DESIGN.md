@@ -3497,3 +3497,4 @@ Template:
 | 22 Oct 2026 | 0.2 | FinTextField Payment: **at most 16 digits** for every card (design); brands that allowed 19 (Visa, Discover, Maestro, UnionPay, unknown) stop at 16, grouped 4-4-4-4; American Express (15) and Diners Club (14) unchanged (§9.59). |
 | 22 Oct 2026 | 0.2 | Payment field 16-digit limit approved by design and merged into `main`. |
 | 22 Oct 2026 | 0.2 | FinSearchField keeps its placeholder when focused (design), also in the country menu: FinInputBase hides the placeholder on focus only when its label is visible (§9.61). FinPasswordField and FinSearchField no longer take the country props (`onCountryChange`, `showDialCodes`). |
+| 22 Oct 2026 | 0.2 | The search placeholder fix approved by design and merged into `main`. |
