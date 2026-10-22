@@ -31,7 +31,7 @@ export interface FinListItemProps extends Omit<HTMLAttributes<HTMLElement>, 'chi
   trailingAccessory?: boolean;
   /** Figma Trailing accessory slot. Default: `keyboard_arrow_right` 24 (`fg-secondary`). Any component per scenario. */
   trailing?: ReactNode;
-  /** Figma `Show divider`: the line under the item. Default on; never on the last of several items (rule: it gets 16 of bottom padding instead). */
+  /** Figma `Show divider`: the line under the item. Default on; never on the last of several items. Without it, the item gets 16 of bottom padding (rule, 22 Oct 2026). */
   divider?: boolean;
 }
 
@@ -64,7 +64,7 @@ export function FinListItem({
   const hasBody = showBody && children !== undefined && children !== null;
 
   return (
-    <Root {...rest} className={className ? `${styles.item} ${className}` : styles.item} data-size={size} data-body={hasBody ? '' : undefined}>
+    <Root {...rest} className={className ? `${styles.item} ${className}` : styles.item} data-size={size} data-body={hasBody ? '' : undefined} data-divider={divider ? undefined : 'none'}>
       <div className={styles.content}>
         <div className={styles.leadingContent}>
           {leadingAccessory && (

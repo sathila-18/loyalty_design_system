@@ -17,9 +17,12 @@
 }
 
 /*
- * Rule: when several items are shown together, the last one has no divider (a single item keeps it) and gets 16
- * (Space-XL) of bottom padding instead, so it doesn't end flush with its content (decided 20 Oct 2026).
+ * Rule: an item without a divider gets 16 (Space-XL) of bottom padding, so it doesn't end flush with its content
+ * (decided 22 Oct 2026; extends the rule of 20 Oct 2026 below). When several items are shown together, the last one
+ * has no divider (a single item keeps it) and gets the same 16. `:where()` keeps the first selector at class weight,
+ * so a component that sets its own padding (the side nav's user row) keeps it.
  */
+.item:where([data-divider="none"]),
 .item:last-child:not(:first-child) {
   padding-bottom: var(--fin-space-xl);
 }

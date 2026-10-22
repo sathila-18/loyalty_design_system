@@ -104,8 +104,9 @@ describe('FinListStandard', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  it('hides its line with divider={false}', () => {
+  it('hides its line with divider={false}, marking the row for its 16 of bottom padding', () => {
     const { container } = render(<FinListStandard title="Members" divider={false} />);
     expect(container.querySelector('hr')).toBeNull();
+    expect(container.firstElementChild).toHaveAttribute('data-divider', 'none');
   });
 });

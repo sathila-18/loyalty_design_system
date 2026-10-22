@@ -1,22 +1,12 @@
-/* Layout for the FinMenu stories only (not part of the component): room below the trigger for the menu. */
+/* Layout for the FinMenu stories only (not part of the component): room around the trigger for the menu. */
 
 .stage {
+  display: flex;
+  flex-direction: column;
   min-height: calc(var(--fin-size-120) * 5);
 }
 
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: var(--fin-space-xl);
-  align-items: flex-start;
-}
-
-.row {
-  display: flex;
-  gap: var(--fin-space-3xl);
-}
-
-.note {
-  color: var(--fin-text-secondary);
-  font: var(--fin-font-body-medium);
+/* Placement top: the trigger at the bottom of the stage, so the menu has room above. */
+.bottom {
+  margin-top: auto;
 }
