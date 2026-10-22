@@ -45,6 +45,30 @@ describe('FinTable', () => {
     expect(screen.getByText('Member 21')).toBeInTheDocument();
   });
 
+  it('changes the rows per page from the footer menu, keeping the first row shown in view', async () => {
+    const user = userEvent.setup();
+    const onRowsPerPageChange = vi.fn();
+    const onPageChange = vi.fn();
+    render(
+      <FinTable
+        label="Members"
+        columns={columns}
+        rows={members}
+        getRowId={(m) => m.id}
+        defaultPage={3}
+        onPageChange={onPageChange}
+        onRowsPerPageChange={onRowsPerPageChange}
+      />,
+    );
+    expect(screen.getByText('Member 21')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /^Rows per page:\s*10$/ }));
+    await user.click(screen.getByRole('option', { name: '25' }));
+    expect(onRowsPerPageChange).toHaveBeenCalledWith(25);
+    expect(onPageChange).toHaveBeenLastCalledWith(1);
+    expect(bodyRows()).toHaveLength(23);
+    expect(screen.getByRole('button', { name: /^Rows per page:\s*25$/ })).toBeInTheDocument();
+  });
+
   it('shows the given rows as the current page (server pagination)', () => {
     render(
       <FinTable label="Members" columns={columns} rows={members.slice(10, 20)} totalRows={95} page={2} getRowId={(m) => m.id} />,

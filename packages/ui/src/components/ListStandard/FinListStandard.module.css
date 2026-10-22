@@ -70,6 +70,16 @@
   cursor: default;
 }
 
+/* An option (in a list box or select menu) takes focus itself (the menu moves it with the arrow keys): the ring. */
+.row[role="option"]:focus {
+  outline: 0;
+}
+
+.row[role="option"]:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -2px;
+}
+
 /* A control row (labelFor): the control has focus, so the row draws the ring (the control's own is off). */
 .row[data-control]:has(:focus-visible) {
   outline: 2px solid var(--fin-border-focused);

@@ -166,7 +166,7 @@ export function ListStandardRow({
       data-control={labelFor !== undefined ? '' : undefined}
       data-filled={filled ? '' : undefined}
       {...(behavior === 'option'
-        ? { role: 'option', 'aria-selected': selected, 'aria-disabled': disabled || undefined, ...(disabled ? {} : { onClick }) }
+        ? { role: 'option', tabIndex: -1, 'aria-selected': selected, 'aria-disabled': disabled || undefined, ...(disabled ? {} : { onClick }) }
         : behavior === 'menuitem'
           ? { role: 'none' }
           : {})}

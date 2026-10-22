@@ -69,7 +69,7 @@ const meta: Meta<Args> = {
   args: { rowCount: 45, rowsPerPage: 10, selectable: true, clickable: true },
   argTypes: {
     rowCount: { control: { type: 'number', min: 0, max: 500 }, description: 'Rows in the table' },
-    rowsPerPage: { control: { type: 'number', min: 1, max: 50 }, description: 'Rows per page (default 10)' },
+    rowsPerPage: { control: { type: 'number', min: 1, max: 50 }, description: 'Rows per page at the start (`defaultRowsPerPage`; the footer menu changes it)' },
     selectable: { control: 'boolean', description: 'Select cells and "select all" (Figma `Select Cell`)' },
     clickable: { control: 'boolean', description: 'onRowClick set: a row click opens its details' },
   },
@@ -84,7 +84,7 @@ const meta: Meta<Args> = {
           columns={columns()}
           rows={makeMembers(rowCount)}
           getRowId={(m) => m.id}
-          rowsPerPage={rowsPerPage}
+          defaultRowsPerPage={rowsPerPage}
           selectable={selectable}
           {...(clickable ? { onRowClick: (m: Member) => setOpened(m.name) } : {})}
         />

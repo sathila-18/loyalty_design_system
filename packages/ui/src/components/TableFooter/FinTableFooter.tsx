@@ -24,10 +24,10 @@ export interface FinTableFooterProps extends Omit<HTMLAttributes<HTMLDivElement>
   defaultPage?: number;
   /** Called with the new page when another page is chosen. */
   onPageChange?: (page: number) => void;
-  /** Called when the Row count dropdown is clicked (its menu comes with the List component). */
-  onRowsPerPageClick?: () => void;
-  /** Whether the Row count menu is open. */
-  rowsPerPageExpanded?: boolean;
+  /** Called with the row count chosen in the Row count dropdown's menu. */
+  onRowsPerPageChange?: (rowsPerPage: number) => void;
+  /** The row counts offered. Default 10, 25, 50, 100. */
+  rowsPerPageOptions?: readonly number[];
   /** The Row count dropdown's text. Default "Rows per page:". */
   rowsPerPageLabel?: string;
   /** The summary text. Default "Showing 1–10 of 45 entries in page 1" ("Showing 0 of 0 entries" when empty). */
@@ -54,8 +54,8 @@ export const FinTableFooter = forwardRef<HTMLDivElement, FinTableFooterProps>(fu
     page,
     defaultPage = 1,
     onPageChange,
-    onRowsPerPageClick,
-    rowsPerPageExpanded,
+    onRowsPerPageChange,
+    rowsPerPageOptions,
     rowsPerPageLabel,
     summary = defaultSummary,
     paginationLabels,
@@ -86,8 +86,8 @@ export const FinTableFooter = forwardRef<HTMLDivElement, FinTableFooterProps>(fu
         <FinRowCountSelect
           value={perPage}
           {...(rowsPerPageLabel !== undefined ? { label: rowsPerPageLabel } : {})}
-          {...(rowsPerPageExpanded !== undefined ? { expanded: rowsPerPageExpanded } : {})}
-          {...(onRowsPerPageClick ? { onClick: onRowsPerPageClick } : {})}
+          {...(rowsPerPageOptions ? { options: rowsPerPageOptions } : {})}
+          {...(onRowsPerPageChange ? { onValueChange: onRowsPerPageChange } : {})}
         />
       </div>
       <FinPagination {...paginationLabels} pageCount={pageCount} page={current} onPageChange={changePage} />

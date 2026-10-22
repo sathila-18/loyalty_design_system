@@ -38,14 +38,13 @@ describe('FinTableFooter', () => {
     expect(screen.getByText('Showing 26–45 of 45 entries in page 2')).toBeInTheDocument();
   });
 
-  it('reports Row count clicks and its open state', async () => {
+  it('reports the row count chosen in the Row count menu, from its own options', async () => {
     const user = userEvent.setup();
-    const onRowsPerPageClick = vi.fn();
-    render(<FinTableFooter totalRows={45} rowsPerPage={10} rowsPerPageExpanded={false} onRowsPerPageClick={onRowsPerPageClick} />);
-    const select = screen.getByRole('button', { name: /^Rows per page:\s*10$/ });
-    expect(select).toHaveAttribute('aria-expanded', 'false');
-    await user.click(select);
-    expect(onRowsPerPageClick).toHaveBeenCalledOnce();
+    const onRowsPerPageChange = vi.fn();
+    render(<FinTableFooter totalRows={45} rowsPerPage={10} rowsPerPageOptions={[10, 20]} onRowsPerPageChange={onRowsPerPageChange} />);
+    await user.click(screen.getByRole('button', { name: /^Rows per page:\s*10$/ }));
+    await user.click(screen.getByRole('option', { name: '20' }));
+    expect(onRowsPerPageChange).toHaveBeenCalledWith(20);
   });
 
   it('takes translated text, and forwards ref and attributes to the root', () => {

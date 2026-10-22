@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import { FinTableFooter } from './FinTableFooter';
 import styles from './FinTableFooter.stories.module.css';
 
@@ -11,10 +12,7 @@ interface Args {
   defaultPage: number;
 }
 
-/**
- * INTERNAL: part of the table (FinTable). The Row count dropdown's menu comes once the List component is built
- * (DESIGN.md §9, decided 19 Oct 2026).
- */
+/** INTERNAL: part of the table (FinTable). The Row count dropdown opens its menu of row counts (10, 25, 50, 100). */
 const meta: Meta<Args> = {
   title: 'Internal/Table/Table footer',
   args: { totalRows: 45, rowsPerPage: 10, defaultPage: 1 },
@@ -25,16 +23,24 @@ const meta: Meta<Args> = {
   },
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
   render: ({ totalRows, rowsPerPage, defaultPage }) => (
-    <FinTableFooter
-      key={`${totalRows}-${rowsPerPage}-${defaultPage}`}
-      className={styles.wide}
-      totalRows={totalRows}
-      rowsPerPage={rowsPerPage}
-      defaultPage={defaultPage}
-    />
+    <FooterDemo key={`${totalRows}-${rowsPerPage}-${defaultPage}`} totalRows={totalRows} rowsPerPage={rowsPerPage} defaultPage={defaultPage} />
   ),
 };
 export default meta;
+
+/** The footer with its row count kept in state, so a choice in the menu shows. */
+function FooterDemo({ totalRows, rowsPerPage, defaultPage }: Args) {
+  const [perPage, setPerPage] = useState(rowsPerPage);
+  return (
+    <FinTableFooter
+      className={styles.wide}
+      totalRows={totalRows}
+      rowsPerPage={perPage}
+      defaultPage={defaultPage}
+      onRowsPerPageChange={setPerPage}
+    />
+  );
+}
 
 type Story = StoryObj<Args>;
 

@@ -63,7 +63,7 @@ const meta: Meta<Args> = {
     placement: 'bottom-start',
   },
   argTypes: {
-    kind: { control: 'inline-radio', options: ['action', 'filter', 'navigation'], description: '`kind`: what the menu is for' },
+    kind: { control: 'inline-radio', options: ['action', 'filter', 'navigation', 'select'], description: '`kind`: what the menu is for' },
     filterList: {
       control: 'inline-radio',
       options: ['checkbox', 'radio', 'toggle'],
@@ -107,6 +107,24 @@ function standardRows({ kind, rows, descriptions, leadingIcons, dividers, groups
         divider={dividers}
       />
     </RowWithSeparator>
+  ));
+}
+
+/** Select rows: options, the chosen one Selected; choosing one closes the menu. */
+function SelectRows({ rows, descriptions, dividers }: Args) {
+  const [chosen, setChosen] = useState(0);
+  return Array.from({ length: rows }, (_, i) => (
+    <FinListStandard
+      key={i}
+      as="li"
+      size="small"
+      behavior="option"
+      title={filterTitle(i)}
+      description={descriptions ? filter(i).description : undefined}
+      selected={i === chosen}
+      onClick={() => setChosen(i)}
+      divider={dividers}
+    />
   ));
 }
 
@@ -163,7 +181,7 @@ function MenuDemo(args: Args) {
       </FinFilterChip>
     ) : (
       <FinButton variant={kind === 'navigation' ? 'tertiary' : 'secondary'} icon="trailing" iconName="keyboard_arrow_down">
-        {kind === 'navigation' ? 'Programme' : 'Member actions'}
+        {kind === 'navigation' ? 'Programme' : kind === 'select' ? 'Tier' : 'Member actions'}
       </FinButton>
     );
   return (
@@ -191,7 +209,7 @@ function MenuDemo(args: Args) {
           ) : undefined
         }
       >
-        {kind === 'filter' ? <FilterRows {...args} /> : standardRows(args)}
+        {kind === 'filter' ? <FilterRows {...args} /> : kind === 'select' ? <SelectRows {...args} /> : standardRows(args)}
       </FinMenu>
     </div>
   );
@@ -243,6 +261,16 @@ export const FilterMenu: Story = {
 export const NavigationMenu: Story = {
   args: { kind: 'navigation', rows: 4, descriptions: false, leadingIcons: true, dividers: false },
   parameters: { controls: { include: ['rows', 'descriptions', 'leadingIcons', 'dividers', 'groups', 'width'] } },
+};
+
+/**
+ * Select menu: a value is chosen from options (a list box); the chosen one is Selected and gets focus when opened
+ * with the keyboard; arrow keys, Home / End and typing a letter move; Enter, Space or a click chooses and closes.
+ * Used by the Rows per page dropdown, and later the country selector and the select fields.
+ */
+export const SelectMenu: Story = {
+  args: { kind: 'select', rows: 4, descriptions: false, dividers: false, width: 'trigger' },
+  parameters: { controls: { include: ['rows', 'descriptions', 'dividers', 'width', 'maxHeight'] } },
 };
 
 /** A long list: the menu never grows past the window and the rows scroll; `maxHeight` sets a fixed limit instead. */

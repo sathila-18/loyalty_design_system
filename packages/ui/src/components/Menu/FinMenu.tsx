@@ -29,8 +29,10 @@ import styles from './FinMenu.module.css';
  * - `action`: a trigger reveals actions; one is taken and the menu closes (`role="menu"`, arrow keys).
  * - `filter`: opened from a filter chip; controls are adjusted, then applied (a non-modal dialog, Tab).
  * - `navigation`: destinations; choosing one goes there (`<nav>` of links).
+ * - `select`: a value is chosen from options (a `listbox` of `option` rows; the chosen one Selected), then it closes.
+ *   For dropdowns such as rows per page, the country selector and the select fields.
  */
-export type FinMenuKind = 'action' | 'filter' | 'navigation';
+export type FinMenuKind = 'action' | 'filter' | 'navigation' | 'select';
 
 /** `content`: fits its content, never narrower than the trigger. `trigger`: the trigger's width (fields). Or any CSS length. */
 export type FinMenuWidth = 'content' | 'trigger' | (string & {});
@@ -43,7 +45,7 @@ export interface FinMenuTriggerProps {
   id: string;
   'aria-expanded': boolean;
   'aria-controls': string | undefined;
-  'aria-haspopup': 'menu' | 'dialog' | undefined;
+  'aria-haspopup': 'menu' | 'dialog' | 'listbox' | undefined;
   onClick: (event: MouseEvent<HTMLElement>) => void;
   onKeyDown: (event: KeyboardEvent<HTMLElement>) => void;
 }
@@ -87,7 +89,12 @@ export function FinMenuDivider() {
 }
 
 const FOCUSABLE = 'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])';
-const ITEM = { action: '[role="menuitem"]:not(:disabled)', navigation: 'a[href]', filter: FOCUSABLE } as const;
+const ITEM = {
+  action: '[role="menuitem"]:not(:disabled)',
+  navigation: 'a[href]',
+  filter: FOCUSABLE,
+  select: '[role="option"]:not([aria-disabled="true"])',
+} as const;
 
 /** A length custom property of an element, in px (a token, so values stay in CSS). */
 function cssPx(element: Element, property: string) {
@@ -187,15 +194,19 @@ export function FinMenu({
   useLayoutEffect(() => {
     if (!open || !menuEl || !isPositioned) return;
     const list = items();
-    const current = menuEl.querySelector<HTMLElement>('[aria-current="page"]');
+    const current = menuEl.querySelector<HTMLElement>(
+      kind === 'select' ? '[role="option"][aria-selected="true"]' : '[aria-current="page"]',
+    );
     const target =
       focusOnOpen === 'container'
         ? menuEl.querySelector<HTMLElement>('[data-menu-focus]') ?? menuEl
-        : focusOnOpen === 'last'
-          ? list.at(-1)
-          : kind === 'navigation' && current
-            ? current
-            : list[0];
+        : kind === 'select' && current
+          ? current
+          : focusOnOpen === 'last'
+            ? list.at(-1)
+            : kind === 'navigation' && current
+              ? current
+              : list[0];
     target?.focus();
     // Only when it's first placed after opening, not on later changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -224,8 +235,14 @@ export function FinMenu({
   const moveFocus = (step: 1 | -1 | 'first' | 'last') => {
     const list = items();
     if (list.length === 0) return;
-    // -1: focus is on the menu itself (opened with a pointer), so ArrowDown goes to the first row, ArrowUp the last.
+    // -1: focus is on the menu itself (opened with a pointer), so ArrowDown goes to the first row (a select's chosen
+    // option), ArrowUp the last.
     const index = list.indexOf(document.activeElement as HTMLElement);
+    const chosen = kind === 'select' ? list.findIndex((el) => el.getAttribute('aria-selected') === 'true') : -1;
+    if (index === -1 && chosen !== -1 && (step === 1 || step === -1)) {
+      list[chosen]?.focus();
+      return;
+    }
     const next =
       step === 'first' || (index === -1 && step === 1)
         ? 0
@@ -233,6 +250,21 @@ export function FinMenu({
           ? list.length - 1
           : (index + step + list.length) % list.length;
     list[next]?.focus();
+  };
+
+  // Select: typing jumps to the next option starting with the letters typed (within half a second of each other).
+  const typed = useRef({ text: '', at: 0 });
+  const typeAhead = (key: string) => {
+    const now = Date.now();
+    typed.current = { text: (now - typed.current.at < 500 ? typed.current.text : '') + key.toLowerCase(), at: now };
+    const list = items();
+    const start = list.indexOf(document.activeElement as HTMLElement);
+    const text = typed.current.text;
+    // One letter repeated cycles through the options starting with it; more letters match from the current one.
+    const repeat = text.length > 1 && [...text].every((c) => c === text[0]);
+    const query = repeat ? text[0]! : text;
+    const ordered = [...list.slice(start + (text.length === 1 || repeat ? 1 : 0)), ...list.slice(0, start + (text.length === 1 || repeat ? 1 : 0))];
+    ordered.find((el) => (el.textContent ?? '').trim().toLowerCase().startsWith(query))?.focus();
   };
 
   const onMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -245,10 +277,17 @@ export function FinMenu({
     if (kind === 'filter') return;
     const keys: Record<string, 1 | -1 | 'first' | 'last'> = { ArrowDown: 1, ArrowUp: -1, Home: 'first', End: 'last' };
     const step = keys[event.key];
+    const option = kind === 'select' ? (document.activeElement as HTMLElement | null)?.closest<HTMLElement>('[role="option"]') : null;
     if (step !== undefined) {
       event.preventDefault();
       moveFocus(step);
-    } else if (event.key === 'Tab' && kind === 'action') {
+    } else if (option && (event.key === 'Enter' || event.key === ' ')) {
+      // An option isn't a button: Enter and Space choose it as a click does.
+      event.preventDefault();
+      option.click();
+    } else if (kind === 'select' && event.key.length === 1 && /\S/.test(event.key)) {
+      typeAhead(event.key);
+    } else if (event.key === 'Tab' && (kind === 'action' || kind === 'select')) {
       // Leave the menu: focus goes on from the trigger.
       close(true);
     }
@@ -259,6 +298,7 @@ export function FinMenu({
     const target = event.target as HTMLElement;
     if (kind === 'action' && target.closest('[role="menuitem"]:not(:disabled)')) close(true);
     if (kind === 'navigation' && target.closest('a[href]')) close(false);
+    if (kind === 'select' && target.closest('[role="option"]:not([aria-disabled="true"])')) close(true);
   };
 
   // Focus left both the menu and its trigger (Tab out of a filter or navigation menu): close.
@@ -275,7 +315,7 @@ export function FinMenu({
     id: triggerId,
     'aria-expanded': open,
     'aria-controls': open ? menuId : undefined,
-    'aria-haspopup': kind === 'action' ? 'menu' : kind === 'filter' ? 'dialog' : undefined,
+    'aria-haspopup': kind === 'action' ? 'menu' : kind === 'filter' ? 'dialog' : kind === 'select' ? 'listbox' : undefined,
     // A click from Enter or Space has no pointer (`detail` 0): keyboard, so the first row gets focus and its ring.
     onClick: (event) => {
       setFocusOnOpen(event.detail === 0 ? 'first' : 'container');
@@ -328,6 +368,12 @@ export function FinMenu({
   if (kind === 'action')
     body = (
       <ul role="menu" id={menuId} {...name} className={`${styles.list} ${styles.focusTarget}`} tabIndex={-1} data-menu-focus>
+        {children}
+      </ul>
+    );
+  else if (kind === 'select')
+    body = (
+      <ul role="listbox" id={menuId} {...name} className={`${styles.list} ${styles.focusTarget}`} tabIndex={-1} data-menu-focus>
         {children}
       </ul>
     );

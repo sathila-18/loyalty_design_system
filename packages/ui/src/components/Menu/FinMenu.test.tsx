@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
-import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { FinButton } from '../Button';
 import { FinListCheckbox, FinListCheckboxGroup } from '../ListCheckbox';
 import { FinListStandard } from '../ListStandard';
@@ -21,13 +21,6 @@ function ActionMenu({ onEdit = () => {}, defaultOpen = false }: { onEdit?: () =>
     </>
   );
 }
-
-// jsdom hides [popover] elements but has no showPopover() to open them; real browsers do. Show them for the tests.
-beforeAll(() => {
-  const style = document.createElement('style');
-  style.textContent = '[popover]:not(:popover-open):not(dialog[open]) { display: block; }';
-  document.head.append(style);
-});
 
 describe('FinMenu', () => {
   it('opens from its trigger as a menu named by the trigger; a click focuses the menu itself (no ring on a row)', async () => {

@@ -67,8 +67,14 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
    * is selected, a row click selects or clears that row instead (decided 20 Oct 2026).
    */
   onRowClick?: (row: Row) => void;
-  /** Rows per page. Default 10. */
+  /** Rows per page (controlled; with `onRowsPerPageChange`). */
   rowsPerPage?: number;
+  /** Rows per page at the start (uncontrolled). Default 10. */
+  defaultRowsPerPage?: number;
+  /** Called with the row count chosen in the footer's Rows per page menu. */
+  onRowsPerPageChange?: (rowsPerPage: number) => void;
+  /** The row counts offered in that menu. Default 10, 25, 50, 100. */
+  rowsPerPageOptions?: readonly number[];
   /** Server pagination: the number of rows on every page; `rows` is then the current page only. */
   totalRows?: number;
   /** The page (controlled), from 1. */
@@ -103,7 +109,10 @@ function FinTableInner<Row>(
     defaultSelectedIds = [],
     onSelectionChange,
     onRowClick,
-    rowsPerPage = 10,
+    rowsPerPage,
+    defaultRowsPerPage = 10,
+    onRowsPerPageChange,
+    rowsPerPageOptions,
     totalRows,
     page,
     defaultPage = 1,
@@ -122,13 +131,22 @@ function FinTableInner<Row>(
 
   const serverPaged = totalRows !== undefined;
   const total = serverPaged ? totalRows : rows.length;
-  const perPage = Math.max(1, Math.floor(rowsPerPage));
+  const [innerPerPage, setInnerPerPage] = useState(defaultRowsPerPage);
+  const perPage = Math.max(1, Math.floor(rowsPerPage ?? innerPerPage));
   const pageCount = Math.max(1, Math.ceil(total / perPage));
   const [innerPage, setInnerPage] = useState(defaultPage);
   const current = Math.min(Math.max(1, page ?? innerPage), pageCount);
   const changePage = (next: number) => {
     if (page === undefined) setInnerPage(next);
     onPageChange?.(next);
+  };
+
+  // A new row count keeps the first row on screen in view: the page that holds it (decided 22 Oct 2026).
+  const changePerPage = (next: number) => {
+    const firstRow = (current - 1) * perPage;
+    if (rowsPerPage === undefined) setInnerPerPage(next);
+    onRowsPerPageChange?.(next);
+    changePage(Math.floor(firstRow / next) + 1);
   };
 
   const pageRows = serverPaged ? rows : rows.slice((current - 1) * perPage, current * perPage);
@@ -230,7 +248,15 @@ function FinTableInner<Row>(
           </tbody>
         </table>
       </div>
-      <FinTableFooter className={styles.footer} totalRows={total} rowsPerPage={perPage} page={current} onPageChange={changePage} />
+      <FinTableFooter
+        className={styles.footer}
+        totalRows={total}
+        rowsPerPage={perPage}
+        page={current}
+        onPageChange={changePage}
+        onRowsPerPageChange={changePerPage}
+        {...(rowsPerPageOptions ? { rowsPerPageOptions } : {})}
+      />
     </div>
   );
 }
