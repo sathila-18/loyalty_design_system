@@ -1,0 +1,25 @@
+/* The logo placeholder in every page's side nav (as the side nav and app shell stories). */
+
+.logo {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: center;
+  min-width: 0;
+}
+
+.logoImage {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-40);
+  height: var(--fin-size-40);
+}
+
+.companyName {
+  overflow: hidden;
+  font: var(--fin-font-title-medium);
+  color: var(--fin-text-primary);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
