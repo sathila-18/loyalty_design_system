@@ -1,0 +1,37 @@
+/*
+ * FinButtonDock (DESIGN.md §9). Figma Button dock: bg-primary, padding Space-XL (16) at the top, Space-3XL (24) at the
+ * sides and Space-6XL (40) at the bottom; the accessory Space-3XL above the buttons; the buttons Space-XL apart,
+ * Tertiary as wide as its label, Secondary and Primary sharing the rest equally. Sticky casts Shadow/Sticky upward.
+ */
+
+.dock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--fin-space-xl) var(--fin-space-3xl) var(--fin-space-6xl);
+  background-color: var(--fin-bg-primary);
+}
+
+.dock[data-sticky] {
+  box-shadow: var(--fin-shadow-sticky);
+}
+
+.accessory {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.buttons {
+  display: flex;
+  gap: var(--fin-space-xl);
+  align-items: center;
+}
+
+/* Secondary and Primary: equal shares of the width left after the Tertiary button. */
+.fill {
+  flex: 1 1 0;
+  min-width: 0;
+}

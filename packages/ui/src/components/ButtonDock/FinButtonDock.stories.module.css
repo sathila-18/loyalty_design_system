@@ -1,0 +1,33 @@
+/* Layout for the FinButtonDock stories only (not part of the component). */
+
+/* 600 wide, as the dock in the Side sheet (Figma draws the component 711 wide, a drawing frame only). */
+.frame {
+  max-width: calc(var(--fin-size-120) * 5);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-4xl);
+  max-width: calc(var(--fin-size-120) * 5);
+}
+
+/* The Sticky story: a 480-tall panel whose content scrolls under the dock pinned at its bottom. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  max-width: calc(var(--fin-size-120) * 5);
+  height: calc(var(--fin-size-120) * 4);
+  border: 1px solid var(--fin-border-subtle);
+  border-radius: var(--fin-radius-m);
+  overflow: hidden;
+}
+
+.panelBody {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+  padding: var(--fin-space-3xl);
+  overflow-y: auto;
+}
