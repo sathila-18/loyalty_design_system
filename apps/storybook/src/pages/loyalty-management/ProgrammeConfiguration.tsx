@@ -80,7 +80,7 @@ export function ProgrammeConfiguration({ configs, onAction = () => undefined }: 
         rowActions={(c) => [
           { label: 'View', icon: 'visibility', onSelect: () => onAction(`View: ${c.segment}`) },
           { label: 'Edit', icon: 'edit', onSelect: () => onAction(`Edit: ${c.segment}`) },
-          { label: 'Remove', onSelect: () => onAction(`Remove: ${c.segment}`), separator: true },
+          { label: 'Remove', icon: 'delete', onSelect: () => onAction(`Remove: ${c.segment}`), separator: true },
         ]}
         toolbar={{
           search: { label: 'Search segment', placeholder: 'Search segment', value: query, onChange: (e) => setQuery(e.target.value) },

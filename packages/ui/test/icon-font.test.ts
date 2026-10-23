@@ -40,6 +40,6 @@ describe('icon font subset', () => {
   });
 
   it('leaves out icons that are not in the registry', () => {
-    expect(glyphs(subset, 'delete', 0).length).toBeGreaterThan(1);
+    expect(glyphs(subset, 'bolt', 0).length).toBeGreaterThan(1);
   });
 });

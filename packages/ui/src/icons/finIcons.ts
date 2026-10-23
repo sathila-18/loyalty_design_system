@@ -17,6 +17,7 @@ export const finIcons = [
   'close',
   'cloud_upload',
   'credit_card',
+  'delete',
   'desktop_windows',
   'dock_to_right',
   'edit',

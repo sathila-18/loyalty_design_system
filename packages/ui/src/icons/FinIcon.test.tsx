@@ -53,7 +53,7 @@ describe('FinIcon', () => {
 
   it('warns once in development and renders an empty box for a name not in the registry', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    const name = 'delete' as FinIconName;
+    const name = 'bolt' as FinIconName;
     const { container } = render(
       <>
         <FinIcon name={name} />
@@ -61,7 +61,7 @@ describe('FinIcon', () => {
       </>,
     );
     expect(warn).toHaveBeenCalledOnce();
-    expect(warn.mock.calls[0]![0]).toContain('"delete"');
+    expect(warn.mock.calls[0]![0]).toContain('"bolt"');
     expect(container.firstElementChild).toBeEmptyDOMElement();
   });
 });

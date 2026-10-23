@@ -57,10 +57,10 @@
 /*
  * Kept in place while the table scrolls sideways: the ⋮ column on the right (end), or on the left after the select
  * column (start, which then stays too). Its fill is the row's (`--fin-table-row-bg`, set by FinTableRow on hover and
- * selection; bg-primary otherwise). A fixed cell sits above the table's lines, so it draws its row's line itself
- * (`--fin-table-row-line`; none on the last row): 1px centred on its bottom edge, where the table draws it; its fill
- * stops half a pixel short at the top and bottom, so the line between two rows isn't covered. A header cell keeps
- * its own (Grey) fill; the header has no line.
+ * selection; bg-primary otherwise). A fixed cell sits above the table's lines, so its fill stops half a pixel short at
+ * the top and bottom and the table's own 1px line between two rows shows through (23 Oct 2026: a separate line drawn
+ * by the cell snapped to different pixels than the table's and showed 2px tall). A header cell keeps its own (Grey)
+ * fill; the header has no line.
  */
 .stickyEnd,
 .stickyStart,
@@ -77,16 +77,6 @@ td:is(.stickyEnd, .stickyStart, .stickySelect) {
   background:
     linear-gradient(var(--fin-table-row-bg, var(--fin-bg-primary)), var(--fin-table-row-bg, var(--fin-bg-primary)))
     center / 100% calc(100% - 1px) no-repeat;
-}
-
-td:is(.stickyEnd, .stickyStart, .stickySelect)::after {
-  position: absolute;
-  right: 0;
-  bottom: calc(-1px / 2);
-  left: 0;
-  height: 1px;
-  background-color: var(--fin-table-row-line, transparent);
-  content: "";
 }
 
 .stickyEnd {
