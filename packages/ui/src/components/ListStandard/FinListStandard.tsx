@@ -20,6 +20,9 @@ export type FinListStandardLeading = 'none' | 'icon' | 'flag' | 'payment' | 'ava
  */
 export type FinListStandardBehavior = 'static' | 'link' | 'button' | 'option' | 'menuitem';
 
+/** Code only: the row's colours. `destructive` for actions that delete or remove. */
+export type FinListStandardTone = 'default' | 'destructive';
+
 export interface FinListStandardProps
   extends Pick<FinListItemProps, 'as' | 'size' | 'divider' | 'className' | 'id' | 'style'> {
   /** The title (Headline Small-H6, Small: Label/Medium). */
@@ -57,6 +60,11 @@ export interface FinListStandardProps
   selected?: boolean;
   /** Figma `State=Disabled`: greyed, not interactive. Default false. */
   disabled?: boolean;
+  /**
+   * Code only (23 Oct 2026): `destructive` for an action that deletes or removes (in a menu): the title and the icon
+   * accessory in the destructive button's colours, `text-error` and `fg-error`. Disabled wins. Default `default`.
+   */
+  tone?: FinListStandardTone;
   /** What the row does (see FinListStandardBehavior). Default `static`. */
   behavior?: FinListStandardBehavior;
   /** Link: where it goes. */
@@ -89,6 +97,7 @@ export function ListStandardRow({
   chevron = false,
   selected = false,
   disabled = false,
+  tone = 'default',
   behavior = 'static',
   href,
   linkAs: Link = 'a',
@@ -103,7 +112,7 @@ export function ListStandardRow({
 
   let leadingNode: ReactNode = leading;
   if (leadingNode === undefined && leadingAccessory === 'icon')
-    leadingNode = <FinIcon name={icon} size={24} color={disabled ? 'disabled' : 'primary'} />;
+    leadingNode = <FinIcon name={icon} size={24} color={disabled ? 'disabled' : tone === 'destructive' ? 'error' : 'primary'} />;
   if (leadingNode === undefined && leadingAccessory === 'flag' && country)
     leadingNode = <FinFlag country={country} size="medium" disabled={disabled} decorative />;
   if (leadingNode === undefined && leadingAccessory === 'payment')
@@ -162,6 +171,7 @@ export function ListStandardRow({
       className={className ? `${styles.row} ${className}` : styles.row}
       data-selected={selected ? '' : undefined}
       data-disabled={disabled ? '' : undefined}
+      data-tone={tone === 'destructive' ? tone : undefined}
       data-interactive={interactive ? '' : undefined}
       data-control={labelFor !== undefined ? '' : undefined}
       data-filled={filled ? '' : undefined}

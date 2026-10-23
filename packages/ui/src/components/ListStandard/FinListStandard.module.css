@@ -61,6 +61,11 @@
   outline-offset: -2px;
 }
 
+/* Destructive (code only, 23 Oct 2026): the destructive button's text colour; the icon gets fg-error in TSX. */
+.row[data-tone="destructive"] .title {
+  color: var(--fin-text-error);
+}
+
 .row[data-disabled] .title,
 .row[data-disabled] .caption {
   color: var(--fin-text-disabled-on-bg);

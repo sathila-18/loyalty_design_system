@@ -31,6 +31,18 @@ describe('FinListStandard', () => {
     expect(row()).not.toHaveTextContent('person');
   });
 
+  it('destructive (code only): marks the row and gives the icon fg-error; disabled wins', () => {
+    const { container, rerender } = render(<FinListStandard title="Remove" leadingAccessory="icon" icon="delete" tone="destructive" />);
+    const row = () => container.firstElementChild as HTMLElement;
+    const icon = () => screen.getByText('delete');
+    expect(row()).toHaveAttribute('data-tone', 'destructive');
+    expect(icon().getAttribute('style')).toContain('--fin-fg-error');
+    rerender(<FinListStandard title="Remove" leadingAccessory="icon" icon="delete" tone="destructive" disabled />);
+    expect(icon().getAttribute('style')).toContain('--fin-fg-disabled');
+    rerender(<FinListStandard title="Remove" leadingAccessory="icon" icon="delete" />);
+    expect(row()).not.toHaveAttribute('data-tone');
+  });
+
   it('as a link, is one link named by the title and described by the description', async () => {
     const user = userEvent.setup();
     const onClick = vi.fn((event: { preventDefault: () => void }) => event.preventDefault());

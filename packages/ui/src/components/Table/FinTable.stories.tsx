@@ -255,6 +255,7 @@ export const RowActions: StoryObj<{ position: 'start' | 'end'; width: number }> 
                       onSelect: () => setDone(`Deactivate: ${m.name}`),
                       disabled: m.status === 'Pending',
                       separator: true,
+                      destructive: true,
                     },
                   ]),
             ]}

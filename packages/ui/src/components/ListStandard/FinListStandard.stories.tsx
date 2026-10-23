@@ -6,6 +6,7 @@ import {
   FinListStandard,
   type FinListStandardBehavior,
   type FinListStandardLeading,
+  type FinListStandardTone,
 } from './FinListStandard';
 import styles from './FinListStandard.stories.module.css';
 
@@ -19,6 +20,7 @@ interface Args {
   leadingAccessory: FinListStandardLeading;
   caption: boolean;
   behavior: FinListStandardBehavior;
+  tone: FinListStandardTone;
 }
 
 /**
@@ -31,7 +33,7 @@ const KNOWN_CONTRAST_ISSUES = ['li[data-disabled]', 'html[data-theme="dark"] li[
 
 const meta: Meta<Args> = {
   title: 'Components/List/Plain/List standard',
-  args: { state: 'default', size: 'large', description: true, chevron: false, leadingAccessory: 'none', caption: false, behavior: 'link' },
+  args: { state: 'default', size: 'large', description: true, chevron: false, leadingAccessory: 'none', caption: false, behavior: 'link', tone: 'default' },
   argTypes: {
     state: { control: 'inline-radio', options: ['default', 'selected', 'disabled'], description: 'Figma `State` (Hovered is the mouse)' },
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Size (List-base, nested in Figma)' },
@@ -40,6 +42,7 @@ const meta: Meta<Args> = {
     leadingAccessory: { control: 'inline-radio', options: ['none', 'icon', 'flag', 'payment', 'avatar'], description: 'Figma `Leading accessory`' },
     caption: { control: 'boolean', description: 'Figma `Trailing accessory=Caption`' },
     behavior: { control: 'inline-radio', options: ['static', 'link', 'button', 'option'], description: 'What the row does (per scenario)' },
+    tone: { control: 'inline-radio', options: ['default', 'destructive'], description: 'Code only: `destructive` for actions that delete or remove (red title and icon)' },
   },
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
   render: ({ state, description, caption, behavior, ...args }) => {

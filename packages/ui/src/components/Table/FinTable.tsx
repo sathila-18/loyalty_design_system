@@ -36,6 +36,8 @@ export interface FinTableRowAction<Row> {
   disabled?: boolean | ((row: Row) => boolean);
   /** A line before this action, to group the ones after it (for example a destructive action). */
   separator?: boolean;
+  /** Deletes or removes: shown in the destructive button's colours (red text and icon, 23 Oct 2026). */
+  destructive?: boolean;
 }
 
 /** One column: its header, how each row's value is shown, and its width (DESIGN.md §9). */
@@ -347,6 +349,7 @@ function FinTableInner<Row>(
             onSelect: () => action.onSelect(row),
             ...(action.icon ? { icon: action.icon } : {}),
             ...(action.separator ? { separator: true } : {}),
+            ...(action.destructive ? { destructive: true } : {}),
             disabled: typeof action.disabled === 'function' ? action.disabled(row) : (action.disabled ?? false),
           }))}
         />

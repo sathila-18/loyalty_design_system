@@ -19,6 +19,8 @@ export interface FinTableRowActionItem {
   disabled?: boolean;
   /** A line before this action, to group the ones after it (for example a destructive action). */
   separator?: boolean;
+  /** Deletes or removes: the destructive button's colours, `text-error` and an `fg-error` icon (23 Oct 2026). */
+  destructive?: boolean;
 }
 
 export interface FinTableRowActionsProps {
@@ -36,10 +38,14 @@ export interface FinTableRowActionsProps {
  * its menu is open, that opens an action menu (FinMenu `kind="action"`) of the row's actions.
  * **Internal:** part of the table (FinTable `rowActions`).
  */
+/** 240 wide (design, 23 Oct 2026: wider than its short action names). No Size-240 token, so 2 × Size-120. */
+const MENU_WIDTH = 'calc(2 * var(--fin-size-120))';
+
 export function FinTableRowActions({ label, actions, placement = 'bottom-end' }: FinTableRowActionsProps) {
   return (
     <FinMenu
       placement={placement}
+      width={MENU_WIDTH}
       trigger={(menuProps) => (
         <button {...menuProps} type="button" className={styles.button} aria-label={label}>
           <FinIcon name="more_vert" size={20} />
@@ -55,7 +61,13 @@ export function FinTableRowActions({ label, actions, placement = 'bottom-end' }:
             behavior="menuitem"
             divider={false}
             title={action.label}
-            {...(action.icon ? { leadingAccessory: 'icon' as const, icon: action.icon } : {})}
+            {...(action.icon
+              ? {
+                  leadingAccessory: 'icon' as const,
+                  leading: <FinIcon name={action.icon} size={24} color={action.disabled ? 'disabled' : action.destructive ? 'error' : 'secondary'} />,
+                }
+              : {})}
+            tone={action.destructive ? 'destructive' : 'default'}
             disabled={action.disabled ?? false}
             onClick={action.onSelect}
           />

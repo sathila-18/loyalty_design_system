@@ -131,6 +131,29 @@ describe('FinTable', () => {
     expect(screen.queryByRole('menu')).toBeNull();
   });
 
+  it('row actions: icons fg-secondary, a destructive action red, the menu 240 wide', async () => {
+    const user = userEvent.setup();
+    render(
+      <FinTable
+        label="Members"
+        columns={columns}
+        rows={members}
+        getRowId={(m) => m.id}
+        rowActions={[
+          { label: 'Edit', icon: 'edit', onSelect: () => {} },
+          { label: 'Remove', icon: 'delete', onSelect: () => {}, separator: true, destructive: true },
+        ]}
+      />,
+    );
+    await user.click(screen.getByRole('button', { name: 'More actions for Member 1' }));
+    const menu = screen.getByRole('menu');
+    expect(menu.closest('[style*="--menu-width"]')?.getAttribute('style')).toContain('calc(2 * var(--fin-size-120))');
+    expect(within(menu).getByText('edit').getAttribute('style')).toContain('--fin-fg-secondary');
+    expect(within(menu).getByText('delete').getAttribute('style')).toContain('--fin-fg-error');
+    expect(screen.getByRole('menuitem', { name: 'Remove' }).closest('[data-tone]')).toHaveAttribute('data-tone', 'destructive');
+    expect(screen.getByRole('menuitem', { name: 'Edit' }).closest('[data-tone]')).toBeNull();
+  });
+
   it('row actions at the start: the ⋮ column comes first, after the select column', () => {
     render(
       <FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} rowActionsPosition="start" rowActions={[{ label: 'Edit', onSelect: () => {} }]} />,
