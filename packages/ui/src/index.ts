@@ -26,6 +26,7 @@ export * from './components/Caption';
 export * from './components/Button';
 export * from './components/ButtonDock';
 export * from './components/SideSheet';
+export * from './components/Dialog';
 export * from './components/Checkbox';
 export * from './components/AssistChip';
 export * from './components/FilterChip';

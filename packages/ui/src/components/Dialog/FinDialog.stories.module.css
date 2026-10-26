@@ -1,0 +1,17 @@
+/* Layout for the FinDialog stories only (not part of the component). */
+
+/* The page behind the dialog: taller than the window, so it would scroll if the dialog didn't stop it. */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  padding: var(--fin-space-3xl);
+}
+
+.filler {
+  margin: 0;
+  padding: var(--fin-space-3xl) 0;
+  border-bottom: 1px solid var(--fin-border-subtle);
+  color: var(--fin-text-secondary);
+  font: var(--fin-font-body-medium);
+}

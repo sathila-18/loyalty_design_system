@@ -719,7 +719,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 65 | `Empty state` | Empty state | `71:4588` | `FinEmptyState` | 48px bg, 68px bg, Text Box, all-button · Size: Small/Medium/Large · Icon slot | ✅ | ⬜ |
 | 66 | `Button dock` | Button dock | `75:5858` | `FinButtonDock` | Text Box, all-button · Sticky · Accessory slot · Show Tertiary / Secondary / Primary Button · **public** (§9.69) | ✅ | ✅ |
 | 67 | `Side sheet` | Side sheet | `3120:30707` | `FinSideSheet` | Text Box, all-button, Divider, Button dock · Body slot · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13); width from the layout grid · **public** (§9.70) | ✅ (remote `Views / Dividers` replaced by our Divider, 23 Oct 2026, §10 #25) | ✅ |
-| 68 | `Dialog box` | Dialog | `3234:11710` | `FinDialog` | Text Box, all-button, `24px` · Body slot · Leading button, Primary/Secondary buttons, Trailing buttons, Trailing icon · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13) | ✅ | ⬜ |
+| 68 | `Dialog box` | Dialog | `3234:11710` | `FinDialog` | Text Box, all-button, `24px` · Body slot · Leading button, Primary/Secondary buttons, Trailing buttons, Trailing icon · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13); width from the layout grid · **public** (§9.71) | ✅ | ✅ |
 | 69 | `Main header` | Header | `3178:24570` | `FinHeader` | all-button, Text Box, Header notification · Show Back Button, `body content` slot (was `Description`), Notification · **public** (§9.63) | ✅ | ✅ |
 | 70 | `Side Menu` | Side nav | `3142:11871` | `FinSideNav` | Main Selection, List-base, Avatar, Text Box, all-button · `Menu` (8; from `currentHref`) · `Type`: Expanded/Minimized → `type` · `logo` slot (Logo sizes is from another library, §10 #25) · `profile` · **public** (§9.57) | ⚠️ (raw gaps 8 / 40 → `Space-M` / `Space-6XL`; logo from another library, a slot in code) | ✅ |
 | 71 | `Table row` | Table | `3151:15248` | `FinTableRow` | Table - Cell, Base-Checkbox · `State` (was `Property 1`): Default/Hovered/Selected/Selected - Hovered (hover is CSS; Selected is `selected`) · `Select Cell`, `Cell Slot` (was `Sells Slot`) · `<tr>`, `onRowClick` opens details · **internal**, part of the table (§9.44) | ✅ | ✅ |
@@ -3437,9 +3437,66 @@ import { FinSideSheet, FinTextBox } from '@finspace-loyalty/ui';
 
 `'use client'`. Exports `FinSideSheet` and `FinSideSheetProps`. Controlled: `open` is the only source of truth, and every close request (close button, Esc, scrim) goes through `onClose`.
 
-**Accessibility:** a native `<dialog>` opened with `showModal()`: the top layer, the page behind inert, focus kept inside, Esc closes (through `onClose`), focus goes back to what opened it. Named by its title (`aria-labelledby`, the whole title even when cut off). **On open, focus goes to the sheet itself** (no ring; screen readers read the title), and Tab reaches the back / close buttons, the body, then the dock. The page behind doesn't scroll (`overflow: hidden` on `<html>` while open). The scrim is decorative (§9.13); the close button and Esc always close it.
+**Accessibility:** a native `<dialog>` opened with `showModal()`: the top layer, the page behind inert, focus kept inside, Esc closes (through `onClose`), focus goes back to what opened it. Named by its title (`aria-labelledby`, the whole title even when cut off). **On open, focus goes to the sheet itself** (no ring; screen readers read the title), and Tab reaches the back / close buttons, the body, then the dock. **While the body scrolls** it's a focusable region named by the title (`role="region"`, `tabIndex={0}`, focus ring `border-focused`), so text-only content can be scrolled with the keyboard (added 26 Oct 2026 with FinDialog; shared `useBodyScroll`). The page behind doesn't scroll (`overflow: hidden` on `<html>` while open). The scrim is decorative (§9.13); the close button and Esc always close it.
 
 **Built (26 Oct 2026).** Storybook (Components/Side sheet): Playground (Figma's defaults), All options (Figma), Form (the Programme configuration add form), Long content (sticky dock), Long title; each starts open over a sample page, with "Open side sheet" to bring it back. Checked in Chrome: 632 / 590 / 628 / 583 wide at 1920 / 1440 / 1280 / 1024, flush right, full height, no shadow; header 80, title at 24 (76 with the back button: 24 + 48 + 4), buttons 48 at 32 from the top, icons `#626262` Light / `#b7b7b7` Dark at rest and the Tertiary hover / pressed colors, close 24 from the right edge; divider 24 below the header; body content 24 below the header; dock 178 at 600 wide (157 at 632, the note on one line), sticky only with content below; a long title ends in "…"; focus, Tab, Esc, scrim click, focus return and the page scroll lock work. Light and Dark. a11y: no violations in either theme. **Open:** with a two-line title (heading + description), the close button is centred against it as in the component; the screen shows it at the top (§10 #69).
+
+### 9.71 FinDialog (Dialog box) — public
+
+**Figma:** page **Dialog**, component `Dialog box` `3234:11710` (read 26 Oct 2026). 696 wide (raw), hugs its height, `bg-primary`, radius `Radius-L` (16), no shadow (it sits on the scrim, §4.2). Padding `Space-XL` (16) top, `Space-3XL` (24) sides.
+- **Title row** (`3228:11258`): gap `Space-3XL`, centred: a Text Box Headline Large-H4, heading only, "Dialog title" (fills), and the **close button** (`Show Trailing Icon`; all-button Tertiary, Medium, Only Icon, `close`, icon override `fg-secondary`).
+- **Body slot** (`3234:11711`, `Show Body Content`): `Space-XL` (16) below the title row; gap `Space-L` (12) between items; default a Text Box Display Medium-H2 with only its description (Body/Large, `text-secondary`).
+- **Buttons** (`3227:16163`, a local frame named "Button dock", **not** the Button dock component): `Space-3XL` (24) below the body and at the bottom; a row, gap `Space-XL` (16): the **Leading button** (`Show Leading Button`, off; Button-Secondary Medium, fixed 121 wide, raw) on the left, and the **Trailing buttons** (`Show Trailing Buttons`, on) on the right, gap `Space-L` (12): Button-Secondary and Button-Primary (`Show Button Secondary`, `Show Button Primary`), Medium (48), as wide as their labels.
+
+**Screen in use:** Programme configuration remove (`328:25843`): centred, 696 wide; title "Remove segment"; one line of body; Cancel / Remove (purple on the screen; red in code, decision 3).
+
+**Decided 26 Oct 2026:**
+1. **Width from the layout grid**, centred over an even number of columns so both edges are on column lines: 8 columns below 1280 (643 at 1024), 6 from 1280 (604; 684 at 1440), 4 from 1920 (608; Figma's 696 isn't on the grid). No size token.
+2. **Taller than the window:** at most the window less 24 (`--fin-grid-margin`) above and below; the body scrolls, the title and buttons stay.
+3. **Remove is the destructive Primary** (red, §10 #67), not the screen's purple.
+4. **A long title wraps.**
+5. **The Leading button is as wide as its label** (Figma: a raw 121).
+6. **A click on the scrim closes it** by default (`closeOnOverlayClick={false}` to turn it off), as the Side sheet.
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| Title Text Box | `title: ReactNode` (required): a string is the Headline Large-H4 heading, wrapping (`<h2>`, `headingLevel`); any node is placed as it is |
+| `Show Trailing Icon` | `closeButton?: boolean` (default true), `closeLabel` (default "Close"); FinButton `iconTone="secondary"` (§9.28) |
+| `Show Body Content` + `Slot` | `children` (shown when passed); a string becomes Figma's default, the Text Box description (Body/Large) |
+| `Show Leading Button` | `leadingButton?: FinDialogButton` (Secondary, Medium) |
+| `Show Trailing Buttons` + `Show Button Secondary` | `secondaryButton?: FinDialogButton` (Secondary, Medium; `tone: 'destructive'` allowed) |
+| `Show Trailing Buttons` + `Show Button Primary` | `primaryButton?: FinDialogButton` (Primary, Medium; `tone: 'destructive'` for remove and delete) |
+| — (code only) | `open: boolean`, `onClose: () => void`, `closeOnOverlayClick?: boolean` (default true), `className` and other `<dialog>` attributes |
+
+`Show Trailing Buttons` has no prop of its own: the trailing buttons show when passed, as on FinButtonDock. `FinDialogButton` is FinButtonDock's button type (`label`, `onClick`, `type`, `form`, `disabled`, `tone`…).
+
+**Layout in code:** the 24 above the buttons is the buttons row's own padding (Figma: the body frame's bottom padding), so it stays clear while the body scrolls. Without buttons the body ends with 24; with only a title, the title row does.
+
+**Tokens used:** `--fin-bg-primary`, `--fin-radius-l`; padding `--fin-space-xl` (top, above the body) and `--fin-space-3xl` (sides, around the buttons, bottom); gaps `--fin-space-3xl` (title → close), `--fin-space-xl` (leading → trailing), `--fin-space-l` (body items, trailing buttons); width from `--fin-grid-columns`, `--fin-grid-gutter`, `--fin-grid-margin` and `@media (--fin-bp-lg / -xxl)`; max height from `--fin-grid-margin`. The buttons, Text Box and Overlay bring their own.
+
+**API:**
+
+```tsx
+import { FinDialog } from '@finspace-loyalty/ui';
+
+<FinDialog
+  open={removing !== null}
+  onClose={() => setRemoving(null)}
+  title="Remove segment"
+  secondaryButton={{ label: 'Cancel', onClick: () => setRemoving(null) }}
+  primaryButton={{ label: 'Remove', tone: 'destructive', onClick: remove }}
+>
+  Are you sure you want to remove the “Staff” segment?
+</FinDialog>
+```
+
+`'use client'`. Exports `FinDialog`, `FinDialogProps`, `FinDialogButton`. Controlled, as FinSideSheet: every close request (close button, Esc, scrim) goes through `onClose`. The modal behaviour (open / close, focus, Esc, page scroll lock) is shared with FinSideSheet through an internal hook (`useModalDialog`).
+
+**Accessibility:** a native `<dialog>` opened with `showModal()`: the top layer, the page behind inert, focus kept inside, Esc closes (through `onClose`), focus goes back to what opened it. Named by its title (`aria-labelledby`). On open, focus goes to the dialog itself (no ring; screen readers read the title); Tab reaches the close button, the body, then the buttons (Leading, Secondary, Primary). **While the body scrolls** it's a focusable region named by the title (`role="region"`, `tabIndex={0}`, focus ring `border-focused`), so text-only content can be scrolled with the keyboard (axe `scrollable-region-focusable`), as FinSideSheet. The page behind doesn't scroll. The scrim is decorative (§9.13); the close button and Esc always close it.
+
+**Built (26 Oct 2026).** Storybook (Components/Dialog): Playground (Figma's defaults and every option), All options (Figma), Remove confirmation, With fields, Long title and content; each starts open over a sample page, with "Open dialog" to bring it back. Checked in Chrome: 608 / 684 / 604 / 643 wide at 1920 / 1440 / 1280 / 1024, centred; with Figma's text 248 tall, as Figma: title row 48 at 16, body 16 below it, buttons 24 below the body and 24 above the bottom, 48 tall, 12 apart (Text here 120.2, Figma 121, text rendering), close 24 from the right edge, icon `#626262` Light / `#b7b7b7` Dark; radius 16, no shadow; a long title wraps; long content scrolls in the body, 24 clear above the buttons, the dialog 24 from the top and bottom of the window; Remove red. Light and Dark. a11y: no violations in either theme.
 
 Template:
 
@@ -3548,7 +3605,8 @@ Template:
 > - **Pages (22 Oct 2026):** the pages plan (§8.6, §4.4, CLAUDE.md "Pages"), `FinTableToolbar` (§9.67) and `FinAppShell` (§9.68) are approved and merged. **Next, when design is back: build the Programme Configuration list page** (Pages → Loyalty management → Programme configuration) in `apps/storybook/src/pages/loyalty-management/`, with FinAppShell, FinTable + `toolbar` (Assist chip select filter), the row actions menu, fake data with edge cases, checked at 1920 / 1440 / 1280 / 1024 in Light and Dark; then show it before the next page. Its add (side sheet), remove (dialog) and removed (snackbar) states wait for those components (§8.6).
 > - **Pages (23 Oct 2026):** the **Programme configuration list page** (Pages/Loyalty management/Programme configuration), the 1px fix for FinTable's fixed cells and the `delete` icon are **approved and merged**. Storybook takes `@finspace-loyalty/ui` from source for pages. **Approved and merged (23 Oct 2026):** the row actions menu's look (240 wide, `fg-secondary` icons, destructive actions red; FinListStandard `tone`, §9.51, §9.66). **Next page** after design's go-ahead: Tier management (§8.6).
 > - **Approved and merged (23 Oct 2026):** `FinButtonDock` (§9.69).
-> - **Approved and merged (26 Oct 2026):** `FinSideSheet` (§9.70), with grey back / close icons (FinButton `iconTone`). Open: §10 #69 (close button with a two-line title); in Figma: remove the shadow. **Next:** the Dialog box (§8 #68): plan first.
+> - **Approved and merged (26 Oct 2026):** `FinSideSheet` (§9.70), with grey back / close icons (FinButton `iconTone`). Open: §10 #69 (close button with a two-line title); in Figma: remove the shadow. **Next:** the Dialog box (§8 #68).
+> - **In review (26 Oct 2026):** `FinDialog` (§9.71) on `feat/dialog`; FinSideSheet now shares its modal and body-scroll code (`useModalDialog`, `useBodyScroll`); one change for it: a scrolling body is now keyboard-focusable (§9.70). After it: the Programme configuration page's add (side sheet) and remove (dialog) states (§8.6).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3754,3 +3812,4 @@ Template:
 | 23 Oct 2026 | 0.2 | `FinButtonDock` approved by design and merged into `main`. Paused here; next: the Side sheet (§8 #67). |
 | 26 Oct 2026 | 0.2 | **`FinSideSheet` built** (§8 #67, §9.70), public, Components/Side sheet: a native modal `<dialog>` on FinOverlay, flush right, full height; width from the layout grid (last 7 / 6 / 5 / 4 columns + margin from 1024 / 1280 / 1440 / 1920, about 600; no `Size-600`); no shadow; back button off by default; grey back / close icons (FinButton code-only `iconTone`, §9.28); scrim click closes (`closeOnOverlayClick`); one-line title with "…"; the body scrolls and the dock turns sticky. Focus goes to the sheet on open. §10 #28: the Side sheet is off it (32 at the top). New §10 #69. |
 | 26 Oct 2026 | 0.2 | `FinSideSheet` approved by design and merged into `main`. Next: the Dialog box (§8 #68). |
+| 26 Oct 2026 | 0.2 | **`FinDialog` built** (§8 #68, §9.71), public, Components/Dialog: a native modal `<dialog>` on FinOverlay, centred; width from the layout grid (8 / 6 / 4 even columns, centred, from 1024 / 1280 / 1920; no size token); at most the window less 24 above and below, the body scrolls; title wraps; grey close icon (`iconTone`); Leading, Secondary and Primary buttons (Medium, as wide as their labels; destructive tone); scrim click closes (`closeOnOverlayClick`). FinSideSheet and FinDialog share `useModalDialog` and `useBodyScroll`: a scrolling body is a focusable region named by the title, in both; the jsdom `<dialog>` stub moved to the test setup. |

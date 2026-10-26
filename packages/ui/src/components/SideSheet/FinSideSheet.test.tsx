@@ -1,21 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { FinTextBox } from '../TextBox';
 import { FinSideSheet } from './FinSideSheet';
-
-// jsdom has no showModal() / close(); real browsers do. Open and close the dialog by its `open` attribute.
-beforeAll(() => {
-  const proto = HTMLDialogElement.prototype;
-  if (!proto.showModal)
-    proto.showModal = function showModal(this: HTMLDialogElement) {
-      this.setAttribute('open', '');
-    };
-  if (!proto.close)
-    proto.close = function close(this: HTMLDialogElement) {
-      this.removeAttribute('open');
-    };
-});
 
 describe('FinSideSheet', () => {
   it('opens as a dialog named by its title, and closes when open turns false', () => {
