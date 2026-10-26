@@ -73,7 +73,7 @@ const meta: Meta<Args> = {
     closeOnOverlayClick: true,
   },
   argTypes: {
-    title: { control: 'text', description: 'Figma `Title` slot (`title`): a string is the Display Small-H3 heading, on one line' },
+    title: { control: 'text', description: 'Figma `Title` slot (`title`): a string is the Display Small-H3 heading, up to two lines' },
     backButton: { control: 'boolean', description: 'Figma `Show Back Button` (`backButton`; off by default in code)' },
     closeButton: { control: 'boolean', description: 'Figma `Show Close Button` (`closeButton`)' },
     divider: { control: 'boolean', description: 'Figma `View Divider` (`divider`)' },
@@ -151,10 +151,10 @@ export const LongContent: Story = {
   ),
 };
 
-/** A long title stays on one line and ends in "…" (decided 26 Oct 2026); screen readers get the whole title. */
+/** A long title wraps to two lines, then ends in "…" (decided 26 Oct 2026); screen readers get the whole title. */
 export const LongTitle: Story = {
   args: {
-    title: 'Programme configuration for the platinum plus customer segment in every region',
+    title: 'Programme configuration for the platinum plus customer segment in every region, with joint accounts across several branches',
     backButton: true,
   },
 };

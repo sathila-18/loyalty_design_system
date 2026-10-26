@@ -69,6 +69,8 @@ describe('FinTextBox', () => {
     const { rerender } = render(<FinTextBox heading="H" data-testid="tb" />);
     expect(screen.getByTestId('tb')).not.toHaveAttribute('data-truncate-heading');
     rerender(<FinTextBox heading="H" data-testid="tb" truncateHeading />);
-    expect(screen.getByTestId('tb')).toHaveAttribute('data-truncate-heading');
+    expect(screen.getByTestId('tb')).toHaveAttribute('data-truncate-heading', '');
+    rerender(<FinTextBox heading="H" data-testid="tb" truncateHeading={2} />);
+    expect(screen.getByTestId('tb')).toHaveAttribute('data-truncate-heading', '2');
   });
 });

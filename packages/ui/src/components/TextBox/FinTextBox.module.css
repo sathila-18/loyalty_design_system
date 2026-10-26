@@ -32,11 +32,19 @@
 }
 
 /* One line, ending in "…" (code only, for FinHeader). */
-.textBox[data-truncate-heading] .heading {
+.textBox[data-truncate-heading=""] .heading {
   overflow: hidden;
   width: 100%;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Up to two lines, the second ending in "…" (code only, for FinSideSheet). */
+.textBox[data-truncate-heading="2"] .heading {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 /* Inside a disabled control (Figma Checkbox, State=Disabled). */
