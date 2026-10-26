@@ -14,7 +14,7 @@ import { cardBrand, cardDigits, formatCardNumber } from './cardNumber';
 export type FinTextFieldVariant = 'default' | 'mobile-number' | 'payment';
 
 export interface FinTextFieldProps
-  extends Omit<FinInputBaseProps, 'variant' | 'prefix' | 'suffix' | 'leading' | 'trailing' | 'control' | 'filled'> {
+  extends Omit<FinInputBaseProps, 'variant' | 'prefix' | 'leading' | 'trailing' | 'control' | 'filled'> {
   /** Figma `Type`. Default `default`. */
   variant?: FinTextFieldVariant;
   /** Figma `Trailing icon` and its icon: shown at the end of the field (24, or 20 when `small`). Hidden without it. */

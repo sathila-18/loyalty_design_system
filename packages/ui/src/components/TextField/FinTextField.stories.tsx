@@ -260,3 +260,15 @@ export const Form: Story = {
     </form>
   ),
 };
+
+/** Figma `Show Suffix` (`suffix`): text after the value, such as a unit; `text-tertiary`, as the prefix. */
+export const Suffix: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className={styles.stack}>
+      <FinTextField label="Points expiry" placeholder="Points expiry" suffix="Months" helperText="Counted from the date each point is earned" />
+      <FinTextField label="Equal rate" placeholder="Equal rate" suffix="LKR" defaultValue="1.00" />
+      <FinTextField label="Minimum per conversion" placeholder="Minimum per conversion" suffix="Points" disabled />
+    </div>
+  ),
+};

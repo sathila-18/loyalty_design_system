@@ -701,7 +701,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 52b | `Input field-base` (text area) | Input field | `3097:27497` | _(provisional)_ `FinTextArea` | **Input field-textArea-base**, Helper text | 🔴 broken set and duplicate name (§10 #17) | ⬜ |
 | 53 | `Input field-standard` | Input field | `52:2629` | `FinTextField` | **Input field-base**, Payment Icons (FinPaymentIcon), Country selector · Type (code `variant`): Default/Mobile number/Payment · State (runtime) · Trailing icon (code `trailingIcon`) · Error · Small size (code only) · dial code from the country, card brand from the number · **public** (§9.59) | ⚠️ (§10 #58 (5)–(6)) | ✅ |
 | 54 | `Input field-password` | Input field | `60:7165` | `FinPasswordField` | **Input field-base** · State (runtime) · Show password (code `showPassword` / `defaultShowPassword`, the eye button) · Error · Small size (code only) · **public** (§9.60) | ⚠️ (§10 #58 (1), (3), (4)) | ✅ |
-| 55 | `Input field-select` | Input field | `537:2736` | `FinSelectField` | **Input field-base** | ⚠️ (after #52) | ⬜ |
+| 55 | `Input field-select` | Input field | `537:2736` | `FinSelectField` | **Input field-base** | ⚠️ (after #52) | ✅ §9.72 |
 | 56 | `Input field-Multi select` | Input field | `922:6170` | `FinMultiSelectField` | **Input field-base**, Chips-base | ⚠️ (after #52) | ⬜ |
 | 57 | `Search` | Search | `440:5164` | `FinSearchField` | **Input field-base** (Show Label off) · State: Enabled/Focus/Typing/Complete (runtime; hover from the base) · `search` icon, clear button (`cancel`, filled) · Small size (code only) · Sticky removed in Figma 21 Oct 2026 · **public** (§9.61) | ✅ | ✅ |
 | 58 | `File uploads` | Input field | `775:4280` | `FinFileUpload` | 40px bg, 48px bg, Text Box, all-button · Size: Large/Small | ⚠️ | ⬜ |
@@ -3110,6 +3110,7 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 | Label, placeholder, helper text (base) | `label` (required), `placeholder`, `helperText` |
 | Mobile number: Contry selecter, `+94` | `country` (controlled) / `defaultCountry` (default `LK`), `onCountryChange`, `showDialCodes` (the country menu, 22 Oct 2026); the prefix from `finDialCodes`, following the chosen country |
 | Payment: Payment Icons | `paymentMethod` (default: from the number) |
+| `Show Suffix` (base) | `suffix?: string` (added 26 Oct 2026, for units such as "Months", "Points", "LKR"; Body/Large `text-tertiary`, `text-disabled` when disabled) |
 | — (code only) | `size: 'large' \| 'small'`; the input's own attributes (`value`, `defaultValue`, `onChange`, `type`, `name`…), `ref` |
 
 **Tokens used:** none of its own; all from FinInputBase (§9.58), FinPaymentIcon (§9.52) and FinCountrySelector (§9.36).
@@ -3124,7 +3125,7 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Accessibility:** as FinInputBase (a native input with its label, helper text by `aria-describedby`, `aria-invalid`). The country selector is a button named "Country, {country}". The payment logo is an image named after the brand (it changes as the number is typed); the value keeps its spaces for reading.
 
-**Built (21 Oct 2026).** Storybook (Components/Input field/Text field): Playground, Types (Figma), States (Figma), Sizes, Focused, Mobile number, Payment, Payment typing, Form. Checked against Figma in a browser: 343 × 74, box 48, Default input at 16, Mobile number +94 after the divider, Payment logo 38 × 24 at 16 (Figma 34.5, §9.52) and the value 8 after it; Light and Dark. The Label "Usage" and Helper text "With a field" stories now use FinTextField instead of stand-in inputs. a11y: no violations apart from disabled helper text (exempt, as §9.20).
+**Built (21 Oct 2026).** Storybook (Components/Input field/Text field): Playground, Types (Figma), States (Figma), Sizes, Focused, Mobile number, Payment, Payment typing, Form, Suffix (26 Oct 2026). Checked against Figma in a browser: 343 × 74, box 48, Default input at 16, Mobile number +94 after the divider, Payment logo 38 × 24 at 16 (Figma 34.5, §9.52) and the value 8 after it; Light and Dark. The Label "Usage" and Helper text "With a field" stories now use FinTextField instead of stand-in inputs. a11y: no violations apart from disabled helper text (exempt, as §9.20).
 
 ### 9.60 FinPasswordField (Input field-password) — public
 
@@ -3498,6 +3499,48 @@ import { FinDialog } from '@finspace-loyalty/ui';
 
 **Built (26 Oct 2026).** Storybook (Components/Dialog): Playground (Figma's defaults and every option), All options (Figma), Remove confirmation, With fields, Long title and content; each starts open over a sample page, with "Open dialog" to bring it back. Checked in Chrome: 608 / 684 / 604 / 643 wide at 1920 / 1440 / 1280 / 1024, centred; with Figma's text 248 tall, as Figma: title row 48 at 16, body 16 below it, buttons 24 below the body and 24 above the bottom, 48 tall, 12 apart (Text here 120.2, Figma 121, text rendering), close 24 from the right edge, icon `#626262` Light / `#b7b7b7` Dark; radius 16, no shadow; a long title wraps; long content scrolls in the body, 24 clear above the buttons, the dialog 24 from the top and bottom of the window; Remove red. Light and Dark. a11y: no violations in either theme.
 
+### 9.72 FinSelectField (Input field-select) — public
+
+**Figma:** page **Input field**, component set `Input field-select` `537:2736` (read 26 Oct 2026): `state` = Enabled / Hovered / Focused / Typing / Complete (lowercase `state`, §10 #21). Every variant is an Input field-base `Type=Select` (§9.58), 343 × 74: the 48 box with `keyboard_arrow_down` in the trailing slot and the helper text 8 below. Enabled: the placeholder (`text-placeholder`); Hovered: `bg-secondary`, empty; Focused: the label on the border, the ring, no placeholder (and a caret); Typing: the label, ring and a value in `text-primary` (and a caret); Complete: the label, `border-strong`, the value. No Disabled or Error variants; no open menu.
+
+**Decided 26 Oct 2026:** (1) **every state comes from the base** (FinInputBase, §9.58), including Disabled and Error, which Figma's select set doesn't have; Focused is the field focused **or its menu open**. (2) **A button, not typed into:** Figma's caret (Focused, Typing) comes from the base and isn't shown. (3) **The arrow points up while the menu is open** (`keyboard_arrow_up`), as the country selector. (4) **The menu** is FinMenu `kind="select"` (§9.64): as wide as the field's box, 4 below it (flips above without room), the option rows Small List-standard `option` rows, the chosen one Selected; it scrolls when there are many. (5) **Search is optional** (`searchable`, off by default): a Small search field at the top of the menu that filters the options, with "No results found", as the country menu. (6) **No options: the field is disabled.** (7) **No clear button:** once chosen, the value can be changed but not emptied.
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `state` | runtime (the base's CSS and the menu's open state); `disabled`, `error` (base) |
+| Label, placeholder, helper text (base) | `label` (required), `placeholder`, `helperText` |
+| The value (Typing, Complete) | `options: { value, label, disabled? }[]` (required); `value` (controlled, `null` for none) / `defaultValue`, `onChange(value)` |
+| Trailing slot `keyboard_arrow_down` | fixed; `keyboard_arrow_up` while open |
+| — (code only) | `size: 'large' \| 'small'` (base), `name` (a hidden input, so the value is sent with a form; checking a choice was made is the form's job), `searchable`, `searchLabel`, `searchPlaceholder`, `noResultsText`, `ref` and other button attributes |
+
+**Code changes to the base:** FinInputBase's `control` can be a function that gets the field's box (to line the menu up with it), and its label has an id (`{id}-label`) so a control can be named by it.
+
+**Tokens used:** the base's (§9.58) and the menu's (§9.64); its own: the value Body/Large `text-primary` (`text-disabled` disabled), the placeholder `text-placeholder` (hidden while focused or open, as the input), `--fin-size-24` line height; the menu's "No results found" Body/Small `text-secondary`, `--fin-space-l` above it.
+
+**API:**
+
+```tsx
+import { FinSelectField } from '@finspace-loyalty/ui';
+
+<FinSelectField
+  label="Segment"
+  placeholder="Segment"
+  name="segment"
+  options={segments.map((s) => ({ value: s.id, label: s.name }))}
+  value={segment}
+  onChange={setSegment}
+  helperText="Segments that already have a configuration are not listed"
+/>
+```
+
+`'use client'`. Exports `FinSelectField`, `FinSelectFieldProps`, `FinSelectFieldOption`.
+
+**Accessibility:** a native `<button>` (`aria-haspopup="listbox"`, `aria-expanded`) named by the label and the chosen option or placeholder ("Segment VIP"), the helper text by `aria-describedby`; a button can't be marked invalid or required, so the error message, or that a choice is needed, goes in the helper text. Enter, Space, ↓ or ↑ open the menu (a `listbox` named by the label) on the chosen option; ↑ ↓ Home End and letters move; Enter or a click chooses, closes and returns focus to the field; Esc and Tab close. Disabled options are `aria-disabled` and skipped. The whole box is the click area.
+
+**Built (26 Oct 2026).** Storybook (Components/Input field/Select field): Playground, States (Figma), Menu open, Many options, With search, No options, Sizes, In a form. Checked against Figma in Chrome: 343 × 74, box 48 (Small 40), placeholder `#969696`, Complete `border-strong` with the label on the border, Hovered `bg-secondary` (empty only), Disabled and Error from the base; open: the ring and label, the arrow up, the menu 343 wide 4 below the field; a click anywhere in the box (the arrow too) opens it; a long option ends in "…" in the field and wraps in the menu. Light and Dark. FinTextField gained `suffix` (§9.59) in the same branch, for the Programme configuration form.
+
 Template:
 
 ```
@@ -3607,6 +3650,7 @@ Template:
 > - **Approved and merged (23 Oct 2026):** `FinButtonDock` (§9.69).
 > - **Approved and merged (26 Oct 2026):** `FinSideSheet` (§9.70), with grey back / close icons (FinButton `iconTone`). Open: §10 #69 (close button with a two-line title); in Figma: remove the shadow. **Next:** the Dialog box (§8 #68).
 > - **Approved and merged (26 Oct 2026):** `FinDialog` (§9.71); FinSideSheet now shares its modal and body-scroll code (`useModalDialog`, `useBodyScroll`), and a scrolling body is keyboard-focusable (§9.70). **Next:** the Programme configuration page's add (side sheet) and remove (dialog) states (§8.6), starting with Add programme configuration.
+> - **In review (26 Oct 2026):** `FinSelectField` (§9.72) on `feat/select-field`, with FinTextField `suffix` (§9.59) and FinInputBase's `control` taking the field's box. FinMultiSelectField stays on hold. After it: the Programme configuration add side sheet.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3814,3 +3858,4 @@ Template:
 | 26 Oct 2026 | 0.2 | `FinSideSheet` approved by design and merged into `main`. Next: the Dialog box (§8 #68). |
 | 26 Oct 2026 | 0.2 | **`FinDialog` built** (§8 #68, §9.71), public, Components/Dialog: a native modal `<dialog>` on FinOverlay, centred; width from the layout grid (8 / 6 / 4 even columns, centred, from 1024 / 1280 / 1920; no size token); at most the window less 24 above and below, the body scrolls; title wraps; grey close icon (`iconTone`); Leading, Secondary and Primary buttons (Medium, as wide as their labels; destructive tone); scrim click closes (`closeOnOverlayClick`). FinSideSheet and FinDialog share `useModalDialog` and `useBodyScroll`: a scrolling body is a focusable region named by the title, in both; the jsdom `<dialog>` stub moved to the test setup. |
 | 26 Oct 2026 | 0.2 | `FinDialog` approved by design and merged into `main`. Next: the Programme configuration page's add (side sheet) and remove (dialog) states (§8.6). |
+| 26 Oct 2026 | 0.2 | **`FinSelectField` built** (§8 #55, §9.72), public, Components/Input field/Select field: on FinInputBase (Select), every state from the base (Disabled and Error too); a button that opens a FinMenu `select` listbox as wide as the field; the arrow up while open; optional `searchable`; disabled with no options; no clear button; `name` sends the value with a form. FinInputBase: `control` can take the field's box, the label has an id. FinTextField: `suffix` (Figma `Show Suffix`). |
