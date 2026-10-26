@@ -35,6 +35,13 @@ describe('FinTable', () => {
     expect(screen.getAllByRole('link', { name: 'View profile' })[0]).toHaveAttribute('href', '/members/1');
   });
 
+  it('shows every row and no footer with footer off', () => {
+    render(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} footer={false} />);
+    expect(bodyRows()).toHaveLength(23);
+    expect(screen.queryByText(/^Showing/)).toBeNull();
+    expect(screen.queryByRole('navigation')).toBeNull();
+  });
+
   it('pages through the rows (client pagination)', async () => {
     const user = userEvent.setup();
     const onPageChange = vi.fn();
