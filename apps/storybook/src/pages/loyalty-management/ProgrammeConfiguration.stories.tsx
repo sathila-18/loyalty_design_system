@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
+import { fn, userEvent, within } from 'storybook/test';
 import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
 import { ProgrammeConfiguration, type ProgrammeConfig } from './ProgrammeConfiguration';
 
@@ -24,18 +24,32 @@ const MANY_CONFIGS: ProgrammeConfig[] = [
   { id: 12, segment: 'Pensioners', loyalty: false, expiryMonths: 36, cashConversion: true, pointsPerUnit: 85, minConversion: 100, maxConversion: 8000 },
 ];
 
+/** Every customer segment: the ones without a configuration are offered when adding. */
+const SEGMENTS = [
+  ...MANY_CONFIGS.map((c) => c.segment),
+  'Overseas Sri Lankans',
+  'Youth savers',
+  'Women in business',
+  'Priority banking customers with joint accounts across several branches',
+];
+
+/** Opens the add side sheet from the toolbar's button. */
+const openAdd = async (canvasElement: HTMLElement) => {
+  await userEvent.click(await within(canvasElement).findByRole('button', { name: 'Add programme configuration' }));
+};
+
 /**
  * Programme configuration (Figma `312:15165`, DESIGN.md §8.6), built only from the system's components: FinAppShell,
  * FinTable with its toolbar (search, Segment chip with a select menu, Add) and the row actions menu. Use the
- * viewport menu for 1920, 1440, 1280 and 1024. The actions only report what was chosen: the side sheet, dialog and
- * snackbar aren't built yet.
+ * viewport menu for 1920, 1440, 1280 and 1024. Add opens the add side sheet; a saved configuration joins the table.
+ * The row actions only report what was chosen: the remove dialog and snackbar come next.
  */
 const meta: Meta<typeof ProgrammeConfiguration> = {
   title: 'Pages/Loyalty management/Programme configuration',
   component: ProgrammeConfiguration,
   parameters: { layout: 'fullscreen', controls: { disable: true }, a11y: { context: { include: ['body'], exclude: PAGE_KNOWN_CONTRAST_ISSUES } } },
   globals: { viewport: { value: 'desktop1920', isRotated: false } },
-  args: { configs: FIGMA_CONFIGS, onAction: fn() },
+  args: { configs: FIGMA_CONFIGS, segments: SEGMENTS, onAction: fn() },
 };
 export default meta;
 
@@ -61,4 +75,43 @@ export const At1024: Story = {
   name: 'At 1024',
   args: { configs: MANY_CONFIGS },
   globals: { viewport: { value: 'desktop1024', isRotated: false } },
+};
+
+/** Add programme configuration (Figma `312:15899`): the side sheet over the list. Fill it in and save to add a row. */
+export const Add: Story = {
+  name: 'Add configuration',
+  play: async ({ canvasElement }) => {
+    await openAdd(canvasElement);
+  },
+};
+
+/** Save with nothing filled in: every field shows its error and the first one is focused. */
+export const AddErrors: Story = {
+  name: 'Add configuration, errors',
+  play: async ({ canvasElement }) => {
+    await openAdd(canvasElement);
+    await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('button', { name: 'Save configuration' }));
+  },
+};
+
+/**
+ * Every segment already has a configuration: the Segment field is disabled and says why. A disabled field's helper
+ * text is inactive by design (WCAG exempts disabled controls, as the field stories), so it's left out of the a11y check.
+ */
+export const AddNoSegmentsLeft: Story = {
+  name: 'Add configuration, no segments left',
+  args: { segments: FIGMA_CONFIGS.map((c) => c.segment) },
+  parameters: { a11y: { context: { include: ['body'], exclude: [...PAGE_KNOWN_CONTRAST_ISSUES, '[data-tone="disabled"]'] } } },
+  play: async ({ canvasElement }) => {
+    await openAdd(canvasElement);
+  },
+};
+
+/** At 1024: the sheet is the last 7 columns of the grid (583 wide). */
+export const AddAt1024: Story = {
+  name: 'Add configuration at 1024',
+  globals: { viewport: { value: 'desktop1024', isRotated: false } },
+  play: async ({ canvasElement }) => {
+    await openAdd(canvasElement);
+  },
 };

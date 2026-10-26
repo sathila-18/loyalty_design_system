@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FinAppShell, FinAssistChip, FinListStandard, FinMenu, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
 import { pageSideNav } from '../pageShell';
+import { AddProgrammeConfiguration, type NewProgrammeConfig } from './AddProgrammeConfiguration';
 
 /** One programme configuration: the loyalty and cash conversion rules for a customer segment. */
 export interface ProgrammeConfig {
@@ -10,14 +11,19 @@ export interface ProgrammeConfig {
   /** Points expire after this many months. */
   expiryMonths: number;
   cashConversion: boolean;
-  /** Points worth 1.00 in cash ("80 pts = 1.00"). */
+  /** Points worth `unitValue` in cash ("80 pts = 1.00"). */
   pointsPerUnit: number;
+  /** The cash those points are worth (LKR). Default 1.00. */
+  unitValue?: number;
   minConversion: number;
-  maxConversion: number;
+  /** Not in the add form (Figma `312:15899`), so a new configuration has none: shown as "—". */
+  maxConversion?: number;
 }
 
 export interface ProgrammeConfigurationProps {
   configs: ProgrammeConfig[];
+  /** Every customer segment; those without a configuration are offered in the add form. */
+  segments: string[];
   /** Called with what the admin did (an action from the toolbar or a row), so stories can show it. */
   onAction?: (action: string) => void;
 }
@@ -25,13 +31,17 @@ export interface ProgrammeConfigurationProps {
 const ALL = 'All';
 const number = (n: number) => n.toLocaleString('en-US');
 const onOff = (on: boolean) => (on ? 'Enable' : 'Disable');
+const money = (n: number) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 /**
  * Pages → Loyalty management → Programme configuration (Figma `312:15165`, DESIGN.md §8.6): the list of
  * configurations, one per customer segment, in the app shell. Search by segment, filter with the Segment chip, act
- * on a row from its ⋮ menu. The add (side sheet) and remove (dialog, snackbar) states wait for those components.
+ * on a row from its ⋮ menu. Add opens the add side sheet (`312:15899`); a saved configuration is added to the table.
+ * The remove (dialog) and removed (snackbar) states come next.
  */
-export function ProgrammeConfiguration({ configs, onAction = () => undefined }: ProgrammeConfigurationProps) {
+export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAction = () => undefined }: ProgrammeConfigurationProps) {
+  const [configs, setConfigs] = useState(initialConfigs);
+  const [adding, setAdding] = useState(false);
   const [query, setQuery] = useState('');
   const [segment, setSegment] = useState(ALL);
 
@@ -54,11 +64,11 @@ export function ProgrammeConfiguration({ configs, onAction = () => undefined }: 
       key: 'rate',
       header: 'Conversion rate',
       type: 'link',
-      value: (c) => `${number(c.pointsPerUnit)} pts = 1.00`,
+      value: (c) => `${number(c.pointsPerUnit)} pts = ${money(c.unitValue ?? 1)}`,
       href: (c) => `#loyalty/programme/${c.id}/conversion`,
     },
     { key: 'min', header: 'Min conversion (pts)', width: 200, value: (c) => number(c.minConversion) },
-    { key: 'max', header: 'Max conversion (pts)', width: 200, value: (c) => number(c.maxConversion) },
+    { key: 'max', header: 'Max conversion (pts)', width: 200, value: (c) => (c.maxConversion === undefined ? '—' : number(c.maxConversion)) },
   ];
 
   return (
@@ -101,7 +111,19 @@ export function ProgrammeConfiguration({ configs, onAction = () => undefined }: 
             </FinMenu>
           ),
           actionLabel: 'Add programme configuration',
-          onAction: () => onAction('Add programme configuration'),
+          onAction: () => {
+            onAction('Add programme configuration');
+            setAdding(true);
+          },
+        }}
+      />
+      <AddProgrammeConfiguration
+        open={adding}
+        onClose={() => setAdding(false)}
+        segments={segments.filter((s) => !configs.some((c) => c.segment === s))}
+        onSave={(config: NewProgrammeConfig) => {
+          onAction(`Saved: ${config.segment}`);
+          setConfigs((current) => [...current, { ...config, id: Math.max(0, ...current.map((c) => c.id)) + 1 }]);
         }}
       />
     </FinAppShell>
