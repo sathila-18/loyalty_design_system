@@ -11,3 +11,15 @@ if (typeof document !== 'undefined') {
   popoverStyle.textContent = '[popover]:not(:popover-open):not(dialog[open]) { display: block; }';
   document.head.append(popoverStyle);
 }
+
+// jsdom has no showModal() / close() for <dialog> (FinDialog, FinSideSheet); real browsers do. Open and close it by its
+// `open` attribute in tests.
+if (typeof HTMLDialogElement !== 'undefined') {
+  const dialogProto = HTMLDialogElement.prototype;
+  dialogProto.showModal ??= function showModal(this: HTMLDialogElement) {
+    this.setAttribute('open', '');
+  };
+  dialogProto.close ??= function close(this: HTMLDialogElement) {
+    this.removeAttribute('open');
+  };
+}

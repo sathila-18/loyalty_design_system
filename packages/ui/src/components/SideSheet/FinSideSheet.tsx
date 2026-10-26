@@ -1,8 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useId, useRef, useState, type DialogHTMLAttributes, type MouseEventHandler, type ReactNode, type SyntheticEvent } from 'react';
+import { useId, type DialogHTMLAttributes, type MouseEventHandler, type ReactNode } from 'react';
 import { FinButton } from '../Button';
 import { FinButtonDock, type FinButtonDockProps } from '../ButtonDock';
+import { useBodyScroll, useModalDialog } from '../Dialog/useModalDialog';
 import { FinDivider } from '../Divider';
 import { FinOverlay } from '../Overlay';
 import { FinTextBox, type FinHeadingLevel } from '../TextBox';
@@ -67,59 +68,9 @@ export function FinSideSheet({
   onCancel,
   ...rest
 }: FinSideSheetProps) {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const bodyRef = useRef<HTMLDivElement>(null);
+  const { dialogRef, panelRef, handleCancel } = useModalDialog(open, onClose, onCancel);
+  const { bodyRef, scrollable, contentBelow, update } = useBodyScroll(open, children);
   const titleId = useId();
-  const [contentBelow, setContentBelow] = useState(false);
-
-  // On open, focus goes to the sheet itself (screen readers read its title; Tab reaches the buttons next), not the
-  // first button, so no focus ring shows until the keyboard is used.
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) {
-      dialog.showModal();
-      panelRef.current?.focus();
-    }
-    if (!open && dialog.open) dialog.close();
-  }, [open]);
-
-  // The page behind doesn't scroll while the sheet is open (DESIGN.md §9.13).
-  useEffect(() => {
-    if (!open) return;
-    const root = document.documentElement;
-    const previous = root.style.overflow;
-    root.style.overflow = 'hidden';
-    return () => {
-      root.style.overflow = previous;
-    };
-  }, [open]);
-
-  // The dock is sticky while body content is under it: the body can still scroll down.
-  const updateContentBelow = useCallback(() => {
-    const body = bodyRef.current;
-    if (!body) return;
-    setContentBelow(body.scrollHeight - body.scrollTop - body.clientHeight > 1);
-  }, []);
-
-  useEffect(() => {
-    const body = bodyRef.current;
-    if (!open || !body) return;
-    updateContentBelow();
-    if (typeof ResizeObserver === 'undefined') return;
-    const observer = new ResizeObserver(updateContentBelow);
-    observer.observe(body);
-    for (const child of Array.from(body.children)) observer.observe(child);
-    return () => observer.disconnect();
-  }, [open, children, updateContentBelow]);
-
-  // Esc: the parent decides, through onClose, so `open` stays the one source of truth.
-  const handleCancel = (event: SyntheticEvent<HTMLDialogElement>) => {
-    onCancel?.(event);
-    event.preventDefault();
-    onClose();
-  };
 
   return (
     <dialog
@@ -151,7 +102,7 @@ export function FinSideSheet({
           )}
         </div>
         {divider && <FinDivider decorative className={styles.divider} />}
-        <div ref={bodyRef} className={styles.body} onScroll={updateContentBelow}>
+        <div ref={bodyRef} className={styles.body} {...(scrollable ? { role: 'region', 'aria-labelledby': titleId, tabIndex: 0 } : {})} onScroll={update}>
           {children}
         </div>
         {buttonDock && <FinButtonDock {...buttonDock} sticky={contentBelow} />}

@@ -1,0 +1,122 @@
+@import url('@finspace-loyalty/tokens/breakpoints.css');
+
+/*
+ * FinDialog (DESIGN.md §9). A native modal <dialog> filling the window (top layer), with FinOverlay and the panel
+ * centred on top. bg-primary, Radius-L, no shadow (it sits on the scrim). Width (decided 26 Oct 2026): N columns of
+ * the window's layout grid, centred, N even so both edges are on column lines: 8 below 1280, 6 from 1280, 4 from 1920
+ * (643 / 604 / 684 / 608 at 1024 / 1280 / 1440 / 1920; Figma's 696 isn't on the grid). The height hugs the content,
+ * at most the window less the grid margin above and below; past that the body scrolls.
+ */
+
+.dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+}
+
+.dialog::backdrop {
+  background: transparent;
+}
+
+.panel {
+  --fin-dialog-columns: 8;
+  --fin-dialog-column: calc(
+    (100% - 2 * var(--fin-grid-margin) - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns)
+  );
+
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: calc(var(--fin-dialog-columns) * var(--fin-dialog-column) + (var(--fin-dialog-columns) - 1) * var(--fin-grid-gutter));
+  height: fit-content;
+  max-height: calc(100% - 2 * var(--fin-grid-margin));
+  margin: auto;
+  border-radius: var(--fin-radius-l);
+  background-color: var(--fin-bg-primary);
+}
+
+/* Focused only by the dialog when it opens, never by Tab: a container, not a control, so no ring. */
+.panel:focus {
+  outline: none;
+}
+
+@media (--fin-bp-lg) {
+  .panel {
+    --fin-dialog-columns: 6;
+  }
+}
+
+@media (--fin-bp-xxl) {
+  .panel {
+    --fin-dialog-columns: 4;
+  }
+}
+
+/* The title and the close button: Space-XL above, Space-3XL at the sides, Space-3XL apart. */
+.header {
+  display: flex;
+  flex: none;
+  gap: var(--fin-space-3xl);
+  align-items: center;
+  padding: var(--fin-space-xl) var(--fin-space-3xl) 0;
+}
+
+/* Title only: Figma's Space-3XL under the title row ends the dialog. */
+.header[data-last] {
+  padding-bottom: var(--fin-space-3xl);
+}
+
+.title {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/*
+ * Figma `Slot`: Space-XL under the title row, Space-L between items. It scrolls when the dialog is as tall as the
+ * window; the title and buttons stay. The Space-3XL above the buttons is the buttons' own padding, so it stays clear
+ * while the body scrolls; with no buttons, the body ends with it.
+ */
+.body {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  gap: var(--fin-space-l);
+  min-height: 0;
+  padding: var(--fin-space-xl) var(--fin-space-3xl) 0;
+  overflow-y: auto;
+}
+
+.body[data-last] {
+  padding-bottom: var(--fin-space-3xl);
+}
+
+/* Only focusable while it scrolls (keyboard scrolling of text-only content). */
+.body:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: -2px;
+}
+
+/* The buttons: the leading one on the left, the trailing ones on the right; Space-3XL around them. */
+.buttons {
+  display: flex;
+  flex: none;
+  gap: var(--fin-space-xl);
+  align-items: center;
+  padding: var(--fin-space-3xl);
+}
+
+.trailing {
+  display: flex;
+  gap: var(--fin-space-l);
+  margin-left: auto;
+}
