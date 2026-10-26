@@ -43,6 +43,21 @@ describe('FinTableRow', () => {
     expect(screen.getByRole('checkbox', { name: 'Select Ann Perera' })).toBeChecked();
   });
 
+  it('has the Hovered fill by default, and none with hover off', () => {
+    const { rerender } = inTable(<FinTableRow selectCell={false}><FinTableCell>Ann</FinTableCell></FinTableRow>);
+    expect(screen.getByRole('row')).toHaveAttribute('data-hover');
+    rerender(
+      <table>
+        <tbody>
+          <FinTableRow selectCell={false} hover={false}>
+            <FinTableCell>Ann</FinTableCell>
+          </FinTableRow>
+        </tbody>
+      </table>,
+    );
+    expect(screen.getByRole('row')).not.toHaveAttribute('data-hover');
+  });
+
   it('with Select cell off, has only the Cell Slot cells', () => {
     inTable(<FinTableRow selectCell={false}>{cells}</FinTableRow>);
     expect(screen.getAllByRole('cell')).toHaveLength(3);

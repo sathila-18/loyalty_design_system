@@ -24,6 +24,11 @@ export interface FinTableRowProps extends Omit<HTMLAttributes<HTMLTableRowElemen
    * that only shows data (not focusable, no pointer).
    */
   onRowClick?: () => void;
+  /**
+   * The Hovered fill (default on). Off (code only, 26 Oct 2026) for a row that only shows data, such as a details
+   * table in a side sheet.
+   */
+  hover?: boolean;
   /** Figma `Cell Slot`: the data cells, as `FinTableCell`s. */
   children?: ReactNode;
 }
@@ -43,6 +48,7 @@ export const FinTableRow = forwardRef<HTMLTableRowElement, FinTableRowProps>(fun
     selectCellClassName,
     checkboxLabel = 'Select row',
     onRowClick,
+    hover = true,
     children,
     className,
     onClick,
@@ -72,6 +78,7 @@ export const FinTableRow = forwardRef<HTMLTableRowElement, FinTableRowProps>(fun
       className={className ? `${styles.row} ${className}` : styles.row}
       data-selected={selected ? '' : undefined}
       data-clickable={onRowClick ? '' : undefined}
+      data-hover={hover ? '' : undefined}
       {...(onRowClick ? { tabIndex: 0 } : {})}
       onClick={handleClick}
       onKeyDown={handleKeyDown}

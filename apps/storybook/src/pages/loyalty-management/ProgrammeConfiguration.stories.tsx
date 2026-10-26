@@ -141,7 +141,7 @@ export const ViewFromRow: Story = {
   },
 };
 
-/** A long segment name: the description under "Details" wraps; the table's value ends in "…". */
+/** A long segment name: the title and the table's value end in "…". */
 export const ViewLongName: Story = {
   name: 'Details, long segment name',
   args: { configs: MANY_CONFIGS },

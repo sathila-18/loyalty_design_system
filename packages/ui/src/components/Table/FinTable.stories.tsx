@@ -296,10 +296,15 @@ export const Narrow: Story = {
   ),
 };
 
-/** Code only: no footer (`footer={false}`), for a short table that never pages, such as a details table in a side sheet. */
+/**
+ * Code only: no footer (`footer={false}`) and no Hovered fill (`hover={false}`), for a short table that only shows
+ * data, such as a details table in a side sheet.
+ */
 export const NoFooter: Story = {
-  name: 'No footer',
-  render: () => <FinTable label="Members" columns={columns()} rows={makeMembers(6)} getRowId={(m) => m.id} selectable={false} footer={false} />,
+  name: 'No footer, no hover',
+  render: () => (
+    <FinTable label="Members" columns={columns()} rows={makeMembers(6)} getRowId={(m) => m.id} selectable={false} footer={false} hover={false} />
+  ),
 };
 
 /** No rows: the header and "Showing 0 of 0 entries" (an empty state comes with the Empty state component). */

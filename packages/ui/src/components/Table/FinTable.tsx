@@ -153,6 +153,8 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
    * for example a details table in a side sheet: every row is shown.
    */
   footer?: boolean;
+  /** The rows' Hovered fill (default on). Off (code only, 26 Oct 2026) for a table that only shows data. */
+  hover?: boolean;
 }
 
 const isText = (value: unknown): value is string | number => typeof value === 'string' || typeof value === 'number';
@@ -215,6 +217,7 @@ function FinTableInner<Row>(
     rowActionsHeader = 'Actions',
     toolbar,
     footer = true,
+    hover = true,
     className,
     ...rest
   }: FinTableProps<Row>,
@@ -438,6 +441,7 @@ function FinTableInner<Row>(
                   selected={isSelected}
                   onSelectedChange={(on) => toggle(id, on)}
                   checkboxLabel={`Select ${rowLabel(row, index)}`}
+                  hover={hover}
                   {...(rowClick ? { onRowClick: rowClick } : {})}
                   {...(selectClass ? { selectCellClassName: selectClass } : {})}
                 >

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { FinBadge, FinSideSheet, FinTable, FinTextBox, type FinTableColumn } from '@finspace-loyalty/ui';
+import { FinBadge, FinSideSheet, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
 import type { ProgrammeConfig } from './ProgrammeConfiguration';
 
 export interface ProgrammeConfigurationDetailsProps {
@@ -27,9 +27,10 @@ function shown(column: FinTableColumn<ProgrammeConfig>, config: ProgrammeConfig)
 }
 
 /**
- * Programme configuration → Details (code first, no Figma; DESIGN.md §8.6): a side sheet with a two-column table,
- * each of the list's columns (Attribute) and the configuration's value (Added record). Edit (Primary) and Remove
- * (Secondary, destructive) in the dock; the close button at the top.
+ * Programme configuration → Details (code first, no Figma; DESIGN.md §8.6): a side sheet titled "<segment> details"
+ * (one line, ends in "…") with a two-column table, each of the list's columns (Attribute) and the configuration's
+ * value (Added record), no hover. Edit (Primary) and Remove (Secondary, destructive) in the dock; the close button at
+ * the top.
  */
 export function ProgrammeConfigurationDetails({ config, columns, onClose, onEdit, onRemove }: ProgrammeConfigurationDetailsProps) {
   const details: Detail[] = config ? columns.map((column) => ({ key: column.key, attribute: column.header, value: shown(column, config) })) : [];
@@ -38,7 +39,7 @@ export function ProgrammeConfigurationDetails({ config, columns, onClose, onEdit
     <FinSideSheet
       open={config !== null}
       onClose={onClose}
-      title={<FinTextBox type="h3" heading="Details" headingLevel={2} description={config?.segment ?? ''} truncateHeading />}
+      title={config ? `${config.segment} details` : 'Details'}
       buttonDock={{
         secondaryButton: { label: 'Remove', tone: 'destructive', onClick: () => config && onRemove(config) },
         primaryButton: { label: 'Edit', onClick: () => config && onEdit(config) },
@@ -54,6 +55,7 @@ export function ProgrammeConfigurationDetails({ config, columns, onClose, onEdit
         getRowId={(d) => d.key}
         selectable={false}
         footer={false}
+        hover={false}
       />
     </FinSideSheet>
   );
