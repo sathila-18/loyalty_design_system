@@ -38,11 +38,19 @@ const openAdd = async (canvasElement: HTMLElement) => {
   await userEvent.click(await within(canvasElement).findByRole('button', { name: 'Add programme configuration' }));
 };
 
+/** Opens a row's details from its ⋮ menu (View). */
+const openView = async (canvasElement: HTMLElement, segment: string) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(await canvas.findByRole('button', { name: `More actions for ${segment}` }));
+  await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('menuitem', { name: 'View' }));
+};
+
 /**
  * Programme configuration (Figma `312:15165`, DESIGN.md §8.6), built only from the system's components: FinAppShell,
  * FinTable with its toolbar (search, Segment chip with a select menu, Add) and the row actions menu. Use the
  * viewport menu for 1920, 1440, 1280 and 1024. Add opens the add side sheet; a saved configuration joins the table.
- * The row actions only report what was chosen: the remove dialog and snackbar come next.
+ * View (or a row click) opens the details sheet. Edit and Remove only report what was chosen: the edit sheet, remove
+ * dialog and snackbar come next.
  */
 const meta: Meta<typeof ProgrammeConfiguration> = {
   title: 'Pages/Loyalty management/Programme configuration',
@@ -113,5 +121,40 @@ export const AddAt1024: Story = {
   globals: { viewport: { value: 'desktop1024', isRotated: false } },
   play: async ({ canvasElement }) => {
     await openAdd(canvasElement);
+  },
+};
+
+/** Details (code first, no Figma): View in a row's ⋮ menu opens the row's attributes and values, with Edit and Remove. */
+export const View: Story = {
+  name: 'Details',
+  play: async ({ canvasElement }) => {
+    await openView(canvasElement, 'Staff');
+  },
+};
+
+/** A click on the row opens its details too. */
+export const ViewFromRow: Story = {
+  name: 'Details from a row click',
+  args: { configs: MANY_CONFIGS },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(await within(canvasElement).findByText('Dormant accounts'));
+  },
+};
+
+/** A long segment name: the title and the table's value end in "…". */
+export const ViewLongName: Story = {
+  name: 'Details, long segment name',
+  args: { configs: MANY_CONFIGS },
+  play: async ({ canvasElement }) => {
+    await openView(canvasElement, 'Premier banking customers (Colombo and Kandy branches)');
+  },
+};
+
+/** At 1024: the sheet is 583 wide. */
+export const ViewAt1024: Story = {
+  name: 'Details at 1024',
+  globals: { viewport: { value: 'desktop1024', isRotated: false } },
+  play: async ({ canvasElement }) => {
+    await openView(canvasElement, 'VIP');
   },
 };

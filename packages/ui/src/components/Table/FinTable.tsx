@@ -148,6 +148,13 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
    * the table (22 Oct 2026). Without it, none.
    */
   toolbar?: FinTableToolbarProps;
+  /**
+   * The Table footer with pagination (default on). Off (code only, 26 Oct 2026) for a short table that never pages,
+   * for example a details table in a side sheet: every row is shown.
+   */
+  footer?: boolean;
+  /** The rows' Hovered fill (default on). Off (code only, 26 Oct 2026) for a table that only shows data. */
+  hover?: boolean;
 }
 
 const isText = (value: unknown): value is string | number => typeof value === 'string' || typeof value === 'number';
@@ -171,9 +178,9 @@ function compare(a: string | number | Date, b: string | number | Date): number {
 const columnStyle = (width: number) => ({ '--fin-table-column-width': `${width}px` }) as CSSProperties;
 
 /**
- * A complete table (DESIGN.md §9): the Header row, Table rows and the Table footer with pagination, from columns and
- * rows as data. Code only (no Figma component): it adds no visuals beyond the 16 (`Space-XL`) gap above the footer.
- * Columns are fixed (`width`), flexible (the default, sharing the rest equally) or have a `minWidth`; the select
+ * A complete table (DESIGN.md §9): the Header row, Table rows and the Table footer with pagination (`footer`, default
+ * on), from columns and rows as data. Code only (no Figma component): it adds no visuals beyond the 16 (`Space-XL`)
+ * gap above the footer. Columns are fixed (`width`), flexible (the default, sharing the rest equally) or have a `minWidth`; the select
  * column is fixed at 72. When the columns don't fit, the table scrolls sideways; long text ends in "…". "Select all"
  * acts on the current page; selection is by row ID and kept across pages. No outer border; the last row has no line
  * under it. `ref` goes to the root.
@@ -209,6 +216,8 @@ function FinTableInner<Row>(
     rowActionsLabel,
     rowActionsHeader = 'Actions',
     toolbar,
+    footer = true,
+    hover = true,
     className,
     ...rest
   }: FinTableProps<Row>,
@@ -244,7 +253,8 @@ function FinTableInner<Row>(
   }
   const total = serverPaged ? totalRows : shownRows.length;
   const [innerPerPage, setInnerPerPage] = useState(defaultRowsPerPage);
-  const perPage = Math.max(1, Math.floor(rowsPerPage ?? innerPerPage));
+  // Without the footer there's no paging: every row is on the one page.
+  const perPage = footer ? Math.max(1, Math.floor(rowsPerPage ?? innerPerPage)) : Math.max(1, total);
   const pageCount = Math.max(1, Math.ceil(total / perPage));
   const [innerPage, setInnerPage] = useState(defaultPage);
   const current = Math.min(Math.max(1, page ?? innerPage), pageCount);
@@ -431,6 +441,7 @@ function FinTableInner<Row>(
                   selected={isSelected}
                   onSelectedChange={(on) => toggle(id, on)}
                   checkboxLabel={`Select ${rowLabel(row, index)}`}
+                  hover={hover}
                   {...(rowClick ? { onRowClick: rowClick } : {})}
                   {...(selectClass ? { selectCellClassName: selectClass } : {})}
                 >
@@ -470,15 +481,17 @@ function FinTableInner<Row>(
           </tbody>
         </table>
       </div>
-      <FinTableFooter
-        className={styles.footer}
-        totalRows={total}
-        rowsPerPage={perPage}
-        page={current}
-        onPageChange={changePage}
-        onRowsPerPageChange={changePerPage}
-        {...(rowsPerPageOptions ? { rowsPerPageOptions } : {})}
-      />
+      {footer && (
+        <FinTableFooter
+          className={styles.footer}
+          totalRows={total}
+          rowsPerPage={perPage}
+          page={current}
+          onPageChange={changePage}
+          onRowsPerPageChange={changePerPage}
+          {...(rowsPerPageOptions ? { rowsPerPageOptions } : {})}
+        />
+      )}
     </div>
   );
 }
