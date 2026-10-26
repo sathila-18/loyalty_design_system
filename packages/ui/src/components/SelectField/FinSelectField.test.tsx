@@ -42,6 +42,19 @@ describe('FinSelectField', () => {
     expect(field()).toHaveFocus();
   });
 
+  it('after a mouse-opened menu closes, is quiet (not Focused) until the keyboard is used on it', async () => {
+    const user = userEvent.setup();
+    render(<FinSelectField label="Segment" options={OPTIONS} />);
+    await user.click(field());
+    await user.click(screen.getByRole('option', { name: 'VIP' }));
+    expect(field()).toHaveFocus();
+    expect(field()).toHaveAttribute('data-quiet');
+    await user.keyboard('{ArrowDown}');
+    expect(field()).not.toHaveAttribute('data-quiet');
+    await user.keyboard('{Escape}');
+    expect(field()).not.toHaveAttribute('data-quiet');
+  });
+
   it('works with the keyboard: arrow keys open and move, Enter chooses', async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();

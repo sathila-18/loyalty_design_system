@@ -49,8 +49,8 @@
   color: var(--fin-text-disabled);
 }
 
-/* Focused or open: the label takes over from the placeholder, as the input (Figma Focused). */
-.trigger:is(:focus, [aria-expanded="true"]) .value[data-placeholder] {
+/* Focused (keyboard) or open: the label takes over from the placeholder, as the input (Figma Focused). */
+.trigger:is(:focus-visible:not([data-quiet]), [aria-expanded="true"]) .value[data-placeholder] {
   color: transparent;
 }
 

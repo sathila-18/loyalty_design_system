@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useId, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
+import { forwardRef, useId, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import { FinInputBase, type FinInputBaseSize } from '../InputBase';
 import { FinListStandard } from '../ListStandard';
@@ -91,6 +91,10 @@ export const FinSelectField = forwardRef<HTMLButtonElement, FinSelectFieldProps>
   const selected = options.find((option) => option.value === chosen);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
+  // Opened with the mouse: once the menu closes (a choice, Escape, a click outside), the field goes back to Enabled or
+  // Complete, not Focused, until the keyboard is used on it again (decided 26 Oct 2026).
+  const openedByPointer = useRef(false);
+  const [quiet, setQuiet] = useState(false);
   const isDisabled = disabled || options.length === 0;
   const hasHelper = helperText !== undefined && helperText !== null && helperText !== false;
 
@@ -125,6 +129,7 @@ export const FinSelectField = forwardRef<HTMLButtonElement, FinSelectFieldProps>
             open={open}
             onOpenChange={(next) => {
               setOpen(next);
+              setQuiet(!next && openedByPointer.current);
               // A fresh search each time it opens.
               if (!next) setQuery('');
             }}
@@ -155,6 +160,20 @@ export const FinSelectField = forwardRef<HTMLButtonElement, FinSelectFieldProps>
                 form={form}
                 disabled={isDisabled}
                 className={styles.trigger}
+                data-quiet={quiet || undefined}
+                onPointerDown={(event) => {
+                  openedByPointer.current = true;
+                  rest.onPointerDown?.(event);
+                }}
+                onKeyDown={(event) => {
+                  openedByPointer.current = false;
+                  setQuiet(false);
+                  menuProps.onKeyDown(event);
+                }}
+                onBlur={(event) => {
+                  setQuiet(false);
+                  rest.onBlur?.(event);
+                }}
                 // The label, then the chosen option (or the placeholder): "Segment, Staff".
                 aria-labelledby={`${id}-label ${id}-value`}
                 aria-describedby={[rest['aria-describedby'], hasHelper ? `${id}-helper` : undefined].filter(Boolean).join(' ') || undefined}
