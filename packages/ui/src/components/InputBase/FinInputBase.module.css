@@ -16,7 +16,9 @@
  * Space-XL), icons 20 (the default chevron, the country selector's arrow; the slots take 20 icons); text unchanged.
  *
  * Focused is the input (or `control`) having focus, not a button in an accessory slot (the password eye): reaching
- * that shows only its own focus ring (decided 21 Oct 2026).
+ * that shows only its own focus ring (decided 21 Oct 2026). A button `control` (FinSelectField) is Focused only while
+ * its menu is open or it has keyboard focus, so the field goes back to Enabled or Complete when the menu closes after
+ * it was opened with the mouse (the control sets `data-quiet` until the keyboard is used on it; decided 26 Oct 2026).
  *
  * The label sits on no background: the border, ring and halo are fieldsets whose legend (the label's text, invisible)
  * cuts a gap in them, so whatever surface is behind the field shows (decided 21 Oct 2026). The ring geometry (1px,
@@ -44,7 +46,7 @@
 }
 
 /* Complete: filled and not focused. */
-.root:is([data-filled], :has(.input:not(:placeholder-shown))):not([data-error], [data-disabled], :has(.content > :not(.accessory):focus-within)) {
+.root:is([data-filled], :has(.input:not(:placeholder-shown))):not([data-error], [data-disabled], :has(.content > :not(.accessory, button):focus-within, .content > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"]))) {
   --input-border: var(--fin-border-strong);
 }
 
@@ -62,7 +64,7 @@
 }
 
 /* Hovered: only an empty field that isn't focused (Figma has Hovered for those only). */
-.root:not([data-disabled], [data-filled], :has(.input:not(:placeholder-shown))) .field:hover:not(:has(.content > :not(.accessory):focus-within)) {
+.root:not([data-disabled], [data-filled], :has(.input:not(:placeholder-shown))) .field:hover:not(:has(.content > :not(.accessory, button):focus-within, .content > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"]))) {
   background-color: var(--fin-bg-secondary);
 }
 
@@ -151,7 +153,7 @@
 /* While the label shows, the divider starts under it, so a long label never sits on the line (Figma's short label
    ends before it). */
 .root:is([data-filled], :has(.input:not(:placeholder-shown))) .divider,
-.field:has(.content > :not(.accessory):focus-within) .divider {
+.field:has(.content > :not(.accessory, button):focus-within, .content > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"])) .divider {
   margin-block-start: var(--fin-space-m);
 }
 
@@ -191,8 +193,8 @@
   display: none;
 }
 
-.field:has(.content > :not(.accessory):focus-within) .ring,
-.field:has(.content > :not(.accessory):focus-within) .halo {
+.field:has(.content > :not(.accessory, button):focus-within, .content > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"])) .ring,
+.field:has(.content > :not(.accessory, button):focus-within, .content > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"])) .halo {
   display: block;
 }
 
@@ -231,12 +233,12 @@
 }
 
 .root:is([data-filled], :has(.input:not(:placeholder-shown))) .label,
-.field:has(.content > :not(.accessory):focus-within) .label {
+.field:has(.content > :not(.accessory, button):focus-within, .content > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"])) .label {
   opacity: 1;
 }
 
 .root:is([data-filled], :has(.input:not(:placeholder-shown))) .notch,
-.field:has(.content > :not(.accessory):focus-within) .notch {
+.field:has(.content > :not(.accessory, button):focus-within, .content > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"])) .notch {
   max-width: 100%;
 }
 

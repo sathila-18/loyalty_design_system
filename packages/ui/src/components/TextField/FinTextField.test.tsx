@@ -21,6 +21,12 @@ describe('FinTextField', () => {
     expect(screen.getByText('person')).toHaveAttribute('data-size', '20');
   });
 
+  it('shows the suffix after the value', () => {
+    render(<FinTextField label="Points expiry" suffix="Months" defaultValue="36" />);
+    expect(screen.getByText('Months')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Points expiry' })).toHaveValue('36');
+  });
+
   it('with an error, is invalid', () => {
     render(<FinTextField label="Email" error helperText="Enter a valid email" />);
     expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');

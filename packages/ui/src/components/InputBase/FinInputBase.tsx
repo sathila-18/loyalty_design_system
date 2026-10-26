@@ -50,8 +50,11 @@ export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputEle
   onCountryChange?: (country: FinFlagCountry) => void;
   /** Mobile number: the dial codes as captions in the country menu. Default on. */
   showDialCodes?: boolean;
-  /** Figma Place holder slot: another control in place of the input (a select's value, chips). It needs `id`. */
-  control?: ReactNode;
+  /**
+   * Figma Place holder slot: another control in place of the input (a select's value, chips). It needs `id`, and can
+   * name itself with the label (`${id}-label`). A function gets the field's box, to line a menu up with it.
+   */
+  control?: ReactNode | ((field: HTMLDivElement | null) => ReactNode);
   /** With `control`: whether it has a value (the input works this out itself). */
   filled?: boolean;
 }
@@ -134,7 +137,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
         <div className={styles.content}>
           {leading && <span className={styles.accessory}>{leading}</span>}
           {prefix && <span className={styles.affix}>{prefix}</span>}
-          {control ?? (
+          {(typeof control === 'function' ? control(fieldEl) : control) ?? (
             <input
               {...rest}
               ref={ref}
@@ -161,7 +164,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
         <fieldset className={styles.ring} aria-hidden="true">
           {notch}
         </fieldset>
-        <label className={showLabel ? styles.label : styles.hiddenLabel} htmlFor={id}>
+        <label id={`${id}-label`} className={showLabel ? styles.label : styles.hiddenLabel} htmlFor={id}>
           {label}
         </label>
       </div>
