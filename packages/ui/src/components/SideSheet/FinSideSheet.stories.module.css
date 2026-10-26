@@ -1,0 +1,24 @@
+/* Layout for the FinSideSheet stories only (not part of the component). */
+
+/* The page behind the sheet: taller than the window, so it would scroll if the sheet didn't stop it. */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  padding: var(--fin-space-3xl);
+}
+
+.filler {
+  margin: 0;
+  padding: var(--fin-space-3xl) 0;
+  border-bottom: 1px solid var(--fin-border-subtle);
+  color: var(--fin-text-secondary);
+  font: var(--fin-font-body-medium);
+}
+
+/* The form in the body: its fields keep the body's gap. */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}

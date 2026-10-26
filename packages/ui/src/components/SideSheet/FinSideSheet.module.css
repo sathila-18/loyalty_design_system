@@ -1,0 +1,102 @@
+@import url('@finspace-loyalty/tokens/breakpoints.css');
+
+/*
+ * FinSideSheet (DESIGN.md §9). A native modal <dialog> filling the window (top layer), with FinOverlay and the panel
+ * on the right edge. No shadow: the scrim separates it from the page (decided 26 Oct 2026). Width (decided 26 Oct
+ * 2026): the last N columns of the window's layout grid plus the right margin, N stepping down as the window grows
+ * (7 below 1280, 6, 5 from 1440, 4 from 1920), so it stays about 600 wide and its left edge is on a column line.
+ */
+
+.dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+}
+
+.dialog::backdrop {
+  background: transparent;
+}
+
+.panel {
+  --fin-side-sheet-columns: 7;
+  --fin-side-sheet-column: calc(
+    (100% - 2 * var(--fin-grid-margin) - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns)
+  );
+
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: calc(
+    var(--fin-side-sheet-columns) * var(--fin-side-sheet-column) + (var(--fin-side-sheet-columns) - 1) * var(--fin-grid-gutter) +
+      var(--fin-grid-margin)
+  );
+  background-color: var(--fin-bg-primary);
+}
+
+/* Focused only by the sheet when it opens, never by Tab: a container, not a control, so no ring. */
+.panel:focus {
+  outline: none;
+}
+
+@media (--fin-bp-lg) {
+  .panel {
+    --fin-side-sheet-columns: 6;
+  }
+}
+
+@media (--fin-bp-xl) {
+  .panel {
+    --fin-side-sheet-columns: 5;
+  }
+}
+
+@media (--fin-bp-xxl) {
+  .panel {
+    --fin-side-sheet-columns: 4;
+  }
+}
+
+/* Back button, title, close button: Space-4XL above, Space-3XL at the sides, Space-XS apart. */
+.header {
+  display: flex;
+  flex: none;
+  gap: var(--fin-space-xs);
+  align-items: center;
+  padding: var(--fin-space-4xl) var(--fin-space-3xl) 0;
+}
+
+/* Figma `Title` slot: fills the row. */
+.title {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.divider {
+  flex: none;
+  margin-top: var(--fin-space-3xl);
+}
+
+/*
+ * Figma `Body content slot`: Space-3XL at the sides and between items. The Space-3XL above and below are padding
+ * inside the scrolling area, so content scrolls right up to the header and under the dock.
+ */
+.body {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  min-height: 0;
+  padding: var(--fin-space-3xl);
+  overflow-y: auto;
+}

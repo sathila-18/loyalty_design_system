@@ -718,7 +718,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 64 | `Snackbar` | Snackbar | `268:992` | `FinSnackbar` | Text Box, all-button · State: Neutral/Success/Warning/Error · single/two lines | ⚠️ | ⬜ |
 | 65 | `Empty state` | Empty state | `71:4588` | `FinEmptyState` | 48px bg, 68px bg, Text Box, all-button · Size: Small/Medium/Large · Icon slot | ✅ | ⬜ |
 | 66 | `Button dock` | Button dock | `75:5858` | `FinButtonDock` | Text Box, all-button · Sticky · Accessory slot · Show Tertiary / Secondary / Primary Button · **public** (§9.69) | ✅ | ✅ |
-| 67 | `Side sheet` | Side sheet | `3120:30707` | `FinSideSheet` | Text Box, all-button, Divider, Button dock · Body slot · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13) | ✅ (remote `Views / Dividers` replaced by our Divider, 23 Oct 2026, §10 #25) | ⬜ |
+| 67 | `Side sheet` | Side sheet | `3120:30707` | `FinSideSheet` | Text Box, all-button, Divider, Button dock · Body slot · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13); width from the layout grid · **public** (§9.70) | ✅ (remote `Views / Dividers` replaced by our Divider, 23 Oct 2026, §10 #25) | ✅ |
 | 68 | `Dialog box` | Dialog | `3234:11710` | `FinDialog` | Text Box, all-button, `24px` · Body slot · Leading button, Primary/Secondary buttons, Trailing buttons, Trailing icon · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13) | ✅ | ⬜ |
 | 69 | `Main header` | Header | `3178:24570` | `FinHeader` | all-button, Text Box, Header notification · Show Back Button, `body content` slot (was `Description`), Notification · **public** (§9.63) | ✅ | ✅ |
 | 70 | `Side Menu` | Side nav | `3142:11871` | `FinSideNav` | Main Selection, List-base, Avatar, Text Box, all-button · `Menu` (8; from `currentHref`) · `Type`: Expanded/Minimized → `type` · `logo` slot (Logo sizes is from another library, §10 #25) · `profile` · **public** (§9.57) | ⚠️ (raw gaps 8 / 40 → `Space-M` / `Space-6XL`; logo from another library, a slot in code) | ✅ |
@@ -3378,6 +3378,67 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Built (23 Oct 2026).** Storybook (Components/Button dock): Playground (every Figma option, labels, a destructive Primary), Sticky (Figma), Scenarios (Cancel / Save, Reset / Cancel / Apply, a remove confirmation, one button), Sticky in a panel (the shadow while content is under the dock). Checked in a browser at 600 wide (the Side sheet's dock): padding 16 / 24 / 40, note 42 (two lines) 24 above the buttons, buttons 56 tall, 16 apart, Tertiary 129 (its label), Secondary and Primary 195.4 each; 178 tall, as the Side sheet's dock in Figma; Sticky `0 -2px 16px rgb(0 0 0 / 8%)`. Light and Dark.
 
+### 9.70 FinSideSheet (Side sheet) — public
+
+**Figma:** page **Side sheet**, component set `Side sheet` `3120:30707`, one variant `Property 1=Default` `3120:30702` (read 26 Oct 2026). 600 × 1080, `bg-primary`, a column with gap `Space-3XL` (24). Parts, top to bottom:
+- **Header** (`3120:30478`): padding `Space-4XL` (32) top, `Space-3XL` (24) sides, 0 bottom; a row, centred, gap `Space-XS` (4): **back button** (all-button Tertiary, Medium, Only Icon, `arrow_back`), the **Title slot** (fills; default a Text Box Display Small-H3, heading only, "Title"), **close button** (all-button Tertiary, Medium, Only Icon, `close`). 80 tall.
+- **Divider** (`3120:30759`, our Divider since 23 Oct 2026): off by default.
+- **Body content slot** (`3120:30672`): fills the rest; `Space-3XL` at the sides and between items.
+- **Button dock** (`3120:30673`, FinButtonDock §9.69): Accessory, Secondary and Primary shown, Sticky False. 178 tall.
+
+Booleans `Show Back Button` (on), `Show Close Button` (on), `View Divider` (off), `Show Button Dock` (on); slots `Title`, `Body content slot`. Not exposed: a hidden all-button (`3120:30572`, 60 × 24) in the header frame, and that frame's raw 24 gap (one visible child, so it never shows). The screen (Programme configuration add, `312:15899`, instance `326:22254`) puts a Text Box with heading and description in the Title slot; it still has the remote `Views / Dividers` and a hidden `Badge-primary` from an older version.
+
+**Decided 26 Oct 2026:**
+1. **Width from the layout grid, no `Size-600` token:** the sheet spans the last N columns of the window's grid (§4.3) plus the right margin, flush with the right edge; N steps down as the window grows, so it stays about 600 and its left edge is on a column line. N = 7 below 1280 (583 at 1024), 6 from 1280 (628), 5 from 1440 (590), 4 from 1920 (632; Figma's 600 starts mid-column). Above 1920 it keeps 4 columns and grows (845 at 2560). Full window height.
+2. **No shadow** (removed in Figma; it sits on the scrim, §4.2).
+3. **Back button off by default** in code (Figma: on): it only works with `onBack`.
+4. **Back and close icons are Tertiary `fg-action`**; Figma's `fg-secondary` override to be removed (as §9.63).
+5. **A click on the scrim closes the sheet** by default; `closeOnOverlayClick={false}` for forms.
+6. **A string title stays on one line and ends in "…"** (FinTextBox `truncateHeading`).
+7. **32 (`Space-4XL`) at the top** stays; the Side sheet is off §10 #28.
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `Property 1` = Default | no prop (one variant) |
+| `Title` slot | `title: ReactNode` (required): a string becomes the Text Box Display Small-H3 heading, one line with "…", an `<h2>` (`headingLevel`); any other node is placed as it is |
+| `Show Back Button` | `backButton?: boolean` (default false), `onBack`, `backLabel` (default "Back") |
+| `Show Close Button` | `closeButton?: boolean` (default true), `closeLabel` (default "Close") |
+| `View Divider` | `divider?: boolean` (default false) |
+| `Body content slot` | `children` |
+| `Show Button Dock` + its options | `buttonDock?: FinButtonDockProps` without `sticky` (shown when passed) |
+| — (code only) | `open: boolean`, `onClose: () => void`, `closeOnOverlayClick?: boolean` (default true), `className` and other `<dialog>` attributes |
+
+**Layout in code:** the header stays at the top and the dock at the bottom; the **body scrolls** between them. The body's 24 above and below are padding inside the scrolling area (Figma: gaps), so content scrolls up to the header and under the dock, which turns `sticky` while content is below it (§9.69 decision 4). With the divider, it sits 24 below the header and the body's 24 follows. Without a dock, the body keeps 24 at the bottom (Figma: 0).
+
+**Tokens used:** `--fin-bg-primary`; header padding `--fin-space-4xl` / `--fin-space-3xl`, row gap `--fin-space-xs`; divider margin, body padding and item gap `--fin-space-3xl`; width from `--fin-grid-columns`, `--fin-grid-gutter`, `--fin-grid-margin` and `@media (--fin-bp-lg / -xl / -xxl)` (the first component CSS to import `breakpoints.css`). The buttons, Text Box, Divider, Button dock and Overlay bring their own.
+
+**API:**
+
+```tsx
+import { FinSideSheet, FinTextBox } from '@finspace-loyalty/ui';
+
+<FinSideSheet
+  open={adding}
+  onClose={() => setAdding(false)}
+  title={<FinTextBox type="h3" heading="Add programme configuration" headingLevel={2} description="Applies to one customer segment" truncateHeading />}
+  closeOnOverlayClick={false}
+  buttonDock={{
+    secondaryButton: { label: 'Cancel', onClick: () => setAdding(false) },
+    primaryButton: { label: 'Save configuration', type: 'submit', form: 'add-configuration' },
+  }}
+>
+  <form id="add-configuration" onSubmit={save}>…</form>
+</FinSideSheet>
+```
+
+`'use client'`. Exports `FinSideSheet` and `FinSideSheetProps`. Controlled: `open` is the only source of truth, and every close request (close button, Esc, scrim) goes through `onClose`.
+
+**Accessibility:** a native `<dialog>` opened with `showModal()`: the top layer, the page behind inert, focus kept inside, Esc closes (through `onClose`), focus goes back to what opened it. Named by its title (`aria-labelledby`, the whole title even when cut off). **On open, focus goes to the sheet itself** (no ring; screen readers read the title), and Tab reaches the back / close buttons, the body, then the dock. The page behind doesn't scroll (`overflow: hidden` on `<html>` while open). The scrim is decorative (§9.13); the close button and Esc always close it.
+
+**Built (26 Oct 2026).** Storybook (Components/Side sheet): Playground (Figma's defaults), All options (Figma), Form (the Programme configuration add form), Long content (sticky dock), Long title; each starts open over a sample page, with "Open side sheet" to bring it back. Checked in Chrome: 632 / 590 / 628 / 583 wide at 1920 / 1440 / 1280 / 1024, flush right, full height, no shadow; header 80, title at 24 (76 with the back button: 24 + 48 + 4), buttons 48 at 32 from the top, close 24 from the right edge; divider 24 below the header; body content 24 below the header; dock 178 at 600 wide (157 at 632, the note on one line), sticky only with content below; a long title ends in "…"; focus, Tab, Esc, scrim click, focus return and the page scroll lock work. Light and Dark. a11y: no violations in either theme. **Open:** with a two-line title (heading + description), the close button is centred against it as in the component; the screen shows it at the top (§10 #69).
+
 Template:
 
 ```
@@ -3424,7 +3485,7 @@ Template:
 | 25 | **Components from other libraries** used inside components: ~~`Frame 3`~~ (gone) and `Logo sizes` with its `image` (Side Menu; 12 variants: Size × Colour × With / Without text; doesn't block: logos are artwork, so FinSideNav takes a `logo` slot, decided 21 Oct 2026, §9.57), ~~`Views / Dividers` (Side sheet)~~ (replaced by our Divider, 23 Oct 2026), `gb-L` (Flag sizes). Flags no longer block on this: flag artwork comes from `flag-icons` in code and `Flag sizes` is reference only (19 Oct 2026, §8.5). | Side nav, Side sheet, Icon types | 🔧 Fix in Figma |
 | 26 | **Table** page is complete and renamed (13 Oct 2026). Figma has the parts only; designers assemble tables on screens. **Decision:** code also gets a `FinTable` organism (§8 #74) built from those parts. Its API (columns/rows as data, selection, pagination) is written in §9 when built and agreed with design. `Property 1` on Table parts still needs naming (§10 #21). | Table | ✅ Decided |
 | 27 | **Dark-mode contrast: `text-error` on `bg-error-secondary`** was 4.19:1. Design updated the Dark status colors (14 Oct 2026): now 8.52:1, and every status text and icon color passes on `bg-primary`, `bg-secondary`, `bg-tertiary` and its own `bg-*_secondary` in Dark. | Foundation › Color collection (Dark) | ✅ Decided (14 Oct 2026) |
-| 28 | **Spacing shift (14 Oct 2026) in the component file.** These components use `Space-5XL`…`Space-12XL`, and still show the **old** values because the component file hasn't accepted the Foundation library update yet. After it does, they get smaller: `sub selection` (`3140:11076`) `Space-5XL` 40 → 36; `Pagination group` (`3151:14607`) `Space-6XL` 48 → 40 (only on the Figma frame around the samples; FinPagination doesn't use it, 19 Oct 2026); `Main Selection` (`3140:10997`) `Space-5XL` 40 → 36; `Header notification` (`3178:24467`) `Space-5XL` 40 → 36; ~~`Button dock` (`75:5858`) `Space-5XL` 40 → 36~~ (23 Oct 2026: Button dock's bottom padding is `Space-6XL`, 40, design; the Side sheet uses the Button dock component, so it's 40 there too); `Side sheet` (`3120:30707`) `Space-5XL` 40 → 36; `Side Menu` (`3142:11871`) `Space-5XL` 40 → 36. No other component uses those steps. Accept the library update, then confirm each new value or rebind. | Component file | ❓ Decide |
+| 28 | **Spacing shift (14 Oct 2026) in the component file.** These components use `Space-5XL`…`Space-12XL`, and still show the **old** values because the component file hasn't accepted the Foundation library update yet. After it does, they get smaller: `sub selection` (`3140:11076`) `Space-5XL` 40 → 36; `Pagination group` (`3151:14607`) `Space-6XL` 48 → 40 (only on the Figma frame around the samples; FinPagination doesn't use it, 19 Oct 2026); `Main Selection` (`3140:10997`) `Space-5XL` 40 → 36; `Header notification` (`3178:24467`) `Space-5XL` 40 → 36; ~~`Button dock` (`75:5858`) `Space-5XL` 40 → 36~~ (23 Oct 2026: Button dock's bottom padding is `Space-6XL`, 40, design; the Side sheet uses the Button dock component, so it's 40 there too); ~~`Side sheet` (`3120:30707`) `Space-5XL` 40 → 36~~ (26 Oct 2026: the Side sheet uses `Space-4XL`, 32, at the top, design; §9.70); `Side Menu` (`3142:11871`) `Space-5XL` 40 → 36. No other component uses those steps. Accept the library update, then confirm each new value or rebind. | Component file | ❓ Decide |
 | 29 | **Dark: Icon container Primary and Disabled looked alike** (both `#363636`). Fixed 15 Oct 2026: Dark `bg-icons` is now Tertiary-700 `#464646` (`bg-disabled` stays Tertiary-800 `#363636`). White icon on `#464646` is 9.44:1. | Foundation › Color collection (Dark) | ✅ Fixed |
 | 30 | **Avatar XXXLarge was 100 in Figma**, but there's no `Size-100`. Decided 15 Oct 2026: 96 (`Size-96`). Figma updated to 96 × 96 (checked 15 Oct 2026). | Avatar | ✅ Fixed |
 | 31 | **Profile image badge has no hover or pressed state** in Figma, and `fg-action` has no hovered/pressed tokens. For now the badge only changes the cursor (decided 15 Oct 2026). Design to add the states. | Profile image | ❓ Design to define |
@@ -3465,6 +3526,7 @@ Template:
 | 66 | **Programme configuration: where "Conversion rate" goes** (23 Oct 2026): the screen shows the rate ("80 Pts = 1.00") as an underlined Tertiary button in the cell; the page uses the table's Link cell (§9.43). **Decided 23 Oct 2026:** a placeholder address for now; the real link will come from the backend database when it's ready. | Screens | ✅ Decided |
 | 67 | **Programme configuration: Remove** (23 Oct 2026): the screen's row buttons are view, edit and a red bin. **Decided 23 Oct 2026:** Remove uses the bin, `delete` (added to the icon registry, §6); **destructive menu actions take the destructive button's colours** (title `text-error`, icon `fg-error`), other action icons are `fg-secondary`, and the row actions menu is 240 wide (§9.66, FinListStandard `tone` §9.51). Built code first; **to add in Figma**: List-standard's destructive tone and the row actions menu's look. | Icons, Table, List | ⏳ Design to add in Figma |
 | 68 | **Table row actions: the fixed ⋮ cell's line was 2px** (23 Oct 2026, found on the Programme configuration page): the cell drew its own line half a pixel below its edge, which snapped to two pixels while the table's line took one. **Fixed 23 Oct 2026** (design: 1px): the cell no longer draws a line; its fill stops half a pixel short, so the table's own 1px line shows through (§9.45). Checked at 1× and 2×, and scrolled at 1024. | Table | ✅ Fixed |
+| 69 | **Side sheet: close button with a two-line title** (26 Oct 2026): the component centres the back / close buttons against the title (a 40-tall Text Box); the Programme configuration screen puts a heading + description (69 tall) in the Title slot with the close button at the top. Code follows the component (centred). Keep centred, or align the buttons to the top in Figma? | Side sheet | ❓ Decide |
 
 ---
 
@@ -3483,7 +3545,8 @@ Template:
 > - **Approved and merged (22 Oct 2026):** the Rows per page menu (FinMenu `select`; §9.38, §9.40, §9.45) and the country menu with search (§9.36, §9.58, §9.59; FinMenu `header`, `anchor`). Next after it: the row count and country menus (§10 #49), then the select fields.
 > - **Pages (22 Oct 2026):** the pages plan (§8.6, §4.4, CLAUDE.md "Pages"), `FinTableToolbar` (§9.67) and `FinAppShell` (§9.68) are approved and merged. **Next, when design is back: build the Programme Configuration list page** (Pages → Loyalty management → Programme configuration) in `apps/storybook/src/pages/loyalty-management/`, with FinAppShell, FinTable + `toolbar` (Assist chip select filter), the row actions menu, fake data with edge cases, checked at 1920 / 1440 / 1280 / 1024 in Light and Dark; then show it before the next page. Its add (side sheet), remove (dialog) and removed (snackbar) states wait for those components (§8.6).
 > - **Pages (23 Oct 2026):** the **Programme configuration list page** (Pages/Loyalty management/Programme configuration), the 1px fix for FinTable's fixed cells and the `delete` icon are **approved and merged**. Storybook takes `@finspace-loyalty/ui` from source for pages. **Approved and merged (23 Oct 2026):** the row actions menu's look (240 wide, `fg-secondary` icons, destructive actions red; FinListStandard `tone`, §9.51, §9.66). **Next page** after design's go-ahead: Tier management (§8.6).
-> - **Approved and merged (23 Oct 2026):** `FinButtonDock` (§9.69). Paused here. **Next:** the Side sheet (§8 #67), now unblocked (§10 #25): plan first.
+> - **Approved and merged (23 Oct 2026):** `FinButtonDock` (§9.69).
+> - **In review (26 Oct 2026):** `FinSideSheet` (§9.70) on `feat/side-sheet`. Open: §10 #69 (close button with a two-line title); in Figma: remove the shadow and the icons' `fg-secondary` override. After it: the Programme configuration page's add state (§8.6).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3687,3 +3750,4 @@ Template:
 | 23 Oct 2026 | 0.2 | The row actions menu's look (240 wide, `fg-secondary` icons, red destructive actions; FinListStandard `tone`) approved by design and merged into `main`. |
 | 23 Oct 2026 | 0.2 | **`FinButtonDock` built** (§8 #66, §9.69), public, Components/Button dock: accessory, Tertiary / Secondary / Primary buttons (Large; Secondary and Primary share the width; `tone` on Primary and Secondary), `sticky` (Shadow/Sticky, the look only). Design: bottom padding `Space-6XL` 40 (§10 #28), Tertiary first, and the Side sheet's remote divider replaced by our Divider (§10 #25), so the Side sheet is unblocked. |
 | 23 Oct 2026 | 0.2 | `FinButtonDock` approved by design and merged into `main`. Paused here; next: the Side sheet (§8 #67). |
+| 26 Oct 2026 | 0.2 | **`FinSideSheet` built** (§8 #67, §9.70), public, Components/Side sheet: a native modal `<dialog>` on FinOverlay, flush right, full height; width from the layout grid (last 7 / 6 / 5 / 4 columns + margin from 1024 / 1280 / 1440 / 1920, about 600; no `Size-600`); no shadow; back button off by default; Tertiary icons; scrim click closes (`closeOnOverlayClick`); one-line title with "…"; the body scrolls and the dock turns sticky. Focus goes to the sheet on open. §10 #28: the Side sheet is off it (32 at the top). New §10 #69. |
