@@ -18,14 +18,15 @@
 }
 
 /*
- * The section title, Title/Small text-primary as the screen. The one exception to "page CSS is layout only"
- * (decided 26 Oct 2026): there's no section-title component, so the fieldset's legend takes the text style here.
+ * The section title: Label/Small (12, semibold) text-primary (decided 26 Oct 2026; the screen has Title/Small 14).
+ * The one exception to "page CSS is layout only": there's no section-title component, so the fieldset's legend
+ * takes the text style here.
  */
 .legend {
   margin-bottom: var(--fin-space-l);
   padding: 0;
   color: var(--fin-text-primary);
-  font: var(--fin-font-title-small);
+  font: var(--fin-font-label-small);
 }
 
 .group {

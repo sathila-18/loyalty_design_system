@@ -101,6 +101,8 @@ export function AddProgrammeConfiguration({ open, onClose, segments, onSave }: A
     <FinSideSheet
       open={open}
       onClose={close}
+      // No close button: Cancel closes it (decided 26 Oct 2026); Esc and a click on the scrim still do.
+      closeButton={false}
       title={<FinTextBox type="h3" heading="Add programme configuration" headingLevel={2} description="Applies to one customer segment" truncateHeading />}
       buttonDock={{
         secondaryButton: { label: 'Cancel', onClick: close },
