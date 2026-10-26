@@ -112,6 +112,11 @@
   --button-icon: var(--fin-fg-action);
 }
 
+/* Tertiary with a grey icon (code-only `iconTone`, 26 Oct 2026): at rest only; hover and press stay Tertiary. */
+.button[data-variant="tertiary"][data-icon-tone="secondary"] {
+  --button-icon: var(--fin-fg-secondary);
+}
+
 .button[data-variant="secondary"]:disabled,
 .button[data-variant="tertiary"]:disabled {
   --button-text: var(--fin-text-disabled);

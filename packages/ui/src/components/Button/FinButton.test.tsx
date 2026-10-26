@@ -111,4 +111,19 @@ describe('FinButton', () => {
     );
     expect(invalid).toBeTruthy();
   });
+
+  it('marks a grey Tertiary icon with iconTone', () => {
+    render(
+      <>
+        <FinButton variant="tertiary" iconTone="secondary" icon="only-icon" iconName="close">
+          Close
+        </FinButton>
+        <FinButton variant="tertiary" icon="only-icon" iconName="arrow_back">
+          Back
+        </FinButton>
+      </>,
+    );
+    expect(screen.getByRole('button', { name: 'Close' })).toHaveAttribute('data-icon-tone', 'secondary');
+    expect(screen.getByRole('button', { name: 'Back' })).not.toHaveAttribute('data-icon-tone');
+  });
 });

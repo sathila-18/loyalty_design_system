@@ -133,7 +133,7 @@ export function FinSideSheet({
       <div ref={panelRef} className={styles.panel} tabIndex={-1}>
         <div className={styles.header}>
           {backButton && (
-            <FinButton variant="tertiary" size="medium" icon="only-icon" iconName="arrow_back" onClick={onBack}>
+            <FinButton variant="tertiary" iconTone="secondary" size="medium" icon="only-icon" iconName="arrow_back" onClick={onBack}>
               {backLabel}
             </FinButton>
           )}
@@ -145,7 +145,7 @@ export function FinSideSheet({
             )}
           </div>
           {closeButton && (
-            <FinButton variant="tertiary" size="medium" icon="only-icon" iconName="close" onClick={onClose}>
+            <FinButton variant="tertiary" iconTone="secondary" size="medium" icon="only-icon" iconName="close" onClick={onClose}>
               {closeLabel}
             </FinButton>
           )}

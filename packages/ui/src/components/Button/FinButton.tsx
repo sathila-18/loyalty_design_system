@@ -14,7 +14,15 @@ export type FinButtonIcon = 'none' | 'leading' | 'trailing' | 'only-icon';
  * look, Destructive has Primary / Secondary. Any other combination is a type error.
  */
 export type FinButtonToneProps =
-  | { tone?: 'normal'; variant?: FinButtonVariant }
+  | {
+      tone?: 'normal';
+      variant?: FinButtonVariant;
+      /**
+       * Tertiary only, code only (added 26 Oct 2026): `secondary` makes the icon grey (`fg-secondary`) at rest; hover
+       * and press keep the Tertiary colors. Default `action`. For the side sheet's back and close buttons.
+       */
+      iconTone?: 'action' | 'secondary';
+    }
   | { tone: 'white'; variant?: 'primary' }
   | { tone: 'destructive'; variant?: 'primary' | 'secondary' };
 
@@ -25,7 +33,7 @@ export type FinButtonIconProps =
 
 export type FinButtonProps = Omit<
   FinButtonBaseProps,
-  'variant' | 'leadingIcon' | 'trailingIcon' | 'showLabel' | 'iconOnly' | 'iconSide'
+  'variant' | 'leadingIcon' | 'trailingIcon' | 'showLabel' | 'iconOnly' | 'iconSide' | 'iconTone'
 > &
   FinButtonToneProps &
   FinButtonIconProps;

@@ -44,6 +44,7 @@ describe('FinSideSheet', () => {
     const onBack = vi.fn();
     const { rerender } = render(<FinSideSheet open onClose={onClose} title="Title" />);
     expect(screen.queryByRole('button', { name: 'Back' })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Close' })).toHaveAttribute('data-icon-tone', 'secondary');
     await user.click(screen.getByRole('button', { name: 'Close' }));
     expect(onClose).toHaveBeenCalledTimes(1);
     rerender(<FinSideSheet open onClose={onClose} title="Title" backButton onBack={onBack} closeButton={false} backLabel="Back to list" />);

@@ -38,6 +38,11 @@ export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButton
    * Figma's Base-button.
    */
   iconSide?: 'leading' | 'trailing';
+  /**
+   * Tertiary only, code only (added 26 Oct 2026 for the side sheet's back and close buttons): `secondary` makes the
+   * icon `fg-secondary` (grey) at rest; hover and press keep the Tertiary colors. Set through FinButton `iconTone`.
+   */
+  iconTone?: 'action' | 'secondary';
 }
 
 const ICON_SIZE = { large: 24, medium: 24, small: 20, xsmall: 20 } as const;
@@ -57,6 +62,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
     showLabel = true,
     iconOnly = false,
     iconSide,
+    iconTone = 'action',
     type = 'button',
     className,
     ...rest
@@ -74,6 +80,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
       data-size={size}
       data-icon-only={iconOnly || undefined}
       data-icon-side={iconSide}
+      data-icon-tone={iconTone === 'secondary' ? 'secondary' : undefined}
     >
       {leadingIcon && (
         <span className={styles.icon}>

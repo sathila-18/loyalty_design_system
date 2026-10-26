@@ -159,3 +159,21 @@ export const OnBrand: Story = {
     </div>
   ),
 };
+
+/** Code only (`iconTone="secondary"`, 26 Oct 2026): a Tertiary icon in grey at rest, purple on hover and press. Used by the side sheet. */
+export const GreyIcon: Story = {
+  name: 'Tertiary grey icon',
+  render: () => (
+    <div className={styles.row}>
+      <FinButton variant="tertiary" iconTone="secondary" size="medium" icon="only-icon" iconName="arrow_back">
+        Back
+      </FinButton>
+      <FinButton variant="tertiary" iconTone="secondary" size="medium" icon="only-icon" iconName="close">
+        Close
+      </FinButton>
+      <FinButton variant="tertiary" iconTone="secondary" size="medium" icon="only-icon" iconName="close" disabled>
+        Close (disabled)
+      </FinButton>
+    </div>
+  ),
+};
