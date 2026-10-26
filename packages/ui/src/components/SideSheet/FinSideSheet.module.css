@@ -67,19 +67,27 @@
   }
 }
 
-/* Back button, title, close button: Space-4XL above, Space-3XL at the sides, Space-XS apart. */
+/*
+ * Back button, title, close button: Space-4XL above, Space-3XL at the sides, Space-XS apart. The buttons sit at the
+ * top; a title as tall as a button or shorter is centred against them, a taller one (a heading and a description)
+ * starts at the top with them (decided 26 Oct 2026, §10 #69).
+ */
 .header {
   display: flex;
   flex: none;
   gap: var(--fin-space-xs);
-  align-items: center;
+  align-items: flex-start;
   padding: var(--fin-space-4xl) var(--fin-space-3xl) 0;
 }
 
 /* Figma `Title` slot: fills the row. */
 .title {
+  display: grid;
   flex: 1 1 0;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
   min-width: 0;
+  min-height: var(--fin-size-48);
 }
 
 .divider {
