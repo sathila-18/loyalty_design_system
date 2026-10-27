@@ -29,8 +29,8 @@ function shown(column: FinTableColumn<ProgrammeConfig>, config: ProgrammeConfig)
 /**
  * Programme configuration → Details (code first, no Figma; DESIGN.md §8.6): a side sheet titled "<segment> details"
  * (one line, ends in "…") with a two-column table, each of the list's columns (Attribute) and the configuration's
- * value (Added record), no hover. Edit (Primary) and Remove (Secondary, destructive) in the dock; the close button at
- * the top.
+ * value (Added record), no hover, reaching the sheet's sides. Remove (Secondary, destructive, bin icon, as wide as its
+ * label) and Edit (Primary, the rest of the width) in the dock; the close button at the top.
  */
 export function ProgrammeConfigurationDetails({ config, columns, onClose, onEdit, onRemove }: ProgrammeConfigurationDetailsProps) {
   const details: Detail[] = config ? columns.map((column) => ({ key: column.key, attribute: column.header, value: shown(column, config) })) : [];
@@ -40,8 +40,15 @@ export function ProgrammeConfigurationDetails({ config, columns, onClose, onEdit
       open={config !== null}
       onClose={onClose}
       title={config ? `${config.segment} details` : 'Details'}
+      bodyFullWidth
       buttonDock={{
-        secondaryButton: { label: 'Remove', tone: 'destructive', onClick: () => config && onRemove(config) },
+        secondaryButton: {
+          label: 'Remove',
+          tone: 'destructive',
+          leadingIcon: 'delete',
+          width: 'hug',
+          onClick: () => config && onRemove(config),
+        },
         primaryButton: { label: 'Edit', onClick: () => config && onEdit(config) },
       }}
     >

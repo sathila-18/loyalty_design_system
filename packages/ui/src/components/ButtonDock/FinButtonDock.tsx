@@ -1,22 +1,30 @@
 import type { HTMLAttributes, ReactNode } from 'react';
-import { FinButton } from '../Button';
+import { FinButton, type FinButtonIconProps } from '../Button';
 import type { FinButtonBaseProps } from '../ButtonBase';
+import type { FinIconName } from '../../icons/finIcons';
 import { FinTextBox } from '../TextBox';
 import styles from './FinButtonDock.module.css';
 
-/** A dock button: a label button (Large, no icon, as Figma), any button attribute (`onClick`, `disabled`, `type`…). */
+/** A dock button: a label button (Large, as Figma), any button attribute (`onClick`, `disabled`, `type`…). */
 export type FinButtonDockButton = Omit<
   FinButtonBaseProps,
   'variant' | 'size' | 'leadingIcon' | 'trailingIcon' | 'showLabel' | 'iconOnly' | 'iconSide' | 'children'
 > & {
   /** The button's label. */
   label: ReactNode;
+  /** Code only (decided 27 Oct 2026): an icon before the label (FinButton `icon="leading"`). Figma's has none. */
+  leadingIcon?: FinIconName;
 };
 
 /** The Primary and Secondary buttons can be destructive (red, FinButton `tone`) for remove and delete actions. */
 export type FinButtonDockToneButton = FinButtonDockButton & {
   /** `destructive` for remove and delete actions. Default `normal`. */
   tone?: 'normal' | 'destructive';
+  /**
+   * Code only (decided 27 Oct 2026): `hug` makes the button as wide as its label, so the other one takes the rest.
+   * Default `fill`: Secondary and Primary share the width equally, as Figma.
+   */
+  width?: 'fill' | 'hug';
 };
 
 export interface FinButtonDockProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
@@ -57,8 +65,8 @@ export function FinButtonDock({ accessory, tertiaryButton, secondaryButton, prim
       {hasButtons && (
         <div className={styles.buttons}>
           {tertiaryButton && <DockButton {...tertiaryButton} variant="tertiary" />}
-          {secondaryButton && <DockButton {...secondaryButton} variant="secondary" fill />}
-          {primaryButton && <DockButton {...primaryButton} variant="primary" fill />}
+          {secondaryButton && <DockButton {...secondaryButton} variant="secondary" />}
+          {primaryButton && <DockButton {...primaryButton} variant="primary" />}
         </div>
       )}
     </div>
@@ -69,20 +77,24 @@ function DockButton({
   label,
   variant,
   tone = 'normal',
-  fill = false,
+  width = 'fill',
+  leadingIcon,
   className,
   ...rest
-}: FinButtonDockToneButton & { variant: 'primary' | 'secondary' | 'tertiary'; fill?: boolean }) {
+}: FinButtonDockToneButton & { variant: 'primary' | 'secondary' | 'tertiary' }) {
+  // Tertiary is always as wide as its label.
+  const fill = variant !== 'tertiary' && width === 'fill';
   const classes = [fill ? styles.fill : undefined, className].filter(Boolean).join(' ') || undefined;
   const props = { ...rest, size: 'large' as const, ...(classes ? { className: classes } : {}) };
+  const icon: FinButtonIconProps = leadingIcon ? { icon: 'leading', iconName: leadingIcon } : {};
   if (tone === 'destructive' && variant !== 'tertiary')
     return (
-      <FinButton {...props} tone="destructive" variant={variant}>
+      <FinButton {...props} {...icon} tone="destructive" variant={variant}>
         {label}
       </FinButton>
     );
   return (
-    <FinButton {...props} variant={variant}>
+    <FinButton {...props} {...icon} variant={variant}>
       {label}
     </FinButton>
   );

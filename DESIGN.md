@@ -3368,6 +3368,7 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 | `Show Tertiary Button` + its label | `tertiaryButton?: { label, onClick, disabled, type, … }` (FinButton Large Tertiary) |
 | `Show Secondary Button` + its label | `secondaryButton?: { label, tone?, … }` (Large Secondary; `tone: 'destructive'` → destructive secondary) |
 | `Show Primary Button` + its label | `primaryButton?: { label, tone?, … }` (Large Primary; `tone: 'destructive'` → destructive) |
+| — (code only, 27 Oct 2026) | on any button `leadingIcon?: FinIconName` (an icon before the label); on Secondary and Primary `width?: 'fill' \| 'hug'` (default `fill`; `hug` is as wide as its label and the other button takes the rest) |
 | — (code only) | `className`, other attributes on the root |
 
 **Tokens used:** `--fin-bg-primary`; padding `--fin-space-xl` / `--fin-space-3xl` / `--fin-space-6xl`; gaps `--fin-space-3xl` (accessory → buttons), `--fin-space-xl` (buttons); `--fin-shadow-sticky`. The buttons and the Text Box bring their own.
@@ -3415,6 +3416,7 @@ Booleans `Show Back Button` (on), `Show Close Button` (on), `View Divider` (off)
 | `Show Button Dock` + its options | `buttonDock?: FinButtonDockProps` without `sticky` (shown when passed) |
 | back / close icon colour override `fg-secondary` | FinButton `iconTone="secondary"` (fixed in the sheet) |
 | — (code only) | `open: boolean`, `onClose: () => void`, `closeOnOverlayClick?: boolean` (default true), `className` and other `<dialog>` attributes |
+| — (code only, 27 Oct 2026) | `bodyFullWidth?: boolean` (default false): no side padding on the body, so a table reaches the sheet's edges (its cells bring their own 24) |
 
 **Layout in code:** the header stays at the top and the dock at the bottom; the **body scrolls** between them. The body's 24 above and below are padding inside the scrolling area (Figma: gaps), so content scrolls up to the header and under the dock, which turns `sticky` while content is below it (§9.69 decision 4). With the divider, it sits 24 below the header and the body's 24 follows. Without a dock, the body keeps 24 at the bottom (Figma: 0).
 

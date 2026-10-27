@@ -47,7 +47,7 @@ const openView = async (canvasElement: HTMLElement, segment: string) => {
 
 /**
  * Programme configuration (Figma `312:15165`, DESIGN.md §8.6), built only from the system's components: FinAppShell,
- * FinTable with its toolbar (search, Segment chip with a select menu, Add) and the row actions menu. Use the
+ * FinTable with its toolbar (search, Add), a filter on the Segment column and the row actions menu. Use the
  * viewport menu for 1920, 1440, 1280 and 1024. Add opens the add side sheet; a saved configuration joins the table.
  * View (or a row click) opens the details sheet. Edit and Remove only report what was chosen: the edit sheet, remove
  * dialog and snackbar come next.

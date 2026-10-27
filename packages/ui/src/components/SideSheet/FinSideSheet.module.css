@@ -109,6 +109,11 @@
   overflow-y: auto;
 }
 
+/* `bodyFullWidth`: no side padding, so a table reaches the sheet's edges (decided 27 Oct 2026). */
+.body[data-full-width] {
+  padding-inline: 0;
+}
+
 /* Only focusable while it scrolls (keyboard scrolling of text-only content). */
 .body:focus-visible {
   outline: 2px solid var(--fin-border-focused);

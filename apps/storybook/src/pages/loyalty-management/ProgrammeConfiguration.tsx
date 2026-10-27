@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FinAppShell, FinAssistChip, FinListStandard, FinMenu, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
+import { FinAppShell, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
 import { pageSideNav } from '../pageShell';
 import { AddProgrammeConfiguration, type NewProgrammeConfig } from './AddProgrammeConfiguration';
 import { ProgrammeConfigurationDetails } from './ProgrammeConfigurationDetails';
@@ -29,7 +29,6 @@ export interface ProgrammeConfigurationProps {
   onAction?: (action: string) => void;
 }
 
-const ALL = 'All';
 const number = (n: number) => n.toLocaleString('en-US');
 const onOff = (on: boolean) => (on ? 'Enable' : 'Disable');
 const money = (n: number) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -37,7 +36,7 @@ const money = (n: number) => n.toLocaleString('en-US', { minimumFractionDigits: 
 /** The list's columns; the details sheet shows each one as a row. */
 const columns: FinTableColumn<ProgrammeConfig>[] = [
   { key: 'no', header: 'No.', width: 80, value: (c) => String(c.id).padStart(2, '0') },
-  { key: 'segment', header: 'Segment', minWidth: 176 },
+  { key: 'segment', header: 'Segment', minWidth: 176, filter: {} },
   { key: 'loyalty', header: 'Loyalty', type: 'badge', value: (c) => onOff(c.loyalty), badgeTone: (c) => (c.loyalty ? 'success' : 'neutral') },
   { key: 'expiry', header: 'Expiry (mo)', value: (c) => number(c.expiryMonths) },
   {
@@ -60,7 +59,8 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
 
 /**
  * Pages → Loyalty management → Programme configuration (Figma `312:15165`, DESIGN.md §8.6): the list of
- * configurations, one per customer segment, in the app shell. Search by segment, filter with the Segment chip, act
+ * configurations, one per customer segment, in the app shell. Search by segment, filter from the Segment column's
+ * dropdown (decided 27 Oct 2026; was a Segment chip in the toolbar), act
  * on a row from its ⋮ menu. Add opens the add side sheet (`312:15899`); a saved configuration is added to the table.
  * View, or a click on the row, opens the details sheet (code first). Edit, the remove dialog and the removed snackbar
  * come next.
@@ -70,10 +70,9 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
   const [adding, setAdding] = useState(false);
   const [viewing, setViewing] = useState<ProgrammeConfig | null>(null);
   const [query, setQuery] = useState('');
-  const [segment, setSegment] = useState(ALL);
 
   const search = query.trim().toLowerCase();
-  const rows = configs.filter((c) => c.segment.toLowerCase().includes(search) && (segment === ALL || c.segment === segment));
+  const rows = configs.filter((c) => c.segment.toLowerCase().includes(search));
 
   return (
     <FinAppShell
@@ -99,22 +98,6 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
         ]}
         toolbar={{
           search: { label: 'Search segment', placeholder: 'Search segment', value: query, onChange: (e) => setQuery(e.target.value) },
-          filters: (
-            <FinMenu
-              kind="select"
-              label="Segment"
-              placement="bottom-end"
-              trigger={(menuProps) => (
-                <FinAssistChip {...menuProps} size="large" dropdown expanded={menuProps['aria-expanded']}>
-                  {`Segment: ${segment}`}
-                </FinAssistChip>
-              )}
-            >
-              {[ALL, ...configs.map((c) => c.segment)].map((s) => (
-                <FinListStandard key={s} as="li" size="small" behavior="option" divider={false} title={s} selected={s === segment} onClick={() => setSegment(s)} />
-              ))}
-            </FinMenu>
-          ),
           actionLabel: 'Add programme configuration',
           onAction: () => {
             onAction('Add programme configuration');
