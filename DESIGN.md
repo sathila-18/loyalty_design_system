@@ -3762,6 +3762,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (27 Oct 2026):** `FinSnackbar` and `FinSnackbarRegion` (§9.73), with FinButton `contentTone` (§9.28); §10 #72, #73 decided, #74 waits for a Figma token. **Next:** the Programme configuration **removed** state (snackbar, `328:26929`).
 > - **Approved and merged (27 Oct 2026):** the Programme configuration **removed** state (Success snackbar, top right, kept over the header as the screen). **Every Programme configuration state is done** (list, add, details, edit, remove, removed). **Next page**, after design's go-ahead: Tier management (§8.6).
 > - **Approved and merged (27 Oct 2026):** the Programme configuration stories' **Rows** control (0–60 fake configurations). **Next:** the **Empty state** component (§8 #65, Figma updated by design 27 Oct 2026), then the page's empty states.
+> - **Approved and merged (27 Oct 2026):** `FinEmptyState` (§9.74; 4 grid columns wide, centred in its container). **Next:** the Programme configuration **empty states** (the table replaced by the empty state: no configurations yet, no matches).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3980,4 +3981,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | Programme configuration removed state (Success snackbar after Remove) approved by design and merged into `main`; every state of the page is done. |
 | 27 Oct 2026 | 0.2 | Programme configuration stories' Rows control (0–60) approved and merged. |
 | 27 Oct 2026 | 0.2 | **`FinEmptyState` built** (§8 #65, §9.74), public, Components/Empty state, from Figma as updated by design today (Small / Medium; Large removed): `size`, `icon` (required) or `iconSlot`, `heading`, `description`, `action` (Primary Small); fills its container and centres a 4-grid-column column in it, across and down. |
+| 27 Oct 2026 | 0.2 | `FinEmptyState` approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |
