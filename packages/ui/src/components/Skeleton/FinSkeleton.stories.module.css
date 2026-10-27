@@ -1,0 +1,16 @@
+/* Layout for the FinSkeleton stories only (not part of the component). */
+
+.column {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+  min-width: 0;
+}
+
+.item {
+  display: flex;
+  gap: var(--fin-space-xl);
+  align-items: center;
+  width: var(--fin-size-343);
+}

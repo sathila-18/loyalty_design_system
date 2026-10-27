@@ -1,0 +1,41 @@
+/*
+ * FinSkeleton (DESIGN.md §9; code first, decided 27 Oct 2026): a `bg-neutral` placeholder that pulses (full to 60%
+ * opacity and back, 1.6 s; deeper looked washed out on white), still when motion is reduced. Text: 12 tall,
+ * Radius-XS; block: Radius-S; circle: round.
+ */
+
+.skeleton {
+  display: inline-block;
+  flex: none;
+  width: var(--skeleton-width, 100%);
+  max-width: 100%;
+  height: var(--skeleton-height, var(--fin-size-12));
+  border-radius: var(--fin-radius-xs);
+  background-color: var(--fin-bg-neutral);
+  vertical-align: middle;
+  animation: fin-skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+.skeleton[data-shape="rect"] {
+  height: var(--skeleton-height, var(--fin-size-24));
+  border-radius: var(--fin-radius-s);
+}
+
+.skeleton[data-shape="circle"] {
+  width: var(--skeleton-width, var(--fin-size-24));
+  height: auto;
+  border-radius: var(--fin-radius-full);
+  aspect-ratio: 1;
+}
+
+@keyframes fin-skeleton-pulse {
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

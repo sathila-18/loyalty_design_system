@@ -9,6 +9,7 @@ import type { FinTableFilterOption } from '../TableColumnFilter';
 import { FinTableHeaderCell } from '../TableHeaderCell';
 import { FinTableHeaderRow } from '../TableHeaderRow';
 import { FinTableRow } from '../TableRow';
+import { FinSkeleton } from '../Skeleton';
 import { FinTableRowActions } from '../TableRowActions';
 import { FinTableToolbar, type FinTableToolbarProps } from '../TableToolbar';
 import styles from './FinTable.module.css';
@@ -161,7 +162,21 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
    * (FinAppShell's content) it fills the height left. Without it, the table shows its header and an empty footer.
    */
   empty?: ReactNode;
+  /**
+   * Loading (code first, 27 Oct 2026): the header stays (without sort and filter), a page of skeleton rows replaces the
+   * rows, the footer and `empty` are hidden, and the table is busy for screen readers, with a "Loading …" status. Pass
+   * it (true or false) on tables that load, so the status is in the page before loading starts.
+   */
+  loading?: boolean;
+  /** The status read while loading. Default "Loading " and the `label` ("Loading programme configurations"). */
+  loadingLabel?: string;
 }
+
+/**
+ * Skeleton widths for text cells (px, never wider than the cell), varied by row and column so the rows don't look
+ * identical. Not percentages: a cell's content is only as wide as what's in it.
+ */
+const SKELETON_WIDTHS = [128, 88, 152, 104];
 
 const isText = (value: unknown): value is string | number => typeof value === 'string' || typeof value === 'number';
 
@@ -225,6 +240,8 @@ function FinTableInner<Row>(
     footer = true,
     hover = true,
     empty,
+    loading,
+    loadingLabel,
     className,
     ...rest
   }: FinTableProps<Row>,
@@ -259,7 +276,7 @@ function FinTableInner<Row>(
     }
   }
   const total = serverPaged ? totalRows : shownRows.length;
-  const showEmpty = empty !== undefined && empty !== null && total === 0;
+  const showEmpty = !loading && empty !== undefined && empty !== null && total === 0;
   const [innerPerPage, setInnerPerPage] = useState(defaultRowsPerPage);
   // Without the footer there's no paging: every row is on the one page.
   const perPage = footer ? Math.max(1, Math.floor(rowsPerPage ?? innerPerPage)) : Math.max(1, total);
@@ -375,8 +392,19 @@ function FinTableInner<Row>(
     );
   };
 
+  const skeletonActionsCell = (
+    <FinTableCell leadingAccessories={false} className={stickyClass}>
+      <FinSkeleton shape="circle" />
+    </FinTableCell>
+  );
+
   return (
     <div {...rest} ref={ref} className={className ? `${styles.root} ${className}` : styles.root} data-empty={showEmpty ? '' : undefined}>
+      {loading !== undefined && (
+        <span role="status" className={styles.hidden}>
+          {loading ? (loadingLabel ?? `Loading ${label.charAt(0).toLowerCase()}${label.slice(1)}`) : ''}
+        </span>
+      )}
       {toolbar && <FinTableToolbar {...toolbar} className={toolbar.className ? `${styles.toolbar} ${toolbar.className}` : styles.toolbar} />}
       {showEmpty ? (
         <div className={styles.empty}>{empty}</div>
@@ -389,6 +417,7 @@ function FinTableInner<Row>(
               style={tableStyle}
               data-selectable={selectable ? '' : undefined}
               data-row-actions={actionsAt}
+              aria-busy={loading || undefined}
             >
               <colgroup>
                 {selectable && <col className={styles.selectColumn} />}
@@ -417,14 +446,14 @@ function FinTableInner<Row>(
                       type="grey"
                       checkbox={false}
                       trailingIcon={column.trailingIcon ?? false}
-                      {...(column.sortable
+                      {...(column.sortable && !loading
                         ? {
                             sort: sort?.key === column.key ? sort.direction : 'none',
                             onSortChange: (direction: 'none' | 'ascending' | 'descending') =>
                               changeSort(direction === 'none' ? null : { key: column.key, direction }),
                           }
                         : {})}
-                      {...(column.filter
+                      {...(column.filter && !loading
                         ? {
                             filter: {
                               options: filterOptions(column),
@@ -442,58 +471,79 @@ function FinTableInner<Row>(
                 </FinTableHeaderRow>
               </thead>
               <tbody>
-                {pageRows.map((row, index) => {
-                  const id = getRowId(row);
-                  const isSelected = selected.includes(id);
-                  const rowClick = selecting ? () => toggle(id, !isSelected) : onRowClick ? () => onRowClick(row) : undefined;
-                  return (
-                    <FinTableRow
-                      key={id}
-                      selectCell={selectable}
-                      selected={isSelected}
-                      onSelectedChange={(on) => toggle(id, on)}
-                      checkboxLabel={`Select ${rowLabel(row, index)}`}
-                      hover={hover}
-                      {...(rowClick ? { onRowClick: rowClick } : {})}
-                      {...(selectClass ? { selectCellClassName: selectClass } : {})}
-                    >
-                      {actionsAt === 'start' && actionsCell(row, index)}
-                      {columns.map((column) => {
-                        const value = column.value ? column.value(row) : ((row as Record<string, unknown>)[column.key] as ReactNode);
-                        const tone = typeof column.badgeTone === 'function' ? column.badgeTone(row) : column.badgeTone;
-                        const cell = {
-                          type: column.type ?? 'default',
-                          leadingAccessories: false,
-                          ...(tone ? { badgeTone: tone } : {}),
-                          ...(column.href ? { href: column.href(row) } : {}),
-                          ...(column.linkAs ? { linkAs: column.linkAs } : {}),
-                        };
-                        const { action } = column;
-                        return action ? (
-                          <FinTableCell
-                            key={column.key}
-                            {...cell}
-                            action
-                            actionLabel={action.label(row)}
-                            onAction={() => action.onAction(row)}
-                            {...(action.icon ? { actionIcon: action.icon } : {})}
-                          >
-                            {value}
+                {loading
+                  ? Array.from({ length: perPage }, (_, index) => (
+                      <FinTableRow key={`loading-${index}`} selectCell={false} hover={false}>
+                        {selectable && (
+                          <FinTableCell leadingAccessories={false} className={selectClass}>
+                            <FinSkeleton shape="rect" width={20} height={20} />
                           </FinTableCell>
-                        ) : (
-                          <FinTableCell key={column.key} {...cell}>
-                            {value}
+                        )}
+                        {actionsAt === 'start' && skeletonActionsCell}
+                        {columns.map((column, columnIndex) => (
+                          <FinTableCell key={column.key} leadingAccessories={false}>
+                            {column.type === 'badge' ? (
+                              <FinSkeleton shape="rect" width={64} />
+                            ) : (
+                              <FinSkeleton width={SKELETON_WIDTHS[(index + columnIndex) % SKELETON_WIDTHS.length]!} />
+                            )}
                           </FinTableCell>
-                        );
-                      })}
-                      {actionsAt === 'end' && actionsCell(row, index)}
-                    </FinTableRow>
-                  );
-                })}
+                        ))}
+                        {actionsAt === 'end' && skeletonActionsCell}
+                      </FinTableRow>
+                    ))
+                  : pageRows.map((row, index) => {
+                      const id = getRowId(row);
+                      const isSelected = selected.includes(id);
+                      const rowClick = selecting ? () => toggle(id, !isSelected) : onRowClick ? () => onRowClick(row) : undefined;
+                      return (
+                        <FinTableRow
+                          key={id}
+                          selectCell={selectable}
+                          selected={isSelected}
+                          onSelectedChange={(on) => toggle(id, on)}
+                          checkboxLabel={`Select ${rowLabel(row, index)}`}
+                          hover={hover}
+                          {...(rowClick ? { onRowClick: rowClick } : {})}
+                          {...(selectClass ? { selectCellClassName: selectClass } : {})}
+                        >
+                          {actionsAt === 'start' && actionsCell(row, index)}
+                          {columns.map((column) => {
+                            const value = column.value ? column.value(row) : ((row as Record<string, unknown>)[column.key] as ReactNode);
+                            const tone = typeof column.badgeTone === 'function' ? column.badgeTone(row) : column.badgeTone;
+                            const cell = {
+                              type: column.type ?? 'default',
+                              leadingAccessories: false,
+                              ...(tone ? { badgeTone: tone } : {}),
+                              ...(column.href ? { href: column.href(row) } : {}),
+                              ...(column.linkAs ? { linkAs: column.linkAs } : {}),
+                            };
+                            const { action } = column;
+                            return action ? (
+                              <FinTableCell
+                                key={column.key}
+                                {...cell}
+                                action
+                                actionLabel={action.label(row)}
+                                onAction={() => action.onAction(row)}
+                                {...(action.icon ? { actionIcon: action.icon } : {})}
+                              >
+                                {value}
+                              </FinTableCell>
+                            ) : (
+                              <FinTableCell key={column.key} {...cell}>
+                                {value}
+                              </FinTableCell>
+                            );
+                          })}
+                          {actionsAt === 'end' && actionsCell(row, index)}
+                        </FinTableRow>
+                      );
+                    })}
               </tbody>
             </table>
           </div>
-          {footer && (
+          {footer && !loading && (
             <FinTableFooter
               className={styles.footer}
               totalRows={total}

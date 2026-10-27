@@ -135,3 +135,13 @@ td:is(.stickyEnd, .stickyStart, .stickySelect) {
   box-shadow: var(--fin-shadow-sticky-start);
   clip-path: inset(0 calc(-1 * var(--fin-space-3xl)) 0 0);
 }
+
+/* The loading status: read by screen readers, not shown. */
+.hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}

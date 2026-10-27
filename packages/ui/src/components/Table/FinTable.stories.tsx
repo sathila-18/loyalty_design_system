@@ -312,3 +312,24 @@ export const NoRows: Story = {
   name: 'No rows',
   render: () => <FinTable label="Members" columns={columns()} rows={[]} getRowId={(m) => m.id} />,
 };
+
+/**
+ * Loading (code first): the header stays, a page of skeleton rows (FinSkeleton) replaces the rows and the footer goes,
+ * until the rows arrive. Turn **loading** off to see them. The table is busy for screen readers and says "Loading
+ * members".
+ */
+export const Loading: StoryObj<{ loading: boolean }> = {
+  args: { loading: true },
+  argTypes: { loading: { control: 'boolean', description: '`loading`' } },
+  render: ({ loading }) => (
+    <FinTable
+      label="Members"
+      columns={columns()}
+      rows={loading ? [] : makeMembers(23)}
+      getRowId={(m) => m.id}
+      getRowLabel={(m) => m.name}
+      rowActions={[{ label: 'View details', icon: 'visibility', onSelect: () => undefined }]}
+      loading={loading}
+    />
+  ),
+};

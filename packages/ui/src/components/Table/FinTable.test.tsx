@@ -304,4 +304,40 @@ describe('FinTable', () => {
     expect(screen.getByRole('table', { name: 'Members' })).toBeInTheDocument();
     expect(screen.queryByText('No matches')).toBeNull();
   });
+
+  it('while loading, shows a page of skeleton rows, no footer or empty state, and says it is loading', () => {
+    const { rerender } = render(
+      <FinTable
+        label="Members"
+        columns={[{ ...columns[0]!, sortable: true }, ...columns.slice(1)]}
+        rows={[]}
+        getRowId={(m) => m.id}
+        rowActions={[{ label: 'Edit', onSelect: () => undefined }]}
+        empty={<p>No members</p>}
+        loading
+      />,
+    );
+    const table = screen.getByRole('table', { name: 'Members' });
+    expect(table).toHaveAttribute('aria-busy', 'true');
+    expect(screen.getByRole('status')).toHaveTextContent('Loading members');
+    expect(bodyRows()).toHaveLength(10);
+    expect(within(bodyRows()[0]!).queryByRole('checkbox')).toBeNull();
+    expect(within(bodyRows()[0]!).queryByRole('button')).toBeNull();
+    expect(table.querySelectorAll('[data-shape="rect"][style*="64px"]')).toHaveLength(10);
+    expect(screen.queryByRole('button', { name: /Name/ })).toBeNull();
+    expect(screen.queryByText('No members')).toBeNull();
+    expect(screen.queryByText(/Showing/)).toBeNull();
+    rerender(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} loading={false} />);
+    expect(screen.getByRole('table')).not.toHaveAttribute('aria-busy');
+    expect(screen.getByRole('status')).toHaveTextContent('');
+    expect(bodyRows()).toHaveLength(10);
+    expect(screen.getByText('Member 1')).toBeInTheDocument();
+  });
+
+  it('takes its own loading status, and has none when loading is not used', () => {
+    const { rerender } = render(<FinTable label="Members" columns={columns} rows={[]} getRowId={(m) => m.id} loading loadingLabel="Fetching members…" />);
+    expect(screen.getByRole('status')).toHaveTextContent('Fetching members…');
+    rerender(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} />);
+    expect(screen.queryByRole('status')).toBeNull();
+  });
 });
