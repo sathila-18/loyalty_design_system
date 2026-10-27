@@ -732,7 +732,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 78 | `Table Header` (`3313:18577`, added to the library after this inventory) | Table | `3313:18577` | `FinTableToolbar` (renamed in code so it isn't confused with the table's header cells and row; approved 22 Oct 2026) | Search (Small), Chips (filter slot), all-button · `Show search`, `Show filter` + Filter slot, `Show button` · the toolbar above a table · **internal**, part of the table (FinTable `toolbar`, §9.67) | ✅ (search width 343 → new `--fin-size-343`) | ✅ |
 | 79 | — (**code only**; no Figma component: the screens draw the shell each time) | Layout | — | `FinAppShell` | Side Menu, Main header · the page shell: a "Skip to content" link, the side nav (collapsed below 1280, handled here), the header and the `main` content in a panel · **public**, as the real app uses it (decided 22 Oct 2026) · Figma to add it later (§10 #63) · §9.68 | — | ✅ |
 | 80 | — (**code first**; no Figma component) | Loading | — | `FinSkeleton` | · `shape` text / rect / circle, `width`, `height` · a pulsing `bg-neutral` placeholder for content that's loading; FinTable `loading` uses it · **public** (§9.76) | — | ✅ |
-| 81 | — (**code first**; drawn on each Add reward screen, `367:19964`, `402:33879`) | Stepper | — | `FinStepper` | Icon `check` · `steps`, `current`, `onStepClick` · the steps of a multi-step form · **public** (§9.77) | — | 🟨 Built 27 Oct 2026, waiting for approval |
+| 81 | — (**code first**; drawn on each Add reward screen, `367:19964`, `402:33879`) | Stepper | — | `FinStepper` | Icon `check` · `steps`, `current`, `onStepClick` · the steps of a multi-step form · **public** (§9.77) | — | ✅ |
 
 ### 8.5 Assets (exported, not built as components)
 
@@ -3720,7 +3720,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Tokens used:** `--fin-space-10xl`, `--fin-space-m`, `--fin-size-36`, `--fin-radius-s`, `--fin-font-title-medium`, `--fin-font-label-medium`, `--fin-bg-{secondary,active,success-secondary}`, `--fin-border-{default,active,success,focused}`, `--fin-text-{secondary,action,primary}`; the icon brings `--fin-fg-success`.
 
-**Built (27 Oct 2026).** Storybook: Components/Stepper (Playground, Eligibility, All done, Long labels). Checked: boxes 160 apart, labels 44 from the top, as the screens; Light and Dark.
+**Built and approved (27 Oct 2026).** Storybook: Components/Stepper (Playground, Eligibility, All done, Long labels). Checked: boxes 160 apart, labels 44 from the top, as the screens; Light and Dark.
 
 ## 10. Known issues and open decisions
 
@@ -3838,7 +3838,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (27 Oct 2026):** `FinSkeleton` (§9.76) and FinTable `loading` (§9.45). **Next:** the shared negative states under **Pages/Common states** (`apps/storybook/src/pages/common/`, decided 27 Oct 2026): loading (skeleton, toolbar hidden), couldn't load (FinEmptyState, `warning`, Try again; toolbar hidden), network or server error (an Error FinNotificationBanner), back online (Success snackbar), couldn't save (an Error banner in the sheet), couldn't remove (an Error snackbar with Try again).
 > - **Approved and merged (27 Oct 2026):** the **Common states** (§8.6, Pages/Common states), shown on Programme configuration. **Next:** the Reward catalog list page (§8.6); then its Add reward pages.
 > - **Approved and merged (27 Oct 2026):** the **Reward catalog list** (§8.6), with "N/A" for values that aren't available. **Next:** the Add reward pages (plan first).
-> - **Built, waiting for approval (27 Oct 2026):** `FinStepper` (§9.77) on `feat/stepper`, the first part of the Add reward pages. Then: FinTextArea (§10 #17), FinDateField, then the Add reward page.
+> - **Approved and merged (27 Oct 2026):** `FinStepper` (§9.77), the first part of the Add reward pages. **Next:** FinTextArea (§10 #17), FinDateField, then the Add reward page.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4077,4 +4077,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | Values that aren't available show "N/A", not "—" (design review): Reward catalog's Partner, User limit and Users; Programme configuration's Max conversion (`pages/common/format.ts`). |
 | 27 Oct 2026 | 0.2 | Reward catalog list approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | **`FinStepper` built** (§8 #81, §9.77), public, Components/Stepper: code first from the Add reward screens; labels centred, done steps green with a checkmark, done steps clickable with `onStepClick`. |
+| 27 Oct 2026 | 0.2 | `FinStepper` approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |
