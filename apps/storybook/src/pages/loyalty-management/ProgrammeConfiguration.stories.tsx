@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within } from 'storybook/test';
 import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
-import { ProgrammeConfiguration, type ProgrammeConfig } from './ProgrammeConfiguration';
+import { ProgrammeConfiguration, type ProgrammeConfig, type ProgrammeConfigurationProps } from './ProgrammeConfiguration';
 
 /** Figma's three rows (`312:15165`). */
 const FIGMA_CONFIGS: ProgrammeConfig[] = [
@@ -24,9 +24,76 @@ const MANY_CONFIGS: ProgrammeConfig[] = [
   { id: 12, segment: 'Pensioners', loyalty: false, expiryMonths: 36, cashConversion: true, pointsPerUnit: 85, minConversion: 100, maxConversion: 8000 },
 ];
 
+/** More segments, so the table can have up to 60 rows (six pages of 10). */
+const MORE_SEGMENTS = [
+  'Gold card members',
+  'Platinum card members',
+  'Salary account holders',
+  'Fixed deposit holders',
+  'Home loan customers',
+  'Vehicle loan customers',
+  'Online banking only',
+  'Mobile wallet users',
+  'Merchants',
+  'Agriculture sector',
+  'Tourism sector',
+  'Healthcare professionals',
+  'Teachers',
+  'Government employees',
+  'Armed forces',
+  'University staff',
+  'Northern province customers',
+  'Eastern province customers',
+  'Southern province customers',
+  'Central province customers',
+  'Western province customers',
+  'Uva province customers',
+  'Sabaragamuwa province customers',
+  'North Central province customers',
+  'North Western province customers',
+  'Joint account holders',
+  'Minors (savings)',
+  'Foreign currency account holders',
+  'NRFC account holders',
+  'Business current accounts',
+  'Startups',
+  'Exporters',
+  'Importers',
+  'Insurance policy holders',
+  'Leasing customers',
+  'Pawning customers',
+  'Microfinance members',
+  'Co-operative society members',
+  'Religious institutions',
+  'Non-profit organisations',
+  'Corporate payroll partners',
+  'Airline partner members',
+  'Supermarket partner members',
+  'Fuel card holders',
+  'Travel card holders',
+  'Student loan customers',
+  'Credit card holders with supplementary cards issued before 2020',
+  'Legacy segment (migrated)',
+];
+
+/** Up to 60 configurations: Figma's three first, then the edge cases above, then the rest with varied values. */
+const ALL_CONFIGS: ProgrammeConfig[] = [
+  ...MANY_CONFIGS,
+  ...MORE_SEGMENTS.map((segment, i) => ({
+    id: MANY_CONFIGS.length + i + 1,
+    segment,
+    loyalty: i % 7 !== 3,
+    expiryMonths: [6, 12, 24, 36, 48, 60][i % 6]!,
+    cashConversion: i % 3 !== 1,
+    pointsPerUnit: 60 + ((i * 5) % 150),
+    minConversion: [50, 100, 200, 250, 500, 1000][i % 6]!,
+    maxConversion: [2500, 5000, 10000, 20000, 50000, 250000][(i + 2) % 6]!,
+  })),
+];
+
 /** Every customer segment: the ones without a configuration are offered when adding. */
 const SEGMENTS = [
-  ...MANY_CONFIGS.map((c) => c.segment),
+  ...ALL_CONFIGS.map((c) => c.segment),
   'Overseas Sri Lankans',
   'Youth savers',
   'Women in business',
@@ -49,39 +116,50 @@ const openRowAction = async (canvasElement: HTMLElement, segment: string, action
  * Programme configuration (Figma `312:15165`, DESIGN.md §8.6), built only from the system's components: FinAppShell,
  * FinTable with its toolbar (search, Add), a filter on the Segment column and the row actions menu. Use the
  * viewport menu for 1920, 1440, 1280 and 1024. Add opens the add side sheet; a saved configuration joins the table.
- * View (or a row click) opens the details sheet. Edit and Remove only report what was chosen: the edit sheet, remove
- * dialog and snackbar come next.
+ * View (or a row click) opens the details sheet, Edit the edit sheet, Remove the remove dialog and then the removed
+ * snackbar. **Rows** (Controls) sets how many configurations the table starts with: 0 for none, more than 10 for
+ * several pages.
  */
-const meta: Meta<typeof ProgrammeConfiguration> = {
+type PageArgs = Omit<ProgrammeConfigurationProps, 'configs'> & { rows: number };
+
+const meta: Meta<PageArgs> = {
   title: 'Pages/Loyalty management/Programme configuration',
-  component: ProgrammeConfiguration,
-  parameters: { layout: 'fullscreen', controls: { disable: true }, a11y: { context: { include: ['body'], exclude: PAGE_KNOWN_CONTRAST_ISSUES } } },
+  parameters: {
+    layout: 'fullscreen',
+    controls: { include: ['rows'] },
+    a11y: { context: { include: ['body'], exclude: PAGE_KNOWN_CONTRAST_ISSUES } },
+  },
+  argTypes: {
+    rows: { control: { type: 'range', min: 0, max: ALL_CONFIGS.length, step: 1 }, description: 'How many configurations the table starts with (0 to 60)' },
+  },
+  // A new count starts the page again with that many rows.
+  render: ({ rows, ...args }) => <ProgrammeConfiguration key={rows} {...args} configs={ALL_CONFIGS.slice(0, rows)} />,
   globals: { viewport: { value: 'desktop1920', isRotated: false } },
-  args: { configs: FIGMA_CONFIGS, segments: SEGMENTS, onAction: fn() },
+  args: { rows: FIGMA_CONFIGS.length, segments: SEGMENTS, onAction: fn() },
 };
 export default meta;
 
-type Story = StoryObj<typeof ProgrammeConfiguration>;
+type Story = StoryObj<PageArgs>;
 
 /** As Figma: three segments, at 1920. */
 export const List: Story = {};
 
-/** Twelve segments: two pages, a long segment name ending in "…", switched-off rules and large numbers. */
+/** Forty segments: four pages, as the Figma footer; a long segment name ending in "…", switched-off rules and large numbers. */
 export const ManySegments: Story = {
   name: 'Many segments',
-  args: { configs: MANY_CONFIGS },
+  args: { rows: 40 },
 };
 
 /** No configurations yet: the table's header and "Showing 0 of 0 entries" until the Empty state is built. */
 export const NoConfigurations: Story = {
   name: 'No configurations',
-  args: { configs: [] },
+  args: { rows: 0 },
 };
 
 /** At 1024: the side nav minimized, the table scrolls sideways with the ⋮ column fixed at the end. */
 export const At1024: Story = {
   name: 'At 1024',
-  args: { configs: MANY_CONFIGS },
+  args: { rows: MANY_CONFIGS.length },
   globals: { viewport: { value: 'desktop1024', isRotated: false } },
 };
 
@@ -135,7 +213,7 @@ export const View: Story = {
 /** A click on the row opens its details too. */
 export const ViewFromRow: Story = {
   name: 'Details from a row click',
-  args: { configs: MANY_CONFIGS },
+  args: { rows: MANY_CONFIGS.length },
   play: async ({ canvasElement }) => {
     await userEvent.click(await within(canvasElement).findByText('Dormant accounts'));
   },
@@ -144,7 +222,7 @@ export const ViewFromRow: Story = {
 /** A long segment name: the title and the table's value end in "…". */
 export const ViewLongName: Story = {
   name: 'Details, long segment name',
-  args: { configs: MANY_CONFIGS },
+  args: { rows: MANY_CONFIGS.length },
   play: async ({ canvasElement }) => {
     await openRowAction(canvasElement, 'Premier banking customers (Colombo and Kandy branches)');
   },
@@ -181,7 +259,7 @@ export const EditChanged: Story = {
 /** Edit from the details sheet: the details close and the edit sheet opens with the same row. */
 export const EditFromDetails: Story = {
   name: 'Edit configuration from details',
-  args: { configs: MANY_CONFIGS },
+  args: { rows: MANY_CONFIGS.length },
   play: async ({ canvasElement }) => {
     await openRowAction(canvasElement, 'Dormant accounts');
     await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('button', { name: 'Edit' }));
@@ -199,7 +277,7 @@ export const Remove: Story = {
 /** A long segment name: the dialog's text wraps. */
 export const RemoveLongName: Story = {
   name: 'Remove configuration, long segment name',
-  args: { configs: MANY_CONFIGS },
+  args: { rows: MANY_CONFIGS.length },
   play: async ({ canvasElement }) => {
     await openRowAction(canvasElement, 'Premier banking customers (Colombo and Kandy branches)', 'Remove');
   },
@@ -208,7 +286,7 @@ export const RemoveLongName: Story = {
 /** Remove from the details sheet: the details close and the dialog opens for the same row. */
 export const RemoveFromDetails: Story = {
   name: 'Remove configuration from details',
-  args: { configs: MANY_CONFIGS },
+  args: { rows: MANY_CONFIGS.length },
   play: async ({ canvasElement }) => {
     await openRowAction(canvasElement, 'VIP');
     await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('button', { name: 'Remove' }));
