@@ -3988,4 +3988,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | **Programme configuration empty states** (§8.6): FinTable gained `empty` (§9.45), shown instead of the table and footer when no rows are left; FinAppShell's content is a column (§9.68 decision 7). No configurations yet (Medium, Add) and no matches (Small, Clear search and filters). |
 | 27 Oct 2026 | 0.2 | Programme configuration empty states approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | **Storybook deploy:** `vercel.json` at the repo root (pnpm via Corepack, `pnpm build-storybook`, output `apps/storybook/storybook-static`, framework "Other"). Built from a clean clone and checked when served: fonts, icons, Light and Dark, the Pages section. |
+| 27 Oct 2026 | 0.2 | `engines.node` pinned to `24.x` (was `>=24`), so Vercel can't pick Node 25 or later, which have no Corepack. |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |
