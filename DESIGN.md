@@ -697,7 +697,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | # | Figma component | Page | Node | Code name | Built on / depends on | Figma check | Status |
 |---|---|---|---|---|---|---|---|
 | 52 | `Input field-base` | Input field | `49:5734` | `FinInputBase` | **Base** for single-line fields. Type: Default/Payment/Mobile number/Select · Destructive (= error) · Label, Placeholder, Prefix, Suffix, Caret, Focus ring · Leading, Trailing, Placeholder and Helper text slots · Helper text, Country selector, Flags, Divider, icons · **Follow-up when built:** replace the plain stand-in inputs in the Label "Usage" and Helper text "With a field" stories with this component · `Type` → `variant`; states in CSS, the same for every field (§9.58) · **internal** | ⚠️ (label padding raw 4 → `Space-XS`; label y −9 → centred on the border; raw white icon frames dropped) | ✅ |
-| 52a | `Input field-textArea-base` | Input field | `3094:26567` | `FinTextAreaBase` | **Base** for multi-line fields. Type: Default/Destructive (`Distructive`) · Label, Helper text, Placeholder, Caret, Focus ring · Helper text and Placeholder slots | ⚠️ (§10 #16) | ⬜ |
+| 52a | `Input field-textArea-base` | Input field | `3094:26567` | `FinTextAreaBase` | **Base** for multi-line fields. Type: Default/Destructive (`Distructive`) → `error` · Label → `label` / `showLabel`, Helper text → `helperText`, Place holder → `placeholder`, Caret and Focus ring (runtime) · `rows` (4), `maxRows` (8; grows, then scrolls) · **internal** (§9.78) | ⚠️ (§10 #16: `Body L` → `--fin-font-body-large`; the focus halo's raw #EFEFFF → `bg-active`, as FinInputBase) | 🟨 Built 27 Oct 2026, waiting for approval |
 | 52b | `Input field-base` (text area) | Input field | `3097:27497` | _(provisional)_ `FinTextArea` | **Input field-textArea-base**, Helper text | 🔴 broken set and duplicate name (§10 #17) | ⬜ |
 | 53 | `Input field-standard` | Input field | `52:2629` | `FinTextField` | **Input field-base**, Payment Icons (FinPaymentIcon), Country selector · Type (code `variant`): Default/Mobile number/Payment · State (runtime) · Trailing icon (code `trailingIcon`) · Error · Small size (code only) · dial code from the country, card brand from the number · **public** (§9.59) | ⚠️ (§10 #58 (5)–(6)) | ✅ |
 | 54 | `Input field-password` | Input field | `60:7165` | `FinPasswordField` | **Input field-base** · State (runtime) · Show password (code `showPassword` / `defaultShowPassword`, the eye button) · Error · Small size (code only) · **public** (§9.60) | ⚠️ (§10 #58 (1), (3), (4)) | ✅ |
@@ -3722,6 +3722,31 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Built and approved (27 Oct 2026).** Storybook: Components/Stepper (Playground, Eligibility, All done, Long labels). Checked: boxes 160 apart, labels 44 from the top, as the screens; Light and Dark.
 
+### 9.78 FinTextAreaBase (Input field-textArea-base) — internal
+
+**Figma:** page **Input field**, component set `Input field-textArea-base` `3094:26567` (read 27 Oct 2026): `Type` = Default / Distructive, booleans `Label`, `Helper text` (+ slot), `Place holder` (+ slot), `Show Caret`, `Focus ring`; hidden Prefix and Suffix layers with no property. Its states are in the field set `3097:27497` (`State` = Default / Hovered / Focused / Typing / Complete / Disabled, each twice: the second is the error look; §10 #17). 343 × 154: the box 128 (`Radius-M`, 1px `border-default`, `Space-XL` padding all round, 4 lines of Body/Large), the label (Label/Small) on the top border 16 in with 4 each side, the helper text (Body/Small `text-tertiary`) 8 below, 16 in.
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `Type` Default / Distructive | `error` (red border, ring and halo; the helper text red **with its warning icon**, as Figma); `aria-invalid` |
+| `Label` | `label` (always the text area's name; shown on the border when focused or filled) and `showLabel` (off: never shown, no notch) |
+| `Place holder` + slot | `placeholder` |
+| `Helper text` + slot | `helperText` (linked with `aria-describedby`) |
+| `Show Caret`, `Focus ring` | runtime (focus); the caret `fg-brand` |
+| Field set `State` | runtime, the browser's, as FinInputBase (§9.58): Hovered `bg-secondary` (empty, not focused), Focused / Typing the label and ring, Complete the label and `border-strong`, Disabled |
+| Prefix / Suffix layers | not exposed (no property) |
+| 343 × 128 | fills its container; `rows` (default 4 = 128) |
+
+**Decided 27 Oct 2026:** (1) **its own base**, as Figma (design: the base first, then the field), with FinInputBase's look and states copied (the same notch, ring and halo fieldsets), not a mode of FinInputBase. (2) **Longer text:** it grows with the text from `rows` to `maxRows` (default 8) lines, then scrolls; no resize handle. (3) **No character count** for now (added when a screen needs it). (4) The error helper text keeps Figma's warning icon; FinInputBase's fields show none (a difference between Figma's two bases, to align later).
+
+**Tokens used:** as FinInputBase: `--fin-border-{default,strong,disabled,error,focused}`, `--fin-bg-{secondary,active,error-secondary}`, `--fin-text-{primary,placeholder,disabled,tertiary}`, `--fin-fg-brand`, `--fin-radius-m`, `--fin-space-{xs,m,xl}`, `--fin-font-body-large`, `--fin-font-label-small`. Line height in `lh` (one line of its own font).
+
+**Accessibility:** a native `textarea` named by its `label`; the helper text describes it; `aria-invalid` with `error`; disabled is native.
+
+**Built (27 Oct 2026).** Storybook (Internal/Input field/Text area base): Playground, States (Figma), Focused, Typing, Focused + error, Long text. Checked against Figma: 343 × 154, box 128, text at 16,16 (311 × 96), helper at 136; Light and Dark.
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -3742,7 +3767,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 14 | The Material Symbols Rounded variable font is **5.4 MB** (full font, shipped in S4). **Decided 14 Oct 2026:** the build generates a subset font automatically from the `finIcons` registry (no hand-made font files); adding an icon is a one-line registry change. The subset keeps only the registry's icons, the letters and ligature rules that spell them, and each icon's **filled alternate** (the font swaps 19 of the first 28 icons to a separate `.fill` glyph when `FILL` reaches 1, through `FeatureVariations`; leaving them out breaks filled icons). `FILL` stays variable (0–1); `wght` 300, `opsz` 24 and `GRAD` 0 are fixed (§6.2). Prototype with the 28 §6.4 icons: **6.4 KB** woff2, identical to the full font outlined and filled. `FinIcon` isn't done until the full font is replaced. | Icons | ✅ Decided: part of `FinIcon` |
 | 15 | Motion: plan is to adopt Material 3 easing and duration pairs (see §5). | §5 | ⏳ Deferred |
 | 16 | **Typography bound to another library** (the scan shows `Body L` in `Input field-textArea-base`, `Button M` in `Notification`, `Caption L` in `Plain Tooltip` coming from a non-Loyalty collection). **Decision (13 Oct 2026):** not a blocker. When building, use the Loyalty text style token with the same name (`--fin-font-body-large`, etc.) and list the mapping for the designer's approval first (§8 legend). | Components | ✅ Decided |
-| 17 | **Broken component sets** ("Component set has existing errors"): ~~`Header notification` (`3178:24467`) has two variants named `State=Hovered, Notification=Dot`~~ **fixed 22 Oct 2026** (now `Hovered, Number`, plus Pressed and Notification=None; a disabled button never shows a badge, so there's no `Disabled, Number`; §9.62). The text area set `Input field-base` (`3097:27497`) has the same name as the real base `49:5734`; rename it (for example `Input field-textArea`). | Header, Input field | 🔧 Fix in Figma |
+| 17 | **Broken component sets** ("Component set has existing errors"): ~~`Header notification` (`3178:24467`) has two variants named `State=Hovered, Notification=Dot`~~ **fixed 22 Oct 2026** (now `Hovered, Number`, plus Pressed and Notification=None; a disabled button never shows a badge, so there's no `Disabled, Number`; §9.62). The text area set `Input field-base` (`3097:27497`) has the same name as the real base `49:5734`; rename it (for example `Input field-textArea`). It also has each `State` twice (the second the error look) with no property to tell them apart: add `Type` = Default / Destructive (27 Oct 2026). Code builds on it anyway (§9.78). | Header, Input field | 🔧 Fix in Figma |
 | 18 | Input bases decided (13 Oct 2026): `Input field-base` (`49:5734`) for single-line fields, `Input field-textArea-base` (`3094:26567`) for text areas, `Input-OTP-base` (`49:5843`) for OTP. | Input field | ✅ Decided |
 | 19 | `Accordion-bare-base`, `List-base` and `List-fill-base` use a `20px` component whose main component isn't on any page (deleted or moved). **List-base fixed 20 Oct 2026** (the extra icon is now the Icon sizes `20px`; the top label's icon was removed); **List_fill-base fixed 20 Oct 2026** (new component `3494:14233`). Accordion-bare-base to re-check when built. | Accordion, List | 🔧 Fix in Figma (List bases ✅) |
 | 20 | **Clashing name:** `24px` on the Side nav page clashed with the icon size `24px`; **renamed `Icon` 20 Oct 2026**. (Renamed 13 Oct 2026: `Frame 5` → `sub selection`, Dialog `Frame 3` → `Dialog box`, Header `Frame 1707478998` → `Main header`, `Frame 1707478999` → `Header notification`, Table parts.) | Side nav | ✅ Fixed (20 Oct 2026) |
@@ -3839,6 +3864,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (27 Oct 2026):** the **Common states** (§8.6, Pages/Common states), shown on Programme configuration. **Next:** the Reward catalog list page (§8.6); then its Add reward pages.
 > - **Approved and merged (27 Oct 2026):** the **Reward catalog list** (§8.6), with "N/A" for values that aren't available. **Next:** the Add reward pages (plan first).
 > - **Approved and merged (27 Oct 2026):** `FinStepper` (§9.77), the first part of the Add reward pages. **Next:** FinTextArea (§10 #17), FinDateField, then the Add reward page.
+> - **Built, waiting for approval (27 Oct 2026):** `FinTextAreaBase` (§9.78) on `feat/text-area-base`. Then: `FinTextArea` (the field set `3097:27497`).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4078,4 +4104,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | Reward catalog list approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | **`FinStepper` built** (§8 #81, §9.77), public, Components/Stepper: code first from the Add reward screens; labels centred, done steps green with a checkmark, done steps clickable with `onStepClick`. |
 | 27 Oct 2026 | 0.2 | `FinStepper` approved by design and merged into `main`. |
+| 27 Oct 2026 | 0.2 | **`FinTextAreaBase` built** (§8 #52a, §9.78), internal, Internal/Input field/Text area base: FinInputBase's look and states for a multi-line field; grows from 4 to 8 lines, then scrolls; the error helper text has Figma's icon. §10 #17 updated. |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |

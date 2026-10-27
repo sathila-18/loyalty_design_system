@@ -1,0 +1,11 @@
+/* Layout for the FinTextAreaBase stories only (not part of the component). Fields 343 wide, as Figma. */
+
+.column {
+  width: var(--fin-size-343);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, var(--fin-size-343));
+  gap: var(--fin-space-6xl) var(--fin-space-3xl);
+}
