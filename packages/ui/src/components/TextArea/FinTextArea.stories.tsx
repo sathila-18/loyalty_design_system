@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { userEvent } from 'storybook/test';
-import { FinTextAreaBase } from './FinTextAreaBase';
-import styles from './FinTextAreaBase.stories.module.css';
+import { FinTextArea } from './FinTextArea';
+import styles from './FinTextArea.stories.module.css';
 
 const LONG =
   'Your voucher is valid for 30 days at this store. Show the code at the counter before you pay. It can be used once, on one bill, and cannot be exchanged for cash. Members on every tier can use it, but only one voucher per visit. If the store is closed on the last day, the voucher is valid the next day it opens.';
@@ -25,11 +25,11 @@ interface Args {
 const KNOWN_CONTRAST_ISSUES = ['[data-tone="disabled"]'];
 
 /**
- * INTERNAL: the base of the multi-line fields (FinTextArea). Matches Figma's properties (DESIGN.md §9). Hover, focus
- * and type in it to see the states; with more than 4 lines it grows, up to 8, then scrolls.
+ * A multi-line text field (Figma Input field-textArea-base and its field set; DESIGN.md §9). Matches Figma's
+ * properties. Hover, focus and type in it to see the states; with more than 4 lines it grows, up to 8, then scrolls.
  */
 const meta: Meta<Args> = {
-  title: 'Internal/Input field/Text area base',
+  title: 'Components/Input field/Text area',
   parameters: { a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
   args: {
     label: 'Label',
@@ -55,7 +55,7 @@ const meta: Meta<Args> = {
   },
   render: ({ showHelperText, helperText, ...args }) => (
     <div className={styles.column}>
-      <FinTextAreaBase {...args} {...(showHelperText ? { helperText } : {})} />
+      <FinTextArea {...args} {...(showHelperText ? { helperText } : {})} />
     </div>
   ),
 };
@@ -69,12 +69,12 @@ export const States: Story = {
   name: 'States (Figma)',
   render: () => (
     <div className={styles.grid}>
-      <FinTextAreaBase label="Enabled" placeholder="Placeholder text" helperText="Helper text here" />
-      <FinTextAreaBase label="Complete" defaultValue="Typing" helperText="Helper text here" />
-      <FinTextAreaBase label="Disabled" placeholder="Placeholder text" helperText="Helper text here" disabled />
-      <FinTextAreaBase label="Error" placeholder="Placeholder text" helperText="Helper text here" error />
-      <FinTextAreaBase label="Error, complete" defaultValue="Typing" helperText="Helper text here" error />
-      <FinTextAreaBase label="Disabled, filled" defaultValue="Typing" helperText="Helper text here" disabled />
+      <FinTextArea label="Enabled" placeholder="Placeholder text" helperText="Helper text here" />
+      <FinTextArea label="Complete" defaultValue="Typing" helperText="Helper text here" />
+      <FinTextArea label="Disabled" placeholder="Placeholder text" helperText="Helper text here" disabled />
+      <FinTextArea label="Error" placeholder="Placeholder text" helperText="Helper text here" error />
+      <FinTextArea label="Error, complete" defaultValue="Typing" helperText="Helper text here" error />
+      <FinTextArea label="Disabled, filled" defaultValue="Typing" helperText="Helper text here" disabled />
     </div>
   ),
 };
@@ -83,7 +83,7 @@ export const States: Story = {
 export const Focused: Story = {
   render: () => (
     <div className={styles.column}>
-      <FinTextAreaBase label="Label" placeholder="Placeholder text" helperText="Helper text here" />
+      <FinTextArea label="Label" placeholder="Placeholder text" helperText="Helper text here" />
     </div>
   ),
   play: async () => {
@@ -95,7 +95,7 @@ export const Focused: Story = {
 export const Typing: Story = {
   render: () => (
     <div className={styles.column}>
-      <FinTextAreaBase label="Label" placeholder="Placeholder text" helperText="Helper text here" />
+      <FinTextArea label="Label" placeholder="Placeholder text" helperText="Helper text here" />
     </div>
   ),
   play: async () => {
@@ -109,7 +109,7 @@ export const FocusedError: Story = {
   name: 'Focused, error',
   render: () => (
     <div className={styles.column}>
-      <FinTextAreaBase label="Label" placeholder="Placeholder text" helperText="Enter a description" error />
+      <FinTextArea label="Label" placeholder="Placeholder text" helperText="Enter a description" error />
     </div>
   ),
   play: async () => {
@@ -122,9 +122,9 @@ export const LongText: Story = {
   name: 'Long text',
   render: () => (
     <div className={styles.grid}>
-      <FinTextAreaBase label="Description" defaultValue={LONG.slice(0, 140)} helperText="Grows with the text" />
-      <FinTextAreaBase label="Description" defaultValue={LONG} helperText="Up to 8 lines, then scrolls" />
-      <FinTextAreaBase label="Description" defaultValue={LONG} rows={2} maxRows={4} helperText="rows 2, maxRows 4" />
+      <FinTextArea label="Description" defaultValue={LONG.slice(0, 140)} helperText="Grows with the text" />
+      <FinTextArea label="Description" defaultValue={LONG} helperText="Up to 8 lines, then scrolls" />
+      <FinTextArea label="Description" defaultValue={LONG} rows={2} maxRows={4} helperText="rows 2, maxRows 4" />
     </div>
   ),
 };

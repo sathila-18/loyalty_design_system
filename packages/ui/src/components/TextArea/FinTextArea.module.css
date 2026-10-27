@@ -1,5 +1,5 @@
 /*
- * FinTextAreaBase (DESIGN.md §9). Figma Input field-textArea-base, with the states from the text-area field set: box
+ * FinTextArea (DESIGN.md §9). Figma Input field-textArea-base, with the states from its field set: box
  * radius M, 1px border, padding Space-XL all round; 4 lines of Body/Large (24) by default, so 128 tall as Figma; it
  * grows to `maxRows` lines, then scrolls. Helper text 8 below, 16 in from the sides. Value Body/Large text-primary,
  * placeholder text-placeholder, caret fg-brand. Label Label/Small text-tertiary on the top border, 16 in, with 4

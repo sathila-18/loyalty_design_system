@@ -2,9 +2,9 @@
 
 import { forwardRef, useCallback, useId, useLayoutEffect, useRef, type CSSProperties, type ReactNode, type TextareaHTMLAttributes } from 'react';
 import { FinHelperText } from '../HelperText';
-import styles from './FinTextAreaBase.module.css';
+import styles from './FinTextArea.module.css';
 
-export interface FinTextAreaBaseProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'children' | 'rows'> {
+export interface FinTextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'children' | 'rows'> {
   /** The field's name (Figma Label). Always the text area's label; shown on the border when focused or filled. */
   label: string;
   /** Figma `Label`. Off: the label is never shown (no notch), but it still names the text area. Default on. */
@@ -22,15 +22,15 @@ export interface FinTextAreaBaseProps extends Omit<TextareaHTMLAttributes<HTMLTe
 }
 
 /**
- * The base of the multi-line fields (Figma Input field-textArea-base; DESIGN.md §9): a box (radius M, 1px border,
+ * A multi-line text field (Figma Input field-textArea-base and its field set, Input field-base `3097:27497`; DESIGN.md
+ * §9; one public component for both, decided 27 Oct 2026): a box (radius M, 1px border,
  * Space-XL padding all round) with the text area, the label on the top border and the helper text 8 below. It's
  * `rows` lines tall (4: Figma's 128) and grows with the text up to `maxRows` (8), then scrolls. **The states are the
  * browser's**, as FinInputBase: Hovered (`bg-secondary`, empty fields only), Focused and Typing (the label, caret and
  * focus ring), Complete (the label, `border-strong`), Disabled; Error changes the colors and shows the helper text's
  * icon (as Figma). `ref` and other attributes go to the text area.
- * **Internal:** a base (§7.2).
  */
-export const FinTextAreaBase = forwardRef<HTMLTextAreaElement, FinTextAreaBaseProps>(function FinTextAreaBase(
+export const FinTextArea = forwardRef<HTMLTextAreaElement, FinTextAreaProps>(function FinTextArea(
   {
     label,
     showLabel = true,
