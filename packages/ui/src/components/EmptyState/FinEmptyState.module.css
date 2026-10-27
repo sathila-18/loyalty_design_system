@@ -1,0 +1,26 @@
+/*
+ * FinEmptyState (DESIGN.md §9). Figma Empty state: a centred column, no padding; the icon slot and the Text Box
+ * Space-XL apart, the button Space-3XL below them. Fills its container (Figma's 711 is a drawing width).
+ */
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+  align-items: center;
+  width: 100%;
+}
+
+/* Figma's Text Box fills the width. */
+.text {
+  align-self: stretch;
+}

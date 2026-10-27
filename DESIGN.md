@@ -716,7 +716,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 62 | `Accordion-bare-base` | Accordion | `555:1968` | `FinAccordion` | **Base.** Text Box, Badge-primary, Label, Divider · slots | 🔴 missing `20px` main (§10 #19) | ⬜ |
 | 63 | `Notification` | Notification banners | `77:10612` | `FinNotificationBanner` | all-button, icons · Type: Info/Success/Error/Warning/Neutral | ⚠️ (§10 #16) | ⬜ |
 | 64 | `Snackbar` | Snackbar | `268:992` | `FinSnackbar` (+ `FinSnackbarRegion`) | Text Box, all-button · State: Neutral/Success/Warning/Error → `tone` · `# of lines` → `lines` · **public** (§9.73) | ✅ (all Foundation – Loyalty; the action button's padding is overridden to 12, §10 #72) | ✅ |
-| 65 | `Empty state` | Empty state | `71:4588` | `FinEmptyState` | 48px bg, 68px bg, Text Box, all-button · Size: Small/Medium/Large · Icon slot | ✅ | ⬜ |
+| 65 | `Empty state` | Empty state | `71:4588` | `FinEmptyState` | 48px bg, 64px bg, Text Box, all-button · Size: Small/Medium (Large removed by design 27 Oct 2026) · Icon slot · Show Button Group · **public** (§9.74) | ✅ | ✅ |
 | 66 | `Button dock` | Button dock | `75:5858` | `FinButtonDock` | Text Box, all-button · Sticky · Accessory slot · Show Tertiary / Secondary / Primary Button · **public** (§9.69) | ✅ | ✅ |
 | 67 | `Side sheet` | Side sheet | `3120:30707` | `FinSideSheet` | Text Box, all-button, Divider, Button dock · Body slot · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13); width from the layout grid · **public** (§9.70) | ✅ (remote `Views / Dividers` replaced by our Divider, 23 Oct 2026, §10 #25) | ✅ |
 | 68 | `Dialog box` | Dialog | `3234:11710` | `FinDialog` | Text Box, all-button, `24px` · Body slot · Leading button, Primary/Secondary buttons, Trailing buttons, Trailing icon · on FinOverlay; **the page doesn't scroll while it's open** (decided 15 Oct 2026, §9.13); width from the layout grid · **public** (§9.71) | ✅ | ✅ |
@@ -3603,6 +3603,46 @@ import { FinSnackbar, FinSnackbarRegion } from '@finspace-loyalty/ui';
 
 **Built (27 Oct 2026).** Storybook (Components/Snackbar): Playground, All variants (Figma, at Size/343), Message and close, Message only, In a page (the region, stacking, auto-close). Checked in Chrome against Figma: single 343 × 48, two lines 343 × 139, icon at 16, 12, message at 48; Light colours as Figma; Dark from the tokens; the region 24 from the top and right, 450 wide at 1920 and 343 at 1440 / 1280 / 1024, a snackbar without an action closing after 6 s and one with Undo staying. Light and Dark.
 
+### 9.74 FinEmptyState (Empty state) — public
+
+**Figma:** page **Empty state**, component set `Empty state` `71:4588` (updated by design and read 27 Oct 2026): `Size` = Small (`71:4594`) / Medium (`524:2954`, the default); `Icon Slot` (a slot); `Show Button Group` (default on). A centred column, no padding, drawn 711 wide: the **icon slot** and the **Text Box** `Space-XL` (16) apart, the **button** `Space-3XL` (24) below them.
+- **Small:** `48px bg` (Primary: `bg-icons`, round) with a 24 icon; Text Box **Headline Small-H6**, centred, heading and description (70 tall with Figma's text); 198 tall.
+- **Medium:** `64px bg` with a 36 icon; Text Box **Headline Medium-H5** (74); 218 tall.
+- **Button:** one all-button Primary **Small** "Text here" (40). The icon is the `perm_identity` placeholder.
+
+**Decided 27 Oct 2026:** (1) **`icon` is required** (the placeholder is always swapped); `iconSlot` places anything else. (2) **Fills its container**; the page decides how wide it sits and where (Figma's 711 is a drawing width). (3) **One `action`** for "Button Group" (Figma has one button); a second only when a design needs it.
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `Size` | `size?: 'small' \| 'medium'` (default `medium`) |
+| `Icon Slot` (an icon container, Primary) | `icon: FinIconName` in FinIconContainer 48 / 64 by size; or `iconSlot: ReactNode` instead |
+| Text Box heading / description | `heading: ReactNode` (required), `description?: ReactNode`; `headingLevel` (default 2) sets the element only |
+| `Show Button Group` | `action?: { label, onClick, … }` (Primary Small; shown when passed) |
+| — (code only) | `className`, other `<div>` attributes |
+
+**Tokens used:** `--fin-space-xl`, `--fin-space-3xl`. FinIconContainer, FinTextBox and FinButton bring their own.
+
+**API:**
+
+```tsx
+import { FinEmptyState } from '@finspace-loyalty/ui';
+
+<FinEmptyState
+  icon="loyalty"
+  heading="No programme configurations yet"
+  description="Add a configuration to set the loyalty and cash conversion rules for a customer segment."
+  action={{ label: 'Add programme configuration', onClick: add }}
+/>
+```
+
+Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `FinEmptyStateSize`, `FinEmptyStateAction`.
+
+**Accessibility:** the heading is a real heading (`<h2>` by default; `headingLevel` fits it into the page's outline); the icon is decorative; the button is a native `<button>`. Nothing is announced on its own: where it replaces content after a search, the page's live region (or the table's count) says so.
+
+**Built (27 Oct 2026).** Storybook (Components/Empty state): Playground (Figma's defaults), Sizes (Figma), Scenarios (no configurations yet, Medium; no search results, Small), Heading only. Checked in Chrome against Figma: Medium 218 tall (icon 64, Text Box 74 at 80, button 40 at 178), Small 198 (icon 48, Text Box 70 at 64, button 40 at 158); centred; the button 95 wide (Figma 96, text rendering). Light and Dark.
+
 ### 9.x <Component> (<Figma page>)
 
 **Figma:** page, component set name and node.
@@ -3938,4 +3978,6 @@ import { FinSnackbar, FinSnackbarRegion } from '@finspace-loyalty/ui';
 | 27 Oct 2026 | 0.2 | Programme configuration edit side sheet, details dock (Remove with the bin, hug width; FinButtonDock `leadingIcon`, `width`), Segment column filter, and the remove dialog approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | **`FinSnackbar` and `FinSnackbarRegion` built** (§8 #64, §9.73), public, Components/Snackbar: `tone`, `lines`, `showIcon` / `icon` (Neutral `info`), `action`, `onClose`, `duration` (6 s without an action); the region at the top right, 3 grid columns but at least 343, in the top layer, a polite live region. FinButton gained code-only `contentTone` (§9.28). §10 #72–74 logged. |
 | 27 Oct 2026 | 0.2 | Programme configuration removed state (Success snackbar after Remove) approved by design and merged into `main`; every state of the page is done. |
+| 27 Oct 2026 | 0.2 | Programme configuration stories' Rows control (0–60) approved and merged. |
+| 27 Oct 2026 | 0.2 | **`FinEmptyState` built** (§8 #65, §9.74), public, Components/Empty state, from Figma as updated by design today (Small / Medium; Large removed): `size`, `icon` (required) or `iconSlot`, `heading`, `description`, `action` (Primary Small); fills its container. |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |
