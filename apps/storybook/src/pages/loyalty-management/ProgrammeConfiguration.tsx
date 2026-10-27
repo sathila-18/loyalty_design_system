@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FinAppShell, FinDialog, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
+import { FinAppShell, FinDialog, FinSnackbar, FinSnackbarRegion, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
 import { pageSideNav } from '../pageShell';
 import { ProgrammeConfigurationDetails } from './ProgrammeConfigurationDetails';
 import { ProgrammeConfigurationForm, type ProgrammeConfigValues } from './ProgrammeConfigurationForm';
@@ -64,7 +64,8 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
  * on a row from its ⋮ menu. Add opens the add side sheet (`312:15899`); a saved configuration is added to the table.
  * View, or a click on the row, opens the details sheet (code first). Edit, in the row menu or the details sheet, opens
  * the same form with the row's values (code first); saving updates the row. Remove, in the row menu or the details
- * sheet, asks in a dialog (`328:25843`) and then takes the row out. The removed snackbar comes next.
+ * sheet, asks in a dialog (`328:25843`) and then takes the row out, with a Success snackbar (`328:26929`) at the top
+ * right that closes itself after 6 seconds.
  */
 export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAction = () => undefined }: ProgrammeConfigurationProps) {
   const [configs, setConfigs] = useState(initialConfigs);
@@ -74,6 +75,8 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
   const [editing, setEditing] = useState<{ config: ProgrammeConfig; open: boolean; key: number } | null>(null);
   // The dialog keeps the last configuration while it closes, so its text doesn't change.
   const [removing, setRemoving] = useState<{ config: ProgrammeConfig; open: boolean } | null>(null);
+  // Snackbars, newest last; each closes itself or with its close button.
+  const [notices, setNotices] = useState<{ id: number; text: string }[]>([]);
   const [query, setQuery] = useState('');
 
   const search = query.trim().toLowerCase();
@@ -164,12 +167,20 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
             if (!removing) return;
             onAction(`Removed: ${removing.config.segment}`);
             setConfigs((current) => current.filter((c) => c.id !== removing.config.id));
+            setNotices((current) => [...current, { id: Math.max(0, ...current.map((n) => n.id)) + 1, text: 'Segment removed successfully' }]);
             closeRemove();
           },
         }}
       >
         {`Are you sure you want to remove the “${removing?.config.segment ?? ''}” segment?`}
       </FinDialog>
+      <FinSnackbarRegion>
+        {notices.map((notice) => (
+          <FinSnackbar key={notice.id} tone="success" onClose={() => setNotices((current) => current.filter((n) => n.id !== notice.id))}>
+            {notice.text}
+          </FinSnackbar>
+        ))}
+      </FinSnackbarRegion>
     </FinAppShell>
   );
 }

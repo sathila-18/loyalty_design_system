@@ -223,3 +223,12 @@ export const RemoveAt1024: Story = {
     await openRowAction(canvasElement, 'VIP', 'Remove');
   },
 };
+
+/** Removed (Figma `328:26929`): after Remove in the dialog, the row goes and a Success snackbar shows at the top right; it closes itself after 6 seconds. */
+export const Removed: Story = {
+  name: 'Removed',
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'Staff', 'Remove');
+    await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('button', { name: 'Remove' }));
+  },
+};
