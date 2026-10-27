@@ -4,7 +4,10 @@ import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
 import { TierManagement, type TierManagementProps } from './TierManagement';
 import type { Tier } from './tiers';
 
-/** Figma's three rows (`152:6162`), then the Highest level with a long name: one tier per level, so four at most. */
+/**
+ * Figma's three rows (`152:6162`), then the Highest level with a long name and large numbers, then more tiers sharing
+ * the levels (12: two pages of 10).
+ */
 const ALL_TIERS: Tier[] = [
   { id: 1, name: 'Silver', level: 'Entry', upgradeThreshold: 0, downgradeThreshold: 0, earnMultiplier: 1, active: true },
   { id: 2, name: 'Gold', level: 'Intermediate', upgradeThreshold: 5000, downgradeThreshold: 4000, earnMultiplier: 2, active: true },
@@ -18,6 +21,14 @@ const ALL_TIERS: Tier[] = [
     earnMultiplier: 4.75,
     active: true,
   },
+  { id: 5, name: 'Bronze', level: 'Entry', upgradeThreshold: 0, downgradeThreshold: 0, earnMultiplier: 0.5, active: false },
+  { id: 6, name: 'Silver plus', level: 'Intermediate', upgradeThreshold: 7500, downgradeThreshold: 6000, earnMultiplier: 2.5, active: true },
+  { id: 7, name: 'Gold plus', level: 'Advanced', upgradeThreshold: 15000, downgradeThreshold: 12000, earnMultiplier: 3.5, active: true },
+  { id: 8, name: 'Titanium', level: 'Highest', upgradeThreshold: 50000, downgradeThreshold: 40000, earnMultiplier: 5, active: false },
+  { id: 9, name: 'Ruby', level: 'Advanced', upgradeThreshold: 20000, downgradeThreshold: 16000, earnMultiplier: 3.75, active: true },
+  { id: 10, name: 'Sapphire', level: 'Highest', upgradeThreshold: 75000, downgradeThreshold: 60000, earnMultiplier: 6, active: true },
+  { id: 11, name: 'Emerald', level: 'Highest', upgradeThreshold: 100000, downgradeThreshold: 80000, earnMultiplier: 7.5, active: true },
+  { id: 12, name: 'Starter', level: 'Entry', upgradeThreshold: 0, downgradeThreshold: 0, earnMultiplier: 1, active: true },
 ];
 
 const body = (canvasElement: HTMLElement) => within(canvasElement.ownerDocument.body);
@@ -39,7 +50,7 @@ const openRowAction = async (canvasElement: HTMLElement, tier: string, action = 
  * the row actions menu. The tier name, thresholds and multiplier are links that go nowhere yet. Use the viewport
  * menu for 1920, 1440, 1280 and 1024. Add opens the add side sheet; View (or a row click) the details, Edit the edit
  * sheet, Remove the remove dialog and then the removed snackbar. **Rows** (Controls) sets how many tiers the table
- * starts with: 0 for none, up to 4 (one per level).
+ * starts with: 0 for none, up to 12 (two pages).
  */
 type PageArgs = Omit<TierManagementProps, 'tiers'> & { rows: number };
 
@@ -51,7 +62,7 @@ const meta: Meta<PageArgs> = {
     a11y: { context: { include: ['body'], exclude: PAGE_KNOWN_CONTRAST_ISSUES } },
   },
   argTypes: {
-    rows: { control: { type: 'range', min: 0, max: ALL_TIERS.length, step: 1 }, description: 'How many tiers the table starts with (0 to 4, one per level)' },
+    rows: { control: { type: 'range', min: 0, max: ALL_TIERS.length, step: 1 }, description: 'How many tiers the table starts with (0 to 12)' },
   },
   // A new count starts the page again with that many rows.
   render: ({ rows, ...args }) => <TierManagement key={rows} {...args} tiers={ALL_TIERS.slice(0, rows)} />,
@@ -69,6 +80,12 @@ export const List: Story = {};
 export const EveryLevel: Story = {
   name: 'Every level',
   args: { rows: 4 },
+};
+
+/** Twelve tiers: two pages, several on each level (sorted by level, then by upgrade threshold). */
+export const ManyTiers: Story = {
+  name: 'Many tiers',
+  args: { rows: 12 },
 };
 
 /** No tiers yet: an empty state (Medium) replaces the table, with Add tier. */
@@ -115,10 +132,9 @@ export const Add: Story = {
   },
 };
 
-/** The Level menu open (Figma `347:15784`): only the levels without a tier are offered. */
+/** The Level menu open (Figma `347:15784`): every level, lowest first, as Figma. */
 export const AddLevelMenu: Story = {
   name: 'Add tier, level menu',
-  args: { rows: 2 },
   play: async ({ canvasElement }) => {
     await openAdd(canvasElement);
     await userEvent.click(await body(canvasElement).findByRole('button', { name: /^Level/ }));
@@ -145,19 +161,6 @@ export const AddInvalid: Story = {
     await userEvent.type(sheet.getByRole('textbox', { name: 'Downgrade threshold' }), '25000');
     await userEvent.type(sheet.getByRole('textbox', { name: 'Earn multiplier (×)' }), '4.5');
     await userEvent.click(sheet.getByRole('button', { name: 'Save tier' }));
-  },
-};
-
-/**
- * Every level already has a tier: the Level field is disabled and says why. A disabled field's helper text is
- * inactive by design (WCAG exempts disabled controls, as the field stories), so it's left out of the a11y check.
- */
-export const AddNoLevelsLeft: Story = {
-  name: 'Add tier, no levels left',
-  args: { rows: 4 },
-  parameters: { a11y: { context: { include: ['body'], exclude: [...PAGE_KNOWN_CONTRAST_ISSUES, '[data-tone="disabled"]'] } } },
-  play: async ({ canvasElement }) => {
-    await openAdd(canvasElement);
   },
 };
 

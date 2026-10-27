@@ -24,7 +24,8 @@ export interface TierManagementProps {
 const number = (n: number) => n.toLocaleString('en-US');
 const multiplier = (n: number) => `${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}×`;
 const status = (active: boolean) => (active ? 'Active' : 'Inactive');
-const byLevel = (a: Tier, b: Tier) => TIER_LEVELS.indexOf(a.level) - TIER_LEVELS.indexOf(b.level);
+/** Lowest level first; within a level, the lowest upgrade threshold first. */
+const byLevel = (a: Tier, b: Tier) => TIER_LEVELS.indexOf(a.level) - TIER_LEVELS.indexOf(b.level) || a.upgradeThreshold - b.upgradeThreshold;
 
 /** The link columns go nowhere yet (decided 27 Oct 2026): design will say where. */
 const pending = { type: 'link', href: () => '#', linkAs: PendingLink } as const;
@@ -50,8 +51,8 @@ const columns: FinTableColumn<Tier>[] = [
 ];
 
 /**
- * Pages → Loyalty management → Tier management (Figma `152:6162`, DESIGN.md §8.6): the tiers, one per level, sorted
- * by level, in the app shell. Built the same way as Programme configuration: search by tier name, filter from the
+ * Pages → Loyalty management → Tier management (Figma `152:6162`, DESIGN.md §8.6): the tiers, sorted by level, in
+ * the app shell. Built the same way as Programme configuration: search by tier name, filter from the
  * Level and Status columns' dropdowns, act on a row from its ⋮ menu (Figma's inline action buttons wait for its action cell,
  * decided 27 Oct 2026). The tier name, thresholds and multiplier are links with no destination yet. Add opens the add
  * side sheet (`345:14560`); a saved tier is added to the table. View, or a click on the row, opens the details sheet
@@ -75,7 +76,6 @@ export function TierManagement({ tiers: initialTiers, onAction = () => undefined
 
   const search = query.trim().toLowerCase();
   const rows = tiers.filter((t) => t.name.toLowerCase().includes(search)).sort(byLevel);
-  const freeLevels = TIER_LEVELS.filter((level) => !tiers.some((t) => t.level === level));
 
   const add = () => {
     onAction('Add tier');
@@ -156,7 +156,6 @@ export function TierManagement({ tiers: initialTiers, onAction = () => undefined
         open={adding}
         onClose={() => setAdding(false)}
         tiers={tiers}
-        levels={freeLevels}
         onSave={(values: TierValues) => {
           onAction(`Saved: ${values.name}`);
           setTiers((current) => [...current, { ...values, id: Math.max(0, ...current.map((t) => t.id)) + 1 }]);
@@ -170,7 +169,6 @@ export function TierManagement({ tiers: initialTiers, onAction = () => undefined
           onClose={() => setEditing({ ...editing, open: false })}
           tier={editing.tier}
           tiers={tiers}
-          levels={freeLevels}
           onSave={(values: TierValues) => {
             onAction(`Saved: ${values.name}`);
             setTiers((current) => current.map((t) => (t.id === editing.tier.id ? { ...t, ...values } : t)));

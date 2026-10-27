@@ -1,6 +1,6 @@
 import { useId, useRef, useState, type FormEvent } from 'react';
 import { FinSelectField, FinSideSheet, FinTextBox, FinTextField } from '@finspace-loyalty/ui';
-import type { Tier, TierLevel } from './tiers';
+import { TIER_LEVELS, type Tier, type TierLevel } from './tiers';
 import styles from './TierManagement.module.css';
 
 /** What the form saves (the page adds the row, or updates it when editing). */
@@ -13,8 +13,6 @@ export interface TierFormProps {
   tier?: Tier;
   /** Every tier, so a name can't be used twice. */
   tiers: Tier[];
-  /** The levels without a tier: the only ones offered (and, when editing, the tier's own). */
-  levels: readonly TierLevel[];
   onSave: (values: TierValues) => void;
 }
 
@@ -54,10 +52,11 @@ function initialValues(tier?: Tier) {
  * Tier management → Add (Figma `345:14560`, DESIGN.md §8.6) and Edit (code first, no Figma; decided 27 Oct 2026): a
  * side sheet with the tier's fields two by two, as Programme configuration's form: no close button, Cancel and Save
  * in the dock, errors under the fields after Save with the first one focused, and Edit's Save disabled until a value
- * changes. Every field is needed. A name and a level can each have one tier only; the downgrade threshold is below
+ * changes. Every field is needed. A name is used once; Level offers every level, as Figma's menu (several tiers can share
+ * one, decided 27 Oct 2026); the downgrade threshold is below
  * the upgrade threshold (both 0 for an Entry tier). The page remounts it (`key`) for each tier it edits.
  */
-export function TierForm({ open, onClose, tier, tiers, levels, onSave }: TierFormProps) {
+export function TierForm({ open, onClose, tier, tiers, onSave }: TierFormProps) {
   const initial = initialValues(tier);
   const [name, setName] = useState(initial.name);
   const [level, setLevel] = useState(initial.level);
@@ -71,7 +70,6 @@ export function TierForm({ open, onClose, tier, tiers, levels, onSave }: TierFor
 
   const current = { name, level, upgrade, downgrade, multiplier, status };
   const changed = (Object.keys(initial) as (keyof typeof initial)[]).some((key) => current[key] !== initial[key]);
-  const options = tier && !levels.includes(tier.level) ? [...levels, tier.level] : [...levels];
 
   const reset = () => {
     setName(initial.name);
@@ -162,13 +160,13 @@ export function TierForm({ open, onClose, tier, tiers, levels, onSave }: TierFor
           }}
           label="Level"
           placeholder="Level"
-          options={options.map((l) => ({ value: l, label: l }))}
+          options={TIER_LEVELS.map((l) => ({ value: l, label: l }))}
           value={level}
           onChange={(next) => {
             setLevel(next);
             clear('level');
           }}
-          {...(options.length === 0 ? { helperText: 'Every level already has a tier' } : helper('level', 'Levels with a tier are not listed'))}
+          {...helper('level')}
         />
         <FinTextField
           ref={(node) => {

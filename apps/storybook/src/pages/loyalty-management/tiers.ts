@@ -1,4 +1,4 @@
-/** The tier levels, lowest first (Figma's Level menu, `347:15784`); each level has at most one tier. */
+/** The tier levels, lowest first (Figma's Level menu, `347:15784`); several tiers can share a level (decided 27 Oct 2026). */
 export const TIER_LEVELS = ['Entry', 'Intermediate', 'Advanced', 'Highest'] as const;
 export type TierLevel = (typeof TIER_LEVELS)[number];
 
