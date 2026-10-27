@@ -1,0 +1,119 @@
+/*
+ * FinStepper (DESIGN.md §9; code first, measured from the Add reward screens, Figma `367:19964`, `402:33879`). Each
+ * step is a column Space-10XL wide (as the screens' step frames), the box centred, the label centred Space-M below it
+ * and wrapping inside the column; columns are Space-10XL apart, so box centres are 160 apart as on the screens.
+ * Centred labels (decided by design 27 Oct 2026; the screens align them left) put the first box 22 in from the edge. The box: Size-36, Radius-S, a 2px border, Title/Medium. A
+ * 2px line joins each box to the next, coloured by the step it leaves.
+ *   current:  bg-active, border-active, text-action; its line border-active
+ *   upcoming: bg-secondary, border-default, text-secondary; its line border-default
+ *   done:     bg-success-secondary, border-success, a check in fg-success (decided by design 27 Oct 2026; the screens
+ *             draw done steps black), the label text-primary; its line border-success
+ */
+
+.stepper {
+  display: flex;
+  gap: var(--fin-space-10xl);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  --step-bg: var(--fin-bg-secondary);
+  --step-border: var(--fin-border-default);
+  --step-text: var(--fin-text-secondary);
+  --step-label: var(--fin-text-secondary);
+  --step-line: var(--fin-border-default);
+
+  position: relative;
+  flex: none;
+  width: var(--fin-space-10xl);
+}
+
+.step[data-state="current"] {
+  --step-bg: var(--fin-bg-active);
+  --step-border: var(--fin-border-active);
+  --step-text: var(--fin-text-action);
+  --step-label: var(--fin-text-action);
+  --step-line: var(--fin-border-active);
+}
+
+.step[data-state="done"] {
+  --step-bg: var(--fin-bg-success-secondary);
+  --step-border: var(--fin-border-success);
+  --step-label: var(--fin-text-primary);
+  --step-line: var(--fin-border-success);
+}
+
+/* The line to the next step: from this box's right edge to the next box's left edge, through the middle. */
+.step:not(:last-child)::after {
+  position: absolute;
+  top: calc(var(--fin-size-36) / 2 - 1px);
+  left: calc(50% + var(--fin-size-36) / 2);
+  width: calc(2 * var(--fin-space-10xl) - var(--fin-size-36));
+  height: 2px;
+  background-color: var(--step-line);
+  content: "";
+}
+
+.content,
+.button {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+  align-items: center;
+  width: 100%;
+}
+
+.button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fin-radius-s);
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.box {
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  width: var(--fin-size-36);
+  height: var(--fin-size-36);
+  border: 2px solid var(--step-border);
+  border-radius: var(--fin-radius-s);
+  background-color: var(--step-bg);
+  color: var(--step-text);
+  font: var(--fin-font-title-medium);
+}
+
+/* The focus ring goes round the box. */
+.button:focus-visible {
+  outline: none;
+}
+
+.button:focus-visible .box {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+/* Centred under the box; a long label wraps inside the column. */
+.label {
+  width: 100%;
+  color: var(--step-label);
+  font: var(--fin-font-label-medium);
+  text-align: center;
+  overflow-wrap: break-word;
+}
+
+.hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}

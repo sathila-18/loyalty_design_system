@@ -31,6 +31,7 @@ export * from './components/Snackbar';
 export * from './components/EmptyState';
 export * from './components/NotificationBanner';
 export * from './components/Skeleton';
+export * from './components/Stepper';
 export * from './components/Checkbox';
 export * from './components/AssistChip';
 export * from './components/FilterChip';
