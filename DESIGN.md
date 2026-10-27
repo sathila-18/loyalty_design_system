@@ -731,7 +731,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 77 | — (code first; no Figma design yet) | Table | — | `FinTableRowActions` | `more_vert` icon button, FinMenu (action), List-standard menu items · **internal**, the ⋮ of FinTable `rowActions` (§9.66) | — | ✅ |
 | 78 | `Table Header` (`3313:18577`, added to the library after this inventory) | Table | `3313:18577` | `FinTableToolbar` (renamed in code so it isn't confused with the table's header cells and row; approved 22 Oct 2026) | Search (Small), Chips (filter slot), all-button · `Show search`, `Show filter` + Filter slot, `Show button` · the toolbar above a table · **internal**, part of the table (FinTable `toolbar`, §9.67) | ✅ (search width 343 → new `--fin-size-343`) | ✅ |
 | 79 | — (**code only**; no Figma component: the screens draw the shell each time) | Layout | — | `FinAppShell` | Side Menu, Main header · the page shell: a "Skip to content" link, the side nav (collapsed below 1280, handled here), the header and the `main` content in a panel · **public**, as the real app uses it (decided 22 Oct 2026) · Figma to add it later (§10 #63) · §9.68 | — | ✅ |
-| 80 | — (**code first**; no Figma component) | Loading | — | `FinSkeleton` | · `shape` text / rect / circle, `width`, `height` · a pulsing `bg-neutral` placeholder for content that's loading; FinTable `loading` uses it · **public** (§9.76) | — | 🟨 Built 27 Oct 2026, waiting for approval |
+| 80 | — (**code first**; no Figma component) | Loading | — | `FinSkeleton` | · `shape` text / rect / circle, `width`, `height` · a pulsing `bg-neutral` placeholder for content that's loading; FinTable `loading` uses it · **public** (§9.76) | — | ✅ |
 
 ### 8.5 Assets (exported, not built as components)
 
@@ -3696,7 +3696,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Tokens used:** `--fin-bg-neutral`, `--fin-size-12`, `--fin-size-24`, `--fin-radius-xs`, `--fin-radius-s`, `--fin-radius-full`.
 
-**Built (27 Oct 2026).** Storybook: Components/Skeleton (Playground, Shapes, List item) and Components/Table/Loading. Light and Dark; still with reduced motion.
+**Built and approved (27 Oct 2026).** Storybook: Components/Skeleton (Playground, Shapes, List item) and Components/Table/Loading. Light and Dark; still with reduced motion.
 
 ## 10. Known issues and open decisions
 
@@ -3811,7 +3811,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Live (27 Oct 2026):** Storybook is at https://loyaltydesignsystem.vercel.app. From now on, each built component's branch is pushed for a Vercel preview link, shared with the summary; `main` only after approval (CLAUDE.md Git).
 > - **Approved and merged (27 Oct 2026):** the **Tier management** page (§8.6): list, add (with the Level menu), details, edit, remove, removed, empty states; built the same way as Programme configuration, whose details sheet is now the shared `RecordDetails`. Mismatches with Figma and with Programme configuration are listed in §8.6. Open follow-ups: the No. column's order; distinct thresholds per level; aligning the two pages (Status select vs toggle, 24 vs 16 field gaps, Active / Inactive vs Enable / Disable, Programme configuration's `#…` link vs `PendingLink`, section titles). **Next page**, after design's go-ahead: Reward catalog (§8.6).
 > - **Approved and merged (27 Oct 2026):** `FinNotificationBanner` (§9.75); FinButton `contentTone` gained `secondary` and the status tones (§9.28). Then: Reward catalog (§8.6).
-> - **Built, waiting for approval (27 Oct 2026):** `FinSkeleton` (§9.76) and FinTable `loading` (§9.45), on `feat/skeleton`. **Then:** the shared negative states under **Pages/Common states** (`apps/storybook/src/pages/common/`, decided 27 Oct 2026): loading (skeleton, toolbar hidden), couldn't load (FinEmptyState, `warning`, Try again; toolbar hidden), network or server error (an Error FinNotificationBanner), back online (Success snackbar), couldn't save (an Error banner in the sheet), couldn't remove (an Error snackbar with Try again).
+> - **Approved and merged (27 Oct 2026):** `FinSkeleton` (§9.76) and FinTable `loading` (§9.45). **Next:** the shared negative states under **Pages/Common states** (`apps/storybook/src/pages/common/`, decided 27 Oct 2026): loading (skeleton, toolbar hidden), couldn't load (FinEmptyState, `warning`, Try again; toolbar hidden), network or server error (an Error FinNotificationBanner), back online (Success snackbar), couldn't save (an Error banner in the sheet), couldn't remove (an Error snackbar with Try again).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4043,4 +4043,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | **`FinNotificationBanner` built** (§8 #63, §9.75), public, Components/Notification banner: `tone`, `title`, `children` (description), `showIcon` / `icon`, `action`, `onClose`; the buttons are FinButton pulled back by their padding to Figma's layout. FinButton `contentTone` gained `secondary`, `info`, `success`, `error`, `warning` (§9.28). |
 | 27 Oct 2026 | 0.2 | `FinNotificationBanner` approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | **`FinSkeleton` built** (§8 #80, §9.76), public, Components/Skeleton: text / rect / circle, a `bg-neutral` pulse, still with reduced motion. FinTable gained `loading` and `loadingLabel` (§9.45): skeleton rows, busy, "Loading …" status. |
+| 27 Oct 2026 | 0.2 | `FinSkeleton` and FinTable `loading` approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |
