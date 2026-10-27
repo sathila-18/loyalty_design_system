@@ -1,6 +1,8 @@
 # loyalty_design_system
 ## Storybook on Vercel
 
+Live at **https://loyaltydesignsystem.vercel.app** (`main`); each pushed branch gets a preview at `https://loyaltydesignsystem-git-<branch>-sathila.vercel.app` (behind Vercel login).
+
 `vercel.json` builds and publishes Storybook. Vercel runs `pnpm install --frozen-lockfile`, then `pnpm build-storybook` (tokens → icon font subset and flags → Storybook), and serves `apps/storybook/storybook-static`. There's no framework preset ("Other").
 
 The Vercel project needs:
