@@ -8,9 +8,9 @@
   padding: var(--fin-space-6xl) var(--fin-space-3xl);
 }
 
-/* A table-like area, to show the empty state filling a wide container. */
+/* A wide, tall area (480), to show the empty state centred in it across and down. */
 .area {
-  padding: var(--fin-space-12xl) var(--fin-space-3xl);
+  height: calc(4 * var(--fin-size-120));
   border: 1px solid var(--fin-border-subtle);
   border-radius: var(--fin-radius-m);
 }

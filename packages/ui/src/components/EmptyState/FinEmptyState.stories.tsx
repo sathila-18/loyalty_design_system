@@ -20,7 +20,7 @@ interface Args {
 
 /**
  * What a page or area shows when it has nothing to show (Figma Empty state; DESIGN.md §9): an icon, a heading and a
- * description, and an optional Primary button, centred. It fills its container; the page decides where it sits.
+ * description, and an optional Primary button, centred in its container across and down, 4 grid columns wide at most.
  */
 const meta: Meta<Args> = {
   title: 'Components/Empty state',
@@ -70,7 +70,7 @@ export const Sizes: Story = {
   ),
 };
 
-/** Real uses: nothing added yet (Medium, with the main action) and no search results (Small). */
+/** Real uses in a wide, 480-tall area: nothing added yet (Medium, with the main action) and no search results (Small). Each sits in the middle, 4 grid columns wide. */
 export const Scenarios: Story = {
   render: () => (
     <div className={styles.figma}>

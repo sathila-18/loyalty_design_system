@@ -35,24 +35,26 @@ export type FinEmptyStateProps = FinEmptyStateBaseProps & FinEmptyStateIconProps
 
 /**
  * What a page or area shows when it has nothing to show (Figma Empty state; DESIGN.md §9): an icon, a heading and a
- * description, and an optional button, centred. Fills its container (decided 27 Oct 2026; Figma draws it 711 wide);
- * the page decides where it sits.
+ * description, and an optional button, centred. Fills its container and centres itself in it, across and down;
+ * 4 columns of the layout grid wide at most (decided 27 Oct 2026; Figma draws it 711 wide).
  */
 export function FinEmptyState({ size = 'medium', icon, iconSlot, heading, description, headingLevel = 2, action, className, ...rest }: FinEmptyStateProps) {
   return (
     <div {...rest} className={className ? `${styles.emptyState} ${className}` : styles.emptyState} data-size={size}>
-      <div className={styles.content}>
-        {icon ? <FinIconContainer name={icon} size={size === 'small' ? 48 : 64} /> : iconSlot}
-        <FinTextBox
-          className={styles.text}
-          type={size === 'small' ? 'h6' : 'h5'}
-          align="center"
-          heading={heading}
-          {...(description !== undefined ? { description } : {})}
-          headingLevel={headingLevel}
-        />
+      <div className={styles.body}>
+        <div className={styles.content}>
+          {icon ? <FinIconContainer name={icon} size={size === 'small' ? 48 : 64} /> : iconSlot}
+          <FinTextBox
+            className={styles.text}
+            type={size === 'small' ? 'h6' : 'h5'}
+            align="center"
+            heading={heading}
+            {...(description !== undefined ? { description } : {})}
+            headingLevel={headingLevel}
+          />
+        </div>
+        {action && <EmptyStateButton {...action} />}
       </div>
-      {action && <EmptyStateButton {...action} />}
     </div>
   );
 }

@@ -3610,7 +3610,7 @@ import { FinSnackbar, FinSnackbarRegion } from '@finspace-loyalty/ui';
 - **Medium:** `64px bg` with a 36 icon; Text Box **Headline Medium-H5** (74); 218 tall.
 - **Button:** one all-button Primary **Small** "Text here" (40). The icon is the `perm_identity` placeholder.
 
-**Decided 27 Oct 2026:** (1) **`icon` is required** (the placeholder is always swapped); `iconSlot` places anything else. (2) **Fills its container**; the page decides how wide it sits and where (Figma's 711 is a drawing width). (3) **One `action`** for "Button Group" (Figma has one button); a second only when a design needs it.
+**Decided 27 Oct 2026:** (1) **`icon` is required** (the placeholder is always swapped); `iconSlot` places anything else. (2) **Fills its container and centres itself in it, across and down** (down when the container has a height); its column is **4 columns of the window's layout grid** wide (608 at 1920, 448 at 1440, 395 at 1280, 309 at 1024), never wider than the container (changed by design 27 Oct 2026; Figma's 711 is a drawing width). (3) **One `action`** for "Button Group" (Figma has one button); a second only when a design needs it.
 
 **Figma → code:**
 
@@ -3622,7 +3622,7 @@ import { FinSnackbar, FinSnackbarRegion } from '@finspace-loyalty/ui';
 | `Show Button Group` | `action?: { label, onClick, … }` (Primary Small; shown when passed) |
 | — (code only) | `className`, other `<div>` attributes |
 
-**Tokens used:** `--fin-space-xl`, `--fin-space-3xl`. FinIconContainer, FinTextBox and FinButton bring their own.
+**Tokens used:** `--fin-space-xl`, `--fin-space-3xl`; the column width from `--fin-grid-columns`, `--fin-grid-gutter`, `--fin-grid-margin`. FinIconContainer, FinTextBox and FinButton bring their own.
 
 **API:**
 
@@ -3641,7 +3641,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Accessibility:** the heading is a real heading (`<h2>` by default; `headingLevel` fits it into the page's outline); the icon is decorative; the button is a native `<button>`. Nothing is announced on its own: where it replaces content after a search, the page's live region (or the table's count) says so.
 
-**Built (27 Oct 2026).** Storybook (Components/Empty state): Playground (Figma's defaults), Sizes (Figma), Scenarios (no configurations yet, Medium; no search results, Small), Heading only. Checked in Chrome against Figma: Medium 218 tall (icon 64, Text Box 74 at 80, button 40 at 178), Small 198 (icon 48, Text Box 70 at 64, button 40 at 158); centred; the button 95 wide (Figma 96, text rendering). Light and Dark.
+**Built (27 Oct 2026).** Storybook (Components/Empty state): Playground (Figma's defaults), Sizes (Figma), Scenarios (no configurations yet, Medium; no search results, Small), Heading only. Checked in Chrome against Figma: Medium 218 tall (icon 64, Text Box 74 at 80, button 40 at 178), Small 198 (icon 48, Text Box 70 at 64, button 40 at 158); the button 95 wide (Figma 96, text rendering); in a 480-tall area the column is centred with equal space left and right, above and below, at 1920 / 1440 / 1280 / 1024. Light and Dark.
 
 ### 9.x <Component> (<Figma page>)
 
@@ -3979,5 +3979,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | **`FinSnackbar` and `FinSnackbarRegion` built** (§8 #64, §9.73), public, Components/Snackbar: `tone`, `lines`, `showIcon` / `icon` (Neutral `info`), `action`, `onClose`, `duration` (6 s without an action); the region at the top right, 3 grid columns but at least 343, in the top layer, a polite live region. FinButton gained code-only `contentTone` (§9.28). §10 #72–74 logged. |
 | 27 Oct 2026 | 0.2 | Programme configuration removed state (Success snackbar after Remove) approved by design and merged into `main`; every state of the page is done. |
 | 27 Oct 2026 | 0.2 | Programme configuration stories' Rows control (0–60) approved and merged. |
-| 27 Oct 2026 | 0.2 | **`FinEmptyState` built** (§8 #65, §9.74), public, Components/Empty state, from Figma as updated by design today (Small / Medium; Large removed): `size`, `icon` (required) or `iconSlot`, `heading`, `description`, `action` (Primary Small); fills its container. |
+| 27 Oct 2026 | 0.2 | **`FinEmptyState` built** (§8 #65, §9.74), public, Components/Empty state, from Figma as updated by design today (Small / Medium; Large removed): `size`, `icon` (required) or `iconSlot`, `heading`, `description`, `action` (Primary Small); fills its container and centres a 4-grid-column column in it, across and down. |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |
