@@ -125,6 +125,8 @@ export const FinDateField = forwardRef<HTMLInputElement, FinDateFieldProps>(func
       size={size}
       disabled={disabled}
       placeholder={placeholder}
+      // The format stays while typing (decided by design 27 Oct 2026): the rest of DD/MM/YYYY behind the digits.
+      mask={placeholder}
       value={text}
       onChange={handleChange}
       onBlur={handleBlur}

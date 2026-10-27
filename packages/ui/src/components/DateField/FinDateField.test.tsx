@@ -102,4 +102,13 @@ describe('FinDateField', () => {
     expect(screen.getByRole('textbox')).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Pick a start date' })).toBeDisabled();
   });
+
+  it('keeps the rest of the format behind the digits while typing', async () => {
+    const { container } = render(<FinDateField label="Start date" />);
+    const hint = () => container.querySelector('[aria-hidden="true"]:has(> span)') as HTMLElement;
+    expect(hint()).toHaveTextContent(/^DD\/MM\/YYYY$/);
+    await userEvent.type(screen.getByRole('textbox'), '010');
+    expect(hint().lastChild?.textContent).toBe('M/YYYY');
+    expect(hint().firstElementChild).toHaveTextContent('01/0');
+  });
 });

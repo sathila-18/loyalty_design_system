@@ -104,6 +104,41 @@
   opacity: 1;
 }
 
+/*
+ * The mask (code only, FinDateField): the format hint behind the value, in the placeholder's color, so the rest of the
+ * pattern stays while typing. Hidden while the placeholder shows (empty and not focused).
+ */
+.masked {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+.mask {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: var(--fin-text-placeholder);
+  font: var(--fin-font-body-large);
+  white-space: pre;
+  pointer-events: none;
+}
+
+.maskTyped {
+  visibility: hidden;
+}
+
+.root[data-disabled] .mask {
+  color: var(--fin-text-disabled);
+}
+
+.masked:has(.input:placeholder-shown:not(:focus)) .mask {
+  display: none;
+}
+
 /* A search input (FinSearchField) uses its own clear button, not the browser's. */
 .input::-webkit-search-cancel-button,
 .input::-webkit-search-decoration {

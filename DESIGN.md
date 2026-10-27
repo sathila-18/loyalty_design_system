@@ -3101,6 +3101,8 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Accessibility:** a native `<input>` with its `<label>` in every state; the helper text by `aria-describedby`; `aria-invalid` with an error; the border, ring and notch hidden from screen readers. Focus shows the ring (`border-focused`).
 
+**Mask** (code only, 27 Oct 2026, for FinDateField): `mask` (a format such as "DD/MM/YYYY") is shown in `text-placeholder` behind a controlled `value`, the part not typed yet, so the format stays while typing; hidden while the placeholder shows (empty, not focused); `text-disabled` when disabled.
+
 **Built (21 Oct 2026).** Storybook (Internal/Input field/Input field base): Playground (every Figma property, and `size`), Types (Figma), Sizes, States (Figma), Focused, Typing, Focused + error, Accessories, On a surface, Stacked. Checked against Figma in a browser: 343 × 74, box 48 (updated 21 Oct 2026), input 279 wide at 16 / 12, helper 8 below, label centred on the top border 16 in; Enabled, Complete, Disabled, Error, Focused and Typing colors as Figma, in Light and Dark; the notch shows the surface behind it; stacked fields 24 apart; Small: box 40, 343 × 66 with the helper, input at 16 / 8, every icon 20, the Country selector filling the 40. a11y: no violations in Light or Dark apart from disabled helper text (exempt, as §9.20).
 
 ### 9.59 FinTextField (Input field-standard) — public
@@ -3752,7 +3754,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Figma:** none: the Add reward screen (`367:19964`) draws Start date and End date as Input field-standard (Complete) with "01.08.2026" and a trailing `calendar_today` (`fg-secondary`); the library has no date picker or calendar (checked 27 Oct 2026). Code first.
 
-**Decided 27 Oct 2026:** (1) **the browser's own date picker** for now, opened by the calendar button; **to replace with our own calendar once it's designed in Figma**. (2) **DD/MM/YYYY with slashes** (the screen uses dots). (3) **Typing allowed** as well as the picker: the digits are masked as they're typed ("01082026" → "01/08/2026").
+**Decided 27 Oct 2026:** (1) **the browser's own date picker** for now, opened by the calendar button; **to replace with our own calendar once it's designed in Figma**. (2) **DD/MM/YYYY with slashes** (the screen uses dots). (3) **Typing allowed** as well as the picker: the digits are masked as they're typed ("01082026" → "01/08/2026"). (4) **The format stays while typing** (design review): focused and empty it shows DD/MM/YYYY (the other fields hide the placeholder on focus), and while typing the rest of the pattern stays in the placeholder's colour after the digits ("01/0" then "M/YYYY"), through FinInputBase's code-only `mask` (§9.58).
 
 **API:** FinInputBase's field props (label, helper text, error, disabled, size…) plus `value` (YYYY-MM-DD, or `null` / "" for none; controlled), `defaultValue` (YYYY-MM-DD), `onChange(date: string | null)` (the ISO date once it's whole and real, `null` while it isn't), `min`, `max` (YYYY-MM-DD; the picker greys out other dates), `pickerLabel` (default "Choose date"), `messages` ({ invalid, beforeMin, afterMax }). Placeholder "DD/MM/YYYY".
 
@@ -4125,4 +4127,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | **`FinTextAreaBase` built** (§8 #52a, §9.78), internal at first, Internal/Input field/Text area base: FinInputBase's look and states for a multi-line field; grows from 4 to 8 lines, then scrolls; the error helper text has Figma's icon. §10 #17 updated. |
 | 27 Oct 2026 | 0.2 | Approved by design and **made public as `FinTextArea`** (Components/Input field/Text area; one component for Figma's base and field set, no FinTextAreaBase); merged into `main`. |
 | 27 Oct 2026 | 0.2 | **`FinDateField` built** (§8 #82, §9.79), public, Components/Input field/Date field: DD/MM/YYYY typed (masked) or picked with the browser's date picker (for now), YYYY-MM-DD in code, `min` / `max`, its own errors. Icon `calendar_today` added. The text-area set fixed in Figma (§10 #17). |
+| 27 Oct 2026 | 0.2 | FinDateField keeps the format while typing (design review): FinInputBase gained the code-only `mask` (the rest of a hint shown behind the value, §9.58). |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |

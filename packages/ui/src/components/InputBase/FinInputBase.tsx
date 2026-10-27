@@ -57,6 +57,11 @@ export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputEle
   control?: ReactNode | ((field: HTMLDivElement | null) => ReactNode);
   /** With `control`: whether it has a value (the input works this out itself). */
   filled?: boolean;
+  /**
+   * A format hint that stays while typing (code only, 27 Oct 2026; FinDateField's "DD/MM/YYYY"): shown in the
+   * placeholder's color behind the value, the part not typed yet. Needs a controlled `value`.
+   */
+  mask?: string;
 }
 
 /**
@@ -86,6 +91,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
     showDialCodes,
     control,
     filled,
+    mask,
     id: idProp,
     disabled = false,
     className,
@@ -101,6 +107,20 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
   const helperId = `${id}-helper`;
   const trailingContent = trailing ?? (variant === 'select' ? <FinIcon name="keyboard_arrow_down" size={size === 'small' ? 20 : 24} /> : undefined);
   const hasHelper = helperText !== undefined && helperText !== null && helperText !== false;
+  // The mask: the value (invisible, to take its width) and the rest of the hint after it.
+  const typed = String(rest.value ?? '');
+  const masked = (input: ReactNode) =>
+    mask ? (
+      <span className={styles.masked}>
+        {input}
+        <span className={styles.mask} aria-hidden="true">
+          <span className={styles.maskTyped}>{typed}</span>
+          {mask.slice(typed.length)}
+        </span>
+      </span>
+    ) : (
+      input
+    );
   // The notch in the border: the label's text, invisible, so the gap is exactly as wide as the label.
   const notch = showLabel ? (
     <legend className={styles.notch}>
@@ -137,7 +157,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
         <div className={styles.content}>
           {leading && <span className={styles.accessory}>{leading}</span>}
           {prefix && <span className={styles.affix}>{prefix}</span>}
-          {(typeof control === 'function' ? control(fieldEl) : control) ?? (
+          {(typeof control === 'function' ? control(fieldEl) : control) ?? masked(
             <input
               {...rest}
               ref={ref}
@@ -150,7 +170,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
               placeholder={placeholder ?? ' '}
               aria-invalid={error || undefined}
               aria-describedby={[rest['aria-describedby'], hasHelper ? helperId : undefined].filter(Boolean).join(' ') || undefined}
-            />
+            />,
           )}
           {suffix && <span className={styles.affix}>{suffix}</span>}
           {trailingContent && <span className={styles.accessory}>{trailingContent}</span>}
