@@ -9,6 +9,7 @@ export const finIcons = [
   'arrow_downward',
   'arrow_upward',
   'assignment',
+  'calendar_today',
   'cancel',
   'check',
   'check_circle',

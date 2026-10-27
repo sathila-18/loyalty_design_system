@@ -733,6 +733,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 79 | — (**code only**; no Figma component: the screens draw the shell each time) | Layout | — | `FinAppShell` | Side Menu, Main header · the page shell: a "Skip to content" link, the side nav (collapsed below 1280, handled here), the header and the `main` content in a panel · **public**, as the real app uses it (decided 22 Oct 2026) · Figma to add it later (§10 #63) · §9.68 | — | ✅ |
 | 80 | — (**code first**; no Figma component) | Loading | — | `FinSkeleton` | · `shape` text / rect / circle, `width`, `height` · a pulsing `bg-neutral` placeholder for content that's loading; FinTable `loading` uses it · **public** (§9.76) | — | ✅ |
 | 81 | — (**code first**; drawn on each Add reward screen, `367:19964`, `402:33879`) | Stepper | — | `FinStepper` | Icon `check` · `steps`, `current`, `onStepClick` · the steps of a multi-step form · **public** (§9.77) | — | ✅ |
+| 82 | — (**code first**; the Add reward screens draw an Input field-standard with `calendar_today`, `367:19964`) | Input field | — | `FinDateField` | FinInputBase, Icon `calendar_today` (added to the registry) · DD/MM/YYYY typed or picked; `value` / `onChange` as YYYY-MM-DD, `min`, `max` · the browser's date picker for now · **public** (§9.79) | — | 🟨 Built 27 Oct 2026, waiting for approval |
 
 ### 8.5 Assets (exported, not built as components)
 
@@ -3747,6 +3748,22 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Built and approved (27 Oct 2026).** Storybook (Components/Input field/Text area): Playground, States (Figma), Focused, Typing, Focused + error, Long text. Checked against Figma: 343 × 154, box 128, text at 16,16 (311 × 96), helper at 136; Light and Dark.
 
+### 9.79 FinDateField — public
+
+**Figma:** none: the Add reward screen (`367:19964`) draws Start date and End date as Input field-standard (Complete) with "01.08.2026" and a trailing `calendar_today` (`fg-secondary`); the library has no date picker or calendar (checked 27 Oct 2026). Code first.
+
+**Decided 27 Oct 2026:** (1) **the browser's own date picker** for now, opened by the calendar button; **to replace with our own calendar once it's designed in Figma**. (2) **DD/MM/YYYY with slashes** (the screen uses dots). (3) **Typing allowed** as well as the picker: the digits are masked as they're typed ("01082026" → "01/08/2026").
+
+**API:** FinInputBase's field props (label, helper text, error, disabled, size…) plus `value` (YYYY-MM-DD, or `null` / "" for none; controlled), `defaultValue` (YYYY-MM-DD), `onChange(date: string | null)` (the ISO date once it's whole and real, `null` while it isn't), `min`, `max` (YYYY-MM-DD; the picker greys out other dates), `pickerLabel` (default "Choose date"), `messages` ({ invalid, beforeMin, afterMax }). Placeholder "DD/MM/YYYY".
+
+**Behaviour:** left (blurred) with a date that isn't whole or real (31/02/2026), it shows its own error, "Enter a date as DD/MM/YYYY"; before `min` "Choose a date from 01/08/2026", after `max` "Choose a date until …"; typing clears it. A page's own `error` wins (the page's helper text shows). The calendar button is the icon itself (24, 20 when small), as the password field's eye: no hover look, pointer cursor, the standard focus ring; a click doesn't take focus from the text. It calls `showPicker()` on a native date input hidden under it (out of the tab order, `aria-hidden`), whose choice fills the field.
+
+**Tokens used:** the field's (FinInputBase, §9.58); the button `--fin-radius-xs`, `--fin-border-focused`.
+
+**Accessibility:** a text input named by its label, `inputmode="numeric"`; the format is in the placeholder and the error message; the calendar is a named button; the native picker is the browser's own (keyboard and screen reader support included).
+
+**Built (27 Oct 2026).** Storybook: Components/Input field/Date field (Playground with the `onChange` value, States, Range (End date's `min` is the start), Typing, Invalid date, Before min). Checked in Chrome: the picker opens; picking 15 Aug 2026 shows 15/08/2026 and reports 2026-08-15. Light and Dark.
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -3767,7 +3784,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 14 | The Material Symbols Rounded variable font is **5.4 MB** (full font, shipped in S4). **Decided 14 Oct 2026:** the build generates a subset font automatically from the `finIcons` registry (no hand-made font files); adding an icon is a one-line registry change. The subset keeps only the registry's icons, the letters and ligature rules that spell them, and each icon's **filled alternate** (the font swaps 19 of the first 28 icons to a separate `.fill` glyph when `FILL` reaches 1, through `FeatureVariations`; leaving them out breaks filled icons). `FILL` stays variable (0–1); `wght` 300, `opsz` 24 and `GRAD` 0 are fixed (§6.2). Prototype with the 28 §6.4 icons: **6.4 KB** woff2, identical to the full font outlined and filled. `FinIcon` isn't done until the full font is replaced. | Icons | ✅ Decided: part of `FinIcon` |
 | 15 | Motion: plan is to adopt Material 3 easing and duration pairs (see §5). | §5 | ⏳ Deferred |
 | 16 | **Typography bound to another library** (the scan shows `Body L` in `Input field-textArea-base`, `Button M` in `Notification`, `Caption L` in `Plain Tooltip` coming from a non-Loyalty collection). **Decision (13 Oct 2026):** not a blocker. When building, use the Loyalty text style token with the same name (`--fin-font-body-large`, etc.) and list the mapping for the designer's approval first (§8 legend). | Components | ✅ Decided |
-| 17 | **Broken component sets** ("Component set has existing errors"): ~~`Header notification` (`3178:24467`) has two variants named `State=Hovered, Notification=Dot`~~ **fixed 22 Oct 2026** (now `Hovered, Number`, plus Pressed and Notification=None; a disabled button never shows a badge, so there's no `Disabled, Number`; §9.62). The text area set `Input field-base` (`3097:27497`) has the same name as the real base `49:5734`; rename it (for example `Input field-textArea`). It also has each `State` twice (the second the error look) with no property to tell them apart: add `Type` = Default / Destructive (27 Oct 2026). Code builds FinTextArea anyway (§9.78). | Header, Input field | 🔧 Fix in Figma |
+| 17 | **Broken component sets** ("Component set has existing errors"): ~~`Header notification` (`3178:24467`) has two variants named `State=Hovered, Notification=Dot`~~ **fixed 22 Oct 2026** (now `Hovered, Number`, plus Pressed and Notification=None; a disabled button never shows a badge, so there's no `Disabled, Number`; §9.62). The text area set `Input field-base` (`3097:27497`) has the same name as the real base `49:5734`; rename it (for example `Input field-textArea`). It also has each `State` twice (the second the error look) with no property to tell them apart: add `Type` = Default / Destructive (27 Oct 2026). Code builds FinTextArea anyway (§9.78). **Text area fixed in Figma 27 Oct 2026:** renamed `Input field-textArea`, with `Error` = True / False (FinTextArea `error`). | Header, Input field | 🔧 Fix in Figma |
 | 18 | Input bases decided (13 Oct 2026): `Input field-base` (`49:5734`) for single-line fields, `Input field-textArea-base` (`3094:26567`) for text areas, `Input-OTP-base` (`49:5843`) for OTP. | Input field | ✅ Decided |
 | 19 | `Accordion-bare-base`, `List-base` and `List-fill-base` use a `20px` component whose main component isn't on any page (deleted or moved). **List-base fixed 20 Oct 2026** (the extra icon is now the Icon sizes `20px`; the top label's icon was removed); **List_fill-base fixed 20 Oct 2026** (new component `3494:14233`). Accordion-bare-base to re-check when built. | Accordion, List | 🔧 Fix in Figma (List bases ✅) |
 | 20 | **Clashing name:** `24px` on the Side nav page clashed with the icon size `24px`; **renamed `Icon` 20 Oct 2026**. (Renamed 13 Oct 2026: `Frame 5` → `sub selection`, Dialog `Frame 3` → `Dialog box`, Header `Frame 1707478998` → `Main header`, `Frame 1707478999` → `Header notification`, Table parts.) | Side nav | ✅ Fixed (20 Oct 2026) |
@@ -3865,6 +3882,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (27 Oct 2026):** the **Reward catalog list** (§8.6), with "N/A" for values that aren't available. **Next:** the Add reward pages (plan first).
 > - **Approved and merged (27 Oct 2026):** `FinStepper` (§9.77), the first part of the Add reward pages. **Next:** FinTextArea (§10 #17), FinDateField, then the Add reward page.
 > - **Approved and merged (27 Oct 2026):** `FinTextArea` (§9.78), public (built as Figma's base, then made the field directly). **Next:** FinDateField, then the Add reward page.
+> - **Built, waiting for approval (27 Oct 2026):** `FinDateField` (§9.79) on `feat/date-field`. Then: the Add reward page (§8.6).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4106,4 +4124,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | `FinStepper` approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | **`FinTextAreaBase` built** (§8 #52a, §9.78), internal at first, Internal/Input field/Text area base: FinInputBase's look and states for a multi-line field; grows from 4 to 8 lines, then scrolls; the error helper text has Figma's icon. §10 #17 updated. |
 | 27 Oct 2026 | 0.2 | Approved by design and **made public as `FinTextArea`** (Components/Input field/Text area; one component for Figma's base and field set, no FinTextAreaBase); merged into `main`. |
+| 27 Oct 2026 | 0.2 | **`FinDateField` built** (§8 #82, §9.79), public, Components/Input field/Date field: DD/MM/YYYY typed (masked) or picked with the browser's date picker (for now), YYYY-MM-DD in code, `min` / `max`, its own errors. Icon `calendar_today` added. The text-area set fixed in Figma (§10 #17). |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |

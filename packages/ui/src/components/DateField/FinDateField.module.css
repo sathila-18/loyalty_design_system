@@ -1,0 +1,45 @@
+/*
+ * FinDateField (DESIGN.md §9). Only the calendar button and the hidden picker input; the field is FinInputBase. The
+ * button is the icon itself (24, or 20 when small), in the field's icon color, as the password field's eye: no hover
+ * look, the pointer cursor, and the standard focus ring with the keyboard. The browser's picker opens from a native
+ * date input laid under the button, invisible and out of the tab order.
+ */
+
+.trailing {
+  position: relative;
+  display: flex;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--fin-radius-xs);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.button:disabled {
+  cursor: default;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--fin-border-focused);
+  outline-offset: 2px;
+}
+
+.picker {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
