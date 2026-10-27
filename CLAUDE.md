@@ -151,7 +151,8 @@ Commands (repo root): `pnpm storybook`, `pnpm icons` (regenerate the icon font a
 ## Git
 
 - `main` always builds, its tests pass and its Storybook runs.
-- Use one short-lived branch per component (`feat/<component>`). **Merge into `main` and push only after the designer approves it, and only if every check passes** (`lint`, `lint:css`, `typecheck`, `test`, `test:a11y`, `build`, `build-storybook`); stop on the first failure. Then delete the branch and update the `DESIGN.md` §11 status note.
+- Use one short-lived branch per component (`feat/<component>`). **Merge into `main` and push only after the designer approves it, and only if every check passes** (`lint`, `lint:css`, `typecheck`, `test`, `test:a11y`, `build`, `build-storybook`); stop on the first failure. Then delete the branch (locally and on GitHub) and update the `DESIGN.md` §11 status note.
+- Storybook is deployed on Vercel (`vercel.json`, README "Storybook on Vercel"): `main` deploys to production, and every pushed branch gets a preview link. **After building a component, push its branch to GitHub** (`git push -u origin feat/<component>`, never to `main`), so Vercel builds a preview, and give the designer the preview link with the summary. The branch's link is `https://<project>-git-<branch>-<team>.vercel.app` (the branch name in lower case, `/` and other symbols as `-`); check that it loads before sharing it. Pushing the branch is not merging: `main` still waits for the designer's approval.
 - Write commit messages in the present tense, naming the component (for example `Add FinIcon and icon registry`).
 
 ## Figma files
