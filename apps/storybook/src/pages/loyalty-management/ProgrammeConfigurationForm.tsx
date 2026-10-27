@@ -1,5 +1,6 @@
 import { useId, useRef, useState, type FormEvent } from 'react';
 import { FinListToggleFilled, FinSelectField, FinSideSheet, FinTextBox, FinTextField } from '@finspace-loyalty/ui';
+import { ConnectionError, SaveError } from '../common/PageStates';
 import type { ProgrammeConfig } from './ProgrammeConfiguration';
 import styles from './ProgrammeConfiguration.module.css';
 
@@ -21,7 +22,10 @@ export interface ProgrammeConfigurationFormProps {
   config?: ProgrammeConfig;
   /** The segments without a configuration: the only ones offered (and, when editing, the configuration's own). */
   segments: string[];
-  onSave: (values: ProgrammeConfigValues) => void;
+  /** Saves the values; `false` means it failed (the form stays open with the save error). */
+  onSave: (values: ProgrammeConfigValues) => boolean | void;
+  /** The connection is down: the network or server error at the top, and Save off (Pages/Common states). */
+  offline?: boolean;
 }
 
 type Field = 'segment' | 'expiry' | 'points' | 'value' | 'minimum';
@@ -58,7 +62,7 @@ function initialValues(config?: ProgrammeConfig) {
  * field is needed, cash conversion on or off (decided 26 Oct 2026: its fields stay enabled). The page remounts it
  * (`key`) for each configuration it edits.
  */
-export function ProgrammeConfigurationForm({ open, onClose, config, segments, onSave }: ProgrammeConfigurationFormProps) {
+export function ProgrammeConfigurationForm({ open, onClose, config, segments, onSave, offline = false }: ProgrammeConfigurationFormProps) {
   const initial = initialValues(config);
   const [segment, setSegment] = useState<string | null>(initial.segment);
   const [active, setActive] = useState(initial.active);
@@ -68,6 +72,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
   const [value, setValue] = useState(initial.value);
   const [minimum, setMinimum] = useState(initial.minimum);
   const [errors, setErrors] = useState<Partial<Record<Field, boolean>>>({});
+  const [saveFailed, setSaveFailed] = useState(false);
   const refs = useRef<Partial<Record<Field, HTMLElement | null>>>({});
   const formId = useId();
 
@@ -84,6 +89,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
     setValue(initial.value);
     setMinimum(initial.minimum);
     setErrors({});
+    setSaveFailed(false);
   };
   const close = () => {
     reset();
@@ -93,6 +99,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
+    setSaveFailed(false);
     const found: Partial<Record<Field, boolean>> = {
       segment: !segment,
       expiry: !above0(expiry, WHOLE),
@@ -106,7 +113,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
       refs.current[first]?.focus();
       return;
     }
-    onSave({
+    const saved = onSave({
       segment: segment!,
       loyalty: active,
       expiryMonths: Number(expiry),
@@ -115,6 +122,10 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
       unitValue: Number(value),
       minConversion: Number(minimum),
     });
+    if (saved === false) {
+      setSaveFailed(true);
+      return;
+    }
     close();
   };
 
@@ -138,11 +149,12 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
       buttonDock={{
         secondaryButton: { label: 'Cancel', onClick: close },
         primaryButton: config
-          ? { label: 'Save', type: 'submit', form: formId, disabled: !changed }
-          : { label: 'Save configuration', type: 'submit', form: formId },
+          ? { label: 'Save', type: 'submit', form: formId, disabled: !changed || offline }
+          : { label: 'Save configuration', type: 'submit', form: formId, disabled: offline },
       }}
     >
       <form id={formId} className={styles.form} noValidate onSubmit={submit}>
+        {offline ? <ConnectionError /> : saveFailed && <SaveError />}
         <fieldset className={styles.section}>
           <legend className={styles.legend}>Segment</legend>
           <FinSelectField

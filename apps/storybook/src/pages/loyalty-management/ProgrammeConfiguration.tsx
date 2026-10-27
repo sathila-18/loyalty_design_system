@@ -1,15 +1,9 @@
 import { useState } from 'react';
-import {
-  FinAppShell,
-  FinDialog,
-  FinEmptyState,
-  FinSnackbar,
-  FinSnackbarRegion,
-  FinTable,
-  type FinTableColumn,
-  type FinTableFilters,
-} from '@finspace-loyalty/ui';
+import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinTableColumn, type FinTableFilters } from '@finspace-loyalty/ui';
+import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
+import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import { pageSideNav } from '../pageShell';
+import styles from './ProgrammeConfiguration.module.css';
 import { RecordDetails } from '../RecordDetails';
 import { ProgrammeConfigurationForm, type ProgrammeConfigValues } from './ProgrammeConfigurationForm';
 
@@ -36,6 +30,8 @@ export interface ProgrammeConfigurationProps {
   segments: string[];
   /** Called with what the admin did (an action from the toolbar or a row), so stories can show it. */
   onAction?: (action: string) => void;
+  /** The fake API: loading, failures and the connection (Pages/Common states). Default: everything works at once. */
+  api?: PageApi;
 }
 
 const number = (n: number) => n.toLocaleString('en-US');
@@ -76,9 +72,12 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
  * sheet, asks in a dialog (`328:25843`) and then takes the row out, with a Success snackbar (`328:26929`) at the top
  * right that closes itself after 6 seconds. With nothing to show, an empty state replaces the table (code first,
  * decided 27 Oct 2026): no configurations yet (Medium, with Add), or none matching the search and filter (Small, with
- * a button that clears them).
+ * a button that clears them). The shared negative states (Pages/Common states) come from `api`: loading (skeleton rows,
+ * no toolbar), couldn't load (an empty state with Try again, no toolbar), the network or server error (a banner;
+ * Add, Edit, Save and Remove off), back online (a snackbar), couldn't save (a banner in the form) and couldn't remove
+ * (a snackbar with Try again).
  */
-export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAction = () => undefined }: ProgrammeConfigurationProps) {
+export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAction = () => undefined, api = {} }: ProgrammeConfigurationProps) {
   const [configs, setConfigs] = useState(initialConfigs);
   const [adding, setAdding] = useState(false);
   const [viewing, setViewing] = useState<ProgrammeConfig | null>(null);
@@ -87,7 +86,12 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
   // The dialog keeps the last configuration while it closes, so its text doesn't change.
   const [removing, setRemoving] = useState<{ config: ProgrammeConfig; open: boolean } | null>(null);
   // Snackbars, newest last; each closes itself or with its close button.
-  const [notices, setNotices] = useState<{ id: number; text: string }[]>([]);
+  const { notices, notify, dismiss } = usePageNotices();
+  const { status, retry } = usePageLoad(api.load);
+  const online = api.online ?? true;
+  const save = useFlakyCall(api.save);
+  const removeCall = useFlakyCall(api.remove);
+  useBackOnline(online, () => notify({ text: "You're back online", tone: 'success' }));
   const [query, setQuery] = useState('');
   // The Segment column's filter, kept here so the empty state can clear it.
   const [filters, setFilters] = useState<FinTableFilters>({});
@@ -136,6 +140,19 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
     setRemoving({ config, open: true });
   };
   const closeRemove = () => setRemoving((current) => current && { ...current, open: false });
+  const remove = (config: ProgrammeConfig) => {
+    if (!removeCall()) {
+      notify({
+        text: `Couldn't remove the “${config.segment}” segment`,
+        tone: 'error',
+        action: { label: 'Try again', onClick: () => remove(config) },
+      });
+      return;
+    }
+    onAction(`Removed: ${config.segment}`);
+    setConfigs((current) => current.filter((c) => c.id !== config.id));
+    notify({ text: 'Segment removed successfully', tone: 'success' });
+  };
 
   return (
     <FinAppShell
@@ -147,32 +164,44 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
         notificationProps: { notification: 'number', count: 120 },
       }}
     >
-      <FinTable
-        label="Programme configurations"
-        columns={columns}
-        rows={rows}
-        getRowId={(c) => c.id}
-        getRowLabel={(c) => c.segment}
-        onRowClick={setViewing}
-        rowActions={(c) => [
-          { label: 'View', icon: 'visibility', onSelect: () => setViewing(c) },
-          { label: 'Edit', icon: 'edit', onSelect: () => edit(c) },
-          { label: 'Remove', icon: 'delete', onSelect: () => askRemove(c), separator: true, destructive: true },
-        ]}
-        toolbar={{
-          search: { label: 'Search segment', placeholder: 'Search segment', value: query, onChange: (e) => setQuery(e.target.value) },
-          actionLabel: 'Add programme configuration',
-          onAction: add,
-        }}
-        filters={filters}
-        onFiltersChange={setFilters}
-        empty={empty}
-      />
+      <div className={styles.page}>
+        {!online && <ConnectionError />}
+        <FinTable
+          label="Programme configurations"
+          columns={columns}
+          rows={status === 'ready' ? rows : []}
+          loading={status === 'loading'}
+          getRowId={(c) => c.id}
+          getRowLabel={(c) => c.segment}
+          onRowClick={setViewing}
+          rowActions={(c) => [
+            { label: 'View', icon: 'visibility', onSelect: () => setViewing(c) },
+            { label: 'Edit', icon: 'edit', onSelect: () => edit(c), disabled: !online },
+            { label: 'Remove', icon: 'delete', onSelect: () => askRemove(c), separator: true, destructive: true, disabled: !online },
+          ]}
+          // No toolbar until the list has loaded (decided 27 Oct 2026).
+          {...(status === 'ready'
+            ? {
+                toolbar: {
+                  search: { label: 'Search segment', placeholder: 'Search segment', value: query, onChange: (e) => setQuery(e.target.value) },
+                  actionLabel: 'Add programme configuration',
+                  onAction: add,
+                  actionDisabled: !online,
+                },
+              }
+            : {})}
+          filters={filters}
+          onFiltersChange={setFilters}
+          empty={status === 'error' ? <LoadError items="programme configurations" onRetry={retry} /> : empty}
+        />
+      </div>
       <ProgrammeConfigurationForm
         open={adding}
         onClose={() => setAdding(false)}
         segments={freeSegments}
+        offline={!online}
         onSave={(values: ProgrammeConfigValues) => {
+          if (!save()) return false;
           onAction(`Saved: ${values.segment}`);
           setConfigs((current) => [...current, { ...values, id: Math.max(0, ...current.map((c) => c.id)) + 1 }]);
         }}
@@ -184,6 +213,7 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
         onClose={() => setViewing(null)}
         onEdit={edit}
         onRemove={askRemove}
+        actionsDisabled={!online}
       />
       {editing && (
         <ProgrammeConfigurationForm
@@ -192,7 +222,9 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
           onClose={() => setEditing({ ...editing, open: false })}
           config={editing.config}
           segments={freeSegments}
+          offline={!online}
           onSave={(values: ProgrammeConfigValues) => {
+            if (!save()) return false;
             onAction(`Saved: ${values.segment}`);
             setConfigs((current) => current.map((c) => (c.id === editing.config.id ? { ...c, ...values } : c)));
           }}
@@ -208,22 +240,14 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
           tone: 'destructive',
           onClick: () => {
             if (!removing) return;
-            onAction(`Removed: ${removing.config.segment}`);
-            setConfigs((current) => current.filter((c) => c.id !== removing.config.id));
-            setNotices((current) => [...current, { id: Math.max(0, ...current.map((n) => n.id)) + 1, text: 'Segment removed successfully' }]);
             closeRemove();
+            remove(removing.config);
           },
         }}
       >
         {`Are you sure you want to remove the “${removing?.config.segment ?? ''}” segment?`}
       </FinDialog>
-      <FinSnackbarRegion>
-        {notices.map((notice) => (
-          <FinSnackbar key={notice.id} tone="success" onClose={() => setNotices((current) => current.filter((n) => n.id !== notice.id))}>
-            {notice.text}
-          </FinSnackbar>
-        ))}
-      </FinSnackbarRegion>
+      <PageNotices notices={notices} onDismiss={dismiss} />
     </FinAppShell>
   );
 }

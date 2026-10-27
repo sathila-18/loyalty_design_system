@@ -11,6 +11,8 @@ export interface RecordDetailsProps<Row> {
   onClose: () => void;
   onEdit: (record: Row) => void;
   onRemove: (record: Row) => void;
+  /** Edit and Remove can't be used, for example while the connection is down (Pages/Common states). */
+  actionsDisabled?: boolean;
 }
 
 interface Detail {
@@ -33,7 +35,7 @@ function shown<Row>(column: FinTableColumn<Row>, record: Row): ReactNode {
  * (Attribute) and the record's value (Added record), no hover. Remove (Secondary, destructive, bin icon, as wide as
  * its label) and Edit (Primary, the rest of the width) in the dock; the close button at the top.
  */
-export function RecordDetails<Row>({ record, getName, columns, onClose, onEdit, onRemove }: RecordDetailsProps<Row>) {
+export function RecordDetails<Row>({ record, getName, columns, onClose, onEdit, onRemove, actionsDisabled = false }: RecordDetailsProps<Row>) {
   const details: Detail[] = record ? columns.map((column) => ({ key: column.key, attribute: column.header, value: shown(column, record) })) : [];
   const title = record ? `${getName(record)} details` : 'Details';
 
@@ -48,9 +50,10 @@ export function RecordDetails<Row>({ record, getName, columns, onClose, onEdit, 
           tone: 'destructive',
           leadingIcon: 'delete',
           width: 'hug',
+          disabled: actionsDisabled,
           onClick: () => record && onRemove(record),
         },
-        primaryButton: { label: 'Edit', onClick: () => record && onEdit(record) },
+        primaryButton: { label: 'Edit', disabled: actionsDisabled, onClick: () => record && onEdit(record) },
       }}
     >
       <FinTable

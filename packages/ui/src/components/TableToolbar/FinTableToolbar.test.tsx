@@ -39,4 +39,13 @@ describe('FinTableToolbar', () => {
     expect(container.firstElementChild).toHaveClass('extra');
     expect(container.firstElementChild).toHaveAttribute('aria-label', 'Segments tools');
   });
+
+  it('disables the action with actionDisabled', async () => {
+    const onAction = vi.fn();
+    render(<FinTableToolbar actionLabel="Add member" onAction={onAction} actionDisabled />);
+    const button = screen.getByRole('button', { name: 'Add member' });
+    expect(button).toBeDisabled();
+    await userEvent.click(button);
+    expect(onAction).not.toHaveBeenCalled();
+  });
 });

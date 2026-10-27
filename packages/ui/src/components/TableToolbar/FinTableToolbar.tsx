@@ -15,6 +15,8 @@ export interface FinTableToolbarProps extends Omit<HTMLAttributes<HTMLDivElement
   actionIcon?: FinIconName;
   /** Called when the button is pressed. */
   onAction?: MouseEventHandler<HTMLButtonElement>;
+  /** The button is shown but can't be used (code only, 27 Oct 2026), for example while the connection is down. */
+  actionDisabled?: boolean;
 }
 
 /**
@@ -24,7 +26,16 @@ export interface FinTableToolbarProps extends Omit<HTMLAttributes<HTMLDivElement
  * container; when it's narrow, the search shrinks and the right side keeps its size. **Internal:** part of the table
  * (FinTable `toolbar`).
  */
-export function FinTableToolbar({ search, filters, actionLabel, actionIcon = 'add', onAction, className, ...rest }: FinTableToolbarProps) {
+export function FinTableToolbar({
+  search,
+  filters,
+  actionLabel,
+  actionIcon = 'add',
+  onAction,
+  actionDisabled = false,
+  className,
+  ...rest
+}: FinTableToolbarProps) {
   const hasFilters = filters !== undefined && filters !== null && filters !== false;
   return (
     <div {...rest} className={className ? `${styles.toolbar} ${className}` : styles.toolbar}>
@@ -33,7 +44,7 @@ export function FinTableToolbar({ search, filters, actionLabel, actionIcon = 'ad
         <div className={styles.end}>
           {hasFilters && <div className={styles.filters}>{filters}</div>}
           {actionLabel && (
-            <FinButton size="small" icon="leading" iconName={actionIcon} {...(onAction ? { onClick: onAction } : {})}>
+            <FinButton size="small" icon="leading" iconName={actionIcon} disabled={actionDisabled} {...(onAction ? { onClick: onAction } : {})}>
               {actionLabel}
             </FinButton>
           )}
