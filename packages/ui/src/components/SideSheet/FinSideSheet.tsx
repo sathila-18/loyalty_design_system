@@ -37,11 +37,6 @@ export interface FinSideSheetProps extends Omit<DialogHTMLAttributes<HTMLDialogE
   /** Figma `Body content slot`. Design-system components only; the sheet owns the padding and scrolling. */
   children?: ReactNode;
   /**
-   * Code only (decided 27 Oct 2026): the body has no side padding, so full-width content (a table, whose cells bring
-   * their own 24) reaches the sheet's edges. Default false.
-   */
-  bodyFullWidth?: boolean;
-  /**
    * Figma `Show Button Dock` and its options (shown when passed). The sheet keeps it at the bottom and sets its
    * `sticky` look while body content is under it.
    */
@@ -67,7 +62,6 @@ export function FinSideSheet({
   closeLabel = 'Close',
   divider = false,
   children,
-  bodyFullWidth = false,
   buttonDock,
   closeOnOverlayClick = true,
   className,
@@ -108,13 +102,7 @@ export function FinSideSheet({
           )}
         </div>
         {divider && <FinDivider decorative className={styles.divider} />}
-        <div
-          ref={bodyRef}
-          className={styles.body}
-          data-full-width={bodyFullWidth ? '' : undefined}
-          {...(scrollable ? { role: 'region', 'aria-labelledby': titleId, tabIndex: 0 } : {})}
-          onScroll={update}
-        >
+        <div ref={bodyRef} className={styles.body} {...(scrollable ? { role: 'region', 'aria-labelledby': titleId, tabIndex: 0 } : {})} onScroll={update}>
           {children}
         </div>
         {buttonDock && <FinButtonDock {...buttonDock} sticky={contentBelow} />}
