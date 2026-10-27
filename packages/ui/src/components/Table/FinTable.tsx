@@ -155,6 +155,12 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
   footer?: boolean;
   /** The rows' Hovered fill (default on). Off (code only, 26 Oct 2026) for a table that only shows data. */
   hover?: boolean;
+  /**
+   * What shows instead of the table and its footer when there are no rows to show (code first, 27 Oct 2026): none
+   * at all, or none left after the column filters. Usually a FinEmptyState. The toolbar stays. In a column layout
+   * (FinAppShell's content) it fills the height left. Without it, the table shows its header and an empty footer.
+   */
+  empty?: ReactNode;
 }
 
 const isText = (value: unknown): value is string | number => typeof value === 'string' || typeof value === 'number';
@@ -218,6 +224,7 @@ function FinTableInner<Row>(
     toolbar,
     footer = true,
     hover = true,
+    empty,
     className,
     ...rest
   }: FinTableProps<Row>,
@@ -252,6 +259,7 @@ function FinTableInner<Row>(
     }
   }
   const total = serverPaged ? totalRows : shownRows.length;
+  const showEmpty = empty !== undefined && empty !== null && total === 0;
   const [innerPerPage, setInnerPerPage] = useState(defaultRowsPerPage);
   // Without the footer there's no paging: every row is on the one page.
   const perPage = footer ? Math.max(1, Math.floor(rowsPerPage ?? innerPerPage)) : Math.max(1, total);
@@ -368,129 +376,135 @@ function FinTableInner<Row>(
   };
 
   return (
-    <div {...rest} ref={ref} className={className ? `${styles.root} ${className}` : styles.root}>
+    <div {...rest} ref={ref} className={className ? `${styles.root} ${className}` : styles.root} data-empty={showEmpty ? '' : undefined}>
       {toolbar && <FinTableToolbar {...toolbar} className={toolbar.className ? `${styles.toolbar} ${toolbar.className}` : styles.toolbar} />}
-      <div ref={setScrollEl} className={styles.scroll}>
-        <table
-          className={styles.table}
-          aria-label={label}
-          style={tableStyle}
-          data-selectable={selectable ? '' : undefined}
-          data-row-actions={actionsAt}
-        >
-          <colgroup>
-            {selectable && <col className={styles.selectColumn} />}
-            {actionsAt === 'start' && <col className={styles.actionsColumn} />}
-            {columns.map((column) =>
-              column.width === undefined ? (
-                <col key={column.key} />
-              ) : (
-                <col key={column.key} className={styles.fixedColumn} style={columnStyle(column.width)} />
-              ),
-            )}
-            {actionsAt === 'end' && <col className={styles.actionsColumn} />}
-          </colgroup>
-          <thead>
-            <FinTableHeaderRow
-              selectCell={selectable}
-              checked={pageIds.length > 0 && selectedOnPage === pageIds.length}
-              indeterminate={selectedOnPage > 0 && selectedOnPage < pageIds.length}
-              onCheckedChange={toggleAll}
-              {...(selectClass ? { selectCellClassName: selectClass } : {})}
+      {showEmpty ? (
+        <div className={styles.empty}>{empty}</div>
+      ) : (
+        <>
+          <div ref={setScrollEl} className={styles.scroll}>
+            <table
+              className={styles.table}
+              aria-label={label}
+              style={tableStyle}
+              data-selectable={selectable ? '' : undefined}
+              data-row-actions={actionsAt}
             >
-              {actionsAt === 'start' && actionsHeader}
-              {columns.map((column) => (
-                <FinTableHeaderCell
-                  key={column.key}
-                  type="grey"
-                  checkbox={false}
-                  trailingIcon={column.trailingIcon ?? false}
-                  {...(column.sortable
-                    ? {
-                        sort: sort?.key === column.key ? sort.direction : 'none',
-                        onSortChange: (direction: 'none' | 'ascending' | 'descending') =>
-                          changeSort(direction === 'none' ? null : { key: column.key, direction }),
-                      }
-                    : {})}
-                  {...(column.filter
-                    ? {
-                        filter: {
-                          options: filterOptions(column),
-                          value: filters[column.key] ?? [],
-                          onApply: (values: string[]) => changeFilter(column.key, values),
-                          ...(column.filter.multiple !== undefined ? { multiple: column.filter.multiple } : {}),
-                        },
-                      }
-                    : {})}
-                >
-                  {column.header}
-                </FinTableHeaderCell>
-              ))}
-              {actionsAt === 'end' && actionsHeader}
-            </FinTableHeaderRow>
-          </thead>
-          <tbody>
-            {pageRows.map((row, index) => {
-              const id = getRowId(row);
-              const isSelected = selected.includes(id);
-              const rowClick = selecting ? () => toggle(id, !isSelected) : onRowClick ? () => onRowClick(row) : undefined;
-              return (
-                <FinTableRow
-                  key={id}
+              <colgroup>
+                {selectable && <col className={styles.selectColumn} />}
+                {actionsAt === 'start' && <col className={styles.actionsColumn} />}
+                {columns.map((column) =>
+                  column.width === undefined ? (
+                    <col key={column.key} />
+                  ) : (
+                    <col key={column.key} className={styles.fixedColumn} style={columnStyle(column.width)} />
+                  ),
+                )}
+                {actionsAt === 'end' && <col className={styles.actionsColumn} />}
+              </colgroup>
+              <thead>
+                <FinTableHeaderRow
                   selectCell={selectable}
-                  selected={isSelected}
-                  onSelectedChange={(on) => toggle(id, on)}
-                  checkboxLabel={`Select ${rowLabel(row, index)}`}
-                  hover={hover}
-                  {...(rowClick ? { onRowClick: rowClick } : {})}
+                  checked={pageIds.length > 0 && selectedOnPage === pageIds.length}
+                  indeterminate={selectedOnPage > 0 && selectedOnPage < pageIds.length}
+                  onCheckedChange={toggleAll}
                   {...(selectClass ? { selectCellClassName: selectClass } : {})}
                 >
-                  {actionsAt === 'start' && actionsCell(row, index)}
-                  {columns.map((column) => {
-                    const value = column.value ? column.value(row) : ((row as Record<string, unknown>)[column.key] as ReactNode);
-                    const tone = typeof column.badgeTone === 'function' ? column.badgeTone(row) : column.badgeTone;
-                    const cell = {
-                      type: column.type ?? 'default',
-                      leadingAccessories: false,
-                      ...(tone ? { badgeTone: tone } : {}),
-                      ...(column.href ? { href: column.href(row) } : {}),
-                      ...(column.linkAs ? { linkAs: column.linkAs } : {}),
-                    };
-                    const { action } = column;
-                    return action ? (
-                      <FinTableCell
-                        key={column.key}
-                        {...cell}
-                        action
-                        actionLabel={action.label(row)}
-                        onAction={() => action.onAction(row)}
-                        {...(action.icon ? { actionIcon: action.icon } : {})}
-                      >
-                        {value}
-                      </FinTableCell>
-                    ) : (
-                      <FinTableCell key={column.key} {...cell}>
-                        {value}
-                      </FinTableCell>
-                    );
-                  })}
-                  {actionsAt === 'end' && actionsCell(row, index)}
-                </FinTableRow>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      {footer && (
-        <FinTableFooter
-          className={styles.footer}
-          totalRows={total}
-          rowsPerPage={perPage}
-          page={current}
-          onPageChange={changePage}
-          onRowsPerPageChange={changePerPage}
-          {...(rowsPerPageOptions ? { rowsPerPageOptions } : {})}
-        />
+                  {actionsAt === 'start' && actionsHeader}
+                  {columns.map((column) => (
+                    <FinTableHeaderCell
+                      key={column.key}
+                      type="grey"
+                      checkbox={false}
+                      trailingIcon={column.trailingIcon ?? false}
+                      {...(column.sortable
+                        ? {
+                            sort: sort?.key === column.key ? sort.direction : 'none',
+                            onSortChange: (direction: 'none' | 'ascending' | 'descending') =>
+                              changeSort(direction === 'none' ? null : { key: column.key, direction }),
+                          }
+                        : {})}
+                      {...(column.filter
+                        ? {
+                            filter: {
+                              options: filterOptions(column),
+                              value: filters[column.key] ?? [],
+                              onApply: (values: string[]) => changeFilter(column.key, values),
+                              ...(column.filter.multiple !== undefined ? { multiple: column.filter.multiple } : {}),
+                            },
+                          }
+                        : {})}
+                    >
+                      {column.header}
+                    </FinTableHeaderCell>
+                  ))}
+                  {actionsAt === 'end' && actionsHeader}
+                </FinTableHeaderRow>
+              </thead>
+              <tbody>
+                {pageRows.map((row, index) => {
+                  const id = getRowId(row);
+                  const isSelected = selected.includes(id);
+                  const rowClick = selecting ? () => toggle(id, !isSelected) : onRowClick ? () => onRowClick(row) : undefined;
+                  return (
+                    <FinTableRow
+                      key={id}
+                      selectCell={selectable}
+                      selected={isSelected}
+                      onSelectedChange={(on) => toggle(id, on)}
+                      checkboxLabel={`Select ${rowLabel(row, index)}`}
+                      hover={hover}
+                      {...(rowClick ? { onRowClick: rowClick } : {})}
+                      {...(selectClass ? { selectCellClassName: selectClass } : {})}
+                    >
+                      {actionsAt === 'start' && actionsCell(row, index)}
+                      {columns.map((column) => {
+                        const value = column.value ? column.value(row) : ((row as Record<string, unknown>)[column.key] as ReactNode);
+                        const tone = typeof column.badgeTone === 'function' ? column.badgeTone(row) : column.badgeTone;
+                        const cell = {
+                          type: column.type ?? 'default',
+                          leadingAccessories: false,
+                          ...(tone ? { badgeTone: tone } : {}),
+                          ...(column.href ? { href: column.href(row) } : {}),
+                          ...(column.linkAs ? { linkAs: column.linkAs } : {}),
+                        };
+                        const { action } = column;
+                        return action ? (
+                          <FinTableCell
+                            key={column.key}
+                            {...cell}
+                            action
+                            actionLabel={action.label(row)}
+                            onAction={() => action.onAction(row)}
+                            {...(action.icon ? { actionIcon: action.icon } : {})}
+                          >
+                            {value}
+                          </FinTableCell>
+                        ) : (
+                          <FinTableCell key={column.key} {...cell}>
+                            {value}
+                          </FinTableCell>
+                        );
+                      })}
+                      {actionsAt === 'end' && actionsCell(row, index)}
+                    </FinTableRow>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          {footer && (
+            <FinTableFooter
+              className={styles.footer}
+              totalRows={total}
+              rowsPerPage={perPage}
+              page={current}
+              onPageChange={changePage}
+              onRowsPerPageChange={changePerPage}
+              {...(rowsPerPageOptions ? { rowsPerPageOptions } : {})}
+            />
+          )}
+        </>
       )}
     </div>
   );

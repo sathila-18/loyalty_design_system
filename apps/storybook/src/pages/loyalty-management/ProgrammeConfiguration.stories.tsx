@@ -150,10 +150,18 @@ export const ManySegments: Story = {
   args: { rows: 40 },
 };
 
-/** No configurations yet: the table's header and "Showing 0 of 0 entries" until the Empty state is built. */
+/** No configurations yet: an empty state (Medium) replaces the table, with Add programme configuration. */
 export const NoConfigurations: Story = {
   name: 'No configurations',
   args: { rows: 0 },
+};
+
+/** A search that matches nothing: an empty state (Small) replaces the table; "Clear search and filters" brings the rows back. */
+export const NoMatches: Story = {
+  name: 'No matches',
+  play: async ({ canvasElement }) => {
+    await userEvent.type(await within(canvasElement).findByRole('searchbox', { name: 'Search segment' }), 'Platinum');
+  },
 };
 
 /** At 1024: the side nav minimized, the table scrolls sideways with the ⋮ column fixed at the end. */

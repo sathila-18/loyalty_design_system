@@ -21,6 +21,21 @@
 }
 
 /*
+ * `empty` (code first, 27 Oct 2026): in place of the table and footer. In a column layout the table grows to fill the
+ * height left and the empty content fills this area, so a FinEmptyState sits in its middle; elsewhere it's as tall as
+ * its content, with Space-12XL above and below.
+ */
+.root[data-empty] {
+  flex: 1 1 auto;
+}
+
+.empty {
+  display: flex;
+  flex: 1 1 auto;
+  padding-block: var(--fin-space-12xl);
+}
+
+/*
  * The row's line is its border, so borders are collapsed. Min width comes from the columns (set in TSX), plus the
  * select column (a 24 checkbox with 24 either side: 72) and the ⋮ column (a 32 button with 24 either side: 80).
  */

@@ -2,7 +2,8 @@
  * FinAppShell (DESIGN.md §9). Code only: the screens draw it each time (Programme Configuration, 1920 × 1080). The
  * page is bg-secondary (the side nav's); the side nav on the left, full height; the content panel 8 (Space-M) from
  * the top, right and bottom, bg-primary, Radius-L, clipped. In the panel the header stays at the top and only the
- * content scrolls (decided 22 Oct 2026), padding 36 (Space-5XL) above, 24 (Space-3XL) at the sides and below.
+ * content scrolls (decided 22 Oct 2026), padding 36 (Space-5XL) above, 24 (Space-3XL) at the sides and below. The
+ * content area is a column, so a page's content can fill the height left (a table's empty state, 27 Oct 2026).
  */
 
 .shell {
@@ -24,7 +25,9 @@
 }
 
 .main {
+  display: flex;
   flex: 1 1 auto;
+  flex-direction: column;
   min-height: 0;
   padding: var(--fin-space-5xl) var(--fin-space-3xl) var(--fin-space-3xl);
   overflow: auto;

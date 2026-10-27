@@ -274,4 +274,34 @@ describe('FinTable', () => {
     expect(bodyRows()).toHaveLength(0);
     expect(screen.getByText('Showing 0 of 0 entries')).toBeInTheDocument();
   });
+
+  it('shows `empty` instead of the table and footer when there are no rows, keeping the toolbar', () => {
+    const { container } = render(
+      <FinTable
+        label="Members"
+        columns={columns}
+        rows={[]}
+        getRowId={(m: Member) => m.id}
+        toolbar={{ search: { label: 'Search members' } }}
+        empty={<p>No members yet</p>}
+      />,
+    );
+    expect(screen.getByText('No members yet')).toBeInTheDocument();
+    expect(screen.queryByRole('table')).toBeNull();
+    expect(screen.queryByText(/Showing/)).toBeNull();
+    expect(screen.getByRole('searchbox', { name: 'Search members' })).toBeInTheDocument();
+    expect(container.firstElementChild).toHaveAttribute('data-empty');
+  });
+
+  it('shows `empty` when the column filters leave no rows, and the table again when they change', () => {
+    const filterable: FinTableColumn<Member>[] = [columns[0]!, { ...columns[1]!, filter: {} }];
+    const { rerender } = render(
+      <FinTable label="Members" columns={filterable} rows={members} getRowId={(m) => m.id} filters={{ status: ['Nobody'] }} empty={<p>No matches</p>} />,
+    );
+    expect(screen.getByText('No matches')).toBeInTheDocument();
+    expect(screen.queryByRole('table')).toBeNull();
+    rerender(<FinTable label="Members" columns={filterable} rows={members} getRowId={(m) => m.id} filters={{}} empty={<p>No matches</p>} />);
+    expect(screen.getByRole('table', { name: 'Members' })).toBeInTheDocument();
+    expect(screen.queryByText('No matches')).toBeNull();
+  });
 });

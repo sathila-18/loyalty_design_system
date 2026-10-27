@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { FinAppShell, FinDialog, FinSnackbar, FinSnackbarRegion, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
+import {
+  FinAppShell,
+  FinDialog,
+  FinEmptyState,
+  FinSnackbar,
+  FinSnackbarRegion,
+  FinTable,
+  type FinTableColumn,
+  type FinTableFilters,
+} from '@finspace-loyalty/ui';
 import { pageSideNav } from '../pageShell';
 import { ProgrammeConfigurationDetails } from './ProgrammeConfigurationDetails';
 import { ProgrammeConfigurationForm, type ProgrammeConfigValues } from './ProgrammeConfigurationForm';
@@ -65,7 +74,9 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
  * View, or a click on the row, opens the details sheet (code first). Edit, in the row menu or the details sheet, opens
  * the same form with the row's values (code first); saving updates the row. Remove, in the row menu or the details
  * sheet, asks in a dialog (`328:25843`) and then takes the row out, with a Success snackbar (`328:26929`) at the top
- * right that closes itself after 6 seconds.
+ * right that closes itself after 6 seconds. With nothing to show, an empty state replaces the table (code first,
+ * decided 27 Oct 2026): no configurations yet (Medium, with Add), or none matching the search and filter (Small, with
+ * a button that clears them).
  */
 export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAction = () => undefined }: ProgrammeConfigurationProps) {
   const [configs, setConfigs] = useState(initialConfigs);
@@ -78,10 +89,41 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
   // Snackbars, newest last; each closes itself or with its close button.
   const [notices, setNotices] = useState<{ id: number; text: string }[]>([]);
   const [query, setQuery] = useState('');
+  // The Segment column's filter, kept here so the empty state can clear it.
+  const [filters, setFilters] = useState<FinTableFilters>({});
 
   const search = query.trim().toLowerCase();
   const rows = configs.filter((c) => c.segment.toLowerCase().includes(search));
   const freeSegments = segments.filter((s) => !configs.some((c) => c.segment === s));
+
+  const add = () => {
+    onAction('Add programme configuration');
+    setAdding(true);
+  };
+  const searched = query.trim();
+  const empty =
+    configs.length === 0 ? (
+      <FinEmptyState
+        icon="loyalty"
+        heading="No programme configurations yet"
+        description="Add a configuration to set the loyalty and cash conversion rules for a customer segment."
+        action={{ label: 'Add programme configuration', onClick: add }}
+      />
+    ) : (
+      <FinEmptyState
+        size="small"
+        icon="search"
+        heading={searched ? `No segments match “${searched}”` : 'No segments match the filter'}
+        description={searched ? 'Check the spelling, or clear the search and filters.' : 'Clear the filter to see every segment.'}
+        action={{
+          label: searched ? 'Clear search and filters' : 'Clear filter',
+          onClick: () => {
+            setQuery('');
+            setFilters({});
+          },
+        }}
+      />
+    );
 
   const edit = (config: ProgrammeConfig) => {
     onAction(`Edit: ${config.segment}`);
@@ -120,11 +162,11 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
         toolbar={{
           search: { label: 'Search segment', placeholder: 'Search segment', value: query, onChange: (e) => setQuery(e.target.value) },
           actionLabel: 'Add programme configuration',
-          onAction: () => {
-            onAction('Add programme configuration');
-            setAdding(true);
-          },
+          onAction: add,
         }}
+        filters={filters}
+        onFiltersChange={setFilters}
+        empty={empty}
       />
       <ProgrammeConfigurationForm
         open={adding}
