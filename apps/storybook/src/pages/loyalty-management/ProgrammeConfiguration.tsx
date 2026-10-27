@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FinAppShell, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
+import { FinAppShell, FinDialog, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
 import { pageSideNav } from '../pageShell';
 import { ProgrammeConfigurationDetails } from './ProgrammeConfigurationDetails';
 import { ProgrammeConfigurationForm, type ProgrammeConfigValues } from './ProgrammeConfigurationForm';
@@ -63,8 +63,8 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
  * dropdown (decided 27 Oct 2026; was a Segment chip in the toolbar), act
  * on a row from its ⋮ menu. Add opens the add side sheet (`312:15899`); a saved configuration is added to the table.
  * View, or a click on the row, opens the details sheet (code first). Edit, in the row menu or the details sheet, opens
- * the same form with the row's values (code first); saving updates the row. The remove dialog and the removed
- * snackbar come next.
+ * the same form with the row's values (code first); saving updates the row. Remove, in the row menu or the details
+ * sheet, asks in a dialog (`328:25843`) and then takes the row out. The removed snackbar comes next.
  */
 export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAction = () => undefined }: ProgrammeConfigurationProps) {
   const [configs, setConfigs] = useState(initialConfigs);
@@ -72,6 +72,8 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
   const [viewing, setViewing] = useState<ProgrammeConfig | null>(null);
   // The edit sheet stays mounted after it closes (so focus goes back); `key` gives each opening fresh values.
   const [editing, setEditing] = useState<{ config: ProgrammeConfig; open: boolean; key: number } | null>(null);
+  // The dialog keeps the last configuration while it closes, so its text doesn't change.
+  const [removing, setRemoving] = useState<{ config: ProgrammeConfig; open: boolean } | null>(null);
   const [query, setQuery] = useState('');
 
   const search = query.trim().toLowerCase();
@@ -83,6 +85,12 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
     setViewing(null);
     setEditing((current) => ({ config, open: true, key: (current?.key ?? 0) + 1 }));
   };
+  const askRemove = (config: ProgrammeConfig) => {
+    onAction(`Remove: ${config.segment}`);
+    setViewing(null);
+    setRemoving({ config, open: true });
+  };
+  const closeRemove = () => setRemoving((current) => current && { ...current, open: false });
 
   return (
     <FinAppShell
@@ -104,7 +112,7 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
         rowActions={(c) => [
           { label: 'View', icon: 'visibility', onSelect: () => setViewing(c) },
           { label: 'Edit', icon: 'edit', onSelect: () => edit(c) },
-          { label: 'Remove', icon: 'delete', onSelect: () => onAction(`Remove: ${c.segment}`), separator: true, destructive: true },
+          { label: 'Remove', icon: 'delete', onSelect: () => askRemove(c), separator: true, destructive: true },
         ]}
         toolbar={{
           search: { label: 'Search segment', placeholder: 'Search segment', value: query, onChange: (e) => setQuery(e.target.value) },
@@ -129,8 +137,7 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
         columns={columns}
         onClose={() => setViewing(null)}
         onEdit={edit}
-        // The remove dialog comes next.
-        onRemove={(c) => onAction(`Remove: ${c.segment}`)}
+        onRemove={askRemove}
       />
       {editing && (
         <ProgrammeConfigurationForm
@@ -145,6 +152,24 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
           }}
         />
       )}
+      <FinDialog
+        open={removing?.open ?? false}
+        onClose={closeRemove}
+        title="Remove segment"
+        secondaryButton={{ label: 'Cancel', onClick: closeRemove }}
+        primaryButton={{
+          label: 'Remove',
+          tone: 'destructive',
+          onClick: () => {
+            if (!removing) return;
+            onAction(`Removed: ${removing.config.segment}`);
+            setConfigs((current) => current.filter((c) => c.id !== removing.config.id));
+            closeRemove();
+          },
+        }}
+      >
+        {`Are you sure you want to remove the “${removing?.config.segment ?? ''}” segment?`}
+      </FinDialog>
     </FinAppShell>
   );
 }

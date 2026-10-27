@@ -187,3 +187,39 @@ export const EditFromDetails: Story = {
     await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('button', { name: 'Edit' }));
   },
 };
+
+/** Remove (Figma `328:25843`): Remove in a row's ⋮ menu asks in a dialog. Remove (red) takes the row out; Cancel, the close button, Esc or a scrim click keep it. */
+export const Remove: Story = {
+  name: 'Remove configuration',
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'Staff', 'Remove');
+  },
+};
+
+/** A long segment name: the dialog's text wraps. */
+export const RemoveLongName: Story = {
+  name: 'Remove configuration, long segment name',
+  args: { configs: MANY_CONFIGS },
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'Premier banking customers (Colombo and Kandy branches)', 'Remove');
+  },
+};
+
+/** Remove from the details sheet: the details close and the dialog opens for the same row. */
+export const RemoveFromDetails: Story = {
+  name: 'Remove configuration from details',
+  args: { configs: MANY_CONFIGS },
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'VIP');
+    await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('button', { name: 'Remove' }));
+  },
+};
+
+/** At 1024: the dialog is 8 columns of the grid (643 wide). */
+export const RemoveAt1024: Story = {
+  name: 'Remove configuration at 1024',
+  globals: { viewport: { value: 'desktop1024', isRotated: false } },
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'VIP', 'Remove');
+  },
+};
