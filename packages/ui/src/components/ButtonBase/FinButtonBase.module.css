@@ -162,6 +162,14 @@
   --button-tone-hover: var(--fin-alpha-light);
 }
 
+/*
+ * In Dark, bg-direct is light, so white 12% doesn't show: `alpha-sm` instead (decided 27 Oct 2026, §10 #74). The one
+ * theme selector in a component; it goes when Figma has an alpha token that flips with the theme.
+ */
+[data-theme="dark"] .button[data-variant="tertiary"][data-content-tone="inverse"] {
+  --button-tone-hover: var(--fin-alpha-sm);
+}
+
 .button[data-variant="tertiary"][data-content-tone="primary"] {
   --button-tone-text: var(--fin-text-primary);
   --button-tone-icon: var(--fin-fg-primary);

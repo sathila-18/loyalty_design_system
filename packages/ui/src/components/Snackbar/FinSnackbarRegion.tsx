@@ -12,7 +12,7 @@ export interface FinSnackbarRegionProps extends Omit<HTMLAttributes<HTMLDivEleme
 
 /**
  * Where snackbars appear (code only, decided 27 Oct 2026; DESIGN.md §9): the top right of the window, Space-3XL from
- * the top and the right edge, up to 3 columns of the layout grid wide, above the page (the top layer, as a manual
+ * the top and the right edge, 3 columns of the layout grid wide but at least 343, above the page (the top layer, as a manual
  * popover). Several stack, the newest on top. A polite live region that stays in the page, so each snackbar added is
  * read out. Keep it mounted and put the snackbars in it.
  */

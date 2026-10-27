@@ -107,8 +107,8 @@
 }
 
 /*
- * FinSnackbarRegion: the top right of the window, Space-3XL (the grid margin) from the top and right, up to 3 columns
- * of the layout grid wide (decided 27 Oct 2026). A manual popover, so it's in the top layer: the browser's popover
+ * FinSnackbarRegion: the top right of the window, Space-3XL (the grid margin) from the top and right, 3 columns of
+ * the layout grid wide but at least Size/343, Figma's width (decided 27 Oct 2026, §10 #73). A manual popover, so it's in the top layer: the browser's popover
  * styles are reset here. Clicks go through it, except on the snackbars.
  */
 .region {
@@ -123,7 +123,7 @@
   gap: var(--fin-space-m);
   align-items: flex-end;
   box-sizing: border-box;
-  width: calc(3 * var(--fin-snackbar-column) + 2 * var(--fin-grid-gutter));
+  width: max(var(--fin-size-343), calc(3 * var(--fin-snackbar-column) + 2 * var(--fin-grid-gutter)));
   height: auto;
   margin: 0;
   padding: 0;
