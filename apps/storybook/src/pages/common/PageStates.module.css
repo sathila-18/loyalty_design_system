@@ -1,0 +1,12 @@
+/* Layout shared by the list pages (Pages/Common states). */
+
+/*
+ * The page's content: the network or server error banner above the table, Space-4XL apart (the space between blocks
+ * on a page, §9.68); it fills the content's height, so an empty state can sit in the middle.
+ */
+.page {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--fin-space-4xl);
+}

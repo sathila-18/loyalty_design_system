@@ -3,7 +3,7 @@ import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinTableColumn, t
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import { pageSideNav } from '../pageShell';
-import styles from './ProgrammeConfiguration.module.css';
+import styles from '../common/PageStates.module.css';
 import { RecordDetails } from '../RecordDetails';
 import { ProgrammeConfigurationForm, type ProgrammeConfigValues } from './ProgrammeConfigurationForm';
 
