@@ -2,7 +2,13 @@
 
 import { forwardRef } from 'react';
 import type { FinIconName } from '../../icons/finIcons';
-import { FinButtonBase, type FinButtonBaseProps, type FinButtonBaseVariant, type FinButtonVariant } from '../ButtonBase';
+import {
+  FinButtonBase,
+  type FinButtonBaseProps,
+  type FinButtonBaseVariant,
+  type FinButtonContentTone,
+  type FinButtonVariant,
+} from '../ButtonBase';
 
 /** Figma `Tone`: which button base the look comes from (decided 19 Oct 2026). */
 export type FinButtonTone = 'normal' | 'white' | 'destructive';
@@ -23,10 +29,11 @@ export type FinButtonToneProps =
        */
       iconTone?: 'action' | 'secondary';
       /**
-       * Tertiary only, code only (added 27 Oct 2026, for the Snackbar): `inverse` (on `bg-direct`) or `primary` (on a
-       * status background) colours for the label and icon, in every state, with a neutral hover and press.
+       * Tertiary only, code only (added 27 Oct 2026, for the Snackbar and the Notification banner): colours for the
+       * label and icon in every state, with a neutral hover and press: `inverse` (on `bg-direct`), `primary` or
+       * `secondary` (on a status or neutral background), or a status's own (`info`, `success`, `error`, `warning`).
        */
-      contentTone?: 'inverse' | 'primary';
+      contentTone?: FinButtonContentTone;
     }
   | { tone: 'white'; variant?: 'primary' }
   | { tone: 'destructive'; variant?: 'primary' | 'secondary' };

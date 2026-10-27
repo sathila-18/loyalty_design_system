@@ -1,0 +1,15 @@
+/* Layout for the FinNotificationBanner stories only (not part of the component). */
+
+/* Figma's drawing width (Size/343), so the variants compare one to one with the component set. */
+.figma {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  width: var(--fin-size-343);
+}
+
+.full {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}

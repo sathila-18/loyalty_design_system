@@ -714,7 +714,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 60e | — (code first; no Figma yet, §10 #56) | List | — | `FinListStandardFilled`, `FinListRadioFilled`, `FinListCheckboxFilled`, `FinListToggleFilled` | **List_fill-base** versions of #60a–60d (separate components, shared rows) · cards 12 apart · Selected = 1px `border-active` edge, no fill (toggle on: none) · standard filled is always clickable with the chevron · **public**, Components/List/Filled (§9.56) | — (code first) | ✅ |
 | 61 | `Accordion-frame-base` | Accordion | `555:1767` | `FinAccordionFramed` | **Base.** Text Box, Badge-primary, Label · slots | ✅ | ⬜ |
 | 62 | `Accordion-bare-base` | Accordion | `555:1968` | `FinAccordion` | **Base.** Text Box, Badge-primary, Label, Divider · slots | 🔴 missing `20px` main (§10 #19) | ⬜ |
-| 63 | `Notification` | Notification banners | `77:10612` | `FinNotificationBanner` | all-button, icons · Type: Info/Success/Error/Warning/Neutral | ⚠️ (§10 #16) | ⬜ |
+| 63 | `Notification` | Notification banners | `77:10612` | `FinNotificationBanner` | all-button, icons · Type: Info/Success/Error/Warning/Neutral → `tone` · **public** (§9.75) | ⚠️ (§10 #16: the button's `Button M` → `--fin-font-button-medium`) | 🟨 Built 27 Oct 2026, waiting for approval |
 | 64 | `Snackbar` | Snackbar | `268:992` | `FinSnackbar` (+ `FinSnackbarRegion`) | Text Box, all-button · State: Neutral/Success/Warning/Error → `tone` · `# of lines` → `lines` · **public** (§9.73) | ✅ (all Foundation – Loyalty; the action button's padding is overridden to 12, §10 #72) | ✅ |
 | 65 | `Empty state` | Empty state | `71:4588` | `FinEmptyState` | 48px bg, 64px bg, Text Box, all-button · Size: Small/Medium (Large removed by design 27 Oct 2026) · Icon slot · Show Button Group · **public** (§9.74) | ✅ | ✅ |
 | 66 | `Button dock` | Button dock | `75:5858` | `FinButtonDock` | Text Box, all-button · Sticky · Accessory slot · Show Tertiary / Secondary / Primary Button · **public** (§9.69) | ✅ | ✅ |
@@ -1963,7 +1963,7 @@ In Dark, the Secondary label (`text-error`, Error-100 `#edb7b9`) is lighter than
 | icon swap (nested, not exposed in Figma) | `iconName: FinIconName` | Required whenever `icon` isn't `'none'` (type error otherwise) |
 | button label (nested, not exposed in Figma) | `children` | Required. With `'only-icon'` it's visually hidden and names the button |
 | icon colour override (Tertiary, `fg-secondary`; Side sheet) | `iconTone: 'action' \| 'secondary'` (default `'action'`) | **Code only** (added 26 Oct 2026): `secondary` makes a Tertiary icon grey at rest; hover and press keep the Tertiary colors. Only Tertiary reads it (FinButtonBase `iconTone`, `data-icon-tone`) |
-| label and icon colour override (Tertiary; Snackbar) | `contentTone?: 'inverse' \| 'primary'` | **Code only** (added 27 Oct 2026, §9.73): `text-inverse` / `fg-inverse` (on `bg-direct`) or `text-primary` / `fg-primary` (on a status background) in every state; hover and press tint the background `alpha-light` (inverse) or `alpha-sm` (primary). Only Tertiary reads it (FinButtonBase `contentTone`, `data-content-tone`) |
+| label and icon colour override (Tertiary; Snackbar, Notification banner) | `contentTone?: 'inverse' \| 'primary' \| 'secondary' \| 'info' \| 'success' \| 'error' \| 'warning'` (`FinButtonContentTone`) | **Code only** (added 27 Oct 2026, §9.73; `secondary` and the status tones added for §9.75): `text-<tone>` / `fg-<tone>` in every state (`inverse` on `bg-direct`; the others on status and neutral backgrounds); hover and press tint the background `alpha-light` (inverse) or `alpha-sm` (the others). Only Tertiary reads it (FinButtonBase `contentTone`, `data-content-tone`) |
 | — | `type` (native, default `"button"`), `ref`, other button attributes | Code-only |
 
 | `tone` + `variant` | Base look | Spec |
@@ -3656,6 +3656,32 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 ---
 
+### 9.75 FinNotificationBanner (Notification) — public
+
+**Figma:** page **Notification banners**, component set `Notification` `77:10612` (read 27 Oct 2026; the close icon updated by design the same day from a filled circle to `close`): `Type` = Info / Success / Error / Warning / Neutral, booleans `Show Leading Icon`, `Show Title`, `Show Description`, `Show Button`, `Show Close`, texts `Title text`, `Description`. 343 wide, `Space-XL` padding, `Radius-M`; the icon (20), the text and the close (24) in a row, `Space-M` apart, at the top; title, description and button in a column, `Space-XS` apart. 130 tall with everything shown.
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `Type` | `tone: 'info' \| 'success' \| 'error' \| 'warning' \| 'neutral'` (default `info`) |
+| `Show Title` + `Title text` (Headline/Small-H6) | `title?: ReactNode`, shown when passed; a `<p>`, not a heading |
+| `Show Description` + `Description` (Body/Medium) | `children`, shown when passed: the message, usually the only text (design, 27 Oct 2026) |
+| `Show Leading Icon` | `showIcon` (default on); icons Info `info`, Success `check_circle`, Error / Warning `warning` (Figma `warning_amber`, the same outline), Neutral `info` (or `icon`) |
+| `Show Button` (Tertiary Small, Button M) | `action?: { label, onClick }` |
+| `Show Close` (`close`, 24) | `onClose` (the button shows when passed), `closeLabel` (default "Close") |
+| 343 wide | fills its container |
+
+**Colours:** background `bg-<tone>-secondary` (Neutral `bg-neutral`); title and description `text-<tone>` (Neutral: title `text-primary`, description `text-secondary`); icon `fg-<tone>` (Neutral `fg-secondary`); button `text-<tone>` (Neutral `text-primary`); close `fg-<tone>` (Neutral `fg-secondary`), through FinButton `contentTone` (§9.28).
+
+**Decided 27 Oct 2026:** (1) **The buttons are the real FinButton** (Tertiary Small for the action, Tertiary Medium icon-only for the close), with their padding (hover tint, a 40 / 48 target), **pulled back by it** with negative margins (`Space-M` × `Space-XL`; `Space-L`), so they take Figma's space (Figma sets their padding to 0): the label lines up with the text and the close icon sits 16 from the corner. (2) Their colours come from FinButton's `contentTone`, extended with `secondary` and the four status tones. (3) **Not announced by default** (part of the page); pass `role="status"`, or `"alert"` for an urgent error, when it appears after an action. (4) The page removes it (`onClose`); it never closes itself. (5) Button M (Hanken Grotesk, another library, §10 #16) → `--fin-font-button-medium` (Inter): the label is 63 wide, not 60.
+
+**Tokens used:** `--fin-bg-{info,success,error,warning}-secondary`, `--fin-bg-neutral`, `--fin-text-{info,success,error,warning,primary,secondary}`, `--fin-radius-m`, `--fin-font-headline-small-h6`, `--fin-font-body-medium`; spacing `--fin-space-xs` / `-m` / `-l` / `-xl`. The icon and buttons bring the `fg-*` tokens.
+
+**Accessibility:** no live role unless given; the title is text, so the page's headings stay in order; the close button is named "Close" (`closeLabel`), the action by its label; both reachable by Tab, with the standard focus ring.
+
+**Built (27 Oct 2026).** Storybook: Components/Notification banner (Playground, All variants (Figma), Description only, With title, Without icon, Without close, Long text, Full width). Checked against Figma at 343: 130 tall; icon at 16,16; title and description at 44; the button's label at 44,90; the close icon at 303,16. Light and Dark.
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -3768,6 +3794,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Deploy (27 Oct 2026):** Storybook deploys to Vercel from `vercel.json` (install with the repo's pnpm through Corepack, `pnpm build-storybook`, publish `apps/storybook/storybook-static`, no framework preset); the project needs `ENABLE_EXPERIMENTAL_COREPACK=1` and Node 24.x (README).
 > - **Live (27 Oct 2026):** Storybook is at https://loyaltydesignsystem.vercel.app. From now on, each built component's branch is pushed for a Vercel preview link, shared with the summary; `main` only after approval (CLAUDE.md Git).
 > - **Approved and merged (27 Oct 2026):** the **Tier management** page (§8.6): list, add (with the Level menu), details, edit, remove, removed, empty states; built the same way as Programme configuration, whose details sheet is now the shared `RecordDetails`. Mismatches with Figma and with Programme configuration are listed in §8.6. Open follow-ups: the No. column's order; distinct thresholds per level; aligning the two pages (Status select vs toggle, 24 vs 16 field gaps, Active / Inactive vs Enable / Disable, Programme configuration's `#…` link vs `PendingLink`, section titles). **Next page**, after design's go-ahead: Reward catalog (§8.6).
+> - **Built, waiting for approval (27 Oct 2026):** `FinNotificationBanner` (§9.75), on `feat/notification-banner` with a Vercel preview; FinButton `contentTone` gained `secondary` and the status tones (§9.28). Then: Reward catalog (§8.6).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -3996,4 +4023,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | Tier management: Level before Tier name, as Figma, and a filter on the Level column (design review). |
 | 27 Oct 2026 | 0.2 | Tier management: the Level field offers every level, as Figma's menu, and several tiers can share a level (was one per level); Many tiers story (12). |
 | 27 Oct 2026 | 0.2 | Tier management approved by design and merged into `main`. |
+| 27 Oct 2026 | 0.2 | **`FinNotificationBanner` built** (§8 #63, §9.75), public, Components/Notification banner: `tone`, `title`, `children` (description), `showIcon` / `icon`, `action`, `onClose`; the buttons are FinButton pulled back by their padding to Figma's layout. FinButton `contentTone` gained `secondary`, `info`, `success`, `error`, `warning` (§9.28). |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |

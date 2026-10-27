@@ -6,4 +6,4 @@ export {
   type FinButtonTone,
   type FinButtonToneProps,
 } from './FinButton';
-export type { FinButtonSize, FinButtonVariant } from '../ButtonBase';
+export type { FinButtonContentTone, FinButtonSize, FinButtonVariant } from '../ButtonBase';

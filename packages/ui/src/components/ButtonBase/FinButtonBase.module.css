@@ -151,9 +151,10 @@
 }
 
 /*
- * Tertiary in the Snackbar (code-only `contentTone`, 27 Oct 2026): `text-inverse` / `fg-inverse` on `bg-direct`, or
- * `text-primary` / `fg-primary` on the status backgrounds, in every state; hover and press tint the background
- * (`alpha-light`, white 12%, on `bg-direct`; `alpha-sm` on the status backgrounds). After the Tertiary hover and press
+ * Tertiary in the Snackbar and the Notification banner (code-only `contentTone`, 27 Oct 2026): `text-inverse` /
+ * `fg-inverse` on `bg-direct`, `text-primary` / `fg-primary` or `text-secondary` / `fg-secondary` on the status and
+ * neutral backgrounds, or a status's own `text-*` / `fg-*` (the banner's buttons), in every state; hover and press tint
+ * the background (`alpha-light`, white 12%, on `bg-direct`; `alpha-sm` elsewhere). After the Tertiary hover and press
  * rules: at rest it wins by order, on hover and press by specificity.
  */
 .button[data-variant="tertiary"][data-content-tone="inverse"] {
@@ -173,6 +174,36 @@
 .button[data-variant="tertiary"][data-content-tone="primary"] {
   --button-tone-text: var(--fin-text-primary);
   --button-tone-icon: var(--fin-fg-primary);
+  --button-tone-hover: var(--fin-alpha-sm);
+}
+
+.button[data-variant="tertiary"][data-content-tone="secondary"] {
+  --button-tone-text: var(--fin-text-secondary);
+  --button-tone-icon: var(--fin-fg-secondary);
+  --button-tone-hover: var(--fin-alpha-sm);
+}
+
+.button[data-variant="tertiary"][data-content-tone="info"] {
+  --button-tone-text: var(--fin-text-info);
+  --button-tone-icon: var(--fin-fg-info);
+  --button-tone-hover: var(--fin-alpha-sm);
+}
+
+.button[data-variant="tertiary"][data-content-tone="success"] {
+  --button-tone-text: var(--fin-text-success);
+  --button-tone-icon: var(--fin-fg-success);
+  --button-tone-hover: var(--fin-alpha-sm);
+}
+
+.button[data-variant="tertiary"][data-content-tone="error"] {
+  --button-tone-text: var(--fin-text-error);
+  --button-tone-icon: var(--fin-fg-error);
+  --button-tone-hover: var(--fin-alpha-sm);
+}
+
+.button[data-variant="tertiary"][data-content-tone="warning"] {
+  --button-tone-text: var(--fin-text-warning);
+  --button-tone-icon: var(--fin-fg-warning);
   --button-tone-hover: var(--fin-alpha-sm);
 }
 

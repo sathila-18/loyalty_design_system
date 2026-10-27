@@ -13,6 +13,8 @@ export type FinButtonVariant = 'primary' | 'secondary' | 'tertiary';
  */
 export type FinButtonBaseVariant = FinButtonVariant | 'white' | 'destructive' | 'destructive-secondary';
 export type FinButtonSize = 'large' | 'medium' | 'small' | 'xsmall';
+/** Tertiary's code-only label and icon colours (`contentTone`): the `text-*` / `fg-*` token names. */
+export type FinButtonContentTone = 'inverse' | 'primary' | 'secondary' | 'info' | 'success' | 'error' | 'warning';
 
 export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** The label (Figma `Button label`). Stays on one line. */
@@ -44,11 +46,11 @@ export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButton
    */
   iconTone?: 'action' | 'secondary';
   /**
-   * Tertiary only, code only (added 27 Oct 2026 for the Snackbar, whose Figma buttons override the colours): the label
-   * and icon in `text-inverse` / `fg-inverse` (on `bg-direct`) or `text-primary` / `fg-primary` (on a status
-   * background), with a neutral hover and press. Set through FinButton `contentTone`.
+   * Tertiary only, code only (added 27 Oct 2026 for the Snackbar and the Notification banner, whose Figma buttons
+   * override the colours): the label and icon in `text-<tone>` / `fg-<tone>` in every state, with a neutral hover and
+   * press. Set through FinButton `contentTone`.
    */
-  contentTone?: 'inverse' | 'primary';
+  contentTone?: FinButtonContentTone;
 }
 
 const ICON_SIZE = { large: 24, medium: 24, small: 20, xsmall: 20 } as const;
