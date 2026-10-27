@@ -10,7 +10,7 @@ import {
   type FinTableFilters,
 } from '@finspace-loyalty/ui';
 import { pageSideNav } from '../pageShell';
-import { ProgrammeConfigurationDetails } from './ProgrammeConfigurationDetails';
+import { RecordDetails } from '../RecordDetails';
 import { ProgrammeConfigurationForm, type ProgrammeConfigValues } from './ProgrammeConfigurationForm';
 
 /** One programme configuration: the loyalty and cash conversion rules for a customer segment. */
@@ -177,8 +177,9 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
           setConfigs((current) => [...current, { ...values, id: Math.max(0, ...current.map((c) => c.id)) + 1 }]);
         }}
       />
-      <ProgrammeConfigurationDetails
-        config={viewing}
+      <RecordDetails
+        record={viewing}
+        getName={(c) => c.segment}
         columns={columns}
         onClose={() => setViewing(null)}
         onEdit={edit}

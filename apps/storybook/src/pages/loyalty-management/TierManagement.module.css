@@ -1,0 +1,11 @@
+/*
+ * Tier management page layout (DESIGN.md §8.6). The add form (Figma `345:14560`): the fields two by two, 24 apart
+ * across and down (Space-3XL); a helper text sits inside its field, so the row under it starts 24 below the helper.
+ */
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--fin-space-3xl);
+  align-items: start;
+}
