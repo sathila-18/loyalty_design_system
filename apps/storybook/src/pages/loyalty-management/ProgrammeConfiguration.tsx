@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinTableColumn, type FinTableFilters } from '@finspace-loyalty/ui';
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
+import { NOT_AVAILABLE } from '../common/format';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import { pageSideNav } from '../pageShell';
 import styles from '../common/PageStates.module.css';
@@ -20,7 +21,7 @@ export interface ProgrammeConfig {
   /** The cash those points are worth (LKR). Default 1.00. */
   unitValue?: number;
   minConversion: number;
-  /** Not in the add form (Figma `312:15899`), so a new configuration has none: shown as "—". */
+  /** Not in the add form (Figma `312:15899`), so a new configuration has none: shown as "N/A". */
   maxConversion?: number;
 }
 
@@ -59,7 +60,7 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
     href: (c) => `#loyalty/programme/${c.id}/conversion`,
   },
   { key: 'min', header: 'Min conversion (pts)', width: 200, value: (c) => number(c.minConversion) },
-  { key: 'max', header: 'Max conversion (pts)', width: 200, value: (c) => (c.maxConversion === undefined ? '—' : number(c.maxConversion)) },
+  { key: 'max', header: 'Max conversion (pts)', width: 200, value: (c) => (c.maxConversion === undefined ? NOT_AVAILABLE : number(c.maxConversion)) },
 ];
 
 /**

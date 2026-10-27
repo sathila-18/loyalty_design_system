@@ -6,11 +6,11 @@ export type RewardStatus = (typeof REWARD_STATUSES)[number];
 export interface Reward {
   id: number;
   name: string;
-  /** The partner that provides it; none for the bank's own rewards ("—"). */
+  /** The partner that provides it; none for the bank's own rewards ("N/A"). */
   partner?: string;
   /** How many members can redeem it; none means no limit ("N/A", decided 27 Oct 2026). */
   userLimit?: number;
-  /** How many members have redeemed it; none yet shows "—". */
+  /** How many members have redeemed it; none yet shows "N/A". */
   users?: number;
   status: RewardStatus;
 }

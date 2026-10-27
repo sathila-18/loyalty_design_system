@@ -91,7 +91,7 @@ export const View: Story = {
   },
 };
 
-/** A reward with no partner and no limit: "—" and "N/A". */
+/** A reward with no partner, no limit and no users yet: "N/A". */
 export const ViewNoPartner: Story = {
   name: 'Details, no partner or limit',
   play: async ({ canvasElement }) => {

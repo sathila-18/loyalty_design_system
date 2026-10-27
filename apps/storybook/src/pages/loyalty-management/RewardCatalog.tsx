@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinBadgeTone, type FinTableColumn, type FinTableFilters } from '@finspace-loyalty/ui';
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
+import { NOT_AVAILABLE } from '../common/format';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import { pageSideNav } from '../pageShell';
 import { RecordDetails } from '../RecordDetails';
@@ -29,9 +30,9 @@ const rewardId = (r: Reward) => `RW-${String(r.id).padStart(3, '0')}`;
 const columns: FinTableColumn<Reward>[] = [
   { key: 'id', header: 'ID', width: 120, value: rewardId },
   { key: 'name', header: 'Reward name', minWidth: 200 },
-  { key: 'partner', header: 'Partner', minWidth: 160, value: (r) => r.partner ?? '—' },
-  { key: 'limit', header: 'User limit', value: (r) => (r.userLimit === undefined ? 'N/A' : number(r.userLimit)) },
-  { key: 'users', header: 'Users', value: (r) => (r.users === undefined ? '—' : number(r.users)) },
+  { key: 'partner', header: 'Partner', minWidth: 160, value: (r) => r.partner ?? NOT_AVAILABLE },
+  { key: 'limit', header: 'User limit', value: (r) => (r.userLimit === undefined ? NOT_AVAILABLE : number(r.userLimit)) },
+  { key: 'users', header: 'Users', value: (r) => (r.users === undefined ? NOT_AVAILABLE : number(r.users)) },
   {
     key: 'status',
     header: 'Status',
