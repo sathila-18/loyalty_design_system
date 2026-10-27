@@ -714,7 +714,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 60e | — (code first; no Figma yet, §10 #56) | List | — | `FinListStandardFilled`, `FinListRadioFilled`, `FinListCheckboxFilled`, `FinListToggleFilled` | **List_fill-base** versions of #60a–60d (separate components, shared rows) · cards 12 apart · Selected = 1px `border-active` edge, no fill (toggle on: none) · standard filled is always clickable with the chevron · **public**, Components/List/Filled (§9.56) | — (code first) | ✅ |
 | 61 | `Accordion-frame-base` | Accordion | `555:1767` | `FinAccordionFramed` | **Base.** Text Box, Badge-primary, Label · slots | ✅ | ⬜ |
 | 62 | `Accordion-bare-base` | Accordion | `555:1968` | `FinAccordion` | **Base.** Text Box, Badge-primary, Label, Divider · slots | 🔴 missing `20px` main (§10 #19) | ⬜ |
-| 63 | `Notification` | Notification banners | `77:10612` | `FinNotificationBanner` | all-button, icons · Type: Info/Success/Error/Warning/Neutral → `tone` · **public** (§9.75) | ⚠️ (§10 #16: the button's `Button M` → `--fin-font-button-medium`) | 🟨 Built 27 Oct 2026, waiting for approval |
+| 63 | `Notification` | Notification banners | `77:10612` | `FinNotificationBanner` | all-button, icons · Type: Info/Success/Error/Warning/Neutral → `tone` · **public** (§9.75) | ⚠️ (§10 #16: the button's `Button M` → `--fin-font-button-medium`) | ✅ |
 | 64 | `Snackbar` | Snackbar | `268:992` | `FinSnackbar` (+ `FinSnackbarRegion`) | Text Box, all-button · State: Neutral/Success/Warning/Error → `tone` · `# of lines` → `lines` · **public** (§9.73) | ✅ (all Foundation – Loyalty; the action button's padding is overridden to 12, §10 #72) | ✅ |
 | 65 | `Empty state` | Empty state | `71:4588` | `FinEmptyState` | 48px bg, 64px bg, Text Box, all-button · Size: Small/Medium (Large removed by design 27 Oct 2026) · Icon slot · Show Button Group · **public** (§9.74) | ✅ | ✅ |
 | 66 | `Button dock` | Button dock | `75:5858` | `FinButtonDock` | Text Box, all-button · Sticky · Accessory slot · Show Tertiary / Secondary / Primary Button · **public** (§9.69) | ✅ | ✅ |
@@ -3680,7 +3680,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Accessibility:** no live role unless given; the title is text, so the page's headings stay in order; the close button is named "Close" (`closeLabel`), the action by its label; both reachable by Tab, with the standard focus ring.
 
-**Built (27 Oct 2026).** Storybook: Components/Notification banner (Playground, All variants (Figma), Description only, With title, Without icon, Without close, Long text, Full width). Checked against Figma at 343: 130 tall; icon at 16,16; title and description at 44; the button's label at 44,90; the close icon at 303,16. Light and Dark.
+**Built and approved (27 Oct 2026).** Storybook: Components/Notification banner (Playground, All variants (Figma), Description only, With title, Without icon, Without close, Long text, Full width). Checked against Figma at 343: 130 tall; icon at 16,16; title and description at 44; the button's label at 44,90; the close icon at 303,16. Light and Dark.
 
 ## 10. Known issues and open decisions
 
@@ -3794,7 +3794,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Deploy (27 Oct 2026):** Storybook deploys to Vercel from `vercel.json` (install with the repo's pnpm through Corepack, `pnpm build-storybook`, publish `apps/storybook/storybook-static`, no framework preset); the project needs `ENABLE_EXPERIMENTAL_COREPACK=1` and Node 24.x (README).
 > - **Live (27 Oct 2026):** Storybook is at https://loyaltydesignsystem.vercel.app. From now on, each built component's branch is pushed for a Vercel preview link, shared with the summary; `main` only after approval (CLAUDE.md Git).
 > - **Approved and merged (27 Oct 2026):** the **Tier management** page (§8.6): list, add (with the Level menu), details, edit, remove, removed, empty states; built the same way as Programme configuration, whose details sheet is now the shared `RecordDetails`. Mismatches with Figma and with Programme configuration are listed in §8.6. Open follow-ups: the No. column's order; distinct thresholds per level; aligning the two pages (Status select vs toggle, 24 vs 16 field gaps, Active / Inactive vs Enable / Disable, Programme configuration's `#…` link vs `PendingLink`, section titles). **Next page**, after design's go-ahead: Reward catalog (§8.6).
-> - **Built, waiting for approval (27 Oct 2026):** `FinNotificationBanner` (§9.75), on `feat/notification-banner` with a Vercel preview; FinButton `contentTone` gained `secondary` and the status tones (§9.28). Then: Reward catalog (§8.6).
+> - **Approved and merged (27 Oct 2026):** `FinNotificationBanner` (§9.75); FinButton `contentTone` gained `secondary` and the status tones (§9.28). Then: Reward catalog (§8.6).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4024,4 +4024,5 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 27 Oct 2026 | 0.2 | Tier management: the Level field offers every level, as Figma's menu, and several tiers can share a level (was one per level); Many tiers story (12). |
 | 27 Oct 2026 | 0.2 | Tier management approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | **`FinNotificationBanner` built** (§8 #63, §9.75), public, Components/Notification banner: `tone`, `title`, `children` (description), `showIcon` / `icon`, `action`, `onClose`; the buttons are FinButton pulled back by their padding to Figma's layout. FinButton `contentTone` gained `secondary`, `info`, `success`, `error`, `warning` (§9.28). |
+| 27 Oct 2026 | 0.2 | `FinNotificationBanner` approved by design and merged into `main`. |
 | 27 Oct 2026 | 0.2 | `FinSnackbar` approved by design and merged into `main` (region at least 343 wide; Neutral hover `alpha-sm` in Dark; the action button keeps the component's padding). |
