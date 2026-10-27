@@ -22,6 +22,11 @@ export type FinButtonToneProps =
        * and press keep the Tertiary colors. Default `action`. For the side sheet's back and close buttons.
        */
       iconTone?: 'action' | 'secondary';
+      /**
+       * Tertiary only, code only (added 27 Oct 2026, for the Snackbar): `inverse` (on `bg-direct`) or `primary` (on a
+       * status background) colours for the label and icon, in every state, with a neutral hover and press.
+       */
+      contentTone?: 'inverse' | 'primary';
     }
   | { tone: 'white'; variant?: 'primary' }
   | { tone: 'destructive'; variant?: 'primary' | 'secondary' };
@@ -33,7 +38,7 @@ export type FinButtonIconProps =
 
 export type FinButtonProps = Omit<
   FinButtonBaseProps,
-  'variant' | 'leadingIcon' | 'trailingIcon' | 'showLabel' | 'iconOnly' | 'iconSide' | 'iconTone'
+  'variant' | 'leadingIcon' | 'trailingIcon' | 'showLabel' | 'iconOnly' | 'iconSide' | 'iconTone' | 'contentTone'
 > &
   FinButtonToneProps &
   FinButtonIconProps;

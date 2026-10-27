@@ -151,6 +151,36 @@
 }
 
 /*
+ * Tertiary in the Snackbar (code-only `contentTone`, 27 Oct 2026): `text-inverse` / `fg-inverse` on `bg-direct`, or
+ * `text-primary` / `fg-primary` on the status backgrounds, in every state; hover and press tint the background
+ * (`alpha-light`, white 12%, on `bg-direct`; `alpha-sm` on the status backgrounds). After the Tertiary hover and press
+ * rules: at rest it wins by order, on hover and press by specificity.
+ */
+.button[data-variant="tertiary"][data-content-tone="inverse"] {
+  --button-tone-text: var(--fin-text-inverse);
+  --button-tone-icon: var(--fin-fg-inverse);
+  --button-tone-hover: var(--fin-alpha-light);
+}
+
+.button[data-variant="tertiary"][data-content-tone="primary"] {
+  --button-tone-text: var(--fin-text-primary);
+  --button-tone-icon: var(--fin-fg-primary);
+  --button-tone-hover: var(--fin-alpha-sm);
+}
+
+.button[data-variant="tertiary"][data-content-tone] {
+  --button-text: var(--button-tone-text);
+  --button-icon: var(--button-tone-icon);
+}
+
+.button[data-variant="tertiary"][data-content-tone]:hover:enabled,
+.button[data-variant="tertiary"][data-content-tone]:active:enabled {
+  --button-bg: var(--button-tone-hover);
+  --button-text: var(--button-tone-text);
+  --button-icon: var(--button-tone-icon);
+}
+
+/*
  * White (Figma white-button, a separate set in Figma; FinWhiteButton passes it). White in both themes with dark
  * text, a 1px border-subtle in every state (§10 #40), and the Secondary hover/pressed colors.
  */

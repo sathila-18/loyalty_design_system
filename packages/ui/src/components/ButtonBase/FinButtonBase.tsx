@@ -43,6 +43,12 @@ export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButton
    * icon `fg-secondary` (grey) at rest; hover and press keep the Tertiary colors. Set through FinButton `iconTone`.
    */
   iconTone?: 'action' | 'secondary';
+  /**
+   * Tertiary only, code only (added 27 Oct 2026 for the Snackbar, whose Figma buttons override the colours): the label
+   * and icon in `text-inverse` / `fg-inverse` (on `bg-direct`) or `text-primary` / `fg-primary` (on a status
+   * background), with a neutral hover and press. Set through FinButton `contentTone`.
+   */
+  contentTone?: 'inverse' | 'primary';
 }
 
 const ICON_SIZE = { large: 24, medium: 24, small: 20, xsmall: 20 } as const;
@@ -63,6 +69,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
     iconOnly = false,
     iconSide,
     iconTone = 'action',
+    contentTone,
     type = 'button',
     className,
     ...rest
@@ -81,6 +88,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
       data-icon-only={iconOnly || undefined}
       data-icon-side={iconSide}
       data-icon-tone={iconTone === 'secondary' ? 'secondary' : undefined}
+      data-content-tone={contentTone}
     >
       {leadingIcon && (
         <span className={styles.icon}>

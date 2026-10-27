@@ -1,0 +1,135 @@
+/*
+ * FinSnackbar (DESIGN.md §9). Figma Snackbar: radius Radius-M, no padding of its own. Single line: 48 tall, the icon
+ * and message Space-XL from the left, Space-M apart; the buttons on the right, Space-XS from the edge. Two lines: the
+ * icon and message with Space-XL above and at the sides, the buttons on a row below, Space-XS from the right and bottom,
+ * Space-M between the rows. Neutral is bg-direct with inverse text and icons; the others are bg-*-secondary with
+ * text-primary and the status icon. As wide as its content, up to the region's width (decided 27 Oct 2026; Figma 343).
+ */
+
+.snackbar {
+  --snackbar-bg: var(--fin-bg-direct);
+  --snackbar-text: var(--fin-text-inverse);
+
+  display: flex;
+  gap: var(--fin-space-m);
+  align-items: center;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  min-height: var(--fin-size-48);
+  border-radius: var(--fin-radius-m);
+  background-color: var(--snackbar-bg);
+  color: var(--snackbar-text);
+  pointer-events: auto;
+  animation: fin-snackbar-in 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.snackbar[data-tone="success"] {
+  --snackbar-bg: var(--fin-bg-success-secondary);
+  --snackbar-text: var(--fin-text-primary);
+}
+
+.snackbar[data-tone="warning"] {
+  --snackbar-bg: var(--fin-bg-warning-secondary);
+  --snackbar-text: var(--fin-text-primary);
+}
+
+.snackbar[data-tone="error"] {
+  --snackbar-bg: var(--fin-bg-error-secondary);
+  --snackbar-text: var(--fin-text-primary);
+}
+
+/* Icon and message. Space-L above and below keep a wrapped message clear of the edges (Figma: one line in 48). */
+.lead {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--fin-space-m);
+  align-items: center;
+  min-width: 0;
+  padding-block: var(--fin-space-l);
+  padding-inline-start: var(--fin-space-xl);
+}
+
+/* Without buttons, the message keeps Space-XL from the right edge too. */
+.snackbar:not([data-trailing]) .lead {
+  padding-inline-end: var(--fin-space-xl);
+}
+
+.icon {
+  flex: none;
+}
+
+.message {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: break-word;
+  font: var(--fin-font-body-medium);
+}
+
+.trailing {
+  display: flex;
+  flex: none;
+  align-items: center;
+  padding-inline-end: var(--fin-space-xs);
+}
+
+.snackbar[data-lines="two"] {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.snackbar[data-lines="two"] .lead {
+  align-items: flex-start;
+  padding: var(--fin-space-xl) var(--fin-space-xl) 0;
+}
+
+.snackbar[data-lines="two"] .trailing {
+  justify-content: flex-end;
+  padding-block-end: var(--fin-space-xs);
+}
+
+.snackbar[data-lines="two"]:not([data-trailing]) .lead {
+  padding-block-end: var(--fin-space-xl);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snackbar {
+    animation: none;
+  }
+}
+
+@keyframes fin-snackbar-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--fin-space-m)));
+  }
+}
+
+/*
+ * FinSnackbarRegion: the top right of the window, Space-3XL (the grid margin) from the top and right, up to 3 columns
+ * of the layout grid wide (decided 27 Oct 2026). A manual popover, so it's in the top layer: the browser's popover
+ * styles are reset here. Clicks go through it, except on the snackbars.
+ */
+.region {
+  --fin-snackbar-column: calc(
+    (100vw - 2 * var(--fin-grid-margin) - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns)
+  );
+
+  position: fixed;
+  inset: var(--fin-grid-margin) var(--fin-grid-margin) auto auto;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--fin-space-m);
+  align-items: flex-end;
+  box-sizing: border-box;
+  width: calc(3 * var(--fin-snackbar-column) + 2 * var(--fin-grid-gutter));
+  height: auto;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  pointer-events: none;
+}

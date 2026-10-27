@@ -126,4 +126,19 @@ describe('FinButton', () => {
     expect(screen.getByRole('button', { name: 'Close' })).toHaveAttribute('data-icon-tone', 'secondary');
     expect(screen.getByRole('button', { name: 'Back' })).not.toHaveAttribute('data-icon-tone');
   });
+
+  it('marks a Tertiary button with contentTone (the Snackbar colours)', () => {
+    render(
+      <>
+        <FinButton variant="tertiary" contentTone="inverse">
+          Undo
+        </FinButton>
+        <FinButton variant="tertiary" size="small">
+          Retry
+        </FinButton>
+      </>,
+    );
+    expect(screen.getByRole('button', { name: 'Undo' })).toHaveAttribute('data-content-tone', 'inverse');
+    expect(screen.getByRole('button', { name: 'Retry' })).not.toHaveAttribute('data-content-tone');
+  });
 });
