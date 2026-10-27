@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { FinAppShell, FinTable, type FinTableColumn } from '@finspace-loyalty/ui';
 import { pageSideNav } from '../pageShell';
-import { AddProgrammeConfiguration, type NewProgrammeConfig } from './AddProgrammeConfiguration';
 import { ProgrammeConfigurationDetails } from './ProgrammeConfigurationDetails';
+import { ProgrammeConfigurationForm, type ProgrammeConfigValues } from './ProgrammeConfigurationForm';
 
 /** One programme configuration: the loyalty and cash conversion rules for a customer segment. */
 export interface ProgrammeConfig {
@@ -62,17 +62,27 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
  * configurations, one per customer segment, in the app shell. Search by segment, filter from the Segment column's
  * dropdown (decided 27 Oct 2026; was a Segment chip in the toolbar), act
  * on a row from its ⋮ menu. Add opens the add side sheet (`312:15899`); a saved configuration is added to the table.
- * View, or a click on the row, opens the details sheet (code first). Edit, the remove dialog and the removed snackbar
- * come next.
+ * View, or a click on the row, opens the details sheet (code first). Edit, in the row menu or the details sheet, opens
+ * the same form with the row's values (code first); saving updates the row. The remove dialog and the removed
+ * snackbar come next.
  */
 export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAction = () => undefined }: ProgrammeConfigurationProps) {
   const [configs, setConfigs] = useState(initialConfigs);
   const [adding, setAdding] = useState(false);
   const [viewing, setViewing] = useState<ProgrammeConfig | null>(null);
+  // The edit sheet stays mounted after it closes (so focus goes back); `key` gives each opening fresh values.
+  const [editing, setEditing] = useState<{ config: ProgrammeConfig; open: boolean; key: number } | null>(null);
   const [query, setQuery] = useState('');
 
   const search = query.trim().toLowerCase();
   const rows = configs.filter((c) => c.segment.toLowerCase().includes(search));
+  const freeSegments = segments.filter((s) => !configs.some((c) => c.segment === s));
+
+  const edit = (config: ProgrammeConfig) => {
+    onAction(`Edit: ${config.segment}`);
+    setViewing(null);
+    setEditing((current) => ({ config, open: true, key: (current?.key ?? 0) + 1 }));
+  };
 
   return (
     <FinAppShell
@@ -93,7 +103,7 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
         onRowClick={setViewing}
         rowActions={(c) => [
           { label: 'View', icon: 'visibility', onSelect: () => setViewing(c) },
-          { label: 'Edit', icon: 'edit', onSelect: () => onAction(`Edit: ${c.segment}`) },
+          { label: 'Edit', icon: 'edit', onSelect: () => edit(c) },
           { label: 'Remove', icon: 'delete', onSelect: () => onAction(`Remove: ${c.segment}`), separator: true, destructive: true },
         ]}
         toolbar={{
@@ -105,23 +115,36 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
           },
         }}
       />
-      <AddProgrammeConfiguration
+      <ProgrammeConfigurationForm
         open={adding}
         onClose={() => setAdding(false)}
-        segments={segments.filter((s) => !configs.some((c) => c.segment === s))}
-        onSave={(config: NewProgrammeConfig) => {
-          onAction(`Saved: ${config.segment}`);
-          setConfigs((current) => [...current, { ...config, id: Math.max(0, ...current.map((c) => c.id)) + 1 }]);
+        segments={freeSegments}
+        onSave={(values: ProgrammeConfigValues) => {
+          onAction(`Saved: ${values.segment}`);
+          setConfigs((current) => [...current, { ...values, id: Math.max(0, ...current.map((c) => c.id)) + 1 }]);
         }}
       />
       <ProgrammeConfigurationDetails
         config={viewing}
         columns={columns}
         onClose={() => setViewing(null)}
-        // Edit (the add form with the values and a details area) and the remove dialog come next.
-        onEdit={(c) => onAction(`Edit: ${c.segment}`)}
+        onEdit={edit}
+        // The remove dialog comes next.
         onRemove={(c) => onAction(`Remove: ${c.segment}`)}
       />
+      {editing && (
+        <ProgrammeConfigurationForm
+          key={editing.key}
+          open={editing.open}
+          onClose={() => setEditing({ ...editing, open: false })}
+          config={editing.config}
+          segments={freeSegments}
+          onSave={(values: ProgrammeConfigValues) => {
+            onAction(`Saved: ${values.segment}`);
+            setConfigs((current) => current.map((c) => (c.id === editing.config.id ? { ...c, ...values } : c)));
+          }}
+        />
+      )}
     </FinAppShell>
   );
 }

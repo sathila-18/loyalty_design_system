@@ -38,11 +38,11 @@ const openAdd = async (canvasElement: HTMLElement) => {
   await userEvent.click(await within(canvasElement).findByRole('button', { name: 'Add programme configuration' }));
 };
 
-/** Opens a row's details from its ⋮ menu (View). */
-const openView = async (canvasElement: HTMLElement, segment: string) => {
+/** Opens a row's details from its ⋮ menu (View or Edit). */
+const openRowAction = async (canvasElement: HTMLElement, segment: string, action = 'View') => {
   const canvas = within(canvasElement);
   await userEvent.click(await canvas.findByRole('button', { name: `More actions for ${segment}` }));
-  await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('menuitem', { name: 'View' }));
+  await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('menuitem', { name: action }));
 };
 
 /**
@@ -128,7 +128,7 @@ export const AddAt1024: Story = {
 export const View: Story = {
   name: 'Details',
   play: async ({ canvasElement }) => {
-    await openView(canvasElement, 'Staff');
+    await openRowAction(canvasElement, 'Staff');
   },
 };
 
@@ -146,7 +146,7 @@ export const ViewLongName: Story = {
   name: 'Details, long segment name',
   args: { configs: MANY_CONFIGS },
   play: async ({ canvasElement }) => {
-    await openView(canvasElement, 'Premier banking customers (Colombo and Kandy branches)');
+    await openRowAction(canvasElement, 'Premier banking customers (Colombo and Kandy branches)');
   },
 };
 
@@ -155,6 +155,35 @@ export const ViewAt1024: Story = {
   name: 'Details at 1024',
   globals: { viewport: { value: 'desktop1024', isRotated: false } },
   play: async ({ canvasElement }) => {
-    await openView(canvasElement, 'VIP');
+    await openRowAction(canvasElement, 'VIP');
+  },
+};
+
+/** Edit (code first, no Figma): Edit in a row's ⋮ menu opens the add form with the row's values. Save stays disabled until a value changes. */
+export const Edit: Story = {
+  name: 'Edit configuration',
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'Staff', 'Edit');
+  },
+};
+
+/** Change a value: Save turns on. Changing it back turns it off again. */
+export const EditChanged: Story = {
+  name: 'Edit configuration, changed',
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'Staff', 'Edit');
+    const expiry = await within(canvasElement.ownerDocument.body).findByRole('textbox', { name: 'Points expiry' });
+    await userEvent.clear(expiry);
+    await userEvent.type(expiry, '48');
+  },
+};
+
+/** Edit from the details sheet: the details close and the edit sheet opens with the same row. */
+export const EditFromDetails: Story = {
+  name: 'Edit configuration from details',
+  args: { configs: MANY_CONFIGS },
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'Dormant accounts');
+    await userEvent.click(await within(canvasElement.ownerDocument.body).findByRole('button', { name: 'Edit' }));
   },
 };

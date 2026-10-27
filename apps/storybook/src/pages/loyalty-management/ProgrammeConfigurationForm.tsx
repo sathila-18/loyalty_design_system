@@ -1,9 +1,10 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { useId, useRef, useState, type FormEvent } from 'react';
 import { FinListToggleFilled, FinSelectField, FinSideSheet, FinTextBox, FinTextField } from '@finspace-loyalty/ui';
+import type { ProgrammeConfig } from './ProgrammeConfiguration';
 import styles from './ProgrammeConfiguration.module.css';
 
-/** What the add form saves (the page adds the row). */
-export interface NewProgrammeConfig {
+/** What the form saves (the page adds the row, or updates it when editing). */
+export interface ProgrammeConfigValues {
   segment: string;
   loyalty: boolean;
   expiryMonths: number;
@@ -13,17 +14,18 @@ export interface NewProgrammeConfig {
   minConversion: number;
 }
 
-export interface AddProgrammeConfigurationProps {
+export interface ProgrammeConfigurationFormProps {
   open: boolean;
   onClose: () => void;
-  /** The segments without a configuration: the only ones offered. */
+  /** Edit: the configuration whose values fill the form. Leave it out to add one. */
+  config?: ProgrammeConfig;
+  /** The segments without a configuration: the only ones offered (and, when editing, the configuration's own). */
   segments: string[];
-  onSave: (config: NewProgrammeConfig) => void;
+  onSave: (values: ProgrammeConfigValues) => void;
 }
 
 type Field = 'segment' | 'expiry' | 'points' | 'value' | 'minimum';
 
-const FORM_ID = 'add-programme-configuration';
 const WHOLE = /^\d+$/;
 const AMOUNT = /^\d+(\.\d{1,2})?$/;
 const above0 = (text: string, pattern: RegExp) => pattern.test(text.trim()) && Number(text) > 0;
@@ -36,30 +38,51 @@ const ERRORS: Record<Field, string> = {
   minimum: 'Enter a whole number of points above 0',
 };
 
+/** The form's starting values: empty to add, the configuration's to edit. */
+function initialValues(config?: ProgrammeConfig) {
+  return {
+    segment: config?.segment ?? null,
+    active: config?.loyalty ?? true,
+    expiry: config ? String(config.expiryMonths) : '',
+    cash: config?.cashConversion ?? false,
+    points: config ? String(config.pointsPerUnit) : '',
+    value: config ? (config.unitValue ?? 1).toFixed(2) : '',
+    minimum: config ? String(config.minConversion) : '',
+  };
+}
+
 /**
- * Programme configuration → Add (Figma `312:15899`, DESIGN.md §8.6): a side sheet with the form for one segment.
- * Errors show under the fields after Save; the first one is focused. Every field is needed, cash conversion on or off
- * (decided 26 Oct 2026: its fields stay enabled).
+ * Programme configuration → Add (Figma `312:15899`, DESIGN.md §8.6) and Edit (code first, no Figma; decided 27 Oct
+ * 2026): a side sheet with the form for one segment. Edit starts with the configuration's values; its Save stays
+ * disabled until a value differs from them. Errors show under the fields after Save; the first one is focused. Every
+ * field is needed, cash conversion on or off (decided 26 Oct 2026: its fields stay enabled). The page remounts it
+ * (`key`) for each configuration it edits.
  */
-export function AddProgrammeConfiguration({ open, onClose, segments, onSave }: AddProgrammeConfigurationProps) {
-  const [segment, setSegment] = useState<string | null>(null);
-  const [active, setActive] = useState(true);
-  const [expiry, setExpiry] = useState('');
-  const [cash, setCash] = useState(false);
-  const [points, setPoints] = useState('');
-  const [value, setValue] = useState('');
-  const [minimum, setMinimum] = useState('');
+export function ProgrammeConfigurationForm({ open, onClose, config, segments, onSave }: ProgrammeConfigurationFormProps) {
+  const initial = initialValues(config);
+  const [segment, setSegment] = useState<string | null>(initial.segment);
+  const [active, setActive] = useState(initial.active);
+  const [expiry, setExpiry] = useState(initial.expiry);
+  const [cash, setCash] = useState(initial.cash);
+  const [points, setPoints] = useState(initial.points);
+  const [value, setValue] = useState(initial.value);
+  const [minimum, setMinimum] = useState(initial.minimum);
   const [errors, setErrors] = useState<Partial<Record<Field, boolean>>>({});
   const refs = useRef<Partial<Record<Field, HTMLElement | null>>>({});
+  const formId = useId();
+
+  const current = { segment, active, expiry, cash, points, value, minimum };
+  const changed = (Object.keys(initial) as (keyof typeof initial)[]).some((key) => current[key] !== initial[key]);
+  const options = config && !segments.includes(config.segment) ? [config.segment, ...segments] : segments;
 
   const reset = () => {
-    setSegment(null);
-    setActive(true);
-    setExpiry('');
-    setCash(false);
-    setPoints('');
-    setValue('');
-    setMinimum('');
+    setSegment(initial.segment);
+    setActive(initial.active);
+    setExpiry(initial.expiry);
+    setCash(initial.cash);
+    setPoints(initial.points);
+    setValue(initial.value);
+    setMinimum(initial.minimum);
     setErrors({});
   };
   const close = () => {
@@ -103,13 +126,23 @@ export function AddProgrammeConfiguration({ open, onClose, segments, onSave }: A
       onClose={close}
       // No close button: Cancel closes it (decided 26 Oct 2026); Esc and a click on the scrim still do.
       closeButton={false}
-      title={<FinTextBox type="h3" heading="Add programme configuration" headingLevel={2} description="Applies to one customer segment" truncateHeading />}
+      title={
+        <FinTextBox
+          type="h3"
+          heading={config ? 'Edit programme configuration' : 'Add programme configuration'}
+          headingLevel={2}
+          description="Applies to one customer segment"
+          truncateHeading
+        />
+      }
       buttonDock={{
         secondaryButton: { label: 'Cancel', onClick: close },
-        primaryButton: { label: 'Save configuration', type: 'submit', form: FORM_ID },
+        primaryButton: config
+          ? { label: 'Save', type: 'submit', form: formId, disabled: !changed }
+          : { label: 'Save configuration', type: 'submit', form: formId },
       }}
     >
-      <form id={FORM_ID} className={styles.form} noValidate onSubmit={submit}>
+      <form id={formId} className={styles.form} noValidate onSubmit={submit}>
         <fieldset className={styles.section}>
           <legend className={styles.legend}>Segment</legend>
           <FinSelectField
@@ -118,13 +151,13 @@ export function AddProgrammeConfiguration({ open, onClose, segments, onSave }: A
             }}
             label="Segment"
             placeholder="Segment"
-            options={segments.map((s) => ({ value: s, label: s }))}
+            options={options.map((s) => ({ value: s, label: s }))}
             value={segment}
             onChange={(next) => {
               setSegment(next);
               clear('segment');
             }}
-            {...(segments.length === 0
+            {...(options.length === 0
               ? { helperText: 'Every segment already has a configuration' }
               : helper('segment', 'Segments that already have a configuration are not listed'))}
           />
