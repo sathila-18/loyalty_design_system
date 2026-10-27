@@ -32,8 +32,9 @@ const pending = { type: 'link', href: () => '#', linkAs: PendingLink } as const;
 /** The list's columns; the details sheet shows each one as a row. */
 const columns: FinTableColumn<Tier>[] = [
   { key: 'no', header: 'No.', width: 80, value: (t) => String(t.id).padStart(2, '0') },
+  // Level before Tier name, as the screen (decided 27 Oct 2026); filtered by level, lowest first.
+  { key: 'level', header: 'Level', filter: { options: TIER_LEVELS.map((level) => ({ value: level, label: level })) } },
   { key: 'name', header: 'Tier name', minWidth: 176, ...pending },
-  { key: 'level', header: 'Level' },
   { key: 'upgrade', header: 'Upgrade threshold (pts)', width: 216, value: (t) => number(t.upgradeThreshold), ...pending },
   { key: 'downgrade', header: 'Downgrade threshold (pts)', width: 232, value: (t) => number(t.downgradeThreshold), ...pending },
   { key: 'multiplier', header: 'Earn multiplier', value: (t) => multiplier(t.earnMultiplier), ...pending },
@@ -51,7 +52,7 @@ const columns: FinTableColumn<Tier>[] = [
 /**
  * Pages → Loyalty management → Tier management (Figma `152:6162`, DESIGN.md §8.6): the tiers, one per level, sorted
  * by level, in the app shell. Built the same way as Programme configuration: search by tier name, filter from the
- * Status column's dropdown, act on a row from its ⋮ menu (Figma's inline action buttons wait for its action cell,
+ * Level and Status columns' dropdowns, act on a row from its ⋮ menu (Figma's inline action buttons wait for its action cell,
  * decided 27 Oct 2026). The tier name, thresholds and multiplier are links with no destination yet. Add opens the add
  * side sheet (`345:14560`); a saved tier is added to the table. View, or a click on the row, opens the details sheet
  * (code first). Edit, in the row menu or the details sheet, opens the same form with the row's values (code first).
@@ -69,7 +70,7 @@ export function TierManagement({ tiers: initialTiers, onAction = () => undefined
   // Snackbars, newest last; each closes itself or with its close button.
   const [notices, setNotices] = useState<{ id: number; text: string }[]>([]);
   const [query, setQuery] = useState('');
-  // The Status column's filter, kept here so the empty state can clear it.
+  // The Level and Status columns' filters, kept here so the empty state can clear them.
   const [filters, setFilters] = useState<FinTableFilters>({});
 
   const search = query.trim().toLowerCase();
@@ -81,6 +82,7 @@ export function TierManagement({ tiers: initialTiers, onAction = () => undefined
     setAdding(true);
   };
   const searched = query.trim();
+  const several = Object.values(filters).filter((values) => values.length > 0).length > 1;
   const empty =
     tiers.length === 0 ? (
       <FinEmptyState
@@ -93,10 +95,12 @@ export function TierManagement({ tiers: initialTiers, onAction = () => undefined
       <FinEmptyState
         size="small"
         icon="search"
-        heading={searched ? `No tiers match “${searched}”` : 'No tiers match the filter'}
-        description={searched ? 'Check the spelling, or clear the search and filters.' : 'Clear the filter to see every tier.'}
+        heading={searched ? `No tiers match “${searched}”` : several ? 'No tiers match the filters' : 'No tiers match the filter'}
+        description={
+          searched ? 'Check the spelling, or clear the search and filters.' : `Clear the ${several ? 'filters' : 'filter'} to see every tier.`
+        }
         action={{
-          label: searched ? 'Clear search and filters' : 'Clear filter',
+          label: searched ? 'Clear search and filters' : several ? 'Clear filters' : 'Clear filter',
           onClick: () => {
             setQuery('');
             setFilters({});

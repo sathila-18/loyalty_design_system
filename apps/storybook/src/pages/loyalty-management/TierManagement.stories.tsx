@@ -35,7 +35,7 @@ const openRowAction = async (canvasElement: HTMLElement, tier: string, action = 
 
 /**
  * Tier management (Figma `152:6162`, DESIGN.md §8.6), built only from the system's components and the same way as
- * Programme configuration: FinAppShell, FinTable with its toolbar (search, Add), a filter on the Status column and
+ * Programme configuration: FinAppShell, FinTable with its toolbar (search, Add), filters on the Level and Status columns and
  * the row actions menu. The tier name, thresholds and multiplier are links that go nowhere yet. Use the viewport
  * menu for 1920, 1440, 1280 and 1024. Add opens the add side sheet; View (or a row click) the details, Edit the edit
  * sheet, Remove the remove dialog and then the removed snackbar. **Rows** (Controls) sets how many tiers the table
@@ -82,6 +82,21 @@ export const NoMatches: Story = {
   name: 'No matches',
   play: async ({ canvasElement }) => {
     await userEvent.type(await within(canvasElement).findByRole('searchbox', { name: 'Search tier' }), 'Bronze');
+  },
+};
+
+/** The Level and Status filters together leave nothing: "No tiers match the filters", and "Clear filters" brings the rows back. */
+export const NoMatchesFilters: Story = {
+  name: 'No matches, filters',
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const page = body(canvasElement);
+    await userEvent.click(await canvas.findByRole('button', { name: 'Filter Level' }));
+    await userEvent.click(await page.findByRole('checkbox', { name: 'Advanced' }));
+    await userEvent.click(page.getByRole('button', { name: 'Apply' }));
+    await userEvent.click(await canvas.findByRole('button', { name: 'Filter Status' }));
+    await userEvent.click(await page.findByRole('checkbox', { name: 'Active' }));
+    await userEvent.click(page.getByRole('button', { name: 'Apply' }));
   },
 };
 
