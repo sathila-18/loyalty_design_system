@@ -84,6 +84,14 @@ export const Scenarios: Story = {
       </div>
       <div className={styles.area}>
         <FinEmptyState
+          icon="sports_esports"
+          heading="No lessons yet"
+          description="With leadingIcon (code only): the plus before an Add button's label."
+          action={{ label: 'Add lesson', leadingIcon: 'add', onClick: fn() }}
+        />
+      </div>
+      <div className={styles.area}>
+        <FinEmptyState
           size="small"
           icon="search"
           heading="No segments match “Platinum”"

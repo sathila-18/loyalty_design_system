@@ -225,7 +225,8 @@ export function QuestionForm({ open, question, lesson, onClose, onSave, offline 
                   {v.options.map((option) => (
                     <div key={option.id} className={styles.option}>
                       <FinListRadioFilled value={String(option.id)} title={option.text} />
-                      <FinButton variant="tertiary" size="small" icon="only-icon" iconName="delete" iconTone="secondary" onClick={() => removeOption(option)}>
+                      {/* Destructive: red, as the ⋮ menus' Remove (FinButton has no destructive Tertiary; its `error` content tone). */}
+                      <FinButton variant="tertiary" size="small" icon="only-icon" iconName="delete" contentTone="error" onClick={() => removeOption(option)}>
                         {`Remove “${option.text}”`}
                       </FinButton>
                     </div>

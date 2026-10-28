@@ -41,6 +41,13 @@ describe('FinEmptyState', () => {
     expect(onClick).toHaveBeenCalledOnce();
   });
 
+  it('puts an icon before the button label with leadingIcon', () => {
+    render(<FinEmptyState icon="loyalty" heading="No lessons yet" action={{ label: 'Add lesson', leadingIcon: 'add', onClick: vi.fn() }} />);
+    const button = screen.getByRole('button', { name: 'Add lesson' });
+    expect(button).toHaveAttribute('data-icon-side', 'leading');
+    expect(button.querySelector('[translate="no"]')).toHaveTextContent('add');
+  });
+
   it('takes another heading level without changing the look', () => {
     const { container } = render(<FinEmptyState icon="search" heading="No results" headingLevel={3} />);
     expect(screen.getByRole('heading', { level: 3, name: 'No results' })).toBeInTheDocument();

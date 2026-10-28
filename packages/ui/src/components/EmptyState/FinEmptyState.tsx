@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import type { FinIconName } from '../../icons/finIcons';
-import { FinButton } from '../Button';
+import { FinButton, type FinButtonIconProps } from '../Button';
 import type { FinButtonDockButton } from '../ButtonDock';
 import { FinIconContainer } from '../IconContainer';
 import { FinTextBox, type FinHeadingLevel } from '../TextBox';
@@ -9,8 +9,11 @@ import styles from './FinEmptyState.module.css';
 /** Figma `Size`. */
 export type FinEmptyStateSize = 'small' | 'medium';
 
-/** The button: a label, and any button attribute (`onClick`, `disabled`, `type`…). Primary Small, no icon. */
-export type FinEmptyStateAction = Omit<FinButtonDockButton, 'leadingIcon'>;
+/**
+ * The button: a label, and any button attribute (`onClick`, `disabled`, `type`…). Primary Small. `leadingIcon` (code
+ * only, added 28 Oct 2026: Figma's button has no icon) puts an icon before the label, as `add` on an Add button.
+ */
+export type FinEmptyStateAction = FinButtonDockButton;
 
 interface FinEmptyStateBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Figma `Size` (default `medium`): the icon container 48 or 64, the heading Headline Small-H6 or Medium-H5. */
@@ -59,9 +62,10 @@ export function FinEmptyState({ size = 'medium', icon, iconSlot, heading, descri
   );
 }
 
-function EmptyStateButton({ label, ...rest }: FinEmptyStateAction) {
+function EmptyStateButton({ label, leadingIcon, ...rest }: FinEmptyStateAction) {
+  const icon: FinButtonIconProps = leadingIcon ? { icon: 'leading', iconName: leadingIcon } : {};
   return (
-    <FinButton {...rest} variant="primary" size="small">
+    <FinButton {...rest} {...icon} variant="primary" size="small">
       {label}
     </FinButton>
   );

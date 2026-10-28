@@ -264,7 +264,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
               icon="sports_esports"
               heading="No questions yet"
               description="Add a question to check what members learnt in this lesson."
-              action={{ label: 'Add question', onClick: addQuestion }}
+              action={{ label: 'Add question', leadingIcon: 'add', onClick: addQuestion }}
             />
           ) : (
             noMatches('questions')
@@ -297,7 +297,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
               icon="sports_esports"
               heading="No lessons yet"
               description={`Add a lesson to teach members about ${area.name.toLowerCase()}.`}
-              action={{ label: 'Add lesson', onClick: addLesson }}
+              action={{ label: 'Add lesson', leadingIcon: 'add', onClick: addLesson }}
             />
           ) : (
             noMatches('lessons')
@@ -334,7 +334,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
               icon="sports_esports"
               heading="No focus areas yet"
               description="Add a focus area: a topic members learn about, in lessons and questions."
-              action={{ label: 'Add focus area', onClick: addArea }}
+              action={{ label: 'Add focus area', leadingIcon: 'add', onClick: addArea }}
             />
           ) : (
             noMatches('focus areas')
