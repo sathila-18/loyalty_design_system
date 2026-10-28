@@ -1,0 +1,86 @@
+/*
+ * Focus areas page layout (DESIGN.md §8.6): the add / edit side sheets for focus areas (Figma `420:40932`), lessons
+ * (`420:43923`) and questions (`420:46735`). As the Add reward sheet: sections 24 apart (Space-3XL), each a title and
+ * its fields 16 below (Space-XL), fields 16 apart, two side by side 16 apart; card groups in grey panels.
+ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}
+
+.section {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* The section title: Label/Small (12, semibold) text-primary, 16 above its fields, as the other forms. */
+.legend {
+  margin-bottom: var(--fin-space-xl);
+  padding: 0;
+  color: var(--fin-text-primary);
+  font: var(--fin-font-label-small);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--fin-space-xl);
+  align-items: start;
+}
+
+/*
+ * A grey panel round a group of cards (Tiers, Answer options), as Add reward (decided 28 Oct 2026): bg-secondary,
+ * Radius-L, 16 padding, the title 12 above the cards. Page CSS: there's no card or panel component.
+ */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-l);
+  padding: var(--fin-space-xl);
+  border-radius: var(--fin-radius-l);
+  background-color: var(--fin-bg-secondary);
+}
+
+/* The panel's title: Label/Small (12, semibold) text-primary, as the section titles. */
+.panelTitle {
+  margin: 0;
+  color: var(--fin-text-primary);
+  font: var(--fin-font-label-small);
+}
+
+/* A field with its button beside it (Option + Add option), the button at the field's top. */
+.fieldWithButton {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--fin-space-l);
+  align-items: start;
+}
+
+/* An answer option: its radio card and the remove button beside it (outside the card's label), centred. */
+.option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--fin-space-s);
+  align-items: center;
+}
+
+/* The question rules in the info banner: a bulleted list (spans, inside the banner's paragraph), indented 16. */
+.rules {
+  display: block;
+  padding-left: var(--fin-space-xl);
+}
+
+.rule {
+  display: list-item;
+  list-style: disc;
+}
