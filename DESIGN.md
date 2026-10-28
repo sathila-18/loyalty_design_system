@@ -4148,3 +4148,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 28 Oct 2026 | 0.2 | FinEmptyState `leadingIcon` (code only, §9.74): the Focus areas empty states' Add buttons get the plus; the answer options' bin is red (Tertiary `contentTone="error"`). |
 | 28 Oct 2026 | 0.2 | Focus areas and FinEmptyState `leadingIcon` approved by design and merged into `main`. |
 | 28 Oct 2026 | 0.2 | The Loyalty management page stories no longer open at a fixed 1920 viewport: they fill the canvas, as Focus areas (§4.4). |
+| 28 Oct 2026 | 0.2 | Storybook on Vercel: the preview reloads itself once when a file from an older deploy is gone (Safari: "Importing a module script failed"), README "Storybook on Vercel". |

@@ -4,6 +4,30 @@ import { finBrands, finThemes, type FinBrand, type FinTheme } from '@finspace-lo
 import '../../../packages/ui/src/styles/index.css';
 import styles from './preview.module.css';
 
+/**
+ * After a deploy, a tab opened before it still asks for the old build's files, which are gone: Safari shows
+ * "Importing a module script failed", Chrome "Failed to fetch dynamically imported module". Vite fires
+ * `vite:preloadError` then; reloading the preview picks up the new build (Vite's advice). At most once every 10
+ * seconds, so a file that's really missing shows Storybook's error instead of reloading forever.
+ */
+const RELOADED_AT = 'fin-preview-reloaded-at';
+window.addEventListener('vite:preloadError', (event) => {
+  let last = 0;
+  try {
+    last = Number(sessionStorage.getItem(RELOADED_AT)) || 0;
+  } catch {
+    // No storage (private window, blocked): reload anyway; the guard is only lost.
+  }
+  if (Date.now() - last < 10_000) return;
+  try {
+    sessionStorage.setItem(RELOADED_AT, String(Date.now()));
+  } catch {
+    // As above.
+  }
+  event.preventDefault();
+  window.location.reload();
+});
+
 type ThemeGlobal = FinTheme | 'side-by-side';
 
 const title = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
