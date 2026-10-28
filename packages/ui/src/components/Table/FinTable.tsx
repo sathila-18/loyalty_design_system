@@ -51,6 +51,12 @@ export interface FinTableColumn<Row> {
   value?: (row: Row) => ReactNode;
   /** How text values are shown (FinTableCell `type`): default, badge or link. Default `'default'`. */
   type?: FinTableCellType;
+  /**
+   * Something before the value, per row (FinTableCell's leading accessories slot; code only, added 28 Oct 2026): an
+   * avatar or an image before a name, as the Badges screen. The value stays text, shown as `type` says. Nothing
+   * (`undefined` or `null`) leaves the slot out for that row.
+   */
+  leading?: (row: Row) => ReactNode;
   /** Badge type: the badge tone, fixed or per row. Default primary. */
   badgeTone?: FinBadgeTone | ((row: Row) => FinBadgeTone);
   /** Link type: where each row's link goes. */
@@ -511,9 +517,12 @@ function FinTableInner<Row>(
                           {columns.map((column) => {
                             const value = column.value ? column.value(row) : ((row as Record<string, unknown>)[column.key] as ReactNode);
                             const tone = typeof column.badgeTone === 'function' ? column.badgeTone(row) : column.badgeTone;
+                            const leading = column.leading?.(row);
+                            const hasLeading = leading !== undefined && leading !== null;
                             const cell = {
                               type: column.type ?? 'default',
-                              leadingAccessories: false,
+                              leadingAccessories: hasLeading,
+                              ...(hasLeading ? { leading } : {}),
                               ...(tone ? { badgeTone: tone } : {}),
                               ...(column.href ? { href: column.href(row) } : {}),
                               ...(column.linkAs ? { linkAs: column.linkAs } : {}),

@@ -21,10 +21,8 @@ const statusOf = (b: Badge) => (b.active ? 'Active' : 'Inactive');
 /** The list's columns; the details sheet shows each one as a row. */
 const columns: FinTableColumn<Badge>[] = [
   { key: 'id', header: 'ID', width: 120, value: (b) => String(b.id).padStart(2, '0') },
-  // The icon in its own column (the screen puts it before the name, in one cell): a table cell styles only plain text,
-  // so the name stays plain text, styled as the other columns.
-  { key: 'icon', header: 'Icon', width: 96, value: (b) => <FinAvatar type="image" size="xsmall" src={b.icon.url} label={`${b.name} icon`} /> },
-  { key: 'name', header: 'Badge', minWidth: 240 },
+  // The icon before the name, in one cell, as the screen (32, FinAvatar small; decorative: the name is next to it).
+  { key: 'name', header: 'Badge name', minWidth: 240, leading: (b) => <FinAvatar type="image" size="small" src={b.icon.url} /> },
   {
     key: 'status',
     header: 'Status',

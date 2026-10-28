@@ -35,6 +35,19 @@ describe('FinTable', () => {
     expect(screen.getAllByRole('link', { name: 'View profile' })[0]).toHaveAttribute('href', '/members/1');
   });
 
+  it('puts a column\'s leading content before its text value, only for rows that have it', () => {
+    const withLeading: FinTableColumn<Member>[] = [
+      { key: 'name', header: 'Name', leading: (m) => (m.id === 1 ? <img alt="" data-testid="leading" src="data:," /> : null) },
+    ];
+    render(<FinTable label="Members" columns={withLeading} rows={members.slice(0, 2)} getRowId={(m) => m.id} selectable={false} footer={false} />);
+    const [first, second] = bodyRows();
+    expect(within(first!).getByTestId('leading')).toBeInTheDocument();
+    // The value is still the table's text, and a row without leading content has no slot (no checkbox either).
+    expect(within(first!).getByText(members[0]!.name).className).toMatch(/text/);
+    expect(within(second!).queryByTestId('leading')).toBeNull();
+    expect(within(second!).queryByRole('checkbox')).toBeNull();
+  });
+
   it('shows every row and no footer with footer off', () => {
     render(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} footer={false} />);
     expect(bodyRows()).toHaveLength(23);

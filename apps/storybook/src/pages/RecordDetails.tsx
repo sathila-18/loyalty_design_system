@@ -19,6 +19,8 @@ interface Detail {
   key: string;
   attribute: string;
   value: ReactNode;
+  /** The column's leading content for the record (an icon before a name), shown before the value as in the list. */
+  leading?: ReactNode;
 }
 
 /** A column's value for the record, as the list shows it; a link is plain text here (decided 26 Oct 2026). */
@@ -36,7 +38,9 @@ function shown<Row>(column: FinTableColumn<Row>, record: Row): ReactNode {
  * its label) and Edit (Primary, the rest of the width) in the dock; the close button at the top.
  */
 export function RecordDetails<Row>({ record, getName, columns, onClose, onEdit, onRemove, actionsDisabled = false }: RecordDetailsProps<Row>) {
-  const details: Detail[] = record ? columns.map((column) => ({ key: column.key, attribute: column.header, value: shown(column, record) })) : [];
+  const details: Detail[] = record
+    ? columns.map((column) => ({ key: column.key, attribute: column.header, value: shown(column, record), leading: column.leading?.(record) }))
+    : [];
   const title = record ? `${getName(record)} details` : 'Details';
 
   return (
@@ -60,7 +64,7 @@ export function RecordDetails<Row>({ record, getName, columns, onClose, onEdit, 
         label={title}
         columns={[
           { key: 'attribute', header: 'Attribute' },
-          { key: 'value', header: 'Added record' },
+          { key: 'value', header: 'Added record', leading: (d) => d.leading },
         ]}
         rows={details}
         getRowId={(d) => d.key}
