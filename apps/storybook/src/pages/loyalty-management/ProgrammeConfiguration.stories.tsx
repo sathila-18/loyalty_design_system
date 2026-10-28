@@ -38,7 +38,6 @@ const meta: Meta<PageArgs> = {
   },
   // A new count starts the page again with that many rows.
   render: ({ rows, ...args }) => <ProgrammeConfiguration key={rows} {...args} configs={ALL_CONFIGS.slice(0, rows)} />,
-  globals: { viewport: { value: 'desktop1920', isRotated: false } },
   args: { rows: FIGMA_CONFIGS.length, segments: SEGMENTS, onAction: fn() },
 };
 export default meta;

@@ -425,7 +425,7 @@ The Figma screens are designed at **1920 × 1080**. Every Storybook page (§8.6)
 | 1280 | 800 | Expanded | The smallest width with the expanded nav (`Size-1280`) |
 | 1024 | 768 | Minimized (88) | Below 1280 the nav collapses |
 
-The four widths are the Storybook **viewport** options (toolbar), added 22 Oct 2026. Behaviour between and below these widths that Figma doesn't show (scrolling, sticky parts, wrapping, tables wider than the space) is decided per page and recorded in §8.6.
+The four widths are the Storybook **viewport** options (toolbar), added 22 Oct 2026. Page stories open at the canvas's own width, not a fixed viewport (decided 28 Oct 2026, as Focus areas; the Loyalty management pages opened at 1920 before), so the page fills the Storybook canvas; pick a width from the toolbar to check one, and each page keeps its "at 1024" stories. Behaviour between and below these widths that Figma doesn't show (scrolling, sticky parts, wrapping, tables wider than the space) is decided per page and recorded in §8.6.
 
 ---
 
@@ -4147,3 +4147,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 28 Oct 2026 | 0.2 | **Focus areas built** (§8.6, Pages/Gamification/Focus areas): three levels (focus areas, lessons, questions) reached by View, a row click or the count links; question details; add / edit / remove at each level; Published toggles; answer options with Add option. |
 | 28 Oct 2026 | 0.2 | FinEmptyState `leadingIcon` (code only, §9.74): the Focus areas empty states' Add buttons get the plus; the answer options' bin is red (Tertiary `contentTone="error"`). |
 | 28 Oct 2026 | 0.2 | Focus areas and FinEmptyState `leadingIcon` approved by design and merged into `main`. |
+| 28 Oct 2026 | 0.2 | The Loyalty management page stories no longer open at a fixed 1920 viewport: they fill the canvas, as Focus areas (§4.4). |

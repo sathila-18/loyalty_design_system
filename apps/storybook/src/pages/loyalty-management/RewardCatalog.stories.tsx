@@ -40,7 +40,6 @@ const meta: Meta<PageArgs> = {
   },
   // A new count starts the page again with that many rows.
   render: ({ rows, ...args }) => <RewardCatalog key={rows} {...args} rewards={ALL_REWARDS.slice(0, rows)} />,
-  globals: { viewport: { value: 'desktop1920', isRotated: false } },
   args: { rows: FIGMA_REWARDS.length, onAction: fn() },
 };
 export default meta;

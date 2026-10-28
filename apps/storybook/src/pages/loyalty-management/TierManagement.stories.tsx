@@ -66,7 +66,6 @@ const meta: Meta<PageArgs> = {
   },
   // A new count starts the page again with that many rows.
   render: ({ rows, ...args }) => <TierManagement key={rows} {...args} tiers={ALL_TIERS.slice(0, rows)} />,
-  globals: { viewport: { value: 'desktop1920', isRotated: false } },
   args: { rows: 3, onAction: fn() },
 };
 export default meta;
