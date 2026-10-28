@@ -1,0 +1,17 @@
+/* Layout for the FinStatCard stories only (not part of the component). Cards 364 wide, as the Reports screens at 1920. */
+
+.one {
+  width: calc(var(--fin-size-120) * 3 + var(--fin-space-xs));
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, calc(var(--fin-size-120) * 3 + var(--fin-space-xs)));
+  gap: var(--fin-space-4xl);
+}
+
+.narrow {
+  display: grid;
+  grid-template-columns: repeat(2, calc(var(--fin-size-120) * 2));
+  gap: var(--fin-space-xl);
+}

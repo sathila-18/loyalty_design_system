@@ -734,6 +734,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 80 | — (**code first**; no Figma component) | Loading | — | `FinSkeleton` | · `shape` text / rect / circle, `width`, `height` · a pulsing `bg-neutral` placeholder for content that's loading; FinTable `loading` uses it · **public** (§9.76) | — | ✅ |
 | 81 | — (**code first**; drawn on each Add reward screen, `367:19964`, `402:33879`) | Stepper | — | `FinStepper` | Icon `check` · `steps`, `current`, `onStepClick` · the steps of a multi-step form · **public** (§9.77) | — | ✅ |
 | 82 | — (**code first**; the Add reward screens draw an Input field-standard with `calendar_today`, `367:19964`) | Input field | — | `FinDateField` | FinInputBase, Icon `calendar_today` (added to the registry) · DD/MM/YYYY typed or picked; `value` / `onChange` as YYYY-MM-DD, `min`, `max` · the browser's date picker for now · **public** (§9.79) | — | ✅ |
+| 83 | — (**code first**; the Reports screens draw it each time, `435:90575`, `440:94624`) | Card | — | `FinStatCard` | — · `label`, `value` · a summary number on `bg-active` · **public** (§9.81) | — | ✅ |
 
 ### 8.5 Assets (exported, not built as components)
 
@@ -3805,6 +3806,20 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Built, approved and merged (28 Oct 2026).** Storybook: Components/Input field/File upload (Playground, Variants (Figma), Disabled, Try it (a fake upload; refused files show why), Long file name). Checked in Chrome against Figma: strokes, radius 16, padding 16, icons 48 / 40 with Figma's tones, the buttons' colours; heights 218 / 238 Large, 102 / 122 Small; drag over `#625bff` / `#efefff`; a dropped PNG goes through uploading to complete, a PDF and a 6 MB file are refused. Light and Dark.
 
+### 9.81 FinStatCard — public
+
+**Figma:** none: the Reports screens draw it each time (`435:90575` four cards, `440:94624` three; read 28 Oct 2026), as plain frames (no component; the Cards page is under "Do not use"). Code first, measured from them (decided by design 28 Oct 2026: a component, since the Dashboard will need it too).
+
+**Layout:** a column, `bg-active`, `Radius-L` (16), `Space-2XL` (20) padding (the screens' raw 16 and 20 are these tokens); the label (Label/Medium, **`text-secondary`**, one line, "…"; the screens' `text-tertiary` is 4.48:1 on Dark `bg-active`, under 4.5, so design chose `text-secondary` on 28 Oct 2026: 5.3:1 Light, about 7:1 Dark; the card's own text, as FinLabel has no colour option) and under it the value (Headline Large-H4, `text-primary`), no gap: 95 tall with one line of each (Figma 95). It fills its container; the page lays the cards on its grid (the screens: 364 wide, 32 apart at 1920). A long value wraps.
+
+**API:** `label: string`, `value: ReactNode` (the page formats it: "806,400"; the screens' "806, 400" is a typo). Other attributes go to the `div`.
+
+**Tokens used:** `--fin-bg-active`, `--fin-radius-l`, `--fin-space-2xl`, `--fin-font-label-medium`, `--fin-text-secondary`, `--fin-font-headline-large-h4`, `--fin-text-primary`.
+
+**Accessibility:** plain text in reading order: the label, then the value. Not a heading or a landmark. Contrast: the label `text-secondary` and the value `text-primary` on `bg-active` meet 4.5:1 in Light and Dark (a11y check).
+
+**Built (28 Oct 2026).** Storybook: Components/Stat card (Playground, Reports, Customer history, Narrow). Checked in Chrome against Figma: 364 × 94.6 at the screens' width, padding 20, radius 16, `#efefff`, label 14 semibold (`text-secondary`, lighter than the screens' `#474748`), value 24 bold `#19191a` (Light); Dark uses the Dark tokens. A long label ends in "…", a long value wraps.
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -3927,6 +3942,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (28 Oct 2026):** FinStepper `width="fill"` (§9.77) and the Reward catalog **Add reward side sheet** (§8.6): four steps, Draft / Publish add the reward at the top with a snackbar, a discard dialog for unsaved changes; every card group in a grey panel (card hover kept), the rule note without a title, the rules table without the No. column. **Next:** Edit reward (the same sheet, filled with the reward's values, every step clickable, Cancel / Save).
 > - **Approved and merged (28 Oct 2026):** **Edit reward** (§8.6) with FinStepper `doneSteps="all"` (§9.77); Provider and Max total uses optional; a "Reward saved successfully" snackbar. **Every Reward catalog state is done** (list, add, details, edit, remove, removed). **Next:** the next page or component design names.
 > - **Approved and merged (28 Oct 2026):** `FinFileUpload` (§9.80), for the Badges page.
+> - **Built (28 Oct 2026), waiting for design:** `FinStatCard` (§9.81, `feat/stat-card`), the summary cards of the Reports page. **Next after approval:** the Reports page (§8.6; decided 28 Oct 2026: the customer list and a customer's points history, View and the Active balance link open the history; Tier as a column filter, Segment a chip, no Consumption type; Duration waits for a custom date range).
 > - **Approved and merged (28 Oct 2026):** the **Badges** page (§8.6): search and the Status filter, the icon (32) before the name (FinTable column `leading`, §9.45), details, add / edit with the icon upload and an Active toggle, the close button and no Cancel, remove. **Next:** the next page or component design names (left for later: connecting the badges to Add reward's and Add focus area's badge lists).
 > - **Approved and merged (28 Oct 2026):** the page stories fill the Storybook canvas (§4.4; the Loyalty management pages no longer open at 1920), and the Storybook preview reloads itself once when an older deploy's file is gone (Safari's "Importing a module script failed"; README "Storybook on Vercel").
 > - **Approved and merged (28 Oct 2026):** **Focus areas** (§8.6): focus areas → lessons → questions → question details, each level with add / edit / remove; Published toggles; answer options typed and added (a red bin removes one); FinEmptyState `leadingIcon` (§9.74), the empty states' Add buttons with the plus. **Next:** the next page or component design names.
@@ -4194,3 +4210,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 28 Oct 2026 | 0.2 | FinTable column `leading` (code only, §9.45). Badges: the icon (32) and the name in one Badge name cell, as the screen; the details sheet shows the icon too. |
 | 28 Oct 2026 | 0.2 | Badges: the badge sheet has the close button at the top right and no Cancel (design review). |
 | 28 Oct 2026 | 0.2 | Badges and FinTable `leading` approved by design and merged into `main`. |
+| 28 Oct 2026 | 0.2 | **`FinStatCard` built** (§8 #83, §9.81), public, Components/Stat card: code first from the Reports screens' summary cards. |

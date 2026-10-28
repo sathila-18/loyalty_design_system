@@ -1,0 +1,38 @@
+/*
+ * FinStatCard (DESIGN.md §9; code first, measured from the Reports screens `435:90575`, `440:94624`): bg-active,
+ * Radius-L (16), Space-2XL (20) padding, the label then the value with no gap (Figma's Text Box: Label/Medium 21 tall
+ * over Headline Large-H4 33.6, so 95 tall with Figma's text). Fills its container.
+ */
+
+.card {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: var(--fin-space-2xl);
+  border-radius: var(--fin-radius-l);
+  background-color: var(--fin-bg-active);
+}
+
+/*
+ * Label/Medium, one line, "…" when narrow, as FinLabel; but text-secondary, not the screens' text-tertiary, which is
+ * 4.48:1 on Dark bg-active (under 4.5; decided by design 28 Oct 2026). It's the card's own text, as FinLabel has no
+ * colour option (Figma's Label has none).
+ */
+.label {
+  overflow: hidden;
+  margin: 0;
+  color: var(--fin-text-secondary);
+  font: var(--fin-font-label-medium);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Headline Large-H4, text-primary; a long value wraps rather than overflowing. */
+.value {
+  margin: 0;
+  color: var(--fin-text-primary);
+  font: var(--fin-font-headline-large-h4);
+  overflow-wrap: anywhere;
+}
