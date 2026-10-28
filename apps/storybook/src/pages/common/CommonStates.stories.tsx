@@ -28,7 +28,6 @@ const meta: Meta<Args> = {
     layout: 'fullscreen',
     a11y: { context: { include: ['body'], exclude: PAGE_KNOWN_CONTRAST_ISSUES } },
   },
-  globals: { viewport: { value: 'desktop1920', isRotated: false } },
   args: { load: 'ready', save: 'ok', remove: 'ok', online: true },
   argTypes: {
     load: { control: 'inline-radio', options: ['ready', 'loading', 'fail'], description: 'Loading the list' },

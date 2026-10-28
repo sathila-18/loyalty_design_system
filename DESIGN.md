@@ -425,7 +425,7 @@ The Figma screens are designed at **1920 × 1080**. Every Storybook page (§8.6)
 | 1280 | 800 | Expanded | The smallest width with the expanded nav (`Size-1280`) |
 | 1024 | 768 | Minimized (88) | Below 1280 the nav collapses |
 
-The four widths are the Storybook **viewport** options (toolbar), added 22 Oct 2026. Page stories open at the canvas's own width, not a fixed viewport (decided 28 Oct 2026, as Focus areas; the Loyalty management pages opened at 1920 before), so the page fills the Storybook canvas; pick a width from the toolbar to check one, and each page keeps its "at 1024" stories. Behaviour between and below these widths that Figma doesn't show (scrolling, sticky parts, wrapping, tables wider than the space) is decided per page and recorded in §8.6.
+The four widths are the Storybook **viewport** options (toolbar), added 22 Oct 2026. Page stories open at the canvas's own width, not a fixed viewport (decided 28 Oct 2026, as Focus areas; the Loyalty management pages and Pages/Common states opened at 1920 before), so the page fills the Storybook canvas; pick a width from the toolbar to check one, and each page keeps its "at 1024" stories. Behaviour between and below these widths that Figma doesn't show (scrolling, sticky parts, wrapping, tables wider than the space) is decided per page and recorded in §8.6.
 
 ---
 
@@ -4216,3 +4216,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 28 Oct 2026 | 0.2 | **Reports built** (§8.6, Pages/Report management/Reports): summary cards and the customer table (Segment chip, Tier filter); View, a row click or the Active balance opens a customer's points history. The level link is shared (`pages/LevelLink.tsx`); each level's table is new, so it starts at the left. |
 | 28 Oct 2026 | 0.2 | Reports (design review): no Segment filter; the points history gets a Date column and a Duration chip (ranges; custom range later); the next expiry card reads "Expires 31/10/2026" / "1,200 pts", one line. |
 | 28 Oct 2026 | 0.2 | Reports approved by design and merged into `main`. |
+| 28 Oct 2026 | 0.2 | Pages/Common states no longer opens at a fixed 1920 viewport; the empty states' Add buttons on Programme configuration, Tier management and Reward catalog get the plus (FinEmptyState `leadingIcon`), as every page now. |

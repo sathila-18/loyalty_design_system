@@ -112,7 +112,7 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
         icon="loyalty"
         heading="No programme configurations yet"
         description="Add a configuration to set the loyalty and cash conversion rules for a customer segment."
-        action={{ label: 'Add programme configuration', onClick: add }}
+        action={{ label: 'Add programme configuration', leadingIcon: 'add', onClick: add }}
       />
     ) : (
       <FinEmptyState

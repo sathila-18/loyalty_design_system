@@ -91,7 +91,7 @@ export function RewardCatalog({ rewards: initialRewards, onAction = () => undefi
         icon="loyalty"
         heading="No rewards yet"
         description="Add a reward for members to redeem with their points."
-        action={{ label: 'Add reward', onClick: add }}
+        action={{ label: 'Add reward', leadingIcon: 'add', onClick: add }}
       />
     ) : (
       <FinEmptyState

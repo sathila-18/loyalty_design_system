@@ -89,7 +89,7 @@ export function TierManagement({ tiers: initialTiers, onAction = () => undefined
         icon="loyalty"
         heading="No tiers yet"
         description="Add a tier to set the points members need to reach it and how fast they earn there."
-        action={{ label: 'Add tier', onClick: add }}
+        action={{ label: 'Add tier', leadingIcon: 'add', onClick: add }}
       />
     ) : (
       <FinEmptyState
