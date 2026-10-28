@@ -1,9 +1,10 @@
-import { createContext, useContext, useState, type AnchorHTMLAttributes } from 'react';
+import { useState } from 'react';
 import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinTableColumn, type FinTableFilters } from '@finspace-loyalty/ui';
 import { NOT_AVAILABLE } from '../common/format';
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import pageStyles from '../common/PageStates.module.css';
+import { LevelLink, LevelLinkProvider } from '../LevelLink';
 import { pageSideNav } from '../pageShell';
 import { RecordDetails } from '../RecordDetails';
 import { FocusAreaForm } from './FocusAreaForm';
@@ -33,24 +34,6 @@ const statusColumn = <Row extends { published: boolean }>(): FinTableColumn<Row>
   filter: { options: (['Draft', 'Published'] as const).map((s) => ({ value: s, label: s })), value: statusOf },
 });
 
-/** The page's links into a level ("5 lessons", "5 questions"): they switch the level instead of leaving the page. */
-const NavigateContext = createContext<(href: string) => void>(() => undefined);
-function LevelLink({ href, children, onClick, ...rest }: AnchorHTMLAttributes<HTMLAnchorElement>) {
-  const navigate = useContext(NavigateContext);
-  return (
-    <a
-      {...rest}
-      href={href}
-      onClick={(event) => {
-        event.preventDefault();
-        onClick?.(event);
-        if (href) navigate(href);
-      }}
-    >
-      {children}
-    </a>
-  );
-}
 
 const areaHref = (area: FocusArea) => `#gamification/focus/${area.id}`;
 const lessonHref = (areaId: number, lesson: Lesson) => `#gamification/focus/${areaId}/lessons/${lesson.id}`;
@@ -246,6 +229,8 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
     header = { heading: lesson.topic, bodyContent: `Focus areas › ${area.name} › Questions`, backButton: true, onBack: () => go(area.id), backLabel: 'Back to lessons' };
     table = (
       <FinTable
+        // A new table per level, so it starts scrolled to the left (not where the last level was scrolled).
+        key={`questions-${lesson.id}`}
         label="Questions"
         columns={questionColumns}
         rows={rows}
@@ -277,6 +262,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
     header = { heading: area.name, bodyContent: 'Focus areas › Lessons', backButton: true, onBack: () => go(null), backLabel: 'Back to focus areas' };
     table = (
       <FinTable
+        key={`lessons-${area.id}`}
         label="Lessons"
         columns={lessonColumns}
         rows={rows}
@@ -310,6 +296,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
     header = { heading: 'Focus areas', bodyContent: 'Topics members learn about, in lessons and questions', backButton: false };
     table = (
       <FinTable
+        key="focus-areas"
         label="Focus areas"
         columns={areaColumns}
         rows={status === 'ready' ? rows : []}
@@ -347,7 +334,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
   const saved = (item: string, editing: boolean) => notify({ text: `${item} ${editing ? 'saved' : 'added'} successfully`, tone: 'success' });
 
   return (
-    <NavigateContext.Provider value={navigate}>
+    <LevelLinkProvider navigate={navigate}>
       <FinAppShell sideNav={pageSideNav('#gamification/focus')} header={{ ...header, notificationProps: { notification: 'number', count: 120 } }}>
         <div className={pageStyles.page}>
           {!online && <ConnectionError />}
@@ -431,6 +418,6 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
         </FinDialog>
         <PageNotices notices={notices} onDismiss={dismiss} />
       </FinAppShell>
-    </NavigateContext.Provider>
+    </LevelLinkProvider>
   );
 }

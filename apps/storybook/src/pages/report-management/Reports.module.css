@@ -1,0 +1,11 @@
+/*
+ * Reports page layout (DESIGN.md §8.6; Figma `435:90575`, `440:94624`): the summary cards in a row of four equal
+ * columns, Space-4XL (32) apart as the screens (the history's three take the first three columns, as on its screen),
+ * above the table.
+ */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--fin-space-4xl);
+}
