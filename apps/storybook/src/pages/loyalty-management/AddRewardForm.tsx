@@ -15,7 +15,6 @@ import {
   FinStepper,
   FinTable,
   FinTextArea,
-  FinTextBox,
   FinTextField,
   type FinTableColumn,
 } from '@finspace-loyalty/ui';
@@ -421,14 +420,18 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
                   <legend className={styles.legend}>Reward value</legend>
                   <div className={styles.group}>
                     <div className={styles.panel}>
-                      <FinTextBox type="h6" heading="Type" headingLevel={3} />
+                      <p className={styles.panelTitle} aria-hidden="true">
+                        Type
+                      </p>
                       <FinListRadioGroup label="Type" value={v.type} onValueChange={(next) => set('type', next as RewardType, 'amount')} size="small">
                         <FinListRadioFilled value="discount" title="Discount" />
                         <FinListRadioFilled value="cashback" title="Cash back" description="Points are earned" />
                       </FinListRadioGroup>
                     </div>
                     <div className={styles.panel}>
-                      <FinTextBox type="h6" heading="Value" headingLevel={3} />
+                      <p className={styles.panelTitle} aria-hidden="true">
+                        Value
+                      </p>
                       <FinListRadioGroup label="Value" value={v.valueType} onValueChange={(next) => set('valueType', next as ValueType, 'amount')} size="small">
                         <FinListRadioFilled value="fixed" title="Fixed amount" />
                         <FinListRadioFilled value="percentage" title="Percentage" />
