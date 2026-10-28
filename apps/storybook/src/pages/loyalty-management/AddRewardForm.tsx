@@ -224,7 +224,6 @@ const ERRORS: Partial<Record<Field, string>> = {
 };
 
 const ruleColumns: FinTableColumn<Rule>[] = [
-  { key: 'no', header: 'No.', width: 80, value: (r) => String(r.id).padStart(2, '0') },
   { key: 'segment', header: 'Segment' },
   { key: 'tier', header: 'Tier' },
 ];
@@ -479,10 +478,15 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
                       onChange={(e) => set('minTransaction', e.target.value, 'minTransaction')}
                       {...helper('minTransaction')}
                     />
-                    <FinListRadioGroup label="Give the reward" value={v.giveOn} onValueChange={(next) => set('giveOn', next as GiveOn, 'count')} size="small">
-                      <FinListRadioFilled value="every" title="On every qualifying event" />
-                      <FinListRadioFilled value="nth" title="On the nth qualifying event" />
-                    </FinListRadioGroup>
+                    <div className={styles.panel}>
+                      <p className={styles.panelTitle} aria-hidden="true">
+                        Give the reward
+                      </p>
+                      <FinListRadioGroup label="Give the reward" value={v.giveOn} onValueChange={(next) => set('giveOn', next as GiveOn, 'count')} size="small">
+                        <FinListRadioFilled value="every" title="On every qualifying event" />
+                        <FinListRadioFilled value="nth" title="On the nth qualifying event" />
+                      </FinListRadioGroup>
+                    </div>
                     {v.giveOn === 'nth' && (
                       <FinTextField
                         ref={ref('count')}
@@ -571,17 +575,24 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
               <>
                 <fieldset className={styles.section}>
                   <legend className={styles.legend}>Who can claim this reward</legend>
-                  <FinListRadioGroup label="Type" value={v.eligibility} onValueChange={(next) => set('eligibility', next as Eligibility)} size="small">
-                    <FinListRadioFilled value="all" title="All customers" description="All tiers and segments" />
-                    <FinListRadioFilled value="tiers" title="Tier only" />
-                    <FinListRadioFilled value="segments" title="Segment only" />
-                    <FinListRadioFilled value="rules" title="Rules" description="Segments and tiers" />
-                  </FinListRadioGroup>
+                  <div className={styles.panel}>
+                    <p className={styles.panelTitle} aria-hidden="true">
+                      Type
+                    </p>
+                    <FinListRadioGroup label="Type" value={v.eligibility} onValueChange={(next) => set('eligibility', next as Eligibility)} size="small">
+                      <FinListRadioFilled value="all" title="All customers" description="All tiers and segments" />
+                      <FinListRadioFilled value="tiers" title="Tier only" />
+                      <FinListRadioFilled value="segments" title="Segment only" />
+                      <FinListRadioFilled value="rules" title="Rules" description="Segments and tiers" />
+                    </FinListRadioGroup>
+                  </div>
                 </fieldset>
 
                 {v.eligibility === 'tiers' && (
-                  <fieldset className={styles.section}>
-                    <legend className={styles.legend}>Tiers</legend>
+                  <div className={styles.panel}>
+                    <p className={styles.panelTitle} aria-hidden="true">
+                      Tiers
+                    </p>
                     <div className={styles.group}>
                       <FinListCheckboxGroup
                         label="Tiers"
@@ -600,12 +611,14 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
                         </FinHelperText>
                       )}
                     </div>
-                  </fieldset>
+                  </div>
                 )}
 
                 {v.eligibility === 'segments' && (
-                  <fieldset className={styles.section}>
-                    <legend className={styles.legend}>Segments</legend>
+                  <div className={styles.panel}>
+                    <p className={styles.panelTitle} aria-hidden="true">
+                      Segments
+                    </p>
                     <div className={styles.group}>
                       <FinListCheckboxGroup
                         label="Segments"
@@ -624,14 +637,14 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
                         </FinHelperText>
                       )}
                     </div>
-                  </fieldset>
+                  </div>
                 )}
 
                 {v.eligibility === 'rules' && (
                   <fieldset className={styles.section}>
                     <legend className={styles.legend}>Create a rule</legend>
                     <div className={styles.group}>
-                      <FinNotificationBanner tone="warning" title="Note">
+                      <FinNotificationBanner tone="warning">
                         Each list also offers all segments or all tiers.
                       </FinNotificationBanner>
                       <div className={styles.row}>
