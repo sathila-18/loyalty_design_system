@@ -1,0 +1,18 @@
+/* Layout for the FinFileUpload stories only (not part of the component). Figma draws it 721 wide; the side sheet ~552. */
+
+.frame {
+  width: calc(var(--fin-size-120) * 6);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  width: calc(var(--fin-size-120) * 6);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, calc(var(--fin-size-120) * 6));
+  gap: var(--fin-space-3xl);
+}

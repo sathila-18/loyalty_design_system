@@ -704,7 +704,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 55 | `Input field-select` | Input field | `537:2736` | `FinSelectField` | **Input field-base** | ⚠️ (after #52) | ✅ §9.72 |
 | 56 | `Input field-Multi select` | Input field | `922:6170` | `FinMultiSelectField` | **Input field-base**, Chips-base | ⚠️ (after #52) | ⬜ |
 | 57 | `Search` | Search | `440:5164` | `FinSearchField` | **Input field-base** (Show Label off) · State: Enabled/Focus/Typing/Complete (runtime; hover from the base) · `search` icon, clear button (`cancel`, filled) · Small size (code only) · Sticky removed in Figma 21 Oct 2026 · **public** (§9.61) | ✅ | ✅ |
-| 58 | `File uploads` | Input field | `775:4280` | `FinFileUpload` | 40px bg, 48px bg, Text Box, all-button · Size: Large/Small | ⚠️ | ⬜ |
+| 58 | `File uploads` | Input field | `775:4280` | `FinFileUpload` | 40px bg, 48px bg, Text Box, Progress bar, all-button · Size: Large/Small · State: Enabled/Uploading/Complete/Error (updated by design 28 Oct 2026) · one file · **public** (§9.80) | ✅ | ✅ |
 | 59 | `List-base` | List | `77:10185` | `FinListItem` | **Base.** 40px bg, Label, Text Box, Divider · `Size` · leading / trailing accessory slots (preferred instances per scenario), top label, title + extra icon (swappable `20px`), body slot, divider · no states (§7.2) · **internal** (§9.49) | ⚠️ (Small title bound to H6 variables at 14/21 → Label/Medium) | ✅ |
 | 60 | `List_fill-base` (was `List-fill-base`; new node 20 Oct 2026, was `3169:6327`) | List | `3494:14233` | `FinListItemFilled` | **Base.** List-base in a frame (`bg-primary`, `border-subtle`, `Radius-L`, padding `Space-XL`), no divider · Avatar (leading default), Label, Text Box · slots · `Size` · filled items together 12 apart · no states · **internal** (§9.50) | ⚠️ (Small ignores `Show leading accessory`, §10 #53) | ✅ |
 | 60a | `List-standard` (added 20 Oct 2026) | List | `3491:5292` | `FinListStandard` | **List-base** (mapped), Icon `24px`, Flag sizes, Avatar, Caption, `24px` chevron · `State`: Default / Hovered / Selected / Selected+hovered / Disabled · `Description` · `Chevron` · `Leading accessory`: None / Icon / Flag / Payment / Avatar · `Trailing accessory`: None / Caption · Size from List-base (nested) · link, button, option or static per scenario · Payment: FinPaymentIcon (§9.52) · **public**, Components/List (§9.51) | ⚠️ (Size not exposed, §10 #54) | ✅ |
@@ -3770,6 +3770,39 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Built and approved (27 Oct 2026).** Storybook: Components/Input field/Date field (Playground with the `onChange` value, States, Range (End date's `min` is the start), Typing, Invalid date, Before min). Checked in Chrome: the picker opens; picking 15 Aug 2026 shows 15/08/2026 and reports 2026-08-15. Light and Dark.
 
+### 9.80 FinFileUpload (File uploads) — public
+
+**Figma:** page **Input field**, component set `File uploads` `775:4280` (updated by design and read 28 Oct 2026): `Size` = Large / Small × `State` = Enabled / Uploading / Complete / Error (8 variants). A box: `bg-primary`, a 1px **dashed** stroke inside it, `Radius-L`, `Space-XL` padding and gaps. **Large** (206 tall; 226 uploading): a centred column: the `48px bg` icon, the Small **Progress bar** (uploading), a centred Text Box (Headline Small-H6 title, Body M `text-secondary` description, 343 wide), an `all-button` Tertiary. **Small** (102; 122 uploading): a row: the `40px bg` icon and a left-aligned Text Box, the button on the right; the progress bar under the row. Used by Badges (Add badge, `428:51250`, Large).
+
+| State | Stroke | Icon (`40px bg` / `48px bg`) | Title | Button |
+|---|---|---|---|---|
+| Enabled | `border-default` | Info, `image` | the page's ("Upload badge icon") | `cloud_upload` Upload (`text-action`) |
+| Uploading | `border-active` | Info, `image` | "Uploading…" | `cancel` Cancel (`text-action`) |
+| Complete | `border-strong` | Success, `check` | the file's name ("logo.png") | the bin `delete` Delete (`text-error`) |
+| Error | `border-error` | Error, `warning` | what went wrong (Figma "failed"; default "Upload failed") | `cloud_upload` Upload |
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `Size` = Large / Small | `size: 'large' \| 'small'` (default `large`) |
+| `State` = Enabled / Uploading / Complete / Error | `state: 'enabled' \| 'uploading' \| 'complete' \| 'error'` (default `enabled`): set by the page, which does the uploading |
+| Text Box title / description | `heading` (Enabled) / `description` (every state); `fileName` is the Complete title, `errorMessage` the Error title; `headingLevel` (default 3) |
+| Progress bar (Small) | FinProgressBar `size="small"` with `progress` (0–100) |
+| `40px bg` / `48px bg` | FinIconContainer 40 / 48, filled, as the table above |
+| `all-button` | FinButton Tertiary **XSmall** with a leading icon; Delete with `contentTone="error"` |
+| — | `accept`, `maxSize` (bytes), `onFileSelect(file)`, `onFileReject(message, file)`, `onCancel`, `onDelete`, `disabled`, `labels` (code only) |
+
+**Decided 28 Oct 2026:** (1) **one file**; (2) **the button is XSmall (36)**: Figma's has no padding (24 tall, not a FinButton size), so Large is 218 (238 uploading), 12 taller than Figma; Small stays 102 / 122; (3) **drag over** (code first): a dashed `border-active` with a `bg-active` fill (the icon's `bg-info-secondary` circle is the same colour, so it blends in while dragging); (4) Complete's Delete uses **the bin used for Remove elsewhere** (`delete`, red); (5) the component **checks** the picked or dropped file against `accept` (extensions, MIME types, `image/*`) and `maxSize` and hands it over (`onFileSelect`) or says why not (`onFileReject`: "This file type isn’t accepted", "This file is larger than 5 MB"), which the page shows as the Error state; (6) **disabled** (code only): `border-disabled`, a Disabled icon, disabled text, no button; (7) the icons are **filled**, as Figma draws them; (8) Figma's stroke is inside the box, so the 1px border comes out of the padding (`calc(Space-XL - 1px)`): the box is Figma's height (an inset shadow, as List and Badge use, can't be dashed); (9) the title is sentence case: "Uploading…", "Upload failed" (Figma "Uploading...", "failed").
+
+**Tokens used:** `--fin-bg-primary`, `--fin-bg-active`, `--fin-border-{default,active,strong,error,disabled}`, `--fin-radius-l`, `--fin-space-xl`, `--fin-size-343`. FinIconContainer, FinTextBox, FinProgressBar and FinButton bring their own.
+
+**API:** `<FinFileUpload heading="Upload badge icon" description={…} accept=".png,.jpg,.jpeg" maxSize={5 * 1024 * 1024} state={state} progress={p} fileName={name} errorMessage={error} onFileSelect={start} onFileReject={showError} onCancel={cancel} onDelete={remove} />`. `formatFileSize(bytes)` ("5 MB") is exported too.
+
+**Accessibility:** a `group` named by the title; the button is the control (named by its label, described by the title and description); the file input is hidden from the keyboard and screen readers, as the button opens it; dropping is extra, never the only way. The title area is `aria-live="polite"`, so "Uploading…", the file name or the error is announced. The progress bar is a `progressbar` with its value. Nothing can be picked or dropped while uploading, complete or disabled.
+
+**Built (28 Oct 2026).** Storybook: Components/Input field/File upload (Playground, Variants (Figma), Disabled, Try it (a fake upload; refused files show why), Long file name). Checked in Chrome against Figma: strokes, radius 16, padding 16, icons 48 / 40 with Figma's tones, the buttons' colours; heights 218 / 238 Large, 102 / 122 Small; drag over `#625bff` / `#efefff`; a dropped PNG goes through uploading to complete, a PDF and a 6 MB file are refused. Light and Dark.
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -3891,6 +3924,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (27 Oct 2026):** `FinDateField` (§9.79). **Next:** the Add reward page (§8.6), plan first.
 > - **Approved and merged (28 Oct 2026):** FinStepper `width="fill"` (§9.77) and the Reward catalog **Add reward side sheet** (§8.6): four steps, Draft / Publish add the reward at the top with a snackbar, a discard dialog for unsaved changes; every card group in a grey panel (card hover kept), the rule note without a title, the rules table without the No. column. **Next:** Edit reward (the same sheet, filled with the reward's values, every step clickable, Cancel / Save).
 > - **Approved and merged (28 Oct 2026):** **Edit reward** (§8.6) with FinStepper `doneSteps="all"` (§9.77); Provider and Max total uses optional; a "Reward saved successfully" snackbar. **Every Reward catalog state is done** (list, add, details, edit, remove, removed). **Next:** the next page or component design names.
+> - **Built (28 Oct 2026), waiting for design:** `FinFileUpload` (§9.80, `feat/file-upload`), for the Badges page. **Next after approval:** the Badges page (§8.6), plan first.
 > - **Approved and merged (28 Oct 2026):** the page stories fill the Storybook canvas (§4.4; the Loyalty management pages no longer open at 1920), and the Storybook preview reloads itself once when an older deploy's file is gone (Safari's "Importing a module script failed"; README "Storybook on Vercel").
 > - **Approved and merged (28 Oct 2026):** **Focus areas** (§8.6): focus areas → lessons → questions → question details, each level with add / edit / remove; Published toggles; answer options typed and added (a red bin removes one); FinEmptyState `leadingIcon` (§9.74), the empty states' Add buttons with the plus. **Next:** the next page or component design names.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
@@ -4151,3 +4185,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 28 Oct 2026 | 0.2 | The Loyalty management page stories no longer open at a fixed 1920 viewport: they fill the canvas, as Focus areas (§4.4). |
 | 28 Oct 2026 | 0.2 | Storybook on Vercel: the preview reloads itself once when a file from an older deploy is gone (Safari: "Importing a module script failed"), README "Storybook on Vercel". |
 | 28 Oct 2026 | 0.2 | The page viewport change and the Storybook reload fix approved by design and merged into `main`. |
+| 28 Oct 2026 | 0.2 | **`FinFileUpload` built** (§8 #58, §9.80), public, Components/Input field/File upload: Large / Small × Enabled / Uploading / Complete / Error, one file, drag and drop, type and size checks, XSmall button, the bin for Delete. |

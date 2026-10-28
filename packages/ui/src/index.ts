@@ -32,6 +32,7 @@ export * from './components/EmptyState';
 export * from './components/NotificationBanner';
 export * from './components/Skeleton';
 export * from './components/DateField';
+export * from './components/FileUpload';
 export * from './components/Stepper';
 export * from './components/TextArea';
 export * from './components/Checkbox';
