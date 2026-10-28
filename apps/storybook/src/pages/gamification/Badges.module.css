@@ -1,0 +1,31 @@
+/*
+ * Badges page layout (DESIGN.md §8.6). The add / edit sheet (Figma `428:51250`): sections 24 apart (Space-3XL), each
+ * a title and its fields 16 below (Space-XL), as the other forms.
+ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}
+
+.section {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* The section title: Label/Small (12, semibold) text-primary, 16 above its fields, as the other forms. */
+.legend {
+  margin-bottom: var(--fin-space-xl);
+  padding: 0;
+  color: var(--fin-text-primary);
+  font: var(--fin-font-label-small);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 /**
  * What the Focus areas side sheets share: the form's values (starting from `initial`), which fields are wrong and the
@@ -22,11 +22,11 @@ export function useSheetForm<V extends object, F extends string>(initial: V, mes
 
   const changed = JSON.stringify(values) !== JSON.stringify(start);
 
-  /** Sets a value; with `field`, its error goes. */
-  const set = <K extends keyof V>(key: K, value: V[K], field?: F) => {
+  /** Sets a value; with `field`, its error goes. The same function every render (effects can depend on it). */
+  const set = useCallback(<K extends keyof V>(key: K, value: V[K], field?: F) => {
     setValues((current) => ({ ...current, [key]: value }));
     if (field) setErrors((current) => ({ ...current, [field]: false }));
-  };
+  }, []);
   /** A field's error props (or its helper text when it's fine). */
   const helper = (field: F, text?: string) => (errors[field] ? { error: true, helperText: messages[field] } : text ? { helperText: text } : {});
   /** Shows the errors found and focuses the first; `true` when there are none. */
