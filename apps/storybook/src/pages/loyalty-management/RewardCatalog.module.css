@@ -51,3 +51,18 @@
   gap: var(--fin-space-xl);
   align-items: start;
 }
+
+/*
+ * A panel around a group of radio cards (Reward value → Type and Value; requested by design 28 Oct 2026, as the
+ * screens' grey frames `385:31677`, `383:31633`): bg-secondary, Radius-L, 16 (Space-XL) padding, the H6 title (a Text
+ * Box) 12 (Space-L) above the white cards. The library has no card or panel component (Figma's Cards page is under
+ * "Do not use"), so the page draws it: a second exception to "page CSS is layout only".
+ */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-l);
+  padding: var(--fin-space-xl);
+  border-radius: var(--fin-radius-l);
+  background-color: var(--fin-bg-secondary);
+}
