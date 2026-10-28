@@ -6,6 +6,7 @@ import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import { pageSideNav } from '../pageShell';
 import { RecordDetails } from '../RecordDetails';
 import styles from '../common/PageStates.module.css';
+import { AddRewardForm } from './AddRewardForm';
 import { REWARD_STATUSES, type Reward, type RewardStatus } from './rewards';
 
 export interface RewardCatalogProps {
@@ -48,8 +49,9 @@ const columns: FinTableColumn<Reward>[] = [
  * the app shell. Built the same way as Programme configuration and Tier management: search by name, ID or partner,
  * filter from the Status column's dropdown (Figma's "Rewards: All" chip), act on a row from its ⋮ menu. View, or a
  * click on the row, opens the details sheet (code first). Remove asks in a dialog (`410:36648`) and then takes the row
- * out, with a Success snackbar (`410:37938`). Add reward and Edit open the Add reward pages, which come later: for now
- * they're only reported (`onAction`). Empty states and the shared negative states (Pages/Common states, `api`) as on
+ * out, with a Success snackbar (`410:37938`). Add reward opens the four-step Add reward side sheet (decided 28 Oct 2026;
+ * the screens' page in a sheet); a saved reward joins the table as Published or Draft. Edit (the same sheet) comes next:
+ * for now it's only reported (`onAction`). Empty states and the shared negative states (Pages/Common states, `api`) as on
  * the other pages.
  */
 export function RewardCatalog({ rewards: initialRewards, onAction = () => undefined, api = {} }: RewardCatalogProps) {
@@ -61,6 +63,9 @@ export function RewardCatalog({ rewards: initialRewards, onAction = () => undefi
   const { status, retry } = usePageLoad(api.load);
   const online = api.online ?? true;
   const removeCall = useFlakyCall(api.remove);
+  const saveCall = useFlakyCall(api.save);
+  // Each Add starts a fresh form (the sheet remounts).
+  const [adding, setAdding] = useState<{ key: number; open: boolean }>({ key: 0, open: false });
   useBackOnline(online, () => notify({ text: "You're back online", tone: 'success' }));
   const [query, setQuery] = useState('');
   // The Status column's filter, kept here so the empty state can clear it.
@@ -69,8 +74,10 @@ export function RewardCatalog({ rewards: initialRewards, onAction = () => undefi
   const search = query.trim().toLowerCase();
   const rows = rewards.filter((r) => [r.name, rewardId(r), r.partner ?? ''].some((text) => text.toLowerCase().includes(search)));
 
-  // The Add reward pages come later (decided 27 Oct 2026).
-  const add = () => onAction('Add reward');
+  const add = () => {
+    onAction('Add reward');
+    setAdding((current) => ({ key: current.key + 1, open: true }));
+  };
   const edit = (reward: Reward) => {
     setViewing(null);
     onAction(`Edit: ${reward.name}`);
@@ -169,6 +176,20 @@ export function RewardCatalog({ rewards: initialRewards, onAction = () => undefi
         onEdit={edit}
         onRemove={askRemove}
         actionsDisabled={!online}
+      />
+      <AddRewardForm
+        key={adding.key}
+        open={adding.open}
+        onClose={() => setAdding((current) => ({ ...current, open: false }))}
+        offline={!online}
+        onSave={(values) => {
+          if (!saveCall()) return false;
+          const id = rewards.reduce((max, r) => Math.max(max, r.id), 0) + 1;
+          // At the top, so it shows on the first page.
+          setRewards((current) => [{ id, name: values.name, partner: values.partner, userLimit: values.userLimit, status: values.status }, ...current]);
+          onAction(`${values.status === 'Draft' ? 'Saved as draft' : 'Published'}: ${values.name}`);
+          notify({ text: values.status === 'Draft' ? 'Reward saved as draft' : 'Reward published successfully', tone: 'success' });
+        }}
       />
       <FinDialog
         open={removing?.open ?? false}

@@ -1,0 +1,742 @@
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
+import {
+  FinButton,
+  FinDateField,
+  FinDialog,
+  FinHelperText,
+  FinListCheckboxFilled,
+  FinListCheckboxGroup,
+  FinListRadioFilled,
+  FinListRadioGroup,
+  FinListToggleFilled,
+  FinNotificationBanner,
+  FinSelectField,
+  FinSideSheet,
+  FinStepper,
+  FinTable,
+  FinTextArea,
+  FinTextField,
+  type FinTableColumn,
+} from '@finspace-loyalty/ui';
+import { ConnectionError, SaveError } from '../common/PageStates';
+import type { RewardStatus } from './rewards';
+import styles from './RewardCatalog.module.css';
+
+/** Fake options for the form's selects and lists (the screens' values first). */
+const EVENTS = ['QR payment - TXN fee', 'Fund transfer', 'Bill payment', 'Card purchase', 'Account opening'];
+const PROVIDERS = ['SLT Mobitel', 'Dialog', 'Tech Shop', 'Keells', 'Cinnamon Hotels & Resorts'];
+const CLAIM_DURATIONS = ['Per day', 'Per week', 'Per month', 'Per year', 'For the whole campaign'];
+const TIERS = ['Basic', 'Silver', 'Gold', 'Platinum'];
+const SEGMENTS = ['Staff', 'VIP', 'Regular'];
+const ALL_SEGMENTS = 'All segments';
+const ALL_TIERS = 'All tiers';
+const BADGES = ['Budget builder', 'Big spender', 'Early adopter', 'Loyal member'];
+
+const STEPS = ['Reward', 'Rules', 'Eligibility', 'UX'];
+
+type RewardType = 'discount' | 'cashback';
+type ValueType = 'fixed' | 'percentage';
+type GiveOn = 'every' | 'nth';
+type Eligibility = 'all' | 'tiers' | 'segments' | 'rules';
+
+interface Rule {
+  id: number;
+  segment: string;
+  tier: string;
+}
+
+/** Everything the form holds. */
+interface Values {
+  name: string;
+  event: string | null;
+  provider: string | null;
+  lifetime: boolean;
+  start: string | null;
+  end: string | null;
+  type: RewardType;
+  valueType: ValueType;
+  amount: string;
+  maxCapacity: string;
+  minTransaction: string;
+  giveOn: GiveOn;
+  count: string;
+  pointsCost: string;
+  promo: boolean;
+  promoCode: string;
+  claimDuration: string | null;
+  claimsPerCustomer: string;
+  maxUses: string;
+  eligibility: Eligibility;
+  tiers: string[];
+  segments: string[];
+  rules: Rule[];
+  badge: string | null;
+  headline: string;
+  description: string;
+  push: boolean;
+}
+
+const EMPTY: Values = {
+  name: '',
+  event: null,
+  provider: null,
+  lifetime: false,
+  start: null,
+  end: null,
+  type: 'discount',
+  valueType: 'fixed',
+  amount: '',
+  maxCapacity: '',
+  minTransaction: '',
+  giveOn: 'every',
+  count: '',
+  pointsCost: '',
+  promo: false,
+  promoCode: '',
+  claimDuration: null,
+  claimsPerCustomer: '',
+  maxUses: '',
+  eligibility: 'all',
+  tiers: [],
+  segments: [],
+  rules: [],
+  badge: null,
+  headline: '',
+  description: '',
+  push: false,
+};
+
+/** What the form saves: the page adds the row. */
+export interface AddRewardValues {
+  name: string;
+  partner: string;
+  /** Max total uses of the campaign: the list's User limit (assumed, DESIGN.md §8.6). */
+  userLimit: number;
+  status: Extract<RewardStatus, 'Draft' | 'Published'>;
+}
+
+export interface AddRewardFormProps {
+  open: boolean;
+  onClose: () => void;
+  /** Saves the reward; `false` means it failed (the sheet stays open with the save error). */
+  onSave: (values: AddRewardValues) => boolean | void;
+  /** The connection is down: the network or server error at the top, and Next's checks still run but nothing saves. */
+  offline?: boolean;
+}
+
+type Field =
+  | 'name'
+  | 'event'
+  | 'provider'
+  | 'start'
+  | 'end'
+  | 'amount'
+  | 'maxCapacity'
+  | 'minTransaction'
+  | 'count'
+  | 'pointsCost'
+  | 'promoCode'
+  | 'claimDuration'
+  | 'claimsPerCustomer'
+  | 'maxUses'
+  | 'tiers'
+  | 'segments'
+  | 'rules'
+  | 'ruleSegment'
+  | 'ruleTier'
+  | 'headline'
+  | 'description';
+
+const WHOLE = /^\d+$/;
+const AMOUNT = /^\d+(\.\d{1,2})?$/;
+const above0 = (text: string, pattern: RegExp) => pattern.test(text.trim()) && Number(text) > 0;
+const percent = (text: string) => above0(text, AMOUNT) && Number(text) <= 100;
+
+/** The amount field follows Type and Value (the screens `367:19964`, `388:31740`, `388:32199`, `388:32669`). */
+function amountField(type: RewardType, valueType: ValueType) {
+  if (type === 'discount') {
+    return valueType === 'fixed'
+      ? { label: 'Discount amount', suffix: 'LKR', error: 'Enter an amount above 0' }
+      : { label: 'Discount amount', suffix: '%', error: 'Enter a percentage from 0.01 to 100' };
+  }
+  return valueType === 'fixed'
+    ? { label: 'Points awarded', suffix: 'Points', error: 'Enter a whole number of points above 0' }
+    : { label: 'Points rate', suffix: '%', error: 'Enter a percentage from 0.01 to 100' };
+}
+
+/** The fields each step checks, in the order they're shown; `true` marks a wrong one. */
+function stepErrors(step: number, v: Values): Partial<Record<Field, boolean>> {
+  switch (step) {
+    case 0: {
+      const amountOk = (v.type === 'cashback' && v.valueType === 'fixed' ? above0(v.amount, WHOLE) : v.valueType === 'fixed' ? above0(v.amount, AMOUNT) : percent(v.amount));
+      return {
+        name: !v.name.trim(),
+        event: !v.event,
+        provider: !v.provider,
+        start: !v.start,
+        end: !v.lifetime && (!v.end || (!!v.start && v.end < v.start)),
+        amount: !amountOk,
+        maxCapacity: v.valueType === 'percentage' && v.maxCapacity.trim() !== '' && !above0(v.maxCapacity, v.type === 'cashback' ? WHOLE : AMOUNT),
+      };
+    }
+    case 1:
+      return {
+        minTransaction: !above0(v.minTransaction, AMOUNT),
+        count: v.giveOn === 'nth' && !above0(v.count, WHOLE),
+        pointsCost: !above0(v.pointsCost, WHOLE),
+        promoCode: v.promo && !v.promoCode.trim(),
+        claimDuration: !v.claimDuration,
+        claimsPerCustomer: !above0(v.claimsPerCustomer, WHOLE),
+        maxUses: !above0(v.maxUses, WHOLE),
+      };
+    case 2:
+      return {
+        tiers: v.eligibility === 'tiers' && v.tiers.length === 0,
+        segments: v.eligibility === 'segments' && v.segments.length === 0,
+        rules: v.eligibility === 'rules' && v.rules.length === 0,
+      };
+    default:
+      return { headline: !v.headline.trim(), description: !v.description.trim() };
+  }
+}
+
+const ERRORS: Partial<Record<Field, string>> = {
+  name: 'Enter a reward name',
+  event: 'Choose an event',
+  provider: 'Choose a provider',
+  start: 'Choose a start date',
+  end: 'Choose an end date on or after the start date',
+  maxCapacity: 'Enter an amount above 0, or leave it empty',
+  minTransaction: 'Enter an amount above 0',
+  count: 'Enter a whole number above 0',
+  pointsCost: 'Enter a whole number of points above 0',
+  promoCode: 'Enter the promo code',
+  claimDuration: 'Choose a duration',
+  claimsPerCustomer: 'Enter a whole number above 0',
+  maxUses: 'Enter a whole number above 0',
+  tiers: 'Choose at least one tier',
+  segments: 'Choose at least one segment',
+  rules: 'Add at least one rule',
+  ruleSegment: 'Choose a segment',
+  ruleTier: 'Choose a tier',
+  headline: 'Enter a headline',
+  description: 'Enter a description',
+};
+
+const ruleColumns: FinTableColumn<Rule>[] = [
+  { key: 'no', header: 'No.', width: 80, value: (r) => String(r.id).padStart(2, '0') },
+  { key: 'segment', header: 'Segment' },
+  { key: 'tier', header: 'Tier' },
+];
+
+/**
+ * Reward catalog → Add reward (Figma `367:19964`–`409:36106`, DESIGN.md §8.6): the screens' four-step page, in a side
+ * sheet like the other add forms (decided 28 Oct 2026). FinStepper (`fill`) at the top; done steps and the header's back
+ * button go back. Next checks the step (errors under the fields, the first focused); Publish checks the last step;
+ * Save as draft needs only the name. Cancel, Esc or a scrim click with changes asks first (a discard dialog). Section
+ * titles have no numbers (decided 28 Oct 2026). The page remounts it (`key`) each time it opens.
+ */
+export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRewardFormProps) {
+  const [v, setValues] = useState<Values>(EMPTY);
+  const [step, setStep] = useState(0);
+  const [errors, setErrors] = useState<Partial<Record<Field, boolean>>>({});
+  const [saveFailed, setSaveFailed] = useState(false);
+  const [discarding, setDiscarding] = useState(false);
+  const [ruleSegment, setRuleSegment] = useState<string | null>(null);
+  const [ruleTier, setRuleTier] = useState<string | null>(null);
+  const [ruleDuplicate, setRuleDuplicate] = useState(false);
+  const stepRef = useRef<HTMLDivElement>(null);
+  const moved = useRef(false);
+  const formId = useId();
+  const tiersErrorId = useId();
+  const segmentsErrorId = useId();
+  const rulesErrorId = useId();
+
+  const changed = (Object.keys(EMPTY) as (keyof Values)[]).some((key) => JSON.stringify(v[key]) !== JSON.stringify(EMPTY[key]));
+  const amount = amountField(v.type, v.valueType);
+
+  // A new step: focus it, so screen readers hear it and the body starts at the top.
+  useEffect(() => {
+    if (!moved.current) return;
+    moved.current = false;
+    stepRef.current?.focus();
+  }, [step]);
+
+  const set = <K extends keyof Values>(key: K, value: Values[K], field?: Field) => {
+    setValues((current) => ({ ...current, [key]: value }));
+    if (field) setErrors((current) => ({ ...current, [field]: false }));
+  };
+  // The fields' elements, so a wrong one can be focused; one ref callback per field, made once.
+  const [fields] = useState(() => {
+    const nodes = new Map<Field, HTMLElement | null>();
+    const bindings = Object.fromEntries(
+      Object.keys(ERRORS).map((field) => [field, (node: HTMLElement | null) => void nodes.set(field as Field, node)]),
+    ) as Record<Field, (node: HTMLElement | null) => void>;
+    return { focus: (field: Field) => nodes.get(field)?.focus(), bind: (field: Field) => bindings[field] };
+  });
+  const ref = fields.bind;
+  const helper = (field: Field, text?: string) => (errors[field] ? { error: true, helperText: ERRORS[field] } : text ? { helperText: text } : {});
+
+  const goTo = (next: number) => {
+    moved.current = true;
+    setErrors({});
+    setStep(next);
+  };
+  const check = (which: number) => {
+    const found = stepErrors(which, v);
+    setErrors(found);
+    const first = (Object.keys(found) as Field[]).find((field) => found[field]);
+    if (first) fields.focus(first);
+    return !first;
+  };
+
+  const close = () => {
+    setDiscarding(false);
+    onClose();
+  };
+  const requestClose = () => (changed ? setDiscarding(true) : close());
+
+  const save = (status: AddRewardValues['status']) => {
+    setSaveFailed(false);
+    const saved = onSave({ name: v.name.trim(), partner: v.provider ?? '', userLimit: Number(v.maxUses) || 0, status });
+    if (saved === false) {
+      setSaveFailed(true);
+      return;
+    }
+    onClose();
+  };
+  const saveDraft = () => {
+    if (!v.name.trim()) {
+      if (step !== 0) {
+        moved.current = false;
+        setStep(0);
+      }
+      setErrors({ name: true });
+      // After the step renders.
+      requestAnimationFrame(() => fields.focus('name'));
+      return;
+    }
+    save('Draft');
+  };
+  const submit = (event: FormEvent) => {
+    event.preventDefault();
+    if (!check(step)) return;
+    if (step < STEPS.length - 1) goTo(step + 1);
+    else save('Published');
+  };
+
+  const addRule = () => {
+    const missing = { ruleSegment: !ruleSegment, ruleTier: !ruleTier };
+    setErrors((current) => ({ ...current, ...missing }));
+    if (missing.ruleSegment) return fields.focus('ruleSegment');
+    if (missing.ruleTier) return fields.focus('ruleTier');
+    if (v.rules.some((r) => r.segment === ruleSegment && r.tier === ruleTier)) {
+      setRuleDuplicate(true);
+      return;
+    }
+    const id = v.rules.reduce((max, r) => Math.max(max, r.id), 0) + 1;
+    set('rules', [...v.rules, { id, segment: ruleSegment!, tier: ruleTier! }], 'rules');
+    setRuleSegment(null);
+    setRuleTier(null);
+  };
+
+  const last = step === STEPS.length - 1;
+
+  return (
+    <>
+      <FinSideSheet
+        open={open}
+        onClose={requestClose}
+        // No close button, as the other add forms: Cancel closes it; Esc and a click on the scrim still do (and ask first).
+        closeButton={false}
+        title="Add reward"
+        backButton={step > 0}
+        onBack={() => goTo(step - 1)}
+        backLabel={`Back to ${STEPS[step - 1] ?? ''}`}
+        buttonDock={{
+          ...(last ? { tertiaryButton: { label: 'Save as draft', onClick: saveDraft, disabled: offline } } : {}),
+          secondaryButton: { label: 'Cancel', onClick: requestClose },
+          primaryButton: last
+            ? { label: 'Publish', type: 'submit', form: formId, disabled: offline }
+            : { label: 'Next', type: 'submit', form: formId },
+        }}
+      >
+        <form id={formId} className={styles.form} noValidate onSubmit={submit}>
+          <FinStepper steps={STEPS} current={step} width="fill" onStepClick={goTo} />
+          {offline ? <ConnectionError /> : saveFailed && <SaveError />}
+          <div ref={stepRef} tabIndex={-1} className={styles.step} role="group" aria-label={`Step ${step + 1} of ${STEPS.length}: ${STEPS[step]}`}>
+            {step === 0 && (
+              <>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Basic details</legend>
+                  <div className={styles.group}>
+                    <FinTextField ref={ref('name')} label="Reward name" placeholder="Reward name" value={v.name} onChange={(e) => set('name', e.target.value, 'name')} {...helper('name')} />
+                    <FinSelectField
+                      ref={ref('event')}
+                      label="Event"
+                      placeholder="Event"
+                      options={EVENTS.map((o) => ({ value: o, label: o }))}
+                      value={v.event}
+                      onChange={(next) => set('event', next, 'event')}
+                      {...helper('event')}
+                    />
+                  </div>
+                </fieldset>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Availability</legend>
+                  <div className={styles.group}>
+                    <FinSelectField
+                      ref={ref('provider')}
+                      label="Provider"
+                      placeholder="Provider"
+                      options={PROVIDERS.map((o) => ({ value: o, label: o }))}
+                      value={v.provider}
+                      onChange={(next) => set('provider', next, 'provider')}
+                      {...helper('provider')}
+                    />
+                    <FinListToggleFilled
+                      size="small"
+                      title="Run for lifetime"
+                      description="The reward has no end date"
+                      checked={v.lifetime}
+                      onCheckedChange={(on) => set('lifetime', on, 'end')}
+                    />
+                    <div className={styles.row}>
+                      <FinDateField ref={ref('start')} label="Start date" value={v.start} onChange={(date) => set('start', date, 'start')} {...helper('start')} />
+                      {!v.lifetime && (
+                        <FinDateField
+                          ref={ref('end')}
+                          label="End date"
+                          value={v.end}
+                          {...(v.start ? { min: v.start } : {})}
+                          onChange={(date) => set('end', date, 'end')}
+                          {...helper('end')}
+                        />
+                      )}
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Reward value</legend>
+                  <div className={styles.group}>
+                    <FinListRadioGroup label="Type" value={v.type} onValueChange={(next) => set('type', next as RewardType, 'amount')} size="small">
+                      <FinListRadioFilled value="discount" title="Discount" />
+                      <FinListRadioFilled value="cashback" title="Cash back" description="Points are earned" />
+                    </FinListRadioGroup>
+                    <FinListRadioGroup label="Value" value={v.valueType} onValueChange={(next) => set('valueType', next as ValueType, 'amount')} size="small">
+                      <FinListRadioFilled value="fixed" title="Fixed amount" />
+                      <FinListRadioFilled value="percentage" title="Percentage" />
+                    </FinListRadioGroup>
+                    <FinTextField
+                      ref={ref('amount')}
+                      label={amount.label}
+                      placeholder={amount.label}
+                      suffix={amount.suffix}
+                      inputMode="decimal"
+                      value={v.amount}
+                      onChange={(e) => set('amount', e.target.value, 'amount')}
+                      {...(errors.amount ? { error: true, helperText: amount.error } : {})}
+                    />
+                    {v.valueType === 'percentage' && (
+                      <FinTextField
+                        ref={ref('maxCapacity')}
+                        label="Maximum capacity (optional)"
+                        placeholder="Maximum capacity (optional)"
+                        suffix={v.type === 'discount' ? 'LKR' : 'Points'}
+                        inputMode="decimal"
+                        value={v.maxCapacity}
+                        onChange={(e) => set('maxCapacity', e.target.value, 'maxCapacity')}
+                        {...helper('maxCapacity', 'The most one claim can give')}
+                      />
+                    )}
+                  </div>
+                </fieldset>
+              </>
+            )}
+
+            {step === 1 && (
+              <>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Qualifying transaction</legend>
+                  <div className={styles.group}>
+                    <FinTextField
+                      ref={ref('minTransaction')}
+                      label="Minimum transaction value"
+                      placeholder="Minimum transaction value"
+                      suffix="LKR"
+                      inputMode="decimal"
+                      value={v.minTransaction}
+                      onChange={(e) => set('minTransaction', e.target.value, 'minTransaction')}
+                      {...helper('minTransaction')}
+                    />
+                    <FinListRadioGroup label="Give the reward" value={v.giveOn} onValueChange={(next) => set('giveOn', next as GiveOn, 'count')} size="small">
+                      <FinListRadioFilled value="every" title="On every qualifying event" />
+                      <FinListRadioFilled value="nth" title="On the nth qualifying event" />
+                    </FinListRadioGroup>
+                    {v.giveOn === 'nth' && (
+                      <FinTextField
+                        ref={ref('count')}
+                        label="Count of event"
+                        placeholder="Count of event"
+                        suffix="th qualifying event"
+                        inputMode="numeric"
+                        value={v.count}
+                        onChange={(e) => set('count', e.target.value, 'count')}
+                        {...helper('count')}
+                      />
+                    )}
+                  </div>
+                </fieldset>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Cost to the customer</legend>
+                  <div className={styles.group}>
+                    <FinTextField
+                      ref={ref('pointsCost')}
+                      label="Points cost"
+                      placeholder="Points cost"
+                      suffix="Points"
+                      inputMode="numeric"
+                      value={v.pointsCost}
+                      onChange={(e) => set('pointsCost', e.target.value, 'pointsCost')}
+                      {...helper('pointsCost')}
+                    />
+                    <FinListToggleFilled
+                      size="small"
+                      title="Customer must enter a promo code"
+                      description="Customers enter a promo code to claim the reward"
+                      checked={v.promo}
+                      onCheckedChange={(on) => set('promo', on, 'promoCode')}
+                    />
+                    {v.promo && (
+                      <FinTextField
+                        ref={ref('promoCode')}
+                        label="Promo code"
+                        placeholder="Promo code"
+                        value={v.promoCode}
+                        onChange={(e) => set('promoCode', e.target.value, 'promoCode')}
+                        {...helper('promoCode')}
+                      />
+                    )}
+                  </div>
+                </fieldset>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Limits</legend>
+                  <div className={styles.group}>
+                    <div className={styles.row}>
+                      <FinSelectField
+                        ref={ref('claimDuration')}
+                        label="Maximum claim duration"
+                        placeholder="Maximum claim duration"
+                        options={CLAIM_DURATIONS.map((o) => ({ value: o, label: o }))}
+                        value={v.claimDuration}
+                        onChange={(next) => set('claimDuration', next, 'claimDuration')}
+                        {...helper('claimDuration')}
+                      />
+                      <FinTextField
+                        ref={ref('claimsPerCustomer')}
+                        label="Maximum claims per customer"
+                        placeholder="Maximum claims per customer"
+                        inputMode="numeric"
+                        value={v.claimsPerCustomer}
+                        onChange={(e) => set('claimsPerCustomer', e.target.value, 'claimsPerCustomer')}
+                        {...helper('claimsPerCustomer')}
+                      />
+                    </div>
+                    <FinTextField
+                      ref={ref('maxUses')}
+                      label="Max total uses of campaign"
+                      placeholder="Max total uses of campaign"
+                      suffix="Uses"
+                      inputMode="numeric"
+                      value={v.maxUses}
+                      onChange={(e) => set('maxUses', e.target.value, 'maxUses')}
+                      {...helper('maxUses')}
+                    />
+                  </div>
+                </fieldset>
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Who can claim this reward</legend>
+                  <FinListRadioGroup label="Type" value={v.eligibility} onValueChange={(next) => set('eligibility', next as Eligibility)} size="small">
+                    <FinListRadioFilled value="all" title="All customers" description="All tiers and segments" />
+                    <FinListRadioFilled value="tiers" title="Tier only" />
+                    <FinListRadioFilled value="segments" title="Segment only" />
+                    <FinListRadioFilled value="rules" title="Rules" description="Segments and tiers" />
+                  </FinListRadioGroup>
+                </fieldset>
+
+                {v.eligibility === 'tiers' && (
+                  <fieldset className={styles.section}>
+                    <legend className={styles.legend}>Tiers</legend>
+                    <div className={styles.group}>
+                      <FinListCheckboxGroup
+                        label="Tiers"
+                        value={v.tiers}
+                        onValueChange={(next) => set('tiers', next, 'tiers')}
+                        size="small"
+                        {...(errors.tiers ? { 'aria-describedby': tiersErrorId } : {})}
+                      >
+                        {TIERS.map((t, i) => (
+                          <FinListCheckboxFilled key={t} value={t} title={t} {...(i === 0 ? { ref: ref('tiers') } : {})} />
+                        ))}
+                      </FinListCheckboxGroup>
+                      {errors.tiers && (
+                        <FinHelperText id={tiersErrorId} tone="error">
+                          {ERRORS.tiers}
+                        </FinHelperText>
+                      )}
+                    </div>
+                  </fieldset>
+                )}
+
+                {v.eligibility === 'segments' && (
+                  <fieldset className={styles.section}>
+                    <legend className={styles.legend}>Segments</legend>
+                    <div className={styles.group}>
+                      <FinListCheckboxGroup
+                        label="Segments"
+                        value={v.segments}
+                        onValueChange={(next) => set('segments', next, 'segments')}
+                        size="small"
+                        {...(errors.segments ? { 'aria-describedby': segmentsErrorId } : {})}
+                      >
+                        {SEGMENTS.map((s, i) => (
+                          <FinListCheckboxFilled key={s} value={s} title={s} {...(i === 0 ? { ref: ref('segments') } : {})} />
+                        ))}
+                      </FinListCheckboxGroup>
+                      {errors.segments && (
+                        <FinHelperText id={segmentsErrorId} tone="error">
+                          {ERRORS.segments}
+                        </FinHelperText>
+                      )}
+                    </div>
+                  </fieldset>
+                )}
+
+                {v.eligibility === 'rules' && (
+                  <fieldset className={styles.section}>
+                    <legend className={styles.legend}>Create a rule</legend>
+                    <div className={styles.group}>
+                      <FinNotificationBanner tone="warning" title="Note">
+                        Each list also offers all segments or all tiers.
+                      </FinNotificationBanner>
+                      <div className={styles.row}>
+                        <FinSelectField
+                          ref={ref('ruleSegment')}
+                          label="Segment"
+                          placeholder="Segment"
+                          options={[ALL_SEGMENTS, ...SEGMENTS].map((o) => ({ value: o, label: o }))}
+                          value={ruleSegment}
+                          onChange={(next) => {
+                            setRuleSegment(next);
+                            setRuleDuplicate(false);
+                            setErrors((current) => ({ ...current, ruleSegment: false }));
+                          }}
+                          {...helper('ruleSegment')}
+                        />
+                        <FinSelectField
+                          ref={ref('ruleTier')}
+                          label="Tier"
+                          placeholder="Tier"
+                          options={[ALL_TIERS, ...TIERS].map((o) => ({ value: o, label: o }))}
+                          value={ruleTier}
+                          onChange={(next) => {
+                            setRuleTier(next);
+                            setRuleDuplicate(false);
+                            setErrors((current) => ({ ...current, ruleTier: false }));
+                          }}
+                          {...(ruleDuplicate ? { error: true, helperText: 'This rule is already added' } : helper('ruleTier'))}
+                        />
+                      </div>
+                      <FinButton ref={ref('rules')} variant="secondary" size="medium" icon="leading" iconName="add" onClick={addRule} {...(errors.rules ? { 'aria-describedby': rulesErrorId } : {})}>
+                        Add rule
+                      </FinButton>
+                      {errors.rules && (
+                        <FinHelperText id={rulesErrorId} tone="error">
+                          {ERRORS.rules}
+                        </FinHelperText>
+                      )}
+                      {v.rules.length > 0 && (
+                        <FinTable
+                          label="Added rules"
+                          columns={ruleColumns}
+                          rows={v.rules}
+                          getRowId={(r) => r.id}
+                          getRowLabel={(r) => `${r.segment}, ${r.tier}`}
+                          selectable={false}
+                          footer={false}
+                          hover={false}
+                          rowActions={[
+                            {
+                              label: 'Remove',
+                              icon: 'delete',
+                              destructive: true,
+                              onSelect: (rule) => set('rules', v.rules.filter((r) => r.id !== rule.id)),
+                            },
+                          ]}
+                        />
+                      )}
+                    </div>
+                  </fieldset>
+                )}
+
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Badge</legend>
+                  <FinSelectField
+                    label="Badge after completion (optional)"
+                    placeholder="Badge after completion (optional)"
+                    options={BADGES.map((o) => ({ value: o, label: o }))}
+                    value={v.badge}
+                    onChange={(next) => set('badge', next)}
+                  />
+                </fieldset>
+              </>
+            )}
+
+            {step === 3 && (
+              <>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Offer text, shown in the reward catalogue</legend>
+                  <div className={styles.group}>
+                    <FinTextField ref={ref('headline')} label="Headline" placeholder="Headline" value={v.headline} onChange={(e) => set('headline', e.target.value, 'headline')} {...helper('headline')} />
+                    <FinTextArea
+                      ref={ref('description')}
+                      label="Description"
+                      placeholder="Description"
+                      value={v.description}
+                      onChange={(e) => set('description', e.target.value, 'description')}
+                      {...helper('description')}
+                    />
+                  </div>
+                </fieldset>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Notifications</legend>
+                  <FinListToggleFilled
+                    size="small"
+                    title="Push notification"
+                    description="When a customer earns the reward"
+                    checked={v.push}
+                    onCheckedChange={(on) => set('push', on)}
+                  />
+                </fieldset>
+              </>
+            )}
+          </div>
+        </form>
+      </FinSideSheet>
+      <FinDialog
+        open={discarding}
+        onClose={() => setDiscarding(false)}
+        title="Discard this reward?"
+        secondaryButton={{ label: 'Keep editing', onClick: () => setDiscarding(false) }}
+        primaryButton={{ label: 'Discard', tone: 'destructive', onClick: close }}
+      >
+        What you&apos;ve entered will be lost.
+      </FinDialog>
+    </>
+  );
+}

@@ -1,0 +1,53 @@
+/*
+ * Reward catalog page layout (DESIGN.md §8.6). The Add reward side sheet (Figma `367:19964`–`409:36106`, moved into a
+ * side sheet, decided 28 Oct 2026): the stepper, then the step's sections 24 apart (Space-3XL), each a title and its
+ * fields 16 below (Space-XL), fields 16 apart, two fields side by side 16 apart; as the Programme configuration form.
+ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}
+
+/* The step's sections. Focused (from code) when the step changes, so screen readers hear the new step. */
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+}
+
+.step:focus {
+  outline: none;
+}
+
+.section {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/*
+ * The section title: Label/Small (12, semibold) text-primary, 16 (Space-XL) above its fields, as Programme
+ * configuration (decided 26 Oct 2026). The one text style in page CSS: there's no section-title component.
+ */
+.legend {
+  margin-bottom: var(--fin-space-xl);
+  padding: 0;
+  color: var(--fin-text-primary);
+  font: var(--fin-font-label-small);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--fin-space-xl);
+  align-items: start;
+}
