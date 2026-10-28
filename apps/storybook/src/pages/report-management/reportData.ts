@@ -1,5 +1,12 @@
 import type { Activity, ActivityType, Customer, Segment, Tier } from './reportModel';
 
+/** `days` before an ISO date (YYYY-MM-DD). */
+const daysBefore = (iso: string, days: number) => {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() - days);
+  return d.toISOString().slice(0, 10);
+};
+
 /** Fake data for the Reports stories: Figma's ten customers first (`435:90575`), Fatima Khan's history as `440:94624`. */
 
 /** Figma's history for Fatima Khan, newest first: type, description, points, balance after, lifetime after. */
@@ -29,7 +36,8 @@ function historyFor(c: Omit<Customer, 'history'>, n: number): Activity[] {
     const type: ActivityType = kind === 0 || kind === 3 ? 'Reward earn' : kind === 1 ? 'Reward redemption' : kind === 2 ? 'Learning' : 'Cash conversion';
     const points = type === 'Reward earn' ? 200 + ((i * 137) % 900) : type === 'Learning' ? 50 : type === 'Reward redemption' ? -(150 + ((i * 89) % 600)) : -1000;
     const description = type === 'Reward earn' ? EARN[i % EARN.length]! : type === 'Learning' ? 'Lesson completed' : type === 'Reward redemption' ? SPEND[i % SPEND.length]! : '1,000 pts to account credit';
-    out.push({ id: i + 1, type, description, points, balance, lifetime });
+    // Newest on the last activity's date, then every 4 to 15 days back.
+    out.push({ id: i + 1, date: daysBefore(c.lastActivity, i * (4 + (i % 12))), type, description, points, balance, lifetime });
     // Going back in time: before this activity.
     balance -= points;
     if (points > 0) lifetime -= points;
@@ -91,7 +99,7 @@ export const ALL_CUSTOMERS: Customer[] = [
   const base = { id: i + 1, segment: SEGMENT_LIST[i % 3]!, ...c, ...(c.earned > 0 ? { nextExpiry: { points: 200 + ((i * 113) % 1500), date: '2026-10-31' } } : {}) };
   const history: Activity[] =
     i === 0
-      ? FATIMA.map(([type, description, points, balance, lifetime], k) => ({ id: k + 1, type, description, points, balance, lifetime }))
+      ? FATIMA.map(([type, description, points, balance, lifetime], k) => ({ id: k + 1, date: daysBefore(c.lastActivity, k * 11), type, description, points, balance, lifetime }))
       : c.earned === 0
         ? []
         : historyFor(base, 6 + (i % 18));

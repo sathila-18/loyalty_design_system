@@ -8,7 +8,7 @@ const body = (canvasElement: HTMLElement) => within(canvasElement.ownerDocument.
 
 /**
  * Reports (Figma section `162:18060`, DESIGN.md §8.6), read only, built from the system's components: the summary
- * cards (FinStatCard) over the customer table (search, the Segment chip, the Tier column's filter). View, a row click
+ * cards (FinStatCard) over the customer table (search, the Tier column's filter). View, a row click
  * or the Active balance opens the customer's points history (`440:94624`); the back button returns. **Rows**
  * (Controls) sets how many customers the list starts with (0 to 25). The negative states are as Pages/Common states.
  */
@@ -48,16 +48,6 @@ export const NoMatches: Story = {
   },
 };
 
-/** The Segment chip's menu (no column to filter, so it stays the screen's chip). */
-export const SegmentFilter: Story = {
-  name: 'Segment filter',
-  // The open chip is Selected: its text contrast is accepted by design (DESIGN.md §10 #3), as the chips' own stories.
-  parameters: { a11y: { context: { include: ['body'], exclude: [...PAGE_KNOWN_CONTRAST_ISSUES, '[data-variant="selected"]'] } } },
-  play: async ({ canvasElement }) => {
-    await userEvent.click(await within(canvasElement).findByRole('button', { name: /All segments/ }));
-  },
-};
-
 /** At 1024: the side nav minimized, the cards narrower, the table scrolls sideways. */
 export const At1024: Story = { name: 'At 1024', args: { rows: 25 }, globals: { viewport: { value: 'desktop1024', isRotated: false } } };
 
@@ -78,4 +68,15 @@ export const PointsHistoryAt1024: Story = {
   name: 'Points history at 1024',
   args: { initialCustomerId: 1 },
   globals: { viewport: { value: 'desktop1024', isRotated: false } },
+};
+
+/** The Duration chip's ranges (a custom date range comes later, from design). */
+export const DurationFilter: Story = {
+  name: 'Duration filter',
+  args: { rows: 25, initialCustomerId: 10 },
+  // The open chip is Selected: its text contrast is accepted by design (DESIGN.md §10 #3), as the chips' own stories.
+  parameters: { a11y: { context: { include: ['body'], exclude: [...PAGE_KNOWN_CONTRAST_ISSUES, '[data-variant="selected"]'] } } },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(await within(canvasElement).findByRole('button', { name: /Duration: All/ }));
+  },
 };
