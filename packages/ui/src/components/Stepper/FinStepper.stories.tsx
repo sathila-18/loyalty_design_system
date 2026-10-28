@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { fn } from 'storybook/test';
+import { FinButton } from '../Button';
+import { FinSideSheet } from '../SideSheet';
 import { FinStepper } from './FinStepper';
 
 const STEPS = ['Reward', 'Rules', 'Eligibility', 'UX'];
@@ -7,6 +10,7 @@ const STEPS = ['Reward', 'Rules', 'Eligibility', 'UX'];
 interface Args {
   current: number;
   clickable: boolean;
+  width: 'hug' | 'fill';
 }
 
 /**
@@ -16,12 +20,13 @@ interface Args {
  */
 const meta: Meta<Args> = {
   title: 'Components/Stepper',
-  args: { current: 0, clickable: true },
+  args: { current: 0, clickable: true, width: 'hug' },
   argTypes: {
     current: { control: { type: 'range', min: 0, max: STEPS.length, step: 1 }, description: '`current` (4: every step done)' },
     clickable: { control: 'boolean', description: '`onStepClick` (done steps are buttons)' },
+    width: { control: 'inline-radio', options: ['hug', 'fill'], description: '`width` (code only: `fill` spreads the steps across the width)' },
   },
-  render: function Playground({ current, clickable }) {
+  render: function Playground({ current, clickable, width }) {
     const [step, setStep] = useState(current);
     const [shown, setShown] = useState(current);
     // A new `current` from the controls wins.
@@ -29,7 +34,7 @@ const meta: Meta<Args> = {
       setShown(current);
       setStep(current);
     }
-    return <FinStepper steps={STEPS} current={step} {...(clickable ? { onStepClick: setStep } : {})} />;
+    return <FinStepper steps={STEPS} current={step} width={width} {...(clickable ? { onStepClick: setStep } : {})} />;
   },
 };
 export default meta;
@@ -53,4 +58,34 @@ export const AllDone: Story = {
 export const LongLabels: Story = {
   name: 'Long labels',
   render: () => <FinStepper steps={['Basic details', 'Rules and limits', 'Who can claim this reward', 'Offer text']} current={1} />,
+};
+
+/**
+ * `width="fill"` in a side sheet, as the Add reward sheet will use it (decided 28 Oct 2026): the boxes spread from
+ * edge to edge of the sheet's body, whose width follows the window (535 at 1024 to 584 at 1920). Check it with the
+ * viewport sizes.
+ */
+export const InASideSheet: Story = {
+  name: 'Fill, in a side sheet',
+  parameters: { controls: { disable: true } },
+  render: function InASideSheet() {
+    const [open, setOpen] = useState(true);
+    const [step, setStep] = useState(1);
+    return (
+      <>
+        <FinButton onClick={() => setOpen(true)}>Open side sheet</FinButton>
+        <FinSideSheet
+          open={open}
+          onClose={() => setOpen(false)}
+          title="Add reward"
+          buttonDock={{
+            secondaryButton: { label: 'Cancel', onClick: () => setOpen(false) },
+            primaryButton: { label: 'Next', onClick: fn() },
+          }}
+        >
+          <FinStepper steps={STEPS} current={step} width="fill" onStepClick={setStep} />
+        </FinSideSheet>
+      </>
+    );
+  },
 };

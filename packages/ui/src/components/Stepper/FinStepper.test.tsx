@@ -46,4 +46,11 @@ describe('FinStepper', () => {
     expect(within(list).getAllByRole('listitem')[0]).toHaveTextContent('Reward, done');
     expect(within(list).getAllByRole('listitem')[3]).toHaveTextContent('UX, to do');
   });
+
+  it('hugs its steps by default and takes width="fill"', () => {
+    const { rerender } = render(<FinStepper steps={STEPS} current={0} />);
+    expect(screen.getByRole('list')).toHaveAttribute('data-width', 'hug');
+    rerender(<FinStepper steps={STEPS} current={0} width="fill" />);
+    expect(screen.getByRole('list')).toHaveAttribute('data-width', 'fill');
+  });
 });

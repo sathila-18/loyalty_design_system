@@ -18,6 +18,12 @@ export interface FinStepperProps extends Omit<HTMLAttributes<HTMLOListElement>, 
   label?: string;
   /** What screen readers hear after a done or upcoming step's label (default "completed", "not started"). */
   stateLabels?: { done: string; upcoming: string };
+  /**
+   * Code only (decided 28 Oct 2026, for the Add reward side sheet): `fill` spreads the steps across the stepper's
+   * width, the first box at the start and the last at the end. Default `hug`: columns 80 wide and 80 apart, as the
+   * screens.
+   */
+  width?: 'hug' | 'fill';
 }
 
 const stateOf = (index: number, current: number): FinStepState => (index < current ? 'done' : index === current ? 'current' : 'upcoming');
@@ -34,11 +40,17 @@ export function FinStepper({
   onStepClick,
   label = 'Steps',
   stateLabels = { done: 'completed', upcoming: 'not started' },
+  width = 'hug',
   className,
   ...rest
 }: FinStepperProps) {
   return (
-    <ol {...rest} aria-label={label} className={className ? `${styles.stepper} ${className}` : styles.stepper}>
+    <ol
+      {...rest}
+      aria-label={label}
+      data-width={width}
+      className={className ? `${styles.stepper} ${className}` : styles.stepper}
+    >
       {steps.map((step, index) => {
         const state = stateOf(index, current);
         const marker = (

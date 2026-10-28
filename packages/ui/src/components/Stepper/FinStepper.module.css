@@ -45,15 +45,38 @@
   --step-line: var(--fin-border-success);
 }
 
-/* The line to the next step: from this box's right edge to the next box's left edge, through the middle. */
+/* The line to the next step: from this box's right edge (the middle of its column, plus half a box) to the next box's left edge, through the middle. */
 .step:not(:last-child)::after {
   position: absolute;
   top: calc(var(--fin-size-36) / 2 - 1px);
-  left: calc(50% + var(--fin-size-36) / 2);
+  left: calc(var(--step-content-width, 100%) / 2 + var(--fin-size-36) / 2);
   width: calc(2 * var(--fin-space-10xl) - var(--fin-size-36));
   height: 2px;
   background-color: var(--step-line);
   content: "";
+}
+
+/*
+ * width="fill" (code only, decided 28 Oct 2026): the steps but the last share the width left after the last column,
+ * so the boxes spread from edge to edge. Each column stays Space-10XL wide at the start of its step; the line runs
+ * from this box to the next one, the step's width less a box.
+ */
+.stepper[data-width="fill"] {
+  gap: 0;
+  width: 100%;
+}
+
+.stepper[data-width="fill"] .step {
+  --step-content-width: var(--fin-space-10xl);
+}
+
+.stepper[data-width="fill"] .step:not(:last-child) {
+  flex: 1 1 0;
+  min-width: var(--fin-space-10xl);
+}
+
+.stepper[data-width="fill"] .step:not(:last-child)::after {
+  width: calc(100% - var(--fin-size-36));
 }
 
 .content,
@@ -62,7 +85,7 @@
   flex-direction: column;
   gap: var(--fin-space-m);
   align-items: center;
-  width: 100%;
+  width: var(--step-content-width, 100%);
 }
 
 .button {
