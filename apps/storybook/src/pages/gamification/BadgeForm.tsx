@@ -98,12 +98,11 @@ export function BadgeForm({ open, badge, takenNames, onClose, onSave, offline = 
     <>
       <FinSideSheet
         open={open}
+        // The close button at the top right, no Cancel (decided by design 28 Oct 2026, unlike the other add forms); it,
+        // Esc and a click on the scrim ask first when something changed.
         onClose={requestClose}
-        // No close button, as the other add forms: Cancel closes it; Esc and a click on the scrim still do (and ask first).
-        closeButton={false}
         title={editing ? 'Edit badge' : 'Add badge'}
         buttonDock={{
-          secondaryButton: { label: 'Cancel', onClick: requestClose },
           primaryButton: editing
             ? { label: 'Save', type: 'submit', form: formId, disabled: !form.changed || uploading || offline }
             : { label: 'Save badge', type: 'submit', form: formId, disabled: uploading || offline },
