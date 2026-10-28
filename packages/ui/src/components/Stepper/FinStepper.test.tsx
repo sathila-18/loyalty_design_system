@@ -53,4 +53,14 @@ describe('FinStepper', () => {
     rerender(<FinStepper steps={STEPS} current={0} width="fill" />);
     expect(screen.getByRole('list')).toHaveAttribute('data-width', 'fill');
   });
+
+  it('makes every step but the current one done with doneSteps="all"', async () => {
+    const onStepClick = vi.fn();
+    render(<FinStepper steps={STEPS} current={1} doneSteps="all" onStepClick={onStepClick} />);
+    const items = screen.getAllByRole('listitem');
+    expect(items.map((item) => item.getAttribute('data-state'))).toEqual(['done', 'current', 'done', 'done']);
+    expect(screen.getAllByRole('button')).toHaveLength(3);
+    await userEvent.click(screen.getByRole('button', { name: 'UX, completed' }));
+    expect(onStepClick).toHaveBeenCalledWith(3);
+  });
 });

@@ -50,8 +50,8 @@ const columns: FinTableColumn<Reward>[] = [
  * filter from the Status column's dropdown (Figma's "Rewards: All" chip), act on a row from its ⋮ menu. View, or a
  * click on the row, opens the details sheet (code first). Remove asks in a dialog (`410:36648`) and then takes the row
  * out, with a Success snackbar (`410:37938`). Add reward opens the four-step Add reward side sheet (decided 28 Oct 2026;
- * the screens' page in a sheet); a saved reward joins the table as Published or Draft. Edit (the same sheet) comes next:
- * for now it's only reported (`onAction`). Empty states and the shared negative states (Pages/Common states, `api`) as on
+ * the screens' page in a sheet); a saved reward joins the table as Published or Draft. Edit, in the ⋮ menu or the
+ * details sheet, opens the same sheet with the reward's details (code first); Save updates the row. Empty states and the shared negative states (Pages/Common states, `api`) as on
  * the other pages.
  */
 export function RewardCatalog({ rewards: initialRewards, onAction = () => undefined, api = {} }: RewardCatalogProps) {
@@ -64,8 +64,9 @@ export function RewardCatalog({ rewards: initialRewards, onAction = () => undefi
   const online = api.online ?? true;
   const removeCall = useFlakyCall(api.remove);
   const saveCall = useFlakyCall(api.save);
-  // Each Add starts a fresh form (the sheet remounts).
+  // Each Add or Edit starts a fresh form (the sheet remounts); Edit keeps its reward while the sheet closes.
   const [adding, setAdding] = useState<{ key: number; open: boolean }>({ key: 0, open: false });
+  const [editing, setEditing] = useState<{ reward: Reward; key: number; open: boolean } | null>(null);
   useBackOnline(online, () => notify({ text: "You're back online", tone: 'success' }));
   const [query, setQuery] = useState('');
   // The Status column's filter, kept here so the empty state can clear it.
@@ -81,6 +82,7 @@ export function RewardCatalog({ rewards: initialRewards, onAction = () => undefi
   const edit = (reward: Reward) => {
     setViewing(null);
     onAction(`Edit: ${reward.name}`);
+    setEditing((current) => ({ reward, open: true, key: (current?.key ?? 0) + 1 }));
   };
   const searched = query.trim();
   const empty =
@@ -185,12 +187,29 @@ export function RewardCatalog({ rewards: initialRewards, onAction = () => undefi
         onSave={(values) => {
           if (!saveCall()) return false;
           const id = rewards.reduce((max, r) => Math.max(max, r.id), 0) + 1;
+          const { details, status = 'Draft', ...shown } = values;
           // At the top, so it shows on the first page.
-          setRewards((current) => [{ id, name: values.name, partner: values.partner, userLimit: values.userLimit, status: values.status }, ...current]);
+          setRewards((current) => [{ id, ...shown, status, details }, ...current]);
           onAction(`${values.status === 'Draft' ? 'Saved as draft' : 'Published'}: ${values.name}`);
           notify({ text: values.status === 'Draft' ? 'Reward saved as draft' : 'Reward published successfully', tone: 'success' });
         }}
       />
+      {editing && (
+        <AddRewardForm
+          key={`edit-${editing.key}`}
+          open={editing.open}
+          reward={editing.reward}
+          onClose={() => setEditing({ ...editing, open: false })}
+          offline={!online}
+          onSave={({ name, partner, userLimit, details }) => {
+            if (!saveCall()) return false;
+            // The reward keeps its status, ID and users; a cleared partner or limit goes back to "N/A".
+            setRewards((current) => current.map((r) => (r.id === editing.reward.id ? { id: r.id, status: r.status, ...(r.users === undefined ? {} : { users: r.users }), name, ...(partner ? { partner } : {}), ...(userLimit === undefined ? {} : { userLimit }), details } : r)));
+            onAction(`Saved: ${name}`);
+            notify({ text: 'Reward saved successfully', tone: 'success' });
+          }}
+        />
+      )}
       <FinDialog
         open={removing?.open ?? false}
         onClose={closeRemove}

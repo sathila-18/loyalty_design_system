@@ -19,104 +19,46 @@ import {
   type FinTableColumn,
 } from '@finspace-loyalty/ui';
 import { ConnectionError, SaveError } from '../common/PageStates';
-import type { RewardStatus } from './rewards';
+import {
+  ALL_SEGMENTS,
+  ALL_TIERS,
+  BADGES,
+  CLAIM_DURATIONS,
+  EMPTY,
+  EVENTS,
+  PROVIDERS,
+  SEGMENTS,
+  STEPS,
+  TIERS,
+  rewardDetailsFrom,
+  type Eligibility,
+  type GiveOn,
+  type RewardDetails,
+  type RewardType,
+  type Rule,
+  type ValueType,
+} from './rewardDetails';
+import type { Reward, RewardStatus } from './rewards';
 import styles from './RewardCatalog.module.css';
 
-/** Fake options for the form's selects and lists (the screens' values first). */
-const EVENTS = ['QR payment - TXN fee', 'Fund transfer', 'Bill payment', 'Card purchase', 'Account opening'];
-const PROVIDERS = ['SLT Mobitel', 'Dialog', 'Tech Shop', 'Keells', 'Cinnamon Hotels & Resorts'];
-const CLAIM_DURATIONS = ['Per day', 'Per week', 'Per month', 'Per year', 'For the whole campaign'];
-const TIERS = ['Basic', 'Silver', 'Gold', 'Platinum'];
-const SEGMENTS = ['Staff', 'VIP', 'Regular'];
-const ALL_SEGMENTS = 'All segments';
-const ALL_TIERS = 'All tiers';
-const BADGES = ['Budget builder', 'Big spender', 'Early adopter', 'Loyal member'];
 
-const STEPS = ['Reward', 'Rules', 'Eligibility', 'UX'];
-
-type RewardType = 'discount' | 'cashback';
-type ValueType = 'fixed' | 'percentage';
-type GiveOn = 'every' | 'nth';
-type Eligibility = 'all' | 'tiers' | 'segments' | 'rules';
-
-interface Rule {
-  id: number;
-  segment: string;
-  tier: string;
-}
-
-/** Everything the form holds. */
-interface Values {
-  name: string;
-  event: string | null;
-  provider: string | null;
-  lifetime: boolean;
-  start: string | null;
-  end: string | null;
-  type: RewardType;
-  valueType: ValueType;
-  amount: string;
-  maxCapacity: string;
-  minTransaction: string;
-  giveOn: GiveOn;
-  count: string;
-  pointsCost: string;
-  promo: boolean;
-  promoCode: string;
-  claimDuration: string | null;
-  claimsPerCustomer: string;
-  maxUses: string;
-  eligibility: Eligibility;
-  tiers: string[];
-  segments: string[];
-  rules: Rule[];
-  badge: string | null;
-  headline: string;
-  description: string;
-  push: boolean;
-}
-
-const EMPTY: Values = {
-  name: '',
-  event: null,
-  provider: null,
-  lifetime: false,
-  start: null,
-  end: null,
-  type: 'discount',
-  valueType: 'fixed',
-  amount: '',
-  maxCapacity: '',
-  minTransaction: '',
-  giveOn: 'every',
-  count: '',
-  pointsCost: '',
-  promo: false,
-  promoCode: '',
-  claimDuration: null,
-  claimsPerCustomer: '',
-  maxUses: '',
-  eligibility: 'all',
-  tiers: [],
-  segments: [],
-  rules: [],
-  badge: null,
-  headline: '',
-  description: '',
-  push: false,
-};
-
-/** What the form saves: the page adds the row. */
+/** What the form saves: the page adds the row, or updates it when editing. */
 export interface AddRewardValues {
   name: string;
-  partner: string;
-  /** Max total uses of the campaign: the list's User limit (assumed, DESIGN.md §8.6). */
-  userLimit: number;
-  status: Extract<RewardStatus, 'Draft' | 'Published'>;
+  /** The provider: the list's Partner; none for the bank's own rewards ("N/A"). */
+  partner?: string;
+  /** Max total uses of the campaign: the list's User limit (assumed, DESIGN.md §8.6); none means no limit. */
+  userLimit?: number;
+  /** Add: Draft or Published. Edit leaves it out: the reward keeps its status. */
+  status?: Extract<RewardStatus, 'Draft' | 'Published'>;
+  details: RewardDetails;
 }
+
 
 export interface AddRewardFormProps {
   open: boolean;
+  /** Edit: the reward whose details fill the form. Leave it out to add one. */
+  reward?: Reward;
   onClose: () => void;
   /** Saves the reward; `false` means it failed (the sheet stays open with the save error). */
   onSave: (values: AddRewardValues) => boolean | void;
@@ -127,7 +69,6 @@ export interface AddRewardFormProps {
 type Field =
   | 'name'
   | 'event'
-  | 'provider'
   | 'start'
   | 'end'
   | 'amount'
@@ -165,14 +106,13 @@ function amountField(type: RewardType, valueType: ValueType) {
 }
 
 /** The fields each step checks, in the order they're shown; `true` marks a wrong one. */
-function stepErrors(step: number, v: Values): Partial<Record<Field, boolean>> {
+function stepErrors(step: number, v: RewardDetails): Partial<Record<Field, boolean>> {
   switch (step) {
     case 0: {
       const amountOk = (v.type === 'cashback' && v.valueType === 'fixed' ? above0(v.amount, WHOLE) : v.valueType === 'fixed' ? above0(v.amount, AMOUNT) : percent(v.amount));
       return {
         name: !v.name.trim(),
         event: !v.event,
-        provider: !v.provider,
         start: !v.start,
         end: !v.lifetime && (!v.end || (!!v.start && v.end < v.start)),
         amount: !amountOk,
@@ -187,7 +127,7 @@ function stepErrors(step: number, v: Values): Partial<Record<Field, boolean>> {
         promoCode: v.promo && !v.promoCode.trim(),
         claimDuration: !v.claimDuration,
         claimsPerCustomer: !above0(v.claimsPerCustomer, WHOLE),
-        maxUses: !above0(v.maxUses, WHOLE),
+        maxUses: v.maxUses.trim() !== '' && !above0(v.maxUses, WHOLE),
       };
     case 2:
       return {
@@ -203,7 +143,6 @@ function stepErrors(step: number, v: Values): Partial<Record<Field, boolean>> {
 const ERRORS: Partial<Record<Field, string>> = {
   name: 'Enter a reward name',
   event: 'Choose an event',
-  provider: 'Choose a provider',
   start: 'Choose a start date',
   end: 'Choose an end date on or after the start date',
   maxCapacity: 'Enter an amount above 0, or leave it empty',
@@ -213,7 +152,7 @@ const ERRORS: Partial<Record<Field, string>> = {
   promoCode: 'Enter the promo code',
   claimDuration: 'Choose a duration',
   claimsPerCustomer: 'Enter a whole number above 0',
-  maxUses: 'Enter a whole number above 0',
+  maxUses: 'Enter a whole number above 0, or leave it empty',
   tiers: 'Choose at least one tier',
   segments: 'Choose at least one segment',
   rules: 'Add at least one rule',
@@ -233,10 +172,15 @@ const ruleColumns: FinTableColumn<Rule>[] = [
  * sheet like the other add forms (decided 28 Oct 2026). FinStepper (`fill`) at the top; done steps and the header's back
  * button go back. Next checks the step (errors under the fields, the first focused); Publish checks the last step;
  * Save as draft needs only the name. Cancel, Esc or a scrim click with changes asks first (a discard dialog). Section
- * titles have no numbers (decided 28 Oct 2026). The page remounts it (`key`) each time it opens.
+ * titles have no numbers (decided 28 Oct 2026).
+ * Edit (code first, decided 28 Oct 2026): the same sheet, "Edit reward", filled with the reward's details; every step is
+ * done and clickable (FinStepper `doneSteps="all"`); Cancel / Save on every step, Save disabled until something changes;
+ * Save checks every step and opens the first one with an error. The page remounts it (`key`) each time it opens.
  */
-export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRewardFormProps) {
-  const [v, setValues] = useState<Values>(EMPTY);
+export function AddRewardForm({ open, reward, onClose, onSave, offline = false }: AddRewardFormProps) {
+  const editing = reward !== undefined;
+  const [initial] = useState<RewardDetails>(() => (reward ? (reward.details ?? rewardDetailsFrom(reward)) : EMPTY));
+  const [v, setDetails] = useState<RewardDetails>(initial);
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<Partial<Record<Field, boolean>>>({});
   const [saveFailed, setSaveFailed] = useState(false);
@@ -251,7 +195,9 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
   const segmentsErrorId = useId();
   const rulesErrorId = useId();
 
-  const changed = (Object.keys(EMPTY) as (keyof Values)[]).some((key) => JSON.stringify(v[key]) !== JSON.stringify(EMPTY[key]));
+  const changed = (Object.keys(initial) as (keyof RewardDetails)[]).some((key) => JSON.stringify(v[key]) !== JSON.stringify(initial[key]));
+  // A partner from the list that isn't one of the options (the stories' fake rows) is offered too.
+  const providers = initial.provider && !PROVIDERS.includes(initial.provider) ? [initial.provider, ...PROVIDERS] : PROVIDERS;
   const amount = amountField(v.type, v.valueType);
 
   // A new step: focus it, so screen readers hear it and the body starts at the top.
@@ -261,8 +207,8 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
     stepRef.current?.focus();
   }, [step]);
 
-  const set = <K extends keyof Values>(key: K, value: Values[K], field?: Field) => {
-    setValues((current) => ({ ...current, [key]: value }));
+  const set = <K extends keyof RewardDetails>(key: K, value: RewardDetails[K], field?: Field) => {
+    setDetails((current) => ({ ...current, [key]: value }));
     if (field) setErrors((current) => ({ ...current, [field]: false }));
   };
   // The fields' elements, so a wrong one can be focused; one ref callback per field, made once.
@@ -295,9 +241,15 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
   };
   const requestClose = () => (changed ? setDiscarding(true) : close());
 
-  const save = (status: AddRewardValues['status']) => {
+  const save = (status?: AddRewardValues['status']) => {
     setSaveFailed(false);
-    const saved = onSave({ name: v.name.trim(), partner: v.provider ?? '', userLimit: Number(v.maxUses) || 0, status });
+    const saved = onSave({
+      name: v.name.trim(),
+      ...(v.provider ? { partner: v.provider } : {}),
+      ...(v.maxUses.trim() ? { userLimit: Number(v.maxUses) } : {}),
+      ...(status ? { status } : {}),
+      details: { ...v, name: v.name.trim() },
+    });
     if (saved === false) {
       setSaveFailed(true);
       return;
@@ -317,8 +269,25 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
     }
     save('Draft');
   };
+  // Edit: every step is checked; the first one with an error opens, its first wrong field focused.
+  const saveEdit = () => {
+    for (let which = 0; which < STEPS.length; which += 1) {
+      const found = stepErrors(which, v);
+      const first = (Object.keys(found) as Field[]).find((field) => found[field]);
+      if (!first) continue;
+      setErrors(found);
+      if (which !== step) {
+        moved.current = false;
+        setStep(which);
+      }
+      requestAnimationFrame(() => fields.focus(first));
+      return;
+    }
+    save();
+  };
   const submit = (event: FormEvent) => {
     event.preventDefault();
+    if (editing) return saveEdit();
     if (!check(step)) return;
     if (step < STEPS.length - 1) goTo(step + 1);
     else save('Published');
@@ -348,20 +317,27 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
         onClose={requestClose}
         // No close button, as the other add forms: Cancel closes it; Esc and a click on the scrim still do (and ask first).
         closeButton={false}
-        title="Add reward"
+        title={editing ? 'Edit reward' : 'Add reward'}
         backButton={step > 0}
         onBack={() => goTo(step - 1)}
         backLabel={`Back to ${STEPS[step - 1] ?? ''}`}
-        buttonDock={{
-          ...(last ? { tertiaryButton: { label: 'Save as draft', onClick: saveDraft, disabled: offline } } : {}),
-          secondaryButton: { label: 'Cancel', onClick: requestClose },
-          primaryButton: last
-            ? { label: 'Publish', type: 'submit', form: formId, disabled: offline }
-            : { label: 'Next', type: 'submit', form: formId },
-        }}
+        buttonDock={
+          editing
+            ? {
+                secondaryButton: { label: 'Cancel', onClick: requestClose },
+                primaryButton: { label: 'Save', type: 'submit', form: formId, disabled: !changed || offline },
+              }
+            : {
+                ...(last ? { tertiaryButton: { label: 'Save as draft', onClick: saveDraft, disabled: offline } } : {}),
+                secondaryButton: { label: 'Cancel', onClick: requestClose },
+                primaryButton: last
+                  ? { label: 'Publish', type: 'submit', form: formId, disabled: offline }
+                  : { label: 'Next', type: 'submit', form: formId },
+              }
+        }
       >
         <form id={formId} className={styles.form} noValidate onSubmit={submit}>
-          <FinStepper steps={STEPS} current={step} width="fill" onStepClick={goTo} />
+          <FinStepper steps={STEPS} current={step} width="fill" doneSteps={editing ? 'all' : 'before'} onStepClick={goTo} />
           {offline ? <ConnectionError /> : saveFailed && <SaveError />}
           <div ref={stepRef} tabIndex={-1} className={styles.step} role="group" aria-label={`Step ${step + 1} of ${STEPS.length}: ${STEPS[step]}`}>
             {step === 0 && (
@@ -385,13 +361,12 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
                   <legend className={styles.legend}>Availability</legend>
                   <div className={styles.group}>
                     <FinSelectField
-                      ref={ref('provider')}
-                      label="Provider"
-                      placeholder="Provider"
-                      options={PROVIDERS.map((o) => ({ value: o, label: o }))}
+                      label="Provider (optional)"
+                      placeholder="Provider (optional)"
+                      options={providers.map((o) => ({ value: o, label: o }))}
                       value={v.provider}
-                      onChange={(next) => set('provider', next, 'provider')}
-                      {...helper('provider')}
+                      onChange={(next) => set('provider', next)}
+                      helperText="Leave it empty for the bank's own rewards"
                     />
                     <FinListToggleFilled
                       size="small"
@@ -558,13 +533,13 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
                     </div>
                     <FinTextField
                       ref={ref('maxUses')}
-                      label="Max total uses of campaign"
-                      placeholder="Max total uses of campaign"
+                      label="Max total uses of campaign (optional)"
+                      placeholder="Max total uses of campaign (optional)"
                       suffix="Uses"
                       inputMode="numeric"
                       value={v.maxUses}
                       onChange={(e) => set('maxUses', e.target.value, 'maxUses')}
-                      {...helper('maxUses')}
+                      {...helper('maxUses', 'Leave it empty for no limit')}
                     />
                   </div>
                 </fieldset>
@@ -754,11 +729,11 @@ export function AddRewardForm({ open, onClose, onSave, offline = false }: AddRew
       <FinDialog
         open={discarding}
         onClose={() => setDiscarding(false)}
-        title="Discard this reward?"
+        title={editing ? 'Discard your changes?' : 'Discard this reward?'}
         secondaryButton={{ label: 'Keep editing', onClick: () => setDiscarding(false) }}
         primaryButton={{ label: 'Discard', tone: 'destructive', onClick: close }}
       >
-        What you&apos;ve entered will be lost.
+        {editing ? 'Your changes to this reward will be lost.' : 'What you\u2019ve entered will be lost.'}
       </FinDialog>
     </>
   );

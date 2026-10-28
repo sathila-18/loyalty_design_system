@@ -24,9 +24,15 @@ export interface FinStepperProps extends Omit<HTMLAttributes<HTMLOListElement>, 
    * screens.
    */
   width?: 'hug' | 'fill';
+  /**
+   * Code only (decided 28 Oct 2026, for Edit reward, where every step is already filled in): `all` makes every step
+   * but the current one done (green, and a button with `onStepClick`). Default `before`: only the steps before it.
+   */
+  doneSteps?: 'before' | 'all';
 }
 
-const stateOf = (index: number, current: number): FinStepState => (index < current ? 'done' : index === current ? 'current' : 'upcoming');
+const stateOf = (index: number, current: number, doneSteps: 'before' | 'all'): FinStepState =>
+  index === current ? 'current' : index < current || doneSteps === 'all' ? 'done' : 'upcoming';
 
 /**
  * The steps of a multi-step form (code first, no Figma component: measured from the Add reward screens; DESIGN.md
@@ -41,6 +47,7 @@ export function FinStepper({
   label = 'Steps',
   stateLabels = { done: 'completed', upcoming: 'not started' },
   width = 'hug',
+  doneSteps = 'before',
   className,
   ...rest
 }: FinStepperProps) {
@@ -52,7 +59,7 @@ export function FinStepper({
       className={className ? `${styles.stepper} ${className}` : styles.stepper}
     >
       {steps.map((step, index) => {
-        const state = stateOf(index, current);
+        const state = stateOf(index, current, doneSteps);
         const marker = (
           <>
             <span className={styles.box} aria-hidden="true">

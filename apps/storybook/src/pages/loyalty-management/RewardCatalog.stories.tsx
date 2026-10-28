@@ -23,7 +23,7 @@ const openRowAction = async (canvasElement: HTMLElement, reward: string, action 
  * the other list pages: FinAppShell, FinTable with its toolbar (search, Add reward), a filter on the Status column and
  * the row actions menu. Use the viewport menu for 1920, 1440, 1280 and 1024. View (or a row click) opens the details,
  * Remove the remove dialog and then the removed snackbar. Add reward opens the four-step Add reward side sheet; Edit
- * comes later (shown in Actions for now). **Rows** (Controls) sets how many rewards the table starts with (0 to 40). The
+ * opens the same sheet with the reward's details. **Rows** (Controls) sets how many rewards the table starts with (0 to 40). The
  * negative states are in Pages/Common states.
  */
 type PageArgs = Omit<RewardCatalogProps, 'rewards'> & { rows: number };
@@ -169,5 +169,24 @@ export const AddRewardDiscard: Story = {
     const sheet = await openAddReward(canvasElement);
     await userEvent.type(sheet.getByRole('textbox', { name: 'Reward name' }), 'Weekend cash back');
     await userEvent.click(sheet.getByRole('button', { name: 'Cancel' }));
+  },
+};
+
+/**
+ * Edit reward (code first, decided 28 Oct 2026): Edit in a row's ⋮ menu opens the Add reward sheet with the reward's
+ * details. Every step is done and clickable; Cancel / Save, Save off until something changes.
+ */
+export const EditReward: Story = {
+  name: 'Edit reward',
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'Transaction fee', 'Edit');
+  },
+};
+
+/** A reward with no partner and no limit: Provider and Max total uses start empty (both optional). */
+export const EditRewardNoPartner: Story = {
+  name: 'Edit reward, no partner or limit',
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, 'Cash back', 'Edit');
   },
 };

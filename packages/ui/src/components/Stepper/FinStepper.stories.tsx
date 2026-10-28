@@ -60,6 +60,15 @@ export const LongLabels: Story = {
   render: () => <FinStepper steps={['Basic details', 'Rules and limits', 'Who can claim this reward', 'Offer text']} current={1} />,
 };
 
+/** `doneSteps="all"` (code only), as Edit reward uses it: every step is filled in, so every other step is done and clickable. */
+export const Editing: Story = {
+  name: 'Editing (every step done)',
+  render: function Editing() {
+    const [step, setStep] = useState(1);
+    return <FinStepper steps={STEPS} current={step} doneSteps="all" onStepClick={setStep} />;
+  },
+};
+
 /**
  * `width="fill"` in a side sheet, as the Add reward sheet will use it (decided 28 Oct 2026): the boxes spread from
  * edge to edge of the sheet's body, whose width follows the window (535 at 1024 to 584 at 1920). Check it with the
