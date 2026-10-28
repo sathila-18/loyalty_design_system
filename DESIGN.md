@@ -4217,3 +4217,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 28 Oct 2026 | 0.2 | Reports (design review): no Segment filter; the points history gets a Date column and a Duration chip (ranges; custom range later); the next expiry card reads "Expires 31/10/2026" / "1,200 pts", one line. |
 | 28 Oct 2026 | 0.2 | Reports approved by design and merged into `main`. |
 | 28 Oct 2026 | 0.2 | Pages/Common states no longer opens at a fixed 1920 viewport; the empty states' Add buttons on Programme configuration, Tier management and Reward catalog get the plus (FinEmptyState `leadingIcon`), as every page now. |
+| 28 Oct 2026 | 0.2 | The Common states viewport and the empty states' plus approved by design and merged into `main`. |
