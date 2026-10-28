@@ -3818,7 +3818,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Accessibility:** plain text in reading order: the label, then the value. Not a heading or a landmark. Contrast: the label `text-secondary` and the value `text-primary` on `bg-active` meet 4.5:1 in Light and Dark (a11y check).
 
-**Built (28 Oct 2026).** Storybook: Components/Stat card (Playground, Reports, Customer history, Narrow). Checked in Chrome against Figma: 364 × 94.6 at the screens' width, padding 20, radius 16, `#efefff`, label 14 semibold (`text-secondary`, lighter than the screens' `#474748`), value 24 bold `#19191a` (Light); Dark uses the Dark tokens. A long label ends in "…", a long value wraps.
+**Built, approved and merged (28 Oct 2026).** Storybook: Components/Stat card (Playground, Reports, Customer history, Narrow). Checked in Chrome against Figma: 364 × 94.6 at the screens' width, padding 20, radius 16, `#efefff`, label 14 semibold (`text-secondary`, lighter than the screens' `#474748`), value 24 bold `#19191a` (Light); Dark uses the Dark tokens. A long label ends in "…", a long value wraps.
 
 ## 10. Known issues and open decisions
 
@@ -3942,7 +3942,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (28 Oct 2026):** FinStepper `width="fill"` (§9.77) and the Reward catalog **Add reward side sheet** (§8.6): four steps, Draft / Publish add the reward at the top with a snackbar, a discard dialog for unsaved changes; every card group in a grey panel (card hover kept), the rule note without a title, the rules table without the No. column. **Next:** Edit reward (the same sheet, filled with the reward's values, every step clickable, Cancel / Save).
 > - **Approved and merged (28 Oct 2026):** **Edit reward** (§8.6) with FinStepper `doneSteps="all"` (§9.77); Provider and Max total uses optional; a "Reward saved successfully" snackbar. **Every Reward catalog state is done** (list, add, details, edit, remove, removed). **Next:** the next page or component design names.
 > - **Approved and merged (28 Oct 2026):** `FinFileUpload` (§9.80), for the Badges page.
-> - **Built (28 Oct 2026), waiting for design:** `FinStatCard` (§9.81, `feat/stat-card`), the summary cards of the Reports page. **Next after approval:** the Reports page (§8.6; decided 28 Oct 2026: the customer list and a customer's points history, View and the Active balance link open the history; Tier as a column filter, Segment a chip, no Consumption type; Duration waits for a custom date range).
+> - **Approved and merged (28 Oct 2026):** `FinStatCard` (§9.81), the summary cards of the Reports page. **Next:** the Reports page (§8.6; decided 28 Oct 2026: the customer list and a customer's points history, View and the Active balance link open the history; Tier as a column filter, Segment a chip, no Consumption type; Duration waits for a custom date range).
 > - **Approved and merged (28 Oct 2026):** the **Badges** page (§8.6): search and the Status filter, the icon (32) before the name (FinTable column `leading`, §9.45), details, add / edit with the icon upload and an Active toggle, the close button and no Cancel, remove. **Next:** the next page or component design names (left for later: connecting the badges to Add reward's and Add focus area's badge lists).
 > - **Approved and merged (28 Oct 2026):** the page stories fill the Storybook canvas (§4.4; the Loyalty management pages no longer open at 1920), and the Storybook preview reloads itself once when an older deploy's file is gone (Safari's "Importing a module script failed"; README "Storybook on Vercel").
 > - **Approved and merged (28 Oct 2026):** **Focus areas** (§8.6): focus areas → lessons → questions → question details, each level with add / edit / remove; Published toggles; answer options typed and added (a red bin removes one); FinEmptyState `leadingIcon` (§9.74), the empty states' Add buttons with the plus. **Next:** the next page or component design names.
@@ -4211,3 +4211,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 28 Oct 2026 | 0.2 | Badges: the badge sheet has the close button at the top right and no Cancel (design review). |
 | 28 Oct 2026 | 0.2 | Badges and FinTable `leading` approved by design and merged into `main`. |
 | 28 Oct 2026 | 0.2 | **`FinStatCard` built** (§8 #83, §9.81), public, Components/Stat card: code first from the Reports screens' summary cards. |
+| 28 Oct 2026 | 0.2 | `FinStatCard` approved by design and merged into `main`. |
