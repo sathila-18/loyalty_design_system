@@ -114,12 +114,14 @@ td:is(.stickyEnd, .stickyStart, .stickySelect) {
 
 /*
  * While content passes under the fixed column, it casts Shadow/Sticky sideways (decided by design 22 Oct 2026, for
- * consistency with Sticky): on the left of a column fixed at the end, on the right of one fixed at the start.
+ * consistency with Sticky): on the left of a column fixed at the end, on the right of one fixed at the start. Only
+ * once the table is scrolled sideways (decided by design 29 Oct 2026): at rest, the end column has no shadow even
+ * when columns are hidden under it.
  * Table cells can't cast a shadow in a collapsed-border table, so an empty layer the size of the cell does (a shadow
  * only paints outside its box, so the cell and its line show as before); it's clipped to that side, so the shadow
  * doesn't fall on the rows above and below.
  */
-.scroll[data-hidden-end] .stickyEnd::before,
+.scroll[data-hidden-start][data-hidden-end] .stickyEnd::before,
 .scroll[data-hidden-start] .stickyStart::before {
   position: absolute;
   z-index: -1;
@@ -127,7 +129,8 @@ td:is(.stickyEnd, .stickyStart, .stickySelect) {
   inset: 0;
 }
 
-.scroll[data-hidden-end] .stickyEnd::before {
+/* Scrolled sideways, with content still under the column. */
+.scroll[data-hidden-start][data-hidden-end] .stickyEnd::before {
   box-shadow: var(--fin-shadow-sticky-end);
   clip-path: inset(0 0 0 calc(-1 * var(--fin-space-3xl)));
 }
