@@ -1899,7 +1899,7 @@
       },
       "Font weight": {
         "$type": "dimension",
-        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$value": "{Primitives.Typography.Font Weight.Medium-500}",
         "$description": "",
         "$extensions": {
           "mode": {}
@@ -1933,7 +1933,7 @@
       },
       "Font weight": {
         "$type": "dimension",
-        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$value": "{Primitives.Typography.Font Weight.Medium-500}",
         "$description": "",
         "$extensions": {
           "mode": {}
@@ -1967,7 +1967,7 @@
       },
       "Font weight": {
         "$type": "dimension",
-        "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
+        "$value": "{Primitives.Typography.Font Weight.Medium-500}",
         "$description": "",
         "$extensions": {
           "mode": {}
@@ -4160,7 +4160,7 @@
         "Color collection",
         "Alias Spacing & Radius"
       ],
-      "createdAt": "2026-10-19T06:28:20.634Z"
+      "createdAt": "2026-10-29T09:09:45.158Z"
     }
   }
 }

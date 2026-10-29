@@ -4,7 +4,7 @@
  * #5953E8). Default has no fill (the nav's bg-secondary shows); Hovered bg-tertiary, Pressed bg-neutral;
  * Selected - BG bg-primary + text-action (no hover change); Selected text-action. Sub items 4 (Space-XS) below,
  * 4 apart. The label keeps a 12 gap before the chevron (Figma has none; decided 29 Oct 2026). Minimized: the icon
- * only, 40 × 37, as tall as Full (decided 29 Oct 2026). No Focused design: a 2px border-focused ring inside.
+ * only, 44 × 37, as tall as Full (decided 29 Oct 2026). No Focused design: a 2px border-focused ring inside.
  */
 
 .item {
@@ -35,8 +35,8 @@
   outline-offset: -2px;
 }
 
-/* Minimized: the icon only, 40 × 37: as tall as Full (one line of the label), so the items don't move when the nav
-   collapses (decided 29 Oct 2026; Figma 40 × 32). */
+/* Minimized: the icon only, 44 × 37: as tall as Full (one line of the label), so the items don't move when the nav
+   collapses (decided 29 Oct 2026; Figma 44 × 36). */
 .header[data-type="minimized"] {
   width: auto;
   min-block-size: calc(1lh + 2 * var(--fin-space-m));
