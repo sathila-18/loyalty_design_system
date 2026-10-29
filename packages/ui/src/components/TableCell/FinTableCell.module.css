@@ -1,5 +1,5 @@
 /*
- * FinTableCell (DESIGN.md §9). Figma: 56 tall, padding 0 / 24 (Space-3XL), gap 8 (Space-M), centred, no fill (the
+ * FinTableCell (DESIGN.md §9). Figma: 40 tall (was 56; 29 Oct 2026), padding 0 / 24 (Space-3XL), gap 8 (Space-M), centred, no fill (the
  * row draws fill and hover). Default text is Body/Medium text-secondary (Figma's raw 14 → the Body/Medium style).
  * Link is the all-button XSmall Tertiary look with an underline: Button/Medium, text-action, padding 6 / 0 (no side
  * padding, so its text lines up with the header's; 22 Oct 2026).
@@ -15,7 +15,7 @@
   display: flex;
   gap: var(--fin-space-m);
   align-items: center;
-  height: var(--fin-size-56);
+  height: var(--fin-size-40);
   padding: 0 var(--fin-space-3xl);
 }
 

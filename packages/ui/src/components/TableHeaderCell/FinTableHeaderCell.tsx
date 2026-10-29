@@ -47,7 +47,7 @@ export interface FinTableHeaderCellProps extends Omit<ThHTMLAttributes<HTMLTable
 
 /**
  * A table column header (Figma Table header cell; DESIGN.md §9): an optional "select all" checkbox, the title (Slot)
- * and an optional down arrow, 48 tall. A native `<th scope="col">`, so it goes inside a table row. No hover or other
+ * and an optional down arrow, 40 tall. A native `<th scope="col">`, so it goes inside a table row. No hover or other
  * states of its own (decided 19 Oct 2026); the checkbox keeps its own. `ref` goes to the `th`.
  * **Internal:** part of the table.
  */

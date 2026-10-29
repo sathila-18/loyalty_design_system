@@ -1,5 +1,5 @@
 /*
- * FinTableHeaderCell (DESIGN.md §9). Figma: 48 tall, padding 0 / 24 (Space-3XL), gap 12 (Space-L), centred; Grey
+ * FinTableHeaderCell (DESIGN.md §9). Figma: 40 tall (was 48; 29 Oct 2026), padding 0 / 24 (Space-3XL), gap 12 (Space-L), centred; Grey
  * fills bg-tertiary, White has none. The checkbox is FinCheckboxBase, the title FinLabel (Label/Medium,
  * text-tertiary). The trailing arrow is fg-secondary (Figma raw #626262, the same colour in Light). No hover.
  */
@@ -20,7 +20,7 @@
   display: flex;
   gap: var(--fin-space-l);
   align-items: center;
-  height: var(--fin-size-48);
+  height: var(--fin-size-40);
   padding: 0 var(--fin-space-3xl);
 }
 

@@ -1,6 +1,7 @@
 /*
  * FinRowCountSelect (DESIGN.md §9). A pill: the label (Body S, text-tertiary), the value (Label S, text-primary) and a
- * 24px down arrow (fg-secondary). Figma's 1px stroke is an inset shadow, so it never changes the size. 40 tall.
+ * 24px down arrow (fg-secondary). Figma's 1px stroke is an inset shadow, so it never changes the size. Padding 4 / 12,
+ * 32 tall (was 8 / 12, 40; 29 Oct 2026).
  */
 
 .select {
@@ -9,7 +10,7 @@
   gap: var(--fin-space-m);
   align-items: center;
   margin: 0;
-  padding: var(--fin-space-m) var(--fin-space-l);
+  padding: var(--fin-space-xs) var(--fin-space-l);
   border: 0;
   border-radius: var(--fin-radius-full);
   background-color: var(--fin-bg-secondary);

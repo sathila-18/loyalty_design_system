@@ -58,7 +58,7 @@ export type FinTableCellProps = FinTableCellOwnProps & FinTableCellActionProps;
 
 /**
  * A table data cell (Figma Table - Cell; DESIGN.md §9): optional leading accessories (the row checkbox), the content
- * and an optional action button, 56 tall. A native `<td>`, so it goes inside a table row. No fill or hover of its
+ * and an optional action button, 40 tall. A native `<td>`, so it goes inside a table row. No fill or hover of its
  * own: the row draws those. `ref` goes to the `td`.
  * **Internal:** part of the table.
  */

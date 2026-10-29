@@ -2376,7 +2376,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 ### 9.38 FinRowCountSelect (Row count dropdown) — internal
 
-**Figma:** page **Table**, component set `Row count dropdown` `3151:14547`: `Property 1` = Default / Hovered (unnamed property, §10 #21). A pill: "Rows per page:" (Body S, `text-tertiary`), the value "10" (Label S, `text-primary`) and `keyboard_arrow_down` 24 (`fg-secondary`); padding `Space-M` / `Space-L`, gap `Space-M`, `Radius-Full`, `bg-secondary` (Hovered `bg-tertiary`), a 1px `border-subtle` stroke; 166 × 40. Part of the Table footer (§8 #73) with the Pagination group.
+**Figma:** page **Table**, component set `Row count dropdown` `3151:14547`: `Property 1` = Default / Hovered (unnamed property, §10 #21). A pill: "Rows per page:" (Body S, `text-tertiary`), the value "10" (Label S, `text-primary`) and `keyboard_arrow_down` 24 (`fg-secondary`); padding `Space-XS` / `Space-L` (4 / 12; **Changed by design 29 Oct 2026:** was `Space-M` / `Space-L`, 40 tall), gap `Space-M`, `Radius-Full`, `bg-secondary` (Hovered `bg-tertiary`), a 1px `border-subtle` stroke; 166 × 32 (was 166 × 40). Part of the Table footer (§8 #73) with the Pagination group.
 
 **Decided 19 Oct 2026:** it opens a **menu of row counts built from the List component**, so (as the country selector, §9.36) **only the trigger is built now**; the menu comes after the List (§10 #49). **Internal**, under Internal/Pagination.
 
@@ -2392,7 +2392,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 | — (the menu) | `options` (default `FIN_ROW_COUNT_OPTIONS`: 10, 25, 50, 100), `onValueChange` | `aria-haspopup="listbox"`, `aria-expanded`, `aria-controls` from FinMenu |
 | — | `ref`, `className`, other button attributes | No disabled state (none in Figma) |
 
-**Tokens used:** padding `--fin-space-m` / `--fin-space-l`, gap `--fin-space-m`, `--fin-radius-full`, fill `--fin-bg-secondary` (hover `--fin-bg-tertiary`), stroke `--fin-border-subtle` (inset 1px), label `--fin-font-body-small` + `--fin-text-tertiary`, value `--fin-font-label-small` + `--fin-text-primary`, arrow `--fin-fg-secondary`. Focus: no design, the default ring (2px `border-focused`, 2px out). Raw value: the 1px stroke.
+**Tokens used:** padding `--fin-space-xs` / `--fin-space-l`, gap `--fin-space-m`, `--fin-radius-full`, fill `--fin-bg-secondary` (hover `--fin-bg-tertiary`), stroke `--fin-border-subtle` (inset 1px), label `--fin-font-body-small` + `--fin-text-tertiary`, value `--fin-font-label-small` + `--fin-text-primary`, arrow `--fin-fg-secondary`. Focus: no design, the default ring (2px `border-focused`, 2px out). Raw value: the 1px stroke.
 
 **API (internal):**
 
@@ -2438,7 +2438,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 ### 9.40 FinTableFooter (Table footer) — internal
 
-**Figma:** page **Table**, component `Table footer` `3151:14830` (no variants or properties), 1088 × 40. Left: the summary "Showing 1 - 10 of 10 entries in page 01" (Body/Small, `text-tertiary`) and the Row count dropdown (§9.38), `Space-L` apart; right: the Pagination group (§9.39), centred; the two sides pushed apart. All values bound to Loyalty tokens. **Internal**, under Internal/Table; used by `FinTable` (§8 #74).
+**Figma:** page **Table**, component `Table footer` `3151:14830` (no variants or properties), 1088 × 32 (was 40 until 29 Oct 2026, with the 40-tall Row count dropdown). Left: the summary "Showing 1 - 10 of 10 entries in page 01" (Body/Small, `text-tertiary`) and the Row count dropdown (§9.38), `Space-L` apart; right: the Pagination group (§9.39), centred; the two sides pushed apart. All values bound to Loyalty tokens. **Internal**, under Internal/Table; used by `FinTable` (§8 #74).
 
 **Decided 19 Oct 2026:** (1) summary "Showing 1–10 of 45 entries in page 1": an en dash and no leading zero (Figma's "1 - 10" and "01" are the sample text); (2) no rows: "Showing 0 of 0 entries" and one page with both arrows disabled; (3) when narrow, the pagination wraps onto a second line, `Space-M` below; (4) the summary is a polite live region, so a page change is announced. The Row count dropdown is the trigger only; its menu comes with the List component (§10 #49).
 
@@ -2468,7 +2468,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 ### 9.41 FinTableHeaderCell (Table header cell) — internal
 
-**Figma:** page **Table**, component set `Table header cell` `3151:14941`: `Type` = White / Grey (was `Property 1`), `Show checkbox` (on), `Show title` (on), `Show trailing icon` (off), and a **Slot** holding a Label (Label/Medium, `text-tertiary`, "Table title"). 151 × 48; padding 0 / `Space-3XL`, gap `Space-L`, centred; Grey fills `bg-tertiary`, White has none; checkbox is Base-Checkbox (24); trailing icon `keyboard_arrow_down` 24, raw `#626262` (→ `fg-secondary`, the same colour in Light). **Internal**, under Internal/Table; used by the Header row (§8 #72) and FinTable.
+**Figma:** page **Table**, component set `Table header cell` `3151:14941`: `Type` = White / Grey (was `Property 1`), `Show checkbox` (on), `Show title` (on), `Show trailing icon` (off), and a **Slot** holding a Label (Label/Medium, `text-tertiary`, "Table title"). 151 × 40 (**Changed by design 29 Oct 2026:** was 48); padding 0 / `Space-3XL`, gap `Space-L`, centred; Grey fills `bg-tertiary`, White has none; checkbox is Base-Checkbox (24); trailing icon `keyboard_arrow_down` 24, raw `#626262` (→ `fg-secondary`, the same colour in Light). **Internal**, under Internal/Table; used by the Header row (§8 #72) and FinTable.
 
 **Sort and filter added 22 Oct 2026** (code first, design's brief; §10 #50): (a) **sort**: with `sort` (`'none' | 'ascending' | 'descending'`) and `onSortChange`, the **title becomes a button** with a 20 sort icon 4 (`Space-XS`) after it: `unfold_more` (unsorted), `arrow_upward`, `arrow_downward`; clicking cycles none → ascending → descending → none; the `th` gets `aria-sort`. **The title keeps its colour; the icon is `fg-secondary`** (hover `fg-hovered`, pressed `fg-pressed`) **and turns purple (`fg-action`) once sorted**. (b) **filter**: with `filter`, **Figma's down arrow is kept and becomes the filter button** (FinTableColumnFilter, §9.65): `fg-secondary`, purple while its menu is open or a filter is applied, pointing up while open. Without `filter`, `trailingIcon` stays display-only. Focus: the standard ring (2px `border-focused`, 2 out) on both buttons. Still no hover on the cell itself.
 
@@ -2487,7 +2487,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 | — (code first, 22 Oct 2026) | `filter` (`options`, `value`, `onApply`, `multiple`, `label`) | The down arrow as the filter button (FinTableColumnFilter) |
 | — | `scope` (default `'col'`), `ref`, `className`, other `th` attributes | |
 
-**Tokens used:** height `--fin-size-48`, padding `--fin-space-3xl`, gap `--fin-space-l`, Grey fill `--fin-bg-tertiary`, arrow `--fin-fg-secondary`; the title from FinLabel (`--fin-font-label-medium`, `--fin-text-tertiary`), the checkbox from FinCheckboxBase. No raw values in code (Figma's raw arrow colour mapped above).
+**Tokens used:** height `--fin-size-40` (was `--fin-size-48`), padding `--fin-space-3xl`, gap `--fin-space-l`, Grey fill `--fin-bg-tertiary`, arrow `--fin-fg-secondary`; the title from FinLabel (`--fin-font-label-medium`, `--fin-text-tertiary`), the checkbox from FinCheckboxBase. No raw values in code (Figma's raw arrow colour mapped above).
 
 **API (internal):**
 
@@ -2506,7 +2506,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 ### 9.42 FinTableHeaderRow (Header row) — internal
 
-**Figma:** page **Table**, component `Header row` `3151:15203` (was `Title row`, renamed 20 Oct 2026): `Select Cell` (on; was `Select Sell`), a Grey Table header cell with Show title off, so only the checkbox (72 wide); and `Cell Slot` (was `Sell Slot`) holding the column headers, six Grey Table header cells "Table title" with no checkbox, sharing the rest of the width. 48 tall, no gap; Figma's 1088 width is only a drawing frame. **Internal**, under Internal/Table; used by FinTable.
+**Figma:** page **Table**, component `Header row` `3151:15203` (was `Title row`, renamed 20 Oct 2026): `Select Cell` (on; was `Select Sell`), a Grey Table header cell with Show title off, so only the checkbox (72 wide); and `Cell Slot` (was `Sell Slot`) holding the column headers, six Grey Table header cells "Table title" with no checkbox, sharing the rest of the width. 40 tall (was 48 until 29 Oct 2026), no gap; Figma's 1088 width is only a drawing frame. **Internal**, under Internal/Table; used by FinTable.
 
 **Decided 20 Oct 2026:** (1) header cells are **Grey** in this project (the select cell is always Grey; FinTable passes `type="grey"` to the column headers); (2) the row has **no width of its own**: it fills the table (100%) and column widths are FinTable's (§8 #74); (3) the Grey title contrast in Dark is accepted (§10 #3).
 
@@ -2539,7 +2539,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 ### 9.43 FinTableCell (Table - Cell) — internal
 
-**Figma:** page **Table**, component set `Table - Cell` `3151:14990`: `Type` = Default / Badge / Link, `Show leading accessories` (on), `Show content` (on), `Show action button` (off), and three slots: **Leading accessories** (Base-Checkbox), **Content slot** (Default: text "Table cell text", Body/Medium, `text-secondary`, one line with "…"; Badge: Badge-primary "Text here"; Link: all-button XSmall Tertiary "Text here" with an underline override) and **Action Slot** (`24px` `edit` icon). 174 × 56; padding 0 / `Space-3XL`, gap `Space-M`, centred; no fill (the Table row draws fill and hover). In the Table row the first cell shows only the checkbox (72 wide), as in the Header row. **Internal**, under Internal/Table; used by the Table row (§8 #71) and FinTable.
+**Figma:** page **Table**, component set `Table - Cell` `3151:14990`: `Type` = Default / Badge / Link, `Show leading accessories` (on), `Show content` (on), `Show action button` (off), and three slots: **Leading accessories** (Base-Checkbox), **Content slot** (Default: text "Table cell text", Body/Medium, `text-secondary`, one line with "…"; Badge: Badge-primary "Text here"; Link: all-button XSmall Tertiary "Text here" with an underline override) and **Action Slot** (`24px` `edit` icon). 174 × 40 (**Changed by design 29 Oct 2026:** was 56; the Badge, 26, and the Link, 36, still fit); padding 0 / `Space-3XL`, gap `Space-M`, centred; no fill (the Table row draws fill and hover). In the Table row the first cell shows only the checkbox (72 wide), as in the Header row. **Internal**, under Internal/Table; used by the Table row (§8 #71) and FinTable.
 
 **Decided 20 Oct 2026:** (1) the badge's colour is its nested Badge-primary `State`, so it's `badgeTone` (every FinBadge tone); (2) Link is a real link (`<a href>`, `linkAs` for a router's link component) styled as in Figma: Button/Medium, `text-action`, underlined, padding `Space-S` / `Space-XL` (**side padding removed 22 Oct 2026** by design: it pushed the link's text 16 in from the header's; now `Space-S` / 0, so the text lines up with the header and the other cells, and the link stays 36 tall); Figma has no hover or focus for it, so hover is `text-hovered` and focus the buttons' ring (§10 #6); (3) the action is an icon-only button, 24 × 24 with no padding (Figma's size), `fg-action`, hover `fg-hovered`, focus ring 2px out; **changed 22 Oct 2026 by design: it's the icon button** (FinButton Tertiary XSmall, icon only: a 32 square with a 20 icon, purple at rest, hover `bg-action-secondary_hovered` + `fg-hovered`, pressed `bg-action-secondary_pressed` + `fg-pressed`, the buttons' ring; named by its hidden label `actionLabel`); (4) the **Content slot takes any component**: Default, Badge and Link are the common kinds (`type` styles text), and other content (avatar, flag, chip…) is shown as given, so new kinds need no change to the cell; (5) an empty cell shows nothing.
 
@@ -2559,7 +2559,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 | — | `actionLabel` (required with `action`), `onAction` | The button's name and click |
 | — | `ref`, `className`, other `td` attributes | |
 
-**Tokens used:** height `--fin-size-56`, padding `--fin-space-3xl`, gap `--fin-space-m`; text `--fin-font-body-medium` + `--fin-text-secondary` (Figma's raw 14 → the Body/Medium style); link `--fin-font-button-medium`, `--fin-text-action` (hover `--fin-text-hovered`), padding `--fin-space-s` / `--fin-space-xl`, radius `--fin-radius-s`; action `--fin-size-24`, `--fin-fg-action` (Figma's raw `Electric-Indigo-600` `#5953E8` → token; hover `--fin-fg-hovered`), radius `--fin-radius-xs`; focus `--fin-border-focused`. The checkbox and badge bring their own.
+**Tokens used:** height `--fin-size-40` (was `--fin-size-56`), padding `--fin-space-3xl`, gap `--fin-space-m`; text `--fin-font-body-medium` + `--fin-text-secondary` (Figma's raw 14 → the Body/Medium style); link `--fin-font-button-medium`, `--fin-text-action` (hover `--fin-text-hovered`), padding `--fin-space-s` / `--fin-space-xl`, radius `--fin-radius-s`; action `--fin-size-24`, `--fin-fg-action` (Figma's raw `Electric-Indigo-600` `#5953E8` → token; hover `--fin-fg-hovered`), radius `--fin-radius-xs`; focus `--fin-border-focused`. The checkbox and badge bring their own.
 
 **API (internal):**
 
@@ -2581,7 +2581,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 ### 9.44 FinTableRow (Table row) — internal
 
-**Figma:** page **Table**, component set `Table row` `3151:15248`: `State` = Default / Hovered / Selected / Selected - Hovered (was `Property 1`), `Select Cell` (on), and `Cell Slot` (was `Sells Slot`) holding the data cells (six Table - Cells, text only, no checkbox). The select cell is a Table - Cell with only the checkbox (72 wide), as in the Header row. Cells 56 tall plus a 1px `border-default` line under the row (57). Fills: Hovered `bg-secondary`, Selected `bg-active`, Selected - Hovered `bg-active-hover`; Default none. **Internal**, under Internal/Table; used by FinTable.
+**Figma:** page **Table**, component set `Table row` `3151:15248`: `State` = Default / Hovered / Selected / Selected - Hovered (was `Property 1`), `Select Cell` (on), and `Cell Slot` (was `Sells Slot`) holding the data cells (six Table - Cells, text only, no checkbox). The select cell is a Table - Cell with only the checkbox (72 wide), as in the Header row. Cells 40 tall plus a 1px `border-default` line under the row (41; **Changed by design 29 Oct 2026:** were 56 and 57). Fills: Hovered `bg-secondary`, Selected `bg-active`, Selected - Hovered `bg-active-hover`; Default none. **Internal**, under Internal/Table; used by FinTable.
 
 **Decided 20 Oct 2026:** (1) a Selected row's checkbox is ticked (the checkbox selects the row); (2) **clicking the row opens its details** (for example a side sheet): `onRowClick`. A click on something interactive in the row (the checkbox, a link, an action button) does that thing instead. Rows that only show data leave `onRowClick` out. When a screen's whole-row click would clash, use a "view details" action in a cell (`FinTableCell` `action`) instead; this depends on the screen; (3) hover fills the whole row; (4) **rule: the last row never has a line under it** (added 20 Oct 2026, `:last-child`); (5) the Selected + hover contrast in Light, and a link on a Selected row (`text-action` on `bg-active`, 4.13:1 Light / 3.95:1 Dark), are accepted; links keep `text-action` in every row (§10 #3).
 
@@ -4232,3 +4232,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 29 Oct 2026 | 0.2 | Label weight 500 and the 20 side nav icon and chevron approved by design and merged into `main`. |
 | 29 Oct 2026 | 0.2 | **FinSideNav, new spacing** (§9.57; design's Figma update): the header 12 above the first item (both types; Figma's Minimized 24), the sections 4 apart (were 8), Minimized 80 wide (was 88: a 48 column). Expanded stays 312. |
 | 29 Oct 2026 | 0.2 | FinSideNav's new spacing approved by design and merged into `main`. |
+| 29 Oct 2026 | 0.2 | **Table parts, new sizes** (design's Figma update): Table header cell and Header row 40 (were 48), Table cell 40 (was 56), Table row 41 (was 57), Row count dropdown padding 4 / 12 and 32 tall (was 8 / 12, 40), Table footer 32 (was 40). FinTable and the pages follow through the parts. |

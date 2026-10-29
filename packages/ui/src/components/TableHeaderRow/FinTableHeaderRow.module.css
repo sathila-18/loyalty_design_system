@@ -1,5 +1,5 @@
 /*
- * FinTableHeaderRow (DESIGN.md §9). Figma: a 48-tall row, no gap; the select cell is a Grey Table header cell with
+ * FinTableHeaderRow (DESIGN.md §9). Figma: a 40-tall row (was 48; 29 Oct 2026), no gap; the select cell is a Grey Table header cell with
  * only the checkbox (72 wide: 24 padding, 24 checkbox, 24 padding), then the Slot's cells share the rest. The cells
  * draw themselves (FinTableHeaderCell); the row adds no fill or spacing.
  */
