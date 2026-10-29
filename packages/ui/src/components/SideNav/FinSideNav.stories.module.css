@@ -25,7 +25,7 @@
 }
 
 .caption {
-  max-width: calc(var(--fin-size-56) * 5);
+  max-width: calc(var(--fin-size-48) * 5);
   font: var(--fin-font-label-small);
   color: var(--fin-text-secondary);
 }

@@ -1,8 +1,8 @@
 /*
  * FinSideNav (DESIGN.md §9). Figma Side Menu: bg-secondary, padding 24 (Space-3XL) / 16 (Space-XL), full height; the
  * top (header and menu, 12 / Space-L apart, also when minimized; decided 29 Oct 2026) and the user at the bottom, at
- * least 40 (Space-6XL) apart. Expanded 312: the menu column is 280 wide (Main Selection; no Size-280 token, so
- * 5 × Size-56). Minimized 80: a 48 column (the collapse button's size). Header 48 tall: logo on the left, the collapse
+ * least 40 (Space-6XL) apart. Expanded 272: the menu column is 240 wide (decided by design 29 Oct 2026, was 312 /
+ * 280; no Size-240 token, so 5 × Size-48). Minimized 80: a 48 column (the collapse button's size). Header 48 tall: logo on the left, the collapse
  * button on the right (centred when minimized). Sections 4 (Space-XS) apart. User row: List-base Small with padding 12 (Space-L) / 0, name Label/Medium
  * text-primary, email Body/Medium text-secondary, both one line with "…". No right border (decided 21 Oct 2026).
  * Expand / collapse: a width transition (decided 21 Oct 2026; raw duration and M3 standard easing until motion
@@ -18,7 +18,7 @@
   gap: var(--fin-space-6xl);
   justify-content: space-between;
   box-sizing: border-box;
-  width: calc(var(--fin-size-56) * 5 + 2 * var(--fin-space-xl));
+  width: calc(var(--fin-size-48) * 5 + 2 * var(--fin-space-xl));
   height: 100dvh;
   padding: var(--fin-space-3xl) var(--fin-space-xl);
   overflow: hidden;

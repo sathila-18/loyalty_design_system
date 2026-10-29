@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { FinSideNavSubItem } from './FinSideNavSubItem';
 import styles from './FinSideNavSubItem.stories.module.css';
 
-/** Sub items sit in the side nav, on its `bg-secondary`; each story shows them in a 280 nav column. */
+/** Sub items sit in the side nav, on its `bg-secondary`; each story shows them in a 240 nav column (the side nav's). */
 const Nav = ({ children }: { children: ReactNode }) => <nav className={styles.nav} aria-label="Side nav">{children}</nav>;
 
 interface Args {
