@@ -26,11 +26,12 @@
 
 /*
  * The 18px box: the 24px frame minus Space-S (no 18 token; decided 19 Oct 2026). Figma's 2px inside stroke is an
- * inset shadow, so the 16px icon keeps the full box. Unselected, Enabled: border-strong, no fill.
+ * inset shadow, so the 16px icon keeps the full box. Unselected, Enabled: border-default, no fill (was border-strong;
+ * changed by design 29 Oct 2026, below 3:1, accepted: DESIGN.md §10 #75).
  */
 .box {
   --checkbox-fill: transparent;
-  --checkbox-stroke: var(--fin-border-strong);
+  --checkbox-stroke: var(--fin-border-default);
 
   display: flex;
   align-items: center;

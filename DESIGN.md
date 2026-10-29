@@ -2024,7 +2024,7 @@ import { FinButton } from '@finspace-loyalty/ui';
 
 | State | Unselected: fill / stroke | Selected, Indeterminate: fill / icon |
 |---|---|---|
-| Enabled | none / `border-strong` | `bg-action-primary` / `fg-white_both` |
+| Enabled | none / `border-default` (was `border-strong` until 29 Oct 2026; below 3:1, accepted, §10 #75) | `bg-action-primary` / `fg-white_both` |
 | Hovered | `bg-active-hover` / `border-hovered` | `fg-hovered` / `fg-white_both` |
 | Pressed | `bg-action-primary_pressed` / `border-pressed` | `fg-pressed` / `fg-white_both` |
 | Disabled | none / `fg-disabled` | `fg-disabled` / `fg-disabled-on_bg` |
@@ -3906,6 +3906,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 72 | **Snackbar: the action button's padding** (27 Oct 2026): in the Snackbar, Figma overrides the Tertiary Small button's side padding to 12 (`Space-L`; 88 wide with "Text here"); the Button component is 16 (96 wide). Code uses the component (95). Keep the component's 16, or add a tighter button? **Decided 27 Oct 2026:** keep the component's 16. | Snackbar, Button | ✅ Decided |
 | 73 | **Snackbar: width at small windows** (27 Oct 2026): 3 grid columns is 450 at 1920 but 226 at 1024, where "Segment removed" with Undo breaks inside words. Use at least `Size/343` (the Figma width, a token), i.e. `max(343, 3 columns)`? **Decided 27 Oct 2026:** yes; 343 at 1440 and below, 450 at 1920. | Snackbar | ✅ Decided |
 | 74 | **Snackbar: Neutral hover in Dark** (27 Oct 2026): the buttons' hover tint on Neutral is `alpha-light` (white 12%), which doesn't show on Dark's light `bg-direct`. Needs an alpha token that's light in Light and dark in Dark (or `alpha-sm` in Dark). **Decided 27 Oct 2026:** `alpha-sm` in Dark, through a `[data-theme="dark"]` selector in FinButtonBase (the only one in a component); **to add in Figma:** an alpha token that flips with the theme, so the selector can go. | Snackbar, Tokens | ⏳ Design to add in Figma |
+| 75 | **Checkbox: the unticked box's border is below 3:1** (29 Oct 2026): design changed Base-Checkbox's Unselected, Enabled stroke from `border-strong` to **`border-default`** (§9.29). Its contrast is below WCAG 2.2 1.4.11's 3:1 for a control's outline everywhere it's used: Light 1.48 on `bg-primary`, 1.36 on `bg-secondary`, 1.27 on `bg-tertiary` (the table header), 1.30 on `bg-active` (a selected row); Dark 1.86 / 1.54 / 1.28 / 1.40 (`border-strong` was 3.33–3.90 Light, 6.03–8.76 Dark). **Accepted by design (29 Oct 2026):** "in our scenarios the checkbox is not the main thing, and `border-strong` highlights it more than we need". Hovered, Pressed, Disabled, Selected and Indeterminate are unchanged. The automated a11y run doesn't check non-text contrast, so it still passes; an audit would flag it. Affects every checkbox (FinCheckbox, the table, list checkbox rows, filters). | Checkbox | ✅ Accepted by design |
 
 ---
 
@@ -4243,3 +4244,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 29 Oct 2026 | 0.2 | The table parts' new sizes and the narrow checkbox and ⋮ columns approved by design and merged into `main`. |
 | 29 Oct 2026 | 0.2 | **Side menu 272** (FinSideNav, decided by design; Figma 312): the menu column 240 (was 280), Minimized stays 80. The Side nav part stories use the 240 column. |
 | 29 Oct 2026 | 0.2 | The side menu at 272 approved by design and merged into `main`. |
+| 29 Oct 2026 | 0.2 | **Checkbox border** (FinCheckboxBase; design's Figma update): the unticked, Enabled box is `border-default` (was `border-strong`). Below 3:1, accepted by design (§10 #75). |
