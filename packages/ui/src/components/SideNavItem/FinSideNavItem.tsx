@@ -23,7 +23,7 @@ export interface FinSideNavItemProps extends Omit<AnchorHTMLAttributes<HTMLEleme
   selected?: FinSideNavItemSelected;
   /** Figma `Expanded`: the sub items show under the item (Full only). */
   expanded?: boolean;
-  /** Figma `Type`: Full (icon, label, chevron; fills the nav) or Minimized (icon only, 56). Default full. */
+  /** Figma `Type`: Full (icon, label, chevron; fills the nav) or Minimized (icon only). Default full. */
   type?: FinSideNavItemType;
   /**
    * Figma `Expanded Slot`: the sub items (`FinSideNavSubItem`s). An item with sub items shows the chevron (Figma
@@ -36,7 +36,7 @@ export interface FinSideNavItemProps extends Omit<AnchorHTMLAttributes<HTMLEleme
 
 /**
  * A top-level side nav item (Figma Main Selection; DESIGN.md §9): the Icon, the label (Label/Medium, one line with
- * "…") and, with sub items, a chevron (down when closed, up when open), padding 12 / 16, radius M. Hovered
+ * "…") and, with sub items, a 16 chevron (down when closed, up when open), padding 8 / 12, radius M. Hovered
  * `bg-tertiary`, Pressed `bg-neutral`; Selected - BG `bg-primary` + `text-action` (no hover change); Selected
  * `text-action` with no fill. The sub items sit 4 below. Which item is selected or open is the side nav's decision
  * (only the active section is open); this item shows it and reports clicks. Other attributes and `ref` go to the
@@ -57,7 +57,7 @@ export const FinSideNavItem = forwardRef<HTMLElement, FinSideNavItemProps>(funct
       <span className={styles.label}>{label}</span>
       {hasSubItems && full && (
         <span className={styles.chevron}>
-          <FinIcon name={open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} size={24} />
+          <FinIcon name={open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} size={16} />
         </span>
       )}
     </>

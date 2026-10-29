@@ -666,7 +666,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 29 | `Avatar` | Avatar | `932:1387` | `FinAvatar` | `16`–`64px` | Type: Image/Icon/Text · Size: XSmall…XXXLarge (7; XXXLarge 96 in code, §10 #30) · fallback photo → initials → icon, `online` indicator (code only, §9.4) | ⚠️ (sizes mapped to `Size-*`, approved 15 Oct 2026) | ✅ |
 | 30 | `Contry selecter` | Input field | `49:5731` | `FinCountrySelector` | FinFlag, `24px` · country menu with search (FinMenu select, 22 Oct 2026) · **internal**, part of the input field (§9.36) | ✅ | ✅ |
 | 31 | `Row count dropdown` | Table | `3151:14547` | `FinRowCountSelect` | `24px` | Default/Hovered (runtime) · `Property 1` name (§10 #21) · menu of row counts (FinMenu select, 22 Oct 2026) · **internal**, part of the pagination (§9.38) | ✅ | ✅ |
-| 32 | `Icon` (side nav; was `24px`, renamed 20 Oct 2026) | Side nav | `3138:10976` | `FinSideNavIcon` | `24px` icon | Type: Unselected/Selected → `selected` (filled when selected) · icon by `name` · **internal**, part of the side nav (§9.46) | ⚠️ (raw `#626262` → `fg-secondary`, `#5953E8` → `fg-active`; icon swap not exposed, §10 #51) | ✅ |
+| 32 | `Icon` (side nav; was `24px`, renamed 20 Oct 2026) | Side nav | `3138:10976` | `FinSideNavIcon` | `16px` icon (was `24px`, 29 Oct 2026) | Type: Unselected/Selected → `selected` (filled when selected) · icon by `name` · **internal**, part of the side nav (§9.46) | ⚠️ (raw `#626262` → `fg-secondary`, `#5953E8` → `fg-active`; icon swap not exposed, §10 #51) | ✅ |
 | 33 | `sub selection` | Side nav | `3140:11076` | `FinSideNavSubItem` | — | `state` (was `Property 1`): Default/Hovered/Pressed (CSS)/Selected (`selected`) · a link (`linkAs`), one line with "…" · **internal**, part of the side nav (§9.47) | ✅ | ✅ |
 
 ### 8.3 Molecules
@@ -687,7 +687,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 45 | `spinner-with-text` (renamed from `Progress-Spinner` in Figma, 15 Oct 2026) | Progress | `33:2348` | `FinSpinnerWithText` | **Spinner**, Text Box · built from FinSpinner and FinTextBox; loader added; spans the middle 6 grid columns (§9.23) | ⚠️ (zero padding from another library) | ✅ |
 | 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black/Basic | ⚠️ (§10 #16) | ⬜ |
 | 47 | `Pagination group` | Table | `3151:14607` | `FinPagination` | **Pagination item**; its arrows (all-button instances with a grey outline override in Figma) are drawn by FinPagination itself (§9.39) · public, Components/Pagination | ⚠️ | ✅ |
-| 48 | `Main Selection` | Side nav | `3140:10997` | `FinSideNavItem` | Side nav `Icon`, sub selection, `24px` icon · `State` (Hovered / Pressed in CSS; Selected - BG / Selected → `selected: 'item' \| 'sub-item'`) · `Expanded` · `Type`: Full/Minimized · `Show dropdown` from the sub items · Expanded slot · **internal**, part of the side nav (§9.48) | ⚠️ (raw chevron colors, §10 #52) | ✅ |
+| 48 | `Main Selection` | Side nav | `3140:10997` | `FinSideNavItem` | Side nav `Icon`, sub selection, `16px` icon (was `24px`, 29 Oct 2026) · `State` (Hovered / Pressed in CSS; Selected - BG / Selected → `selected: 'item' \| 'sub-item'`) · `Expanded` · `Type`: Full/Minimized · `Show dropdown` from the sub items · Expanded slot · **internal**, part of the side nav (§9.48) | ⚠️ (raw chevron colors, §10 #52) | ✅ |
 | 49 | `Header notification` | Header | `3178:24467` | `FinHeaderNotificationButton` | 48px bg, Badge - indicator, `24px` · State (runtime: Default/Hovered/Pressed/Disabled) · Notification: None/Dot/Number · **public** (§9.62) | ⚠️ (48px bg padding `Spacing 8px` from another library → `--fin-space-m`) | ✅ |
 | 50 | `Table header cell` | Table | `3151:14941` | `FinTableHeaderCell` | Base-Checkbox, Label · `Type`: White/Grey (was `Property 1`) · Slot · Show checkbox / title / trailing icon · `<th>`; no hover · **internal**, part of the table (§9.41) | ⚠️ (trailing arrow raw `#626262` → `fg-secondary`) | ✅ |
 | 51 | `Table - Cell` | Table | `3151:14990` | `FinTableCell` | Base-Checkbox, Badge-primary, all-button (checked 15 Oct 2026: uses Badge-primary, not Badge-base directly) · `Type`: Default/Badge/Link (was `Property 1`) · Leading accessories, Content and Action slots · Show leading accessories / content / action button · `<td>`; Content slot takes any component · **internal**, part of the table (§9.43) | ⚠️ (raw 14 font size, raw Electric-Indigo-600 icon, Link underline override) | ✅ |
@@ -2677,7 +2677,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 ### 9.46 FinSideNavIcon (Side nav Icon) — internal
 
-**Figma:** page **Side nav**, component set `Icon` `3138:10976` (was `24px`, renamed 20 Oct 2026, §10 #20): `Type` = Unselected / Selected; a 24 `perm_identity` icon (the placeholder; `person` in the registry, §10 #23), raw `#626262` Unselected and raw `#5953E8` Selected, outlined in both. **Internal**, under Internal/Side nav; used by Main Selection (§8 #48) and FinSideNav.
+**Figma:** page **Side nav**, component set `Icon` `3138:10976` (was `24px`, renamed 20 Oct 2026, §10 #20): `Type` = Unselected / Selected; a 24 `perm_identity` icon (the placeholder; `person` in the registry, §10 #23), raw `#626262` Unselected and raw `#5953E8` Selected, outlined in both. **16 × 16 since 29 Oct 2026** (was 24; design's Figma update; the icon names stay as they are, Figma's names to follow). **Internal**, under Internal/Side nav; used by Main Selection (§8 #48) and FinSideNav.
 
 **Decided 20 Oct 2026:** (1) **Selected is filled** (FILL 1, the §6 rule for selected states); Figma to follow (§10 #51); (2) raw colors → tokens: Unselected `fg-secondary`, Selected **`fg-active`** ("icons in active state", the exact `#5953E8`); (3) the icon is a prop (`name`), since each item has its own; Figma to expose the swap (§10 #51).
 
@@ -2689,7 +2689,7 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 | the icon (`perm_identity` placeholder) | `name: FinIconName` (required) | Not exposed in Figma yet (§10 #51) |
 | — | `className`, other `span` attributes | Passed to FinIcon |
 
-**Tokens used:** `--fin-fg-secondary`, `--fin-fg-active`, size 24 (`--fin-size-24` through FinIcon). No markup or CSS of its own: FinIcon with fixed size, color and fill.
+**Tokens used:** `--fin-fg-secondary`, `--fin-fg-active`, size 16 (`--fin-size-16` through FinIcon; was 24 until 29 Oct 2026). No markup or CSS of its own: FinIcon with fixed size, color and fill.
 
 **API (internal):**
 
@@ -2705,7 +2705,7 @@ Presentational (no `'use client'`).
 
 ### 9.47 FinSideNavSubItem (sub selection) — internal
 
-**Figma:** page **Side nav**, component set `sub selection` `3140:11076`: `state` = Default / Hovered / Pressed / Selected (was `Property 1`, renamed 20 Oct 2026; lowercase, §10 #21) and the text "Text Here" (Label/Medium, `text-secondary`; Selected `text-action`). 280 × 45; padding `Space-L` / `Space-XL` / `Space-L` / `Space-5XL` (12 / 16 / 12 / 36, so the text lines up past the section icon), radius `Radius-M`. Fills: Default `bg-secondary` (the side nav's own), Hovered `bg-tertiary`, Pressed `bg-neutral`, Selected `bg-primary`. **Internal**, under Internal/Side nav; used by Main Selection (§8 #48) and FinSideNav.
+**Figma:** page **Side nav**, component set `sub selection` `3140:11076`: `state` = Default / Hovered / Pressed / Selected (was `Property 1`, renamed 20 Oct 2026; lowercase, §10 #21) and the text "Text Here" (Label/Medium, `text-secondary`; Selected `text-action`). 280 × 37; padding `Space-M` / `Space-XL` / `Space-M` / `Space-6XL` (8 / 16 / 8 / 40, so the text lines up past the section icon; **changed by design 29 Oct 2026**, was 12 / 16 / 12 / 36, 45 tall), radius `Radius-M`. Fills: Default `bg-secondary` (the side nav's own), Hovered `bg-tertiary`, Pressed `bg-neutral`, Selected `bg-primary`. **Internal**, under Internal/Side nav; used by Main Selection (§8 #48) and FinSideNav.
 
 **Decided 20 Oct 2026:** (1) it's a **link** (it navigates): `href`, `linkAs` for a router's link component; Selected is the current page (`aria-current="page"`); (2) **Default has no fill** (transparent; the nav's `bg-secondary` shows, the same look); (3) **Selected doesn't change on hover or press** (it's the current page); (4) long labels stay on **one line and end in "…"**; (5) no Focused design: a 2px `border-focused` ring inside the item (§10 #6). It fills the nav's width (Figma's 280 is the drawing frame).
 
@@ -2718,7 +2718,7 @@ Presentational (no `'use client'`).
 | text "Text Here" | `children` | Not a Figma property yet (designers override the layer) |
 | — | `href`, `linkAs` (default `'a'`), `ref`, `className`, other `a` attributes | |
 
-**Tokens used:** padding `--fin-space-l` / `--fin-space-xl` / `--fin-space-5xl`, radius `--fin-radius-m`, text `--fin-font-label-medium`, `--fin-text-secondary` (Selected `--fin-text-action`); fills `--fin-bg-tertiary` (hover), `--fin-bg-neutral` (pressed), `--fin-bg-primary` (selected); focus `--fin-border-focused`.
+**Tokens used:** padding `--fin-space-m` / `--fin-space-xl` / `--fin-space-6xl`, radius `--fin-radius-m`, text `--fin-font-label-medium`, `--fin-text-secondary` (Selected `--fin-text-action`); fills `--fin-bg-tertiary` (hover), `--fin-bg-neutral` (pressed), `--fin-bg-primary` (selected); focus `--fin-border-focused`.
 
 **API (internal):**
 
@@ -2734,11 +2734,13 @@ Forwards `ref` (presentational, no `'use client'`).
 
 ### 9.48 FinSideNavItem (Main Selection) — internal
 
-**Figma:** page **Side nav**, component set `Main Selection` `3140:10997`: `State` = Default / Hovered / Pressed / Selected - BG / Selected, `Expanded` (False / True), `Type` = Full / Minimized, `Show dropdown`, and an **Expanded Slot** with sub selections. Full: 280 × 48, padding `Space-L` / `Space-XL`, gap `Space-L`, radius `Radius-M`; the Icon (§9.46), the label (Label/Medium, `text-secondary`) and a 24 chevron (`keyboard_arrow_down`, raw `#626262`). Fills: Default `bg-secondary` (the nav's own), Hovered `bg-tertiary`, Pressed `bg-neutral`, Selected - BG `bg-primary`; Selected states use `text-action`, the Selected Icon and an up chevron (raw `#5953E8`). Expanded: the sub items 4 (`Space-XS`) below the header, 8 (`Space-M`) apart (gap fixed in Figma 20 Oct 2026). Minimized: the icon only, 56 × 48. **Internal**, under Internal/Side nav; used by FinSideNav (§8 #70).
+**Figma:** page **Side nav**, component set `Main Selection` `3140:10997`: `State` = Default / Hovered / Pressed / Selected - BG / Selected, `Expanded` (False / True), `Type` = Full / Minimized, `Show dropdown`, and an **Expanded Slot** with sub selections. Full: 280 × 37, padding `Space-M` / `Space-L` (8 / 12), gap `Space-L`, radius `Radius-M`; the Icon (§9.46, 16), the label (Label/Medium, `text-secondary`) and a 16 chevron (`keyboard_arrow_down`, raw `#626262`). **Changed by design 29 Oct 2026** (was 280 × 48, padding 12 / 16, a 24 icon and chevron, sub items 8 apart, Minimized 56 × 48). Fills: Default `bg-secondary` (the nav's own), Hovered `bg-tertiary`, Pressed `bg-neutral`, Selected - BG `bg-primary`; Selected states use `text-action`, the Selected Icon and an up chevron (raw `#5953E8`). Expanded: the sub items 4 (`Space-XS`) below the header, 4 (`Space-XS`) apart. Minimized: the icon only, 40 × 32 in Figma (40 × 37 in code, below). **Internal**, under Internal/Side nav; used by FinSideNav (§8 #70).
 
 **How the Side Menu uses it** (Figma `Side Menu` `3142:11871`, read 20 Oct 2026): **Selected - BG** is the current place itself (Dashboard; a section just opened); **Selected** is a section whose sub item is the current page (that sub item gets the white fill). **Only the active section is open**; the others are closed with a down chevron; items without sub items have no chevron. Minimized shows the icons only, the active one white.
 
 **Decided 20 Oct 2026:** (1) `selected`: `'item'` (Selected - BG) or `'sub-item'` (Selected); (2) the chevron points by open / closed (down / up), its color by selected (§10 #52); (3) **an item with sub items is a button** that reports clicks (the side nav makes it the active section and opens it); **an item without sub items is a link** (`href`, `linkAs`, `aria-current="page"` when `'item'`); the chevron shows whenever there are sub items (Figma `Show dropdown`, §10 #52); (4) Selected - BG doesn't change on hover or press; Selected (no fill) uses the normal hover and pressed fills; (5) the label is one line with "…" (as the sub items); (6) Minimized: the label stays the name for screen readers; no sub items; what a click does there (for example, widening the nav) is FinSideNav's decision; a hover label waits for the Tooltip (§8 #46); (7) no Focused design: a 2px `border-focused` ring inside.
+
+**Decided 29 Oct 2026** (the new spacing): (1) the chevron is 16, as Figma; (2) **the label keeps a 12 (`Space-L`) gap before the chevron** (Figma has none), so a long label's "…" doesn't touch it; (3) the sub items are **4 apart** in every state (Figma's *Selected, Expanded=True* has 8, and its second sub item is a detached `Frame 7`; to fix in Figma); (4) the chevron is centred in every state (Figma's *Selected* has it at y 8, *Selected - BG* at 10.5); (5) **Minimized is 40 × 37, as tall as Full** (one line of the label, `1lh`, plus 8 top and bottom; Figma 40 × 32), so the items don't move when the nav collapses; Figma's Minimized variants to follow.
 
 **Figma → code:**
 
@@ -2753,7 +2755,7 @@ Forwards `ref` (presentational, no `'use client'`).
 | the Icon / the text | `icon: FinIconName`, `label` | |
 | — | `href`, `linkAs`, `onClick`, `ref`, other attributes (on the link or button); `className` (on the item) | |
 
-**Tokens used:** padding `--fin-space-l` / `--fin-space-xl`, gap `--fin-space-l`, radius `--fin-radius-m`, text `--fin-font-label-medium`, `--fin-text-secondary` / `--fin-text-action`; fills `--fin-bg-tertiary`, `--fin-bg-neutral`, `--fin-bg-primary`; chevron `--fin-fg-secondary` / `--fin-fg-active` (Figma raw values); sub items `--fin-space-xs` below, `--fin-space-m` apart; focus `--fin-border-focused`. The icon from FinSideNavIcon.
+**Tokens used:** padding `--fin-space-m` / `--fin-space-l`, gap `--fin-space-l`, radius `--fin-radius-m`, text `--fin-font-label-medium`, `--fin-text-secondary` / `--fin-text-action`; fills `--fin-bg-tertiary`, `--fin-bg-neutral`, `--fin-bg-primary`; chevron 16 `--fin-fg-secondary` / `--fin-fg-active` (Figma raw values); sub items `--fin-space-xs` below and apart; Minimized height `1lh` + 2 × `--fin-space-m`; focus `--fin-border-focused`. The icon from FinSideNavIcon.
 
 **API (internal):**
 
@@ -4218,3 +4220,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 28 Oct 2026 | 0.2 | Reports approved by design and merged into `main`. |
 | 28 Oct 2026 | 0.2 | Pages/Common states no longer opens at a fixed 1920 viewport; the empty states' Add buttons on Programme configuration, Tier management and Reward catalog get the plus (FinEmptyState `leadingIcon`), as every page now. |
 | 28 Oct 2026 | 0.2 | The Common states viewport and the empty states' plus approved by design and merged into `main`. |
+| 29 Oct 2026 | 0.2 | **Side nav bases, new spacing** (design's Figma update): FinSideNavIcon 16 (was 24, same icons); FinSideNavSubItem padding 8 / 16 / 8 / 40 (37 tall); FinSideNavItem padding 8 / 12 (37 tall), a 16 chevron with the 12 gap kept, sub items 4 apart, Minimized 40 × 37 (as tall as Full; Figma 40 × 32). FinSideNav itself next (§9.48). |

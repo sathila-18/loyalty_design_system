@@ -3,11 +3,12 @@ import { describe, expect, it } from 'vitest';
 import { FinSideNavIcon } from './FinSideNavIcon';
 
 describe('FinSideNavIcon', () => {
-  it('is an outlined, decorative 24 icon in fg-secondary (Figma Unselected)', () => {
+  it('is an outlined, decorative 16 icon in fg-secondary (Figma Unselected)', () => {
     render(<FinSideNavIcon name="person" data-testid="icon" />);
     const icon = screen.getByTestId('icon');
     expect(icon).toHaveTextContent('person');
     expect(icon).toHaveAttribute('aria-hidden', 'true');
+    expect(icon).toHaveAttribute('data-size', '16');
     expect(icon).not.toHaveAttribute('data-filled');
     expect(icon.getAttribute('style')).toContain('fg-secondary');
   });

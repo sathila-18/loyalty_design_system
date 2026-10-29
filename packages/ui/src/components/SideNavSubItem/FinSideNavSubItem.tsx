@@ -11,7 +11,7 @@ export interface FinSideNavSubItemProps extends Omit<AnchorHTMLAttributes<HTMLAn
 }
 
 /**
- * A child link under a side nav section (Figma sub selection; DESIGN.md §9): Label/Medium, padding 12 / 16 / 12 / 36,
+ * A child link under a side nav section (Figma sub selection; DESIGN.md §9): Label/Medium, padding 8 / 16 / 8 / 40,
  * radius M, filling the nav's width. Default has no fill (the nav's own background shows); Hovered `bg-tertiary`,
  * Pressed `bg-neutral`, Selected `bg-primary` with `text-action` and no hover change. A real link; `ref` goes to it.
  * **Internal:** part of the side nav.

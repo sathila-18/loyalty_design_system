@@ -1,9 +1,10 @@
 /*
- * FinSideNavItem (DESIGN.md §9). Figma Main Selection: padding 12 (Space-L) / 16 (Space-XL), gap 12 (Space-L),
- * radius M, Label/Medium text-secondary; chevron 24 fg-secondary (Figma raw #626262), fg-active when selected (raw
+ * FinSideNavItem (DESIGN.md §9). Figma Main Selection: padding 8 (Space-M) / 12 (Space-L), gap 12 (Space-L),
+ * radius M, Label/Medium text-secondary; chevron 16 fg-secondary (Figma raw #626262), fg-active when selected (raw
  * #5953E8). Default has no fill (the nav's bg-secondary shows); Hovered bg-tertiary, Pressed bg-neutral;
  * Selected - BG bg-primary + text-action (no hover change); Selected text-action. Sub items 4 (Space-XS) below,
- * 8 (Space-M) apart. Minimized: the icon only (56 × 48). No Focused design: a 2px border-focused ring inside.
+ * 4 apart. The label keeps a 12 gap before the chevron (Figma has none; decided 29 Oct 2026). Minimized: the icon
+ * only, 40 × 37, as tall as Full (decided 29 Oct 2026). No Focused design: a 2px border-focused ring inside.
  */
 
 .item {
@@ -18,7 +19,7 @@
   gap: var(--fin-space-l);
   align-items: center;
   width: 100%;
-  padding: var(--fin-space-l) var(--fin-space-xl);
+  padding: var(--fin-space-m) var(--fin-space-l);
   border: 0;
   border-radius: var(--fin-radius-m);
   background-color: transparent;
@@ -34,9 +35,11 @@
   outline-offset: -2px;
 }
 
-/* Minimized: the icon only (56 × 48). */
+/* Minimized: the icon only, 40 × 37: as tall as Full (one line of the label), so the items don't move when the nav
+   collapses (decided 29 Oct 2026; Figma 40 × 32). */
 .header[data-type="minimized"] {
   width: auto;
+  min-block-size: calc(1lh + 2 * var(--fin-space-m));
   align-self: flex-start;
 }
 
@@ -90,5 +93,5 @@
 .subItems {
   display: flex;
   flex-direction: column;
-  gap: var(--fin-space-m);
+  gap: var(--fin-space-xs);
 }
