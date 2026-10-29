@@ -1,6 +1,6 @@
 /*
  * FinSideNavItem (DESIGN.md §9). Figma Main Selection: padding 8 (Space-M) / 12 (Space-L), gap 12 (Space-L),
- * radius M, Label/Medium text-secondary; chevron 16 fg-secondary (Figma raw #626262), fg-active when selected (raw
+ * radius M, Label/Medium text-secondary; chevron 20 fg-secondary (Figma raw #626262), fg-active when selected (raw
  * #5953E8). Default has no fill (the nav's bg-secondary shows); Hovered bg-tertiary, Pressed bg-neutral;
  * Selected - BG bg-primary + text-action (no hover change); Selected text-action. Sub items 4 (Space-XS) below,
  * 4 apart. The label keeps a 12 gap before the chevron (Figma has none; decided 29 Oct 2026). Minimized: the icon

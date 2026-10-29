@@ -36,7 +36,7 @@ export interface FinSideNavItemProps extends Omit<AnchorHTMLAttributes<HTMLEleme
 
 /**
  * A top-level side nav item (Figma Main Selection; DESIGN.md §9): the Icon, the label (Label/Medium, one line with
- * "…") and, with sub items, a 16 chevron (down when closed, up when open), padding 8 / 12, radius M. Hovered
+ * "…") and, with sub items, a 20 chevron (down when closed, up when open), padding 8 / 12, radius M. Hovered
  * `bg-tertiary`, Pressed `bg-neutral`; Selected - BG `bg-primary` + `text-action` (no hover change); Selected
  * `text-action` with no fill. The sub items sit 4 below. Which item is selected or open is the side nav's decision
  * (only the active section is open); this item shows it and reports clicks. Other attributes and `ref` go to the
@@ -57,7 +57,7 @@ export const FinSideNavItem = forwardRef<HTMLElement, FinSideNavItemProps>(funct
       <span className={styles.label}>{label}</span>
       {hasSubItems && full && (
         <span className={styles.chevron}>
-          <FinIcon name={open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} size={16} />
+          <FinIcon name={open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} size={20} />
         </span>
       )}
     </>
