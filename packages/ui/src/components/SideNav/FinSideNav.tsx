@@ -13,7 +13,7 @@ import { FinSideNavItem, type FinSideNavItemSelected } from '../SideNavItem';
 import { FinSideNavSubItem } from '../SideNavSubItem';
 import styles from './FinSideNav.module.css';
 
-/** Figma `Type`: Expanded (312: logo, labels, the user's name) or Minimized (88: icons and the avatar only). */
+/** Figma `Type`: Expanded (312: logo, labels, the user's name) or Minimized (80: icons and the avatar only). */
 export type FinSideNavType = 'expanded' | 'minimized';
 
 /** A page under a section (Figma sub selection). */
