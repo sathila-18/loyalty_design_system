@@ -3959,6 +3959,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (29 Oct 2026):** Label L, M and S at weight 500 (design's token export; every component through the tokens), and the side nav icon and chevron at 20 (§9.46, §9.48; Minimized 44 × 37).
 > - **Approved and merged (29 Oct 2026):** FinSideNav's new spacing (§9.57): the header 12 above the first item in both types, sections 4 apart, Minimized 80. **Next:** the next component named by design; Figma follow-ups listed in §9.48 and §9.57.
 > - **Approved and merged (29 Oct 2026):** the table parts' new sizes (§9.38, §9.40–9.44: cells and headers 40, rows 41, the Row count dropdown and footer 32) and the narrow checkbox and ⋮ columns (56 and 64, `narrow`, code only; §9.45, §9.66). 
+> - **Approved and merged (29 Oct 2026):** the side menu at 272 (§9.57; the menu column 240). The user's long email ends in "…". 
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4241,3 +4242,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 29 Oct 2026 | 0.2 | **Narrow checkbox and ⋮ columns** (decided by design): the checkbox and ⋮ cells take 16 padding either side (FinTableCell / FinTableHeaderCell `narrow`, code only), so the select column is 56 (was 72) and the ⋮ column 64 (was 80); the data cells keep 24. |
 | 29 Oct 2026 | 0.2 | The table parts' new sizes and the narrow checkbox and ⋮ columns approved by design and merged into `main`. |
 | 29 Oct 2026 | 0.2 | **Side menu 272** (FinSideNav, decided by design; Figma 312): the menu column 240 (was 280), Minimized stays 80. The Side nav part stories use the 240 column. |
+| 29 Oct 2026 | 0.2 | The side menu at 272 approved by design and merged into `main`. |
