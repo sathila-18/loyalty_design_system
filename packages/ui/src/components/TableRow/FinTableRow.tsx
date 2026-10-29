@@ -86,6 +86,7 @@ export const FinTableRow = forwardRef<HTMLTableRowElement, FinTableRowProps>(fun
       {selectCell && (
         <FinTableCell
           showContent={false}
+          narrow
           className={selectCellClassName ? `${styles.select} ${selectCellClassName}` : styles.select}
           checked={selected}
           checkboxLabel={checkboxLabel}

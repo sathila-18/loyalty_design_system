@@ -208,7 +208,7 @@ const columnStyle = (width: number) => ({ '--fin-table-column-width': `${width}p
  * A complete table (DESIGN.md §9): the Header row, Table rows and the Table footer with pagination (`footer`, default
  * on), from columns and rows as data. Code only (no Figma component): it adds no visuals beyond the 16 (`Space-XL`)
  * gap above the footer. Columns are fixed (`width`), flexible (the default, sharing the rest equally) or have a `minWidth`; the select
- * column is fixed at 72. When the columns don't fit, the table scrolls sideways; long text ends in "…". "Select all"
+ * column is fixed at 56 (the ⋮ column at 64). When the columns don't fit, the table scrolls sideways; long text ends in "…". "Select all"
  * acts on the current page; selection is by row ID and kept across pages. No outer border; the last row has no line
  * under it. `ref` goes to the root.
  */
@@ -367,7 +367,7 @@ function FinTableInner<Row>(
   const stickyClass = actionsAt === 'start' ? styles.stickyStart : styles.stickyEnd;
   const selectClass = actionsAt === 'start' ? styles.stickySelect : undefined;
   const actionsHeader = actionsAt && (
-    <FinTableHeaderCell key="row-actions" type="grey" checkbox={false} showTitle={false} className={stickyClass}>
+    <FinTableHeaderCell key="row-actions" type="grey" checkbox={false} showTitle={false} narrow className={stickyClass}>
       {rowActionsHeader}
     </FinTableHeaderCell>
   );
@@ -378,6 +378,7 @@ function FinTableInner<Row>(
       <FinTableCell
         key="row-actions"
         leadingAccessories={false}
+        narrow
         className={stickyClass}
         // The menu's clicks stay in the cell: they don't open or select the row.
         onClick={(event) => event.stopPropagation()}
@@ -399,7 +400,7 @@ function FinTableInner<Row>(
   };
 
   const skeletonActionsCell = (
-    <FinTableCell leadingAccessories={false} className={stickyClass}>
+    <FinTableCell leadingAccessories={false} narrow className={stickyClass}>
       <FinSkeleton shape="circle" />
     </FinTableCell>
   );
@@ -481,7 +482,7 @@ function FinTableInner<Row>(
                   ? Array.from({ length: perPage }, (_, index) => (
                       <FinTableRow key={`loading-${index}`} selectCell={false} hover={false}>
                         {selectable && (
-                          <FinTableCell leadingAccessories={false} className={selectClass}>
+                          <FinTableCell leadingAccessories={false} narrow className={selectClass}>
                             <FinSkeleton shape="rect" width={20} height={20} />
                           </FinTableCell>
                         )}

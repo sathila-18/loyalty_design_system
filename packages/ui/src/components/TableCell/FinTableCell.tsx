@@ -39,6 +39,11 @@ interface FinTableCellOwnProps extends Omit<TdHTMLAttributes<HTMLTableCellElemen
   href?: string;
   /** Link type: the link element, for a router's link component (React Router `Link`, `next/link`). Default `a`. */
   linkAs?: ElementType;
+  /**
+   * Code only (decided by design 29 Oct 2026): 16 padding either side instead of 24, for the narrow checkbox and ⋮
+   * columns (FinTable). Default off.
+   */
+  narrow?: boolean;
 }
 
 type FinTableCellActionProps =
@@ -75,6 +80,7 @@ export const FinTableCell = forwardRef<HTMLTableCellElement, FinTableCellProps>(
     badgeTone = 'primary',
     href,
     linkAs: Link = 'a',
+    narrow = false,
     action = false,
     actionIcon = 'edit',
     actionLabel,
@@ -96,7 +102,12 @@ export const FinTableCell = forwardRef<HTMLTableCellElement, FinTableCellProps>(
     );
 
   return (
-    <td {...rest} ref={ref} data-type={type} className={className ? `${styles.cell} ${className}` : styles.cell}>
+    <td
+      {...rest}
+      ref={ref}
+      data-type={type}
+      data-narrow={narrow ? '' : undefined}
+      className={className ? `${styles.cell} ${className}` : styles.cell}>
       <div className={styles.inner}>
         {leadingAccessories && (
           <span className={styles.leading}>

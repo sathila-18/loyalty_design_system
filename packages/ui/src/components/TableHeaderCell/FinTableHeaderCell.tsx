@@ -33,6 +33,11 @@ export interface FinTableHeaderCellProps extends Omit<ThHTMLAttributes<HTMLTable
   showTitle?: boolean;
   /** Figma Slot: the column title. Text is shown as Label/Medium (one line, "…" when narrow); other content as given. */
   children?: ReactNode;
+  /**
+   * Code only (decided by design 29 Oct 2026): 16 padding either side instead of 24, for the narrow checkbox and ⋮
+   * columns (FinTable). Default off.
+   */
+  narrow?: boolean;
   /** Figma `Show trailing icon`: a down arrow after the title. Display only, unless `filter` makes it the filter. */
   trailingIcon?: boolean;
   /**
@@ -62,6 +67,7 @@ export const FinTableHeaderCell = forwardRef<HTMLTableCellElement, FinTableHeade
     showTitle = true,
     children,
     trailingIcon = false,
+    narrow = false,
     sort,
     onSortChange,
     filter,
@@ -81,6 +87,7 @@ export const FinTableHeaderCell = forwardRef<HTMLTableCellElement, FinTableHeade
       ref={ref}
       scope={scope}
       data-type={type}
+      data-narrow={narrow ? '' : undefined}
       aria-sort={sort === 'ascending' || sort === 'descending' ? sort : undefined}
       className={className ? `${styles.cell} ${className}` : styles.cell}
     >

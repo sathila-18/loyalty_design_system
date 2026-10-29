@@ -23,6 +23,11 @@ const Row = ({ children }: { children: ReactNode }) => (
 );
 
 describe('FinTableHeaderCell', () => {
+  it('narrow (code only): marks the header for the 16 padding of the checkbox and ⋮ columns', () => {
+    inTable(<FinTableHeaderCell narrow showTitle={false}>Select</FinTableHeaderCell>);
+    expect(screen.getByRole('columnheader')).toHaveAttribute('data-narrow');
+  });
+
   it('is a column header with a "select all" checkbox and the title (Figma defaults)', () => {
     inTable(<FinTableHeaderCell>Table title</FinTableHeaderCell>);
     const header = screen.getByRole('columnheader', { name: /Table title/ });

@@ -1,7 +1,7 @@
 /*
  * FinTableRow (DESIGN.md §9). Figma: the cells (40; were 56 until 29 Oct 2026) and a 1px border-default line under them (41). State: Hovered
  * bg-secondary, Selected bg-active, Selected - Hovered bg-active-hover; the fill covers the whole row. The select
- * cell is a Table cell with only the checkbox (72 wide). The cells draw their own content (FinTableCell).
+ * cell is a Table cell with only the checkbox (56 wide: 16 padding, narrow; Figma 72). The cells draw their own content (FinTableCell).
  */
 
 /*

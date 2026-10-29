@@ -14,6 +14,11 @@ const inTable = (cell: ReactNode) =>
   );
 
 describe('FinTableCell', () => {
+  it('narrow (code only): marks the cell for the 16 padding of the checkbox and ⋮ columns', () => {
+    inTable(<FinTableCell narrow showContent={false} />);
+    expect(screen.getByRole('cell')).toHaveAttribute('data-narrow');
+  });
+
   it('is a cell with the row checkbox and the text (Figma defaults)', () => {
     inTable(<FinTableCell>Table cell text</FinTableCell>);
     const cell = screen.getByRole('cell');

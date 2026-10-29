@@ -37,11 +37,12 @@
 
 /*
  * The row's line is its border, so borders are collapsed. Min width comes from the columns (set in TSX), plus the
- * select column (a 24 checkbox with 24 either side: 72) and the ⋮ column (a 32 button with 24 either side: 80).
+ * select column (a 24 checkbox with 16 either side: 56) and the ⋮ column (a 32 button with 16 either side: 64); both
+ * narrow, 16 instead of the cells' 24 (decided by design 29 Oct 2026; were 72 and 80).
  */
 .table {
-  --table-narrow-column: calc(var(--fin-size-24) + 2 * var(--fin-space-3xl));
-  --table-actions-column: calc(var(--fin-size-32) + 2 * var(--fin-space-3xl));
+  --table-narrow-column: calc(var(--fin-size-24) + 2 * var(--fin-space-xl));
+  --table-actions-column: calc(var(--fin-size-32) + 2 * var(--fin-space-xl));
   --table-select: var(--fin-size-0);
   --table-actions: var(--fin-size-0);
 
@@ -59,12 +60,12 @@
   --table-actions: var(--table-actions-column);
 }
 
-/* The select column: the checkbox and its padding either side (24 + 24 + 24 = 72). */
+/* The select column: the checkbox and its padding either side (16 + 24 + 16 = 56). */
 .selectColumn {
   width: var(--table-narrow-column);
 }
 
-/* The ⋮ column (row actions, code first 22 Oct 2026): the 32 icon button with 24 either side (80). */
+/* The ⋮ column (row actions, code first 22 Oct 2026): the 32 icon button with 16 either side (64). */
 .actionsColumn {
   width: var(--table-actions-column);
 }

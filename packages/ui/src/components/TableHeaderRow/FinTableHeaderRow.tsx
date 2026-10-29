@@ -26,7 +26,7 @@ export interface FinTableHeaderRowProps extends Omit<HTMLAttributes<HTMLTableRow
 /**
  * A table's header row (Figma Header row, was Title row; DESIGN.md §9): an optional select cell with the "select all"
  * checkbox, then the column header cells (Cell Slot), Grey in this project. A native `<tr>`, so it goes inside a
- * `<thead>`. The select cell shrinks to its checkbox (72 wide); the row has no width of its own (it fills the table)
+ * `<thead>`. The select cell shrinks to its checkbox (56 wide, narrow padding); the row has no width of its own (it fills the table)
  * and column widths are the table's (FinTable). `ref` goes to the `tr`.
  * **Internal:** part of the table.
  */
@@ -50,6 +50,7 @@ export const FinTableHeaderRow = forwardRef<HTMLTableRowElement, FinTableHeaderR
         <FinTableHeaderCell
           type="grey"
           showTitle={false}
+          narrow
           className={selectCellClassName ? `${styles.select} ${selectCellClassName}` : styles.select}
           indeterminate={indeterminate}
           checkboxLabel={checkboxLabel}
