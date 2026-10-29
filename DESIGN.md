@@ -3961,7 +3961,8 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (29 Oct 2026):** FinSideNav's new spacing (§9.57): the header 12 above the first item in both types, sections 4 apart, Minimized 80. **Next:** the next component named by design; Figma follow-ups listed in §9.48 and §9.57.
 > - **Approved and merged (29 Oct 2026):** the table parts' new sizes (§9.38, §9.40–9.44: cells and headers 40, rows 41, the Row count dropdown and footer 32) and the narrow checkbox and ⋮ columns (56 and 64, `narrow`, code only; §9.45, §9.66). 
 > - **Approved and merged (29 Oct 2026):** the side menu at 272 (§9.57; the menu column 240). The user's long email ends in "…". 
-> - **Approved and merged (29 Oct 2026):** the unticked checkbox's `border-default` border (§9.29); below 3:1, accepted by design (§10 #75). **Next:** the next component named by design.
+> - **Approved and merged (29 Oct 2026):** the unticked checkbox's `border-default` border (§9.29); below 3:1, accepted by design (§10 #75).
+> - **Approved and merged (29 Oct 2026):** the table's ⋮ column shadow only once the table is scrolled sideways (§9.45). **Next:** the next component named by design.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4248,3 +4249,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 29 Oct 2026 | 0.2 | **Checkbox border** (FinCheckboxBase; design's Figma update): the unticked, Enabled box is `border-default` (was `border-strong`). Below 3:1, accepted by design (§10 #75). |
 | 29 Oct 2026 | 0.2 | The checkbox's `border-default` border approved by design and merged into `main`. |
 | 29 Oct 2026 | 0.2 | **Table ⋮ column shadow** (FinTable, decided by design): no shadow at rest; the fixed ⋮ column casts Shadow/Sticky only once the table is scrolled sideways (and while content is still under it). The start position already worked this way. |
+| 29 Oct 2026 | 0.2 | The ⋮ column shadow on scroll approved by design and merged into `main`. |
