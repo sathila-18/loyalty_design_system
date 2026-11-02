@@ -21,8 +21,8 @@ export type FinButtonDockToneButton = FinButtonDockButton & {
   /** `destructive` for remove and delete actions. Default `normal`. */
   tone?: 'normal' | 'destructive';
   /**
-   * Code only (decided 27 Oct 2026): `hug` makes the button as wide as its label, so the other one takes the rest.
-   * Default `fill`: Secondary and Primary share the width equally, as Figma.
+   * Code only (decided 27 Oct 2026). Default `hug` (changed by design 2 Nov 2026): as wide as its label, Secondary and
+   * Primary at the right edge. `fill` takes the width left over (both `fill`: equal shares, as Figma).
    */
   width?: 'fill' | 'hug';
 };
@@ -50,8 +50,9 @@ const hasContent = (node: ReactNode) => node !== undefined && node !== null && n
 
 /**
  * The bar of actions at the bottom of a side sheet, dialog or form (Figma Button dock; DESIGN.md §9): an optional
- * accessory (a note) above a row of Small buttons (Figma: Large; changed by design 2 Nov 2026), Tertiary first, then Secondary and Primary sharing the width
- * equally. Fills its container.
+ * accessory (a note) above a row of Small buttons (Figma: Large; changed by design 2 Nov 2026): Tertiary at the start, then
+ * Secondary and Primary at the end, each as wide as its label (Figma: sharing the width; changed by design 2 Nov 2026).
+ * Fills its container.
  */
 export function FinButtonDock({ accessory, tertiaryButton, secondaryButton, primaryButton, sticky = false, className, ...rest }: FinButtonDockProps) {
   const hasButtons = tertiaryButton !== undefined || secondaryButton !== undefined || primaryButton !== undefined;
@@ -77,14 +78,15 @@ function DockButton({
   label,
   variant,
   tone = 'normal',
-  width = 'fill',
+  width = 'hug',
   leadingIcon,
   className,
   ...rest
 }: FinButtonDockToneButton & { variant: 'primary' | 'secondary' | 'tertiary' }) {
   // Tertiary is always as wide as its label.
   const fill = variant !== 'tertiary' && width === 'fill';
-  const classes = [fill ? styles.fill : undefined, className].filter(Boolean).join(' ') || undefined;
+  const classes =
+    [fill ? styles.fill : undefined, variant !== 'tertiary' ? styles.end : undefined, className].filter(Boolean).join(' ') || undefined;
   const props = { ...rest, size: 'small' as const, ...(classes ? { className: classes } : {}) };
   const icon: FinButtonIconProps = leadingIcon ? { icon: 'leading', iconName: leadingIcon } : {};
   if (tone === 'destructive' && variant !== 'tertiary')
