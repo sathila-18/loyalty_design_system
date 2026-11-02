@@ -3993,7 +3993,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (2 Nov 2026):** the account menu (§9.57): the user's name, email and role badge at the top, My profile, Settings, the Theme row (System / Light / Dark, icon-only menu item radios; FinSegmentedButton `iconOnly`, `size="small"`, `behavior`, §9.34; FinMenu radio stop, `headerPadding`, §9.64), Log out; 320 wide.
 > - **Approved and merged (2 Nov 2026):** FinSegmentedButton `size="xsmall"` (24 tall, segments flush, 16 icons; §9.33, §9.34); the account menu's Theme row uses it (72 × 24, the row 56 tall; items 53).
 > - **Approved and merged (2 Nov 2026):** the account menu on every page (§9.57; `usePageSideNav`, `withPageTheme`).
-> - **Built (2 Nov 2026), waiting for approval:** FinSideNav `variant="tree"`, connected tree lines for a section's pages, in `border-default` (code only; §9.57, §9.47, §10 #76). Branch `feat/side-nav-tree`.
+> - **Approved and merged (2 Nov 2026):** FinSideNav `variant="tree"`, connected tree lines for a section's pages, in `border-default` (code only; §9.57, §9.47, §10 #76).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4303,3 +4303,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 2 Nov 2026 | 0.2 | The account menu on the pages approved by design and merged into `main`. |
 | 2 Nov 2026 | 0.2 | **Side nav tree style** (code only, design's brief): FinSideNav `variant` `default` / `tree` (through FinAppShell's `sideNav`): a 1px `border-subtle` line under the section's icon centre to the middle of its last page, a `Radius-S` connector to 4 before each page's text; CSS only (FinSideNavSubItem pseudo-elements), decorative; none when minimized or closed. §10 #76 to add it to Figma (§9.47, §9.57). |
 | 2 Nov 2026 | 0.2 | Side nav tree lines: `border-default` instead of `border-subtle`, which was too faint (design; 1.36:1 on the nav in Light, 1.54:1 in Dark) (§9.47, §9.57, §10 #76). |
+| 2 Nov 2026 | 0.2 | The side nav tree style approved by design and merged into `main`. |
