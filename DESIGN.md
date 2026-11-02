@@ -3987,7 +3987,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (2 Nov 2026):** side sheet titles in Headline Large-H4 (24 / 33.6 Bold; Figma: Display Small-H3) in FinSideSheet and every page form (§9.70).
 > - **Approved and merged (2 Nov 2026):** the account menu (§9.57): the user's name, email and role badge at the top, My profile, Settings, the Theme row (System / Light / Dark, icon-only menu item radios; FinSegmentedButton `iconOnly`, `size="small"`, `behavior`, §9.34; FinMenu radio stop, `headerPadding`, §9.64), Log out; 320 wide.
 > - **Approved and merged (2 Nov 2026):** FinSegmentedButton `size="xsmall"` (24 tall, segments flush, 16 icons; §9.33, §9.34); the account menu's Theme row uses it (72 × 24, the row 56 tall; items 53).
-> - **Built (2 Nov 2026), waiting for approval:** the account menu on every page (§9.57; `usePageSideNav`, `withPageTheme`). Branch `feat/pages-account-menu`.
+> - **Approved and merged (2 Nov 2026):** the account menu on every page (§9.57; `usePageSideNav`, `withPageTheme`).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4294,3 +4294,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 2 Nov 2026 | 0.2 | **Segmented button XSmall** (code only, decided by design): `size` `xsmall`: 24 tall segments flush on the track (no padding or gap, Radius-S), Button/Small, 16 icons; icon only 24 × 24 (three: 72 × 24). The account menu's Theme row uses it: 56 tall (was 68), the items 53, the closest the 24 × 24 minimum target allows (§9.33, §9.34, §9.57). |
 | 2 Nov 2026 | 0.2 | The XSmall segmented button (as built, Dark look accepted) approved by design and merged into `main`. |
 | 2 Nov 2026 | 0.2 | **Account menu on the pages**: every page's side nav opens the account menu (Admin role, My profile, Settings, Theme, Log out) instead of linking to `#account`; the Theme row drives the theme toolbar through the `withPageTheme` decorator (§8.6, §9.57). |
+| 2 Nov 2026 | 0.2 | The account menu on the pages approved by design and merged into `main`. |
