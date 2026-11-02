@@ -65,14 +65,16 @@ export const withPageTheme: Decorator = function PageTheme(Story) {
 };
 
 /**
- * The side nav props for a page, open at `currentHref`, with the account menu (DESIGN.md §9.57): My profile,
- * Settings, the Theme row (with `withPageTheme`) and Log out.
+ * The side nav props for a page, open at `currentHref`, in the tree style (code only; decided by design
+ * 2 Nov 2026), with the account menu (DESIGN.md §9.57): My profile, Settings, the Theme row (with `withPageTheme`)
+ * and Log out.
  */
 export function usePageSideNav(currentHref: string): FinAppShellProps['sideNav'] {
   const theme = useContext(PageThemeContext);
   return {
     sections: PAGE_SECTIONS,
     currentHref,
+    variant: 'tree',
     profile: {
       ...PAGE_PROFILE,
       menu: [
