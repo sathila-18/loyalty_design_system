@@ -3974,7 +3974,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (2 Nov 2026):** the Button dock's buttons Small (§9.69, code first; Figma still Large) and the side sheets' text, select and date fields Small (§8.6); Small fields' text is Body/Medium (14 / 21) in the 24 row, still 40 tall, icons 20 (§9.58), including the Small searches (toolbar, column filter, menus); text areas unchanged.
 > - **Approved and merged (2 Nov 2026):** FinHeader with a Headline Small-H6 title and an XSmall (32) back button, 77 tall (§9.63), and FinHeaderNotificationButton at 40 everywhere (§9.62); code first, Figma still H4 and 48.
 > - **Approved and merged (2 Nov 2026):** the side nav's logo placeholder reads "Fintech loyalty" (§9.57; stories and pages).
-> - **Built (2 Nov 2026), waiting for approval:** FinButtonDock's buttons hug their labels, Secondary and Primary at the right (§9.69; the details sheets' Edit too). Branch `feat/button-dock-hug`.
+> - **Approved and merged (2 Nov 2026):** FinButtonDock's buttons hug their labels, Secondary and Primary at the right (§9.69; the details sheets' Edit too).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4270,3 +4270,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 2 Nov 2026 | 0.2 | **Logo name** (decided by design): the side nav logo placeholder reads "Fintech loyalty" instead of "Company name", in the FinSideNav and FinAppShell stories and every page (PageLogo). Text and tokens, not the PNG, so it works in Light and Dark (§9.57). |
 | 2 Nov 2026 | 0.2 | The "Fintech loyalty" logo name approved by design and merged into `main`. |
 | 2 Nov 2026 | 0.2 | **Button dock hug** (decided by design, code first): the dock's buttons are as wide as their labels, Tertiary at the start and Secondary and Primary at the right; `width` defaults to `hug` (was `fill`). The details sheets' Edit hugs too (§9.69, §8.6). |
+| 2 Nov 2026 | 0.2 | The hugged Button dock approved by design and merged into `main`. |
