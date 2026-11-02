@@ -5,6 +5,9 @@ import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import styles from './FinSegmentBase.module.css';
 
+/** Code only (2 Nov 2026): `medium` is Figma's; `small` is the compact one (for example in a menu row). */
+export type FinSegmentBaseSize = 'medium' | 'small';
+
 export interface FinSegmentBaseProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** The label. One line; cut off with "…" when the segment is narrower. */
   children: ReactNode;
@@ -17,6 +20,11 @@ export interface FinSegmentBaseProps extends Omit<ButtonHTMLAttributes<HTMLButto
    * the label stays as hidden text, so it's still the button's name. Needs `leadingIcon`.
    */
   iconOnly?: boolean;
+  /**
+   * Default `medium` (Figma: padding Space-M / Space-3XL, Button/Medium, 40 tall; icon only 36). `small` (code only,
+   * 2 Nov 2026): padding Space-XS / Space-L, Button/Small, 32 tall; icon only 28; the 20 icon either way.
+   */
+  size?: FinSegmentBaseSize;
 }
 
 /**
@@ -26,7 +34,7 @@ export interface FinSegmentBaseProps extends Omit<ButtonHTMLAttributes<HTMLButto
  * **Internal:** not exported from the package; use FinSegmentedButton.
  */
 export const FinSegmentBase = forwardRef<HTMLButtonElement, FinSegmentBaseProps>(function FinSegmentBase(
-  { children, selected = false, leadingIcon, iconOnly = false, type = 'button', className, ...rest },
+  { children, selected = false, leadingIcon, iconOnly = false, size = 'medium', type = 'button', className, ...rest },
   ref,
 ) {
   return (
@@ -36,6 +44,7 @@ export const FinSegmentBase = forwardRef<HTMLButtonElement, FinSegmentBaseProps>
       type={type}
       className={className ? `${styles.segment} ${className}` : styles.segment}
       data-selected={selected || undefined}
+      data-size={size === 'small' ? 'small' : undefined}
       data-icon-only={(iconOnly && leadingIcon !== undefined) || undefined}
     >
       {leadingIcon && (

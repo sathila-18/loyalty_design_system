@@ -1,1 +1,1 @@
-export { FinSegmentBase, type FinSegmentBaseProps } from './FinSegmentBase';
+export { FinSegmentBase, type FinSegmentBaseProps, type FinSegmentBaseSize } from './FinSegmentBase';

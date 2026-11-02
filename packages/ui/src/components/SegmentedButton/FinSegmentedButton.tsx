@@ -2,7 +2,7 @@
 
 import { forwardRef, useRef, useState, type HTMLAttributes, type KeyboardEvent } from 'react';
 import type { FinIconName } from '../../icons/finIcons';
-import { FinSegmentBase } from '../SegmentBase';
+import { FinSegmentBase, type FinSegmentBaseSize } from '../SegmentBase';
 import styles from './FinSegmentedButton.module.css';
 
 export interface FinSegmentedButtonOption {
@@ -22,6 +22,9 @@ export interface FinSegmentedButtonOption {
  * between them and Enter, Space or a click picks one. Picking doesn't close the menu.
  */
 export type FinSegmentedButtonBehavior = 'radio' | 'menuitemradio';
+
+/** `medium` (default, Figma's) or `small` (code only, 2 Nov 2026). */
+export type FinSegmentedButtonSize = FinSegmentBaseSize;
 
 /** The group's name: a visible label elsewhere (`aria-labelledby`), or `label` read by screen readers only. */
 type FinSegmentedButtonName = { label: string; 'aria-labelledby'?: never } | { label?: never; 'aria-labelledby': string };
@@ -47,6 +50,11 @@ export type FinSegmentedButtonProps = Omit<HTMLAttributes<HTMLDivElement>, 'onCh
     iconOnly?: boolean;
     /** Default `radio`. See FinSegmentedButtonBehavior. */
     behavior?: FinSegmentedButtonBehavior;
+    /**
+     * Default `medium` (Figma: track padding Space-XS, gap Space-L, Radius-L). `small` (code only, 2 Nov 2026): small
+     * segments on a track with gap Space-XS and Radius-M, 40 tall (icon only: 36, three icons 100 wide).
+     */
+    size?: FinSegmentedButtonSize;
   };
 
 /**
@@ -56,7 +64,7 @@ export type FinSegmentedButtonProps = Omit<HTMLAttributes<HTMLDivElement>, 'onCh
  * Enter or Space picks. `ref` goes to the track.
  */
 export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonProps>(function FinSegmentedButton(
-  { options, value, defaultValue, onValueChange, disabled = false, name, label, iconOnly = false, behavior = 'radio', className, ...rest },
+  { options, value, defaultValue, onValueChange, disabled = false, name, label, iconOnly = false, behavior = 'radio', size = 'medium', className, ...rest },
   ref,
 ) {
   const firstEnabled = options.find((o) => !o.disabled)?.value;
@@ -109,6 +117,7 @@ export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonP
       className={className ? `${styles.track} ${className}` : styles.track}
       data-disabled={disabled || undefined}
       data-icon-only={iconOnly || undefined}
+      data-size={size === 'small' ? 'small' : undefined}
     >
       {options.map((option, i) => (
         <FinSegmentBase
@@ -123,6 +132,7 @@ export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonP
           disabled={disabled || option.disabled === true}
           tabIndex={!inMenu && i === tabStop ? 0 : -1}
           iconOnly={iconOnly}
+          size={size}
           {...(option.icon ? { leadingIcon: option.icon } : {})}
           onClick={() => choose(i)}
           onKeyDown={(event) => onSegmentKeyDown(event, i)}

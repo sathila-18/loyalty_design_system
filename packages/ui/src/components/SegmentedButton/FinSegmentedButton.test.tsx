@@ -162,4 +162,12 @@ describe('FinSegmentedButton', () => {
     expect(onValueChange).toHaveBeenCalledWith('dark');
     expect(radios[2]).toHaveAttribute('aria-checked', 'true');
   });
+
+  it('size small: the track and every segment take the small look', () => {
+    const { container } = render(<FinSegmentedButton label="Period" size="small" options={PERIODS} />);
+    expect(container.firstElementChild).toHaveAttribute('data-size', 'small');
+    for (const radio of screen.getAllByRole('radio')) expect(radio).toHaveAttribute('data-size', 'small');
+    const { container: medium } = render(<FinSegmentedButton label="Period, medium" options={PERIODS} />);
+    expect(medium.firstElementChild).not.toHaveAttribute('data-size');
+  });
 });

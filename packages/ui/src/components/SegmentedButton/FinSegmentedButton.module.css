@@ -29,3 +29,9 @@
 .track[data-icon-only] .segment {
   flex: none;
 }
+
+/* Small (code only, 2 Nov 2026): gap Space-XS, Radius-M (the segment's Radius-S + the Space-XS padding). */
+.track[data-size="small"] {
+  gap: var(--fin-space-xs);
+  border-radius: var(--fin-radius-m);
+}

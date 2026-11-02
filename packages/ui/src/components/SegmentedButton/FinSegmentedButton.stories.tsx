@@ -19,20 +19,31 @@ interface Args {
   showIcons: boolean;
   disabled: boolean;
   label: string;
+  size: 'medium' | 'small';
+  iconOnly: boolean;
 }
 
 const meta: Meta<Args> = {
   title: 'Components/Segmented button',
-  args: { segments: 3, showIcons: false, disabled: false, label: 'Period' },
+  args: { segments: 3, showIcons: false, disabled: false, label: 'Period', size: 'medium', iconOnly: false },
   argTypes: {
     segments: { control: { type: 'range', min: 2, max: 5 }, description: 'Figma `Show Button 1 / 2 / 3` (code: at least 2)' },
     showIcons: { control: 'boolean', name: 'Show Leading Icon', description: 'The segments’ `Show Leading Accessory`' },
     disabled: { control: 'boolean', description: 'Figma `State=Disabled`' },
     label: { control: 'text', description: 'The group’s name for screen readers' },
+    size: { control: 'inline-radio', options: ['medium', 'small'], description: '`size`: `small` is code only (2 Nov 2026)' },
+    iconOnly: { control: 'boolean', description: '`iconOnly` (code only): the icons alone, labels as their names' },
   },
-  render: ({ segments, showIcons, disabled, label }) => (
+  render: ({ segments, showIcons, disabled, label, size, iconOnly }) => (
     <div className={styles.frame}>
-      <FinSegmentedButton key={segments} label={label} options={pick(segments, showIcons)} disabled={disabled} />
+      <FinSegmentedButton
+        key={segments}
+        label={label}
+        options={pick(segments, showIcons || iconOnly)}
+        disabled={disabled}
+        size={size}
+        iconOnly={iconOnly}
+      />
     </div>
   ),
 };
@@ -114,4 +125,31 @@ export const IconOnly: Story = {
       />
     </div>
   ),
+};
+
+/**
+ * Sizes: Medium (Figma's; 48 track, icon only 44) and Small (code only, 2 Nov 2026: Button/Small, gaps 4, Radius-M
+ * track; 40 track, icon only 36 tall and 100 wide with three icons, as the account menu's Theme row).
+ */
+export const Sizes: Story = {
+  render: () => {
+    const theme: FinSegmentedButtonProps['options'] = [
+      { value: 'system', label: 'System', icon: 'desktop_windows' },
+      { value: 'light', label: 'Light', icon: 'light_mode' },
+      { value: 'dark', label: 'Dark', icon: 'dark_mode' },
+    ];
+    return (
+      <div className={styles.list}>
+        <FinSegmentedButton label="Period, medium" options={pick(3, false)} defaultValue="week" />
+        <FinSegmentedButton label="Period, small" size="small" options={pick(3, false)} defaultValue="week" />
+        <FinSegmentedButton label="Period, small with icons" size="small" options={pick(3, true)} defaultValue="week" />
+        <div>
+          <FinSegmentedButton label="Theme, medium" iconOnly options={theme} defaultValue="light" />
+        </div>
+        <div>
+          <FinSegmentedButton label="Theme, small" iconOnly size="small" options={theme} defaultValue="light" />
+        </div>
+      </div>
+    );
+  },
 };

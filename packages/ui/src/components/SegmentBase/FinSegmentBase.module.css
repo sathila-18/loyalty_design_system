@@ -80,6 +80,18 @@
   padding: var(--fin-space-m);
 }
 
+/* Small (code only, 2 Nov 2026): padding Space-XS / Space-L, Button/Small, Radius-S; 32 tall, icon only 28. */
+.segment[data-size="small"] {
+  gap: var(--fin-space-xs);
+  padding: var(--fin-space-xs) var(--fin-space-l);
+  border-radius: var(--fin-radius-s);
+  font: var(--fin-font-button-small);
+}
+
+.segment[data-size="small"][data-icon-only] {
+  padding: var(--fin-space-xs);
+}
+
 /* One line, no fixed max width; "…" when the segment is narrower. */
 .label {
   min-width: 0;

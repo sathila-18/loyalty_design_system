@@ -219,6 +219,7 @@ export function FinSideNav({
               <FinSegmentedButton
                 behavior="menuitemradio"
                 iconOnly
+                size="small"
                 aria-labelledby={themeTitleId}
                 value={item.value}
                 onValueChange={(next) => item.onValueChange(next as FinSideNavTheme)}
