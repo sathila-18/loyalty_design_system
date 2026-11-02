@@ -5,7 +5,7 @@ import type { FinIconName } from '../../icons/finIcons';
 import { FinTextBox } from '../TextBox';
 import styles from './FinButtonDock.module.css';
 
-/** A dock button: a label button (Large, as Figma), any button attribute (`onClick`, `disabled`, `type`…). */
+/** A dock button: a label button (Small; Figma's are Large, changed by design 2 Nov 2026), any button attribute (`onClick`, `disabled`, `type`…). */
 export type FinButtonDockButton = Omit<
   FinButtonBaseProps,
   'variant' | 'size' | 'leadingIcon' | 'trailingIcon' | 'showLabel' | 'iconOnly' | 'iconSide' | 'children'
@@ -50,7 +50,7 @@ const hasContent = (node: ReactNode) => node !== undefined && node !== null && n
 
 /**
  * The bar of actions at the bottom of a side sheet, dialog or form (Figma Button dock; DESIGN.md §9): an optional
- * accessory (a note) above a row of Large buttons, Tertiary first, then Secondary and Primary sharing the width
+ * accessory (a note) above a row of Small buttons (Figma: Large; changed by design 2 Nov 2026), Tertiary first, then Secondary and Primary sharing the width
  * equally. Fills its container.
  */
 export function FinButtonDock({ accessory, tertiaryButton, secondaryButton, primaryButton, sticky = false, className, ...rest }: FinButtonDockProps) {
@@ -85,7 +85,7 @@ function DockButton({
   // Tertiary is always as wide as its label.
   const fill = variant !== 'tertiary' && width === 'fill';
   const classes = [fill ? styles.fill : undefined, className].filter(Boolean).join(' ') || undefined;
-  const props = { ...rest, size: 'large' as const, ...(classes ? { className: classes } : {}) };
+  const props = { ...rest, size: 'small' as const, ...(classes ? { className: classes } : {}) };
   const icon: FinButtonIconProps = leadingIcon ? { icon: 'leading', iconName: leadingIcon } : {};
   if (tone === 'destructive' && variant !== 'tertiary')
     return (

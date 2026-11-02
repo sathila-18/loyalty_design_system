@@ -89,7 +89,7 @@ export function FocusAreaForm({ open, area, total, onClose, onSave, offline = fa
           <fieldset className={styles.section}>
             <legend className={styles.legend}>Details</legend>
             <div className={styles.group}>
-              <FinTextField ref={ref('name')} label="Focus area name" placeholder="Focus area name" value={v.name} onChange={(e) => set('name', e.target.value, 'name')} {...helper('name')} />
+              <FinTextField size="small" ref={ref('name')} label="Focus area name" placeholder="Focus area name" value={v.name} onChange={(e) => set('name', e.target.value, 'name')} {...helper('name')} />
               <FinTextArea
                 ref={ref('description')}
                 label="Short description"
@@ -99,14 +99,14 @@ export function FocusAreaForm({ open, area, total, onClose, onSave, offline = fa
                 {...helper('description')}
               />
               <div className={styles.row}>
-                <FinSelectField
+                <FinSelectField size="small"
                   label="Badge after completion (optional)"
                   placeholder="Badge after completion (optional)"
                   options={BADGES.map((b) => ({ value: b, label: b }))}
                   value={v.badge}
                   onChange={(next) => set('badge', next)}
                 />
-                <FinSelectField
+                <FinSelectField size="small"
                   label="Order"
                   placeholder="Order"
                   options={Array.from({ length: places }, (_, i) => ({ value: String(i + 1), label: padded(i + 1) }))}

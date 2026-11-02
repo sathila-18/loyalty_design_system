@@ -22,7 +22,7 @@ interface Args {
 
 /**
  * The bar of actions at the bottom of a side sheet, dialog or form (Figma Button dock; DESIGN.md §9): an optional note
- * above Large buttons, Tertiary first, then Secondary and Primary sharing the width.
+ * above Small buttons (Figma: Large; changed by design 2 Nov 2026), Tertiary first, then Secondary and Primary sharing the width.
  */
 const meta: Meta<Args> = {
   title: 'Components/Button dock',

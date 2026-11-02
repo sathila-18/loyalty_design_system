@@ -345,8 +345,8 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                 <fieldset className={styles.section}>
                   <legend className={styles.legend}>Basic details</legend>
                   <div className={styles.group}>
-                    <FinTextField ref={ref('name')} label="Reward name" placeholder="Reward name" value={v.name} onChange={(e) => set('name', e.target.value, 'name')} {...helper('name')} />
-                    <FinSelectField
+                    <FinTextField size="small" ref={ref('name')} label="Reward name" placeholder="Reward name" value={v.name} onChange={(e) => set('name', e.target.value, 'name')} {...helper('name')} />
+                    <FinSelectField size="small"
                       ref={ref('event')}
                       label="Event"
                       placeholder="Event"
@@ -360,7 +360,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                 <fieldset className={styles.section}>
                   <legend className={styles.legend}>Availability</legend>
                   <div className={styles.group}>
-                    <FinSelectField
+                    <FinSelectField size="small"
                       label="Provider (optional)"
                       placeholder="Provider (optional)"
                       options={providers.map((o) => ({ value: o, label: o }))}
@@ -376,9 +376,9 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                       onCheckedChange={(on) => set('lifetime', on, 'end')}
                     />
                     <div className={styles.row}>
-                      <FinDateField ref={ref('start')} label="Start date" value={v.start} onChange={(date) => set('start', date, 'start')} {...helper('start')} />
+                      <FinDateField size="small" ref={ref('start')} label="Start date" value={v.start} onChange={(date) => set('start', date, 'start')} {...helper('start')} />
                       {!v.lifetime && (
-                        <FinDateField
+                        <FinDateField size="small"
                           ref={ref('end')}
                           label="End date"
                           value={v.end}
@@ -411,7 +411,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                         <FinListRadioFilled value="percentage" title="Percentage" />
                       </FinListRadioGroup>
                     </div>
-                    <FinTextField
+                    <FinTextField size="small"
                       ref={ref('amount')}
                       label={amount.label}
                       placeholder={amount.label}
@@ -422,7 +422,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                       {...(errors.amount ? { error: true, helperText: amount.error } : {})}
                     />
                     {v.valueType === 'percentage' && (
-                      <FinTextField
+                      <FinTextField size="small"
                         ref={ref('maxCapacity')}
                         label="Maximum capacity (optional)"
                         placeholder="Maximum capacity (optional)"
@@ -443,7 +443,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                 <fieldset className={styles.section}>
                   <legend className={styles.legend}>Qualifying transaction</legend>
                   <div className={styles.group}>
-                    <FinTextField
+                    <FinTextField size="small"
                       ref={ref('minTransaction')}
                       label="Minimum transaction value"
                       placeholder="Minimum transaction value"
@@ -463,7 +463,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                       </FinListRadioGroup>
                     </div>
                     {v.giveOn === 'nth' && (
-                      <FinTextField
+                      <FinTextField size="small"
                         ref={ref('count')}
                         label="Count of event"
                         placeholder="Count of event"
@@ -479,7 +479,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                 <fieldset className={styles.section}>
                   <legend className={styles.legend}>Cost to the customer</legend>
                   <div className={styles.group}>
-                    <FinTextField
+                    <FinTextField size="small"
                       ref={ref('pointsCost')}
                       label="Points cost"
                       placeholder="Points cost"
@@ -497,7 +497,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                       onCheckedChange={(on) => set('promo', on, 'promoCode')}
                     />
                     {v.promo && (
-                      <FinTextField
+                      <FinTextField size="small"
                         ref={ref('promoCode')}
                         label="Promo code"
                         placeholder="Promo code"
@@ -512,7 +512,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                   <legend className={styles.legend}>Limits</legend>
                   <div className={styles.group}>
                     <div className={styles.row}>
-                      <FinSelectField
+                      <FinSelectField size="small"
                         ref={ref('claimDuration')}
                         label="Maximum claim duration"
                         placeholder="Maximum claim duration"
@@ -521,7 +521,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                         onChange={(next) => set('claimDuration', next, 'claimDuration')}
                         {...helper('claimDuration')}
                       />
-                      <FinTextField
+                      <FinTextField size="small"
                         ref={ref('claimsPerCustomer')}
                         label="Maximum claims per customer"
                         placeholder="Maximum claims per customer"
@@ -531,7 +531,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                         {...helper('claimsPerCustomer')}
                       />
                     </div>
-                    <FinTextField
+                    <FinTextField size="small"
                       ref={ref('maxUses')}
                       label="Max total uses of campaign (optional)"
                       placeholder="Max total uses of campaign (optional)"
@@ -623,7 +623,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                         Each list also offers all segments or all tiers.
                       </FinNotificationBanner>
                       <div className={styles.row}>
-                        <FinSelectField
+                        <FinSelectField size="small"
                           ref={ref('ruleSegment')}
                           label="Segment"
                           placeholder="Segment"
@@ -636,7 +636,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                           }}
                           {...helper('ruleSegment')}
                         />
-                        <FinSelectField
+                        <FinSelectField size="small"
                           ref={ref('ruleTier')}
                           label="Tier"
                           placeholder="Tier"
@@ -684,7 +684,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
 
                 <fieldset className={styles.section}>
                   <legend className={styles.legend}>Badge</legend>
-                  <FinSelectField
+                  <FinSelectField size="small"
                     label="Badge after completion (optional)"
                     placeholder="Badge after completion (optional)"
                     options={BADGES.map((o) => ({ value: o, label: o }))}
@@ -700,7 +700,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                 <fieldset className={styles.section}>
                   <legend className={styles.legend}>Offer text, shown in the reward catalogue</legend>
                   <div className={styles.group}>
-                    <FinTextField ref={ref('headline')} label="Headline" placeholder="Headline" value={v.headline} onChange={(e) => set('headline', e.target.value, 'headline')} {...helper('headline')} />
+                    <FinTextField size="small" ref={ref('headline')} label="Headline" placeholder="Headline" value={v.headline} onChange={(e) => set('headline', e.target.value, 'headline')} {...helper('headline')} />
                     <FinTextArea
                       ref={ref('description')}
                       label="Description"

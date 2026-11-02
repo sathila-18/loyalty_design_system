@@ -141,7 +141,7 @@ export function TierForm({ open, onClose, tier, tiers, onSave }: TierFormProps) 
       }}
     >
       <form id={formId} className={styles.form} noValidate onSubmit={submit}>
-        <FinTextField
+        <FinTextField size="small"
           ref={(node) => {
             refs.current.name = node;
           }}
@@ -154,7 +154,7 @@ export function TierForm({ open, onClose, tier, tiers, onSave }: TierFormProps) 
           }}
           {...helper('name')}
         />
-        <FinSelectField
+        <FinSelectField size="small"
           ref={(node) => {
             refs.current.level = node;
           }}
@@ -168,7 +168,7 @@ export function TierForm({ open, onClose, tier, tiers, onSave }: TierFormProps) 
           }}
           {...helper('level')}
         />
-        <FinTextField
+        <FinTextField size="small"
           ref={(node) => {
             refs.current.upgrade = node;
           }}
@@ -183,7 +183,7 @@ export function TierForm({ open, onClose, tier, tiers, onSave }: TierFormProps) 
           }}
           {...helper('upgrade', 'Points needed to reach this tier')}
         />
-        <FinTextField
+        <FinTextField size="small"
           ref={(node) => {
             refs.current.downgrade = node;
           }}
@@ -198,7 +198,7 @@ export function TierForm({ open, onClose, tier, tiers, onSave }: TierFormProps) 
           }}
           {...helper('downgrade', 'Members below this drop a tier')}
         />
-        <FinTextField
+        <FinTextField size="small"
           ref={(node) => {
             refs.current.multiplier = node;
           }}
@@ -213,7 +213,7 @@ export function TierForm({ open, onClose, tier, tiers, onSave }: TierFormProps) 
           }}
           {...helper('multiplier')}
         />
-        <FinSelectField
+        <FinSelectField size="small"
           ref={(node) => {
             refs.current.status = node;
           }}

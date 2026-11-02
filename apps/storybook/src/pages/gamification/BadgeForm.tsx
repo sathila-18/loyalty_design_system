@@ -142,7 +142,7 @@ export function BadgeForm({ open, badge, takenNames, onClose, onSave, offline = 
                   }}
                 />
               </div>
-              <FinTextField
+              <FinTextField size="small"
                 ref={ref('name')}
                 label="Badge name"
                 placeholder="Badge name"

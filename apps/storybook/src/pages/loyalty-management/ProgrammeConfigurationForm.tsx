@@ -157,7 +157,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
         {offline ? <ConnectionError /> : saveFailed && <SaveError />}
         <fieldset className={styles.section}>
           <legend className={styles.legend}>Segment</legend>
-          <FinSelectField
+          <FinSelectField size="small"
             ref={(node) => {
               refs.current.segment = node;
             }}
@@ -182,7 +182,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
 
         <fieldset className={styles.section}>
           <legend className={styles.legend}>Points</legend>
-          <FinTextField
+          <FinTextField size="small"
             ref={(node) => {
               refs.current.expiry = node;
             }}
@@ -204,7 +204,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
           <div className={styles.group}>
             <FinListToggleFilled size="small" title="Allow points to be converted to account credit" checked={cash} onCheckedChange={setCash} />
             <div className={styles.row}>
-              <FinTextField
+              <FinTextField size="small"
                 ref={(node) => {
                   refs.current.points = node;
                 }}
@@ -219,7 +219,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
                 }}
                 {...helper('points')}
               />
-              <FinTextField
+              <FinTextField size="small"
                 ref={(node) => {
                   refs.current.value = node;
                 }}
@@ -235,7 +235,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
                 {...helper('value')}
               />
             </div>
-            <FinTextField
+            <FinTextField size="small"
               ref={(node) => {
                 refs.current.minimum = node;
               }}

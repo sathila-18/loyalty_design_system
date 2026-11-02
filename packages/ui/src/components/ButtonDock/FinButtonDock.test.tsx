@@ -19,7 +19,7 @@ describe('FinButtonDock', () => {
     const buttons = screen.getAllByRole('button');
     expect(buttons.map((b) => b.textContent)).toEqual(['Reset', 'Cancel', 'Save']);
     expect(buttons.map((b) => b.getAttribute('data-variant'))).toEqual(['tertiary', 'secondary', 'primary']);
-    expect(buttons.every((b) => b.getAttribute('data-size') === 'large')).toBe(true);
+    expect(buttons.every((b) => b.getAttribute('data-size') === 'small')).toBe(true);
     await user.click(screen.getByRole('button', { name: 'Save' }));
     expect(onSave).toHaveBeenCalledTimes(1);
   });

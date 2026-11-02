@@ -112,7 +112,7 @@ export function LessonForm({ open, lesson, focusArea, total, onClose, onSave, of
           <fieldset className={styles.section}>
             <legend className={styles.legend}>Lesson</legend>
             <div className={styles.group}>
-              <FinTextField ref={ref('topic')} label="Topic" placeholder="Topic" value={v.topic} onChange={(e) => set('topic', e.target.value, 'topic')} {...helper('topic')} />
+              <FinTextField size="small" ref={ref('topic')} label="Topic" placeholder="Topic" value={v.topic} onChange={(e) => set('topic', e.target.value, 'topic')} {...helper('topic')} />
               <FinTextArea
                 ref={ref('description')}
                 label="Description"
@@ -126,7 +126,7 @@ export function LessonForm({ open, lesson, focusArea, total, onClose, onSave, of
           <fieldset className={styles.section}>
             <legend className={styles.legend}>Example</legend>
             <div className={styles.group}>
-              <FinTextField label="Example topic (optional)" placeholder="Example topic (optional)" value={v.exampleTopic} onChange={(e) => set('exampleTopic', e.target.value)} />
+              <FinTextField size="small" label="Example topic (optional)" placeholder="Example topic (optional)" value={v.exampleTopic} onChange={(e) => set('exampleTopic', e.target.value)} />
               <FinTextArea
                 label="Example description (optional)"
                 placeholder="Example description (optional)"
@@ -139,7 +139,7 @@ export function LessonForm({ open, lesson, focusArea, total, onClose, onSave, of
             <legend className={styles.legend}>After the lesson</legend>
             <div className={styles.group}>
               <div className={styles.row}>
-                <FinSelectField
+                <FinSelectField size="small"
                   ref={ref('trigger')}
                   label="Trigger event (after success)"
                   placeholder="Trigger event (after success)"
@@ -148,7 +148,7 @@ export function LessonForm({ open, lesson, focusArea, total, onClose, onSave, of
                   onChange={(next) => set('trigger', next, 'trigger')}
                   {...helper('trigger')}
                 />
-                <FinSelectField
+                <FinSelectField size="small"
                   label="Order"
                   placeholder="Order"
                   options={Array.from({ length: places }, (_, i) => ({ value: String(i + 1), label: padded(i + 1) }))}

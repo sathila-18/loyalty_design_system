@@ -166,7 +166,7 @@ export function QuestionForm({ open, question, lesson, onClose, onSave, offline 
           <fieldset className={styles.section}>
             <legend className={styles.legend}>Question</legend>
             <div className={styles.group}>
-              <FinTextField ref={ref('text')} label="Question" placeholder="Question" value={v.text} onChange={(e) => set('text', e.target.value, 'text')} {...helper('text')} />
+              <FinTextField size="small" ref={ref('text')} label="Question" placeholder="Question" value={v.text} onChange={(e) => set('text', e.target.value, 'text')} {...helper('text')} />
               <div className={styles.panel}>
                 <p className={styles.panelTitle} aria-hidden="true">
                   Tiers
@@ -186,7 +186,7 @@ export function QuestionForm({ open, question, lesson, onClose, onSave, offline 
                 Select the correct one
               </p>
               <div className={styles.fieldWithButton}>
-                <FinTextField
+                <FinTextField size="small"
                   ref={ref('newOption')}
                   label="Option"
                   placeholder="Option"
@@ -251,7 +251,7 @@ export function QuestionForm({ open, question, lesson, onClose, onSave, offline 
                 onChange={(e) => set('explanation', e.target.value, 'explanation')}
                 {...helper('explanation')}
               />
-              <FinTextField
+              <FinTextField size="small"
                 ref={ref('points')}
                 label="Points per correct answer"
                 placeholder="Points per correct answer"
