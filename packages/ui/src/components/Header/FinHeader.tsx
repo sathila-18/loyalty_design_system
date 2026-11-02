@@ -30,7 +30,8 @@ export interface FinHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 'child
 
 /**
  * The page header (Figma Main header; DESIGN.md §9): a back button, the title with its body content, and the
- * notification button. Fills its container.
+ * notification button. Fills its container. Code first (decided by design 2 Nov 2026; Figma: H4, Medium, 48): the
+ * title is Headline Small-H6, the back button XSmall (36) and the bell 36.
  */
 export function FinHeader({
   heading,
@@ -48,16 +49,16 @@ export function FinHeader({
     <header {...rest} className={className ? `${styles.header} ${className}` : styles.header}>
       <div className={styles.main}>
         {backButton && (
-          <FinButton variant="tertiary" size="medium" icon="only-icon" iconName="arrow_back" onClick={onBack}>
+          <FinButton variant="tertiary" size="xsmall" icon="only-icon" iconName="arrow_back" onClick={onBack}>
             {backLabel}
           </FinButton>
         )}
         <div className={styles.text}>
-          <FinTextBox type="h4" heading={heading} headingLevel={headingLevel} truncateHeading />
+          <FinTextBox type="h6" heading={heading} headingLevel={headingLevel} truncateHeading />
           {bodyContent !== undefined && bodyContent !== null && (
             <div className={styles.body}>
               {typeof bodyContent === 'string' || typeof bodyContent === 'number' ? (
-                <FinTextBox type="h4" description={bodyContent} />
+                <FinTextBox type="h6" description={bodyContent} />
               ) : (
                 bodyContent
               )}

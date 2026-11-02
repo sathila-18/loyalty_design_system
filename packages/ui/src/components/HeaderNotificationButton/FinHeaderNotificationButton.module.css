@@ -1,6 +1,7 @@
 /*
- * FinHeaderNotificationButton (DESIGN.md §9). A 48 circle with the 24 bell centred (Figma `48px bg`, its fill swapped
- * to bg-action-secondary; padding Space-M, bound to another library in Figma). The badge is FinBadgeIndicator (Small,
+ * FinHeaderNotificationButton (DESIGN.md §9). A 32 circle with the 20 bell centred, padding Space-S: the XSmall icon
+ * button's size, as the header's back button (changed by design 2 Nov 2026; Figma: a 48 circle, a 24 bell, padding
+ * Space-M; Figma `48px bg`, its fill swapped to bg-action-secondary). The badge is FinBadgeIndicator (Small,
  * red), placed over the top-right of the circle. No animation (§5).
  */
 
@@ -10,10 +11,10 @@
   flex: none;
   align-items: center;
   justify-content: center;
-  width: var(--fin-size-48);
-  height: var(--fin-size-48);
+  width: var(--fin-size-32);
+  height: var(--fin-size-32);
   margin: 0;
-  padding: var(--fin-space-m);
+  padding: var(--fin-space-s);
   border: 0;
   border-radius: var(--fin-radius-full);
   background-color: var(--fin-bg-action-secondary);
@@ -51,14 +52,14 @@
   display: flex;
 }
 
-/* Notification=Dot: a 6 dot, 12 from the top and the right. */
+/* Notification=Dot: a 6 dot on the bell's top-right corner, 6 from the top and the right (Figma: 12 in the 48). */
 .button[data-notification="dot"] .badge {
-  top: var(--fin-size-12);
-  right: var(--fin-size-12);
+  top: var(--fin-space-s);
+  right: var(--fin-space-s);
 }
 
 /* Notification=Number: starts at the circle's centre line, 4 above its top; grows to the right. */
 .button[data-notification="number"] .badge {
   top: calc(var(--fin-space-xs) * -1);
-  left: var(--fin-size-24);
+  left: 50%;
 }

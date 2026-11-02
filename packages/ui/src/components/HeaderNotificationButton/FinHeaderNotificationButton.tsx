@@ -43,7 +43,7 @@ export const FinHeaderNotificationButton = forwardRef<HTMLButtonElement, FinHead
         className={className ? `${styles.button} ${className}` : styles.button}
         data-notification={shown}
       >
-        <FinIcon name="notifications" size={24} />
+        <FinIcon name="notifications" size={20} />
         {shown !== 'none' && (
           <span className={styles.badge} aria-hidden="true">
             <FinBadgeIndicator {...(shown === 'number' ? { count, max } : {})} />
