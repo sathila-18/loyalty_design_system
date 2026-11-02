@@ -3216,7 +3216,7 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Decided 22 Oct 2026:** (1) a **disabled button never shows a badge**, whatever `notification` is. (2) `notification="number"` with a count of 0 (or none) shows no badge, as FinBadgeIndicator. (3) The circle is drawn by the button itself, not FinIconContainer: its tones can't express the action-secondary fill or the hover and pressed states, and its circle isn't interactive. FinIcon and FinBadgeIndicator are reused as they are.
 
-**Changed by design 2 Nov 2026 (code first):** the button is **32** everywhere, the XSmall icon button's size (as the header's back button): a 32 circle, a **20** bell, padding `Space-S` (6); the dot 6 from the top and right (`Space-S`, on the bell's corner); the number at the centre line (`left: 50%`), 4 above the top, growing right, so "99+" reaches past the circle's right edge. Figma still shows 48 (to update in Figma).
+**Changed by design 2 Nov 2026 (code first):** the button is **40** everywhere, the Small icon button's size: a 40 circle, a **20** bell (as the header's back button's icon), padding `Space-M` (8); the dot 8 from the top and right (`Space-M`, on the bell's corner); the number at the centre line (`left: 50%`), 4 above the top, growing right. (Built at 32 first, then 40, the same day.) Figma still shows 48 (to update in Figma).
 
 **Figma → code:**
 
@@ -3227,7 +3227,7 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 | The "99+" number | `count`, `max` (default 99), passed to FinBadgeIndicator |
 | — (code only) | `label` (default "Notifications"); the button's own attributes (`onClick`…), `ref` |
 
-**Tokens used:** circle `--fin-size-32` (was 48), `--fin-radius-full`, padding `--fin-space-s` (was `--fin-space-m`); fills `--fin-bg-action-secondary` / `-hovered` / `-pressed`, `--fin-bg-disabled`; icon `--fin-fg-action` / `--fin-fg-hovered` / `--fin-fg-pressed`, `--fin-fg-disabled-on-bg`; dot at `--fin-space-s` from the top and right (was `--fin-size-12`); number at 50% from the left (was `--fin-size-24`), `--fin-space-xs` above the top; focus ring 2px `--fin-border-focused`, 2 out (no Focused design, §10 #6).
+**Tokens used:** circle `--fin-size-40` (was 48), `--fin-radius-full`, padding `--fin-space-m`; fills `--fin-bg-action-secondary` / `-hovered` / `-pressed`, `--fin-bg-disabled`; icon `--fin-fg-action` / `--fin-fg-hovered` / `--fin-fg-pressed`, `--fin-fg-disabled-on-bg`; dot at `--fin-space-m` from the top and right (was `--fin-size-12`); number at 50% from the left (was `--fin-size-24`), `--fin-space-xs` above the top; focus ring 2px `--fin-border-focused`, 2 out (no Focused design, §10 #6).
 
 **API:**
 
@@ -3246,7 +3246,7 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Decided 22 Oct 2026:** (1) the back arrow is Tertiary as it is (Figma updated). (2) The height comes from the padding and content (Figma updated: padding 12, hug). (3) **A long title stays on one line and ends in "…"**, through FinTextBox's new code-only `truncateHeading` (§9.21); the body content wraps. (4) The title is an `<h1>` by default (`headingLevel`), the root a `<header>`.
 
-**Changed by design 2 Nov 2026 (code first):** the title is **Headline Small-H6** (16 / 24, Semibold 600; was Headline Large-H4, 24 / 33.6 Bold), the body content stays Body/Medium 4 below (H6's description); the back button is **XSmall** Tertiary icon only, **32 × 32** with a 20 icon (was Medium, 48); the bell is 32 (§9.62). Padding, gaps and the border are unchanged, so the header is **77** tall (12 + 24 + 4 + 21 + 12 + the 4 border; was 87) and the text starts at 68 (24 + 32 + 12). Figma still shows H4 and 48 buttons (to update in Figma).
+**Changed by design 2 Nov 2026 (code first):** the title is **Headline Small-H6** (16 / 24, Semibold 600; was Headline Large-H4, 24 / 33.6 Bold), the body content stays Body/Medium 4 below (H6's description); the back button is **XSmall** Tertiary icon only, **32 × 32** with a 20 icon (was Medium, 48); the bell is 40 (§9.62). Padding, gaps and the border are unchanged, so the header is **77** tall (12 + 24 + 4 + 21 + 12 + the 4 border; was 87) and the text starts at 68 (24 + 32 + 12). Figma still shows H4 and 48 buttons (to update in Figma).
 
 **Figma → code:**
 
@@ -3970,7 +3970,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (29 Oct 2026):** the unticked checkbox's `border-default` border (§9.29); below 3:1, accepted by design (§10 #75).
 > - **Approved and merged (29 Oct 2026):** the table's ⋮ column shadow only once the table is scrolled sideways (§9.45). **Next:** the next component named by design.
 > - **Approved and merged (2 Nov 2026):** the Button dock's buttons Small (§9.69, code first; Figma still Large) and the side sheets' text, select and date fields Small (§8.6); Small fields' text is Body/Medium (14 / 21) in the 24 row, still 40 tall, icons 20 (§9.58), including the Small searches (toolbar, column filter, menus); text areas unchanged.
-> - **Built (2 Nov 2026), waiting for approval:** FinHeader with a Headline Small-H6 title and an XSmall (32) back button, 77 tall (§9.63), and FinHeaderNotificationButton at 32 everywhere (§9.62); code first, Figma still H4 and 48. Branch `feat/header-small`.
+> - **Built (2 Nov 2026), waiting for approval:** FinHeader with a Headline Small-H6 title and an XSmall (32) back button, 77 tall (§9.63), and FinHeaderNotificationButton at 40 everywhere (§9.62); code first, Figma still H4 and 48. Branch `feat/header-small`.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4261,4 +4261,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 2 Nov 2026 | 0.2 | **Button dock Small** (FinButtonDock, decided by design, code first): the dock's buttons are Small (40) instead of Large (56); Figma to follow. Every text, select and date field in the side sheet forms (Programme configuration, Tier, Reward, Badge, Focus area, Lesson, Question) is Small (40); text areas keep their size. |
 | 2 Nov 2026 | 0.2 | **Small field text** (FinInputBase Small, decided by design): the value, placeholder, prefix, suffix and date mask are Body/Medium (14 / 21) instead of Body/Large, in the same 24 row, so the box stays 40; icons stay 20, the label Label/Small. Every Small field follows (text, select, date, password, search: the side sheets, the table toolbar, the column filter and menu searches) (§9.58, §9.72). |
 | 2 Nov 2026 | 0.2 | The Small Button dock, the side sheets' Small fields and the Small fields' Body/Medium text approved by design and merged into `main`. |
-| 2 Nov 2026 | 0.2 | **Smaller header** (decided by design, code first): FinHeader's title is Headline Small-H6 (was H4) and its back button XSmall, 32 × 32 (was Medium, 48), so the header is 77 tall (was 87); FinHeaderNotificationButton is 32 everywhere (20 bell, padding 6, dot 6 in; was 48) (§9.62, §9.63). |
+| 2 Nov 2026 | 0.2 | **Smaller header** (decided by design, code first): FinHeader's title is Headline Small-H6 (was H4) and its back button XSmall, 32 × 32 (was Medium, 48), so the header is 77 tall (was 87); FinHeaderNotificationButton is 40 everywhere (20 bell, padding 8, dot 8 in; was 48) (§9.62, §9.63). |
