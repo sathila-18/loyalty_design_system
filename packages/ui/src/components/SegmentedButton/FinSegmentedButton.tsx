@@ -23,7 +23,7 @@ export interface FinSegmentedButtonOption {
  */
 export type FinSegmentedButtonBehavior = 'radio' | 'menuitemradio';
 
-/** `medium` (default, Figma's) or `small` (code only, 2 Nov 2026). */
+/** `medium` (default, Figma's), `small` or `xsmall` (both code only, 2 Nov 2026). */
 export type FinSegmentedButtonSize = FinSegmentBaseSize;
 
 /** The group's name: a visible label elsewhere (`aria-labelledby`), or `label` read by screen readers only. */
@@ -52,7 +52,9 @@ export type FinSegmentedButtonProps = Omit<HTMLAttributes<HTMLDivElement>, 'onCh
     behavior?: FinSegmentedButtonBehavior;
     /**
      * Default `medium` (Figma: track padding Space-XS, gap Space-L, Radius-L). `small` (code only, 2 Nov 2026): small
-     * segments on a track with gap Space-XS and Radius-M, 40 tall (icon only: 36, three icons 100 wide).
+     * segments on a track with gap Space-XS and Radius-M, 40 tall (icon only: 36, three icons 100 wide). `xsmall` (code
+     * only, 2 Nov 2026): xsmall segments side by side, the track no padding or gap, Radius-S: 24 tall (icon only, three
+     * icons: 72 × 24), for a menu row.
      */
     size?: FinSegmentedButtonSize;
   };
@@ -117,7 +119,7 @@ export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonP
       className={className ? `${styles.track} ${className}` : styles.track}
       data-disabled={disabled || undefined}
       data-icon-only={iconOnly || undefined}
-      data-size={size === 'small' ? 'small' : undefined}
+      data-size={size === 'medium' ? undefined : size}
     >
       {options.map((option, i) => (
         <FinSegmentBase

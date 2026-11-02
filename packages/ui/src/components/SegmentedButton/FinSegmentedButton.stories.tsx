@@ -19,7 +19,7 @@ interface Args {
   showIcons: boolean;
   disabled: boolean;
   label: string;
-  size: 'medium' | 'small';
+  size: 'medium' | 'small' | 'xsmall';
   iconOnly: boolean;
 }
 
@@ -31,7 +31,7 @@ const meta: Meta<Args> = {
     showIcons: { control: 'boolean', name: 'Show Leading Icon', description: 'The segments’ `Show Leading Accessory`' },
     disabled: { control: 'boolean', description: 'Figma `State=Disabled`' },
     label: { control: 'text', description: 'The group’s name for screen readers' },
-    size: { control: 'inline-radio', options: ['medium', 'small'], description: '`size`: `small` is code only (2 Nov 2026)' },
+    size: { control: 'inline-radio', options: ['medium', 'small', 'xsmall'], description: '`size`: `small` and `xsmall` are code only (2 Nov 2026)' },
     iconOnly: { control: 'boolean', description: '`iconOnly` (code only): the icons alone, labels as their names' },
   },
   render: ({ segments, showIcons, disabled, label, size, iconOnly }) => (
@@ -128,8 +128,9 @@ export const IconOnly: Story = {
 };
 
 /**
- * Sizes: Medium (Figma's; 48 track, icon only 44) and Small (code only, 2 Nov 2026: Button/Small, gaps 4, Radius-M
- * track; 40 track, icon only 36 tall and 100 wide with three icons, as the account menu's Theme row).
+ * Sizes: Medium (Figma's; 48 track, icon only 44), Small (code only, 2 Nov 2026: Button/Small, gaps 4, Radius-M
+ * track; 40 track, icon only 36 tall and 100 wide with three icons) and XSmall (code only, 2 Nov 2026: the segments
+ * flush, 24 tall, 16 icons; icon only 72 × 24, as the account menu's Theme row).
  */
 export const Sizes: Story = {
   render: () => {
@@ -146,8 +147,12 @@ export const Sizes: Story = {
         <div>
           <FinSegmentedButton label="Theme, medium" iconOnly options={theme} defaultValue="light" />
         </div>
+        <FinSegmentedButton label="Period, xsmall" size="xsmall" options={pick(3, false)} defaultValue="week" />
         <div>
           <FinSegmentedButton label="Theme, small" iconOnly size="small" options={theme} defaultValue="light" />
+        </div>
+        <div>
+          <FinSegmentedButton label="Theme, xsmall" iconOnly size="xsmall" options={theme} defaultValue="light" />
         </div>
       </div>
     );

@@ -5,8 +5,8 @@ import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import styles from './FinSegmentBase.module.css';
 
-/** Code only (2 Nov 2026): `medium` is Figma's; `small` is the compact one (for example in a menu row). */
-export type FinSegmentBaseSize = 'medium' | 'small';
+/** Code only (2 Nov 2026): `medium` is Figma's; `small` and `xsmall` are compact ones (`xsmall` for a menu row). */
+export type FinSegmentBaseSize = 'medium' | 'small' | 'xsmall';
 
 export interface FinSegmentBaseProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** The label. One line; cut off with "…" when the segment is narrower. */
@@ -22,7 +22,9 @@ export interface FinSegmentBaseProps extends Omit<ButtonHTMLAttributes<HTMLButto
   iconOnly?: boolean;
   /**
    * Default `medium` (Figma: padding Space-M / Space-3XL, Button/Medium, 40 tall; icon only 36). `small` (code only,
-   * 2 Nov 2026): padding Space-XS / Space-L, Button/Small, 32 tall; icon only 28; the 20 icon either way.
+   * 2 Nov 2026): padding Space-XS / Space-L, Button/Small, 32 tall; icon only 28; the 20 icon either way. `xsmall`
+   * (code only, 2 Nov 2026): padding 0 / Space-M, Button/Small, Radius-S, 24 tall; icon only 24 (padding Space-XS) with
+   * a 16 icon.
    */
   size?: FinSegmentBaseSize;
 }
@@ -44,12 +46,12 @@ export const FinSegmentBase = forwardRef<HTMLButtonElement, FinSegmentBaseProps>
       type={type}
       className={className ? `${styles.segment} ${className}` : styles.segment}
       data-selected={selected || undefined}
-      data-size={size === 'small' ? 'small' : undefined}
+      data-size={size === 'medium' ? undefined : size}
       data-icon-only={(iconOnly && leadingIcon !== undefined) || undefined}
     >
       {leadingIcon && (
         <span className={styles.icon}>
-          <FinIcon name={leadingIcon} size={20} filled={iconOnly && selected} />
+          <FinIcon name={leadingIcon} size={size === 'xsmall' ? 16 : 20} filled={iconOnly && selected} />
         </span>
       )}
       <span className={styles.label}>{children}</span>

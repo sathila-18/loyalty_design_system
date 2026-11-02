@@ -167,6 +167,8 @@ describe('FinSegmentedButton', () => {
     const { container } = render(<FinSegmentedButton label="Period" size="small" options={PERIODS} />);
     expect(container.firstElementChild).toHaveAttribute('data-size', 'small');
     for (const radio of screen.getAllByRole('radio')) expect(radio).toHaveAttribute('data-size', 'small');
+    const { container: xsmall } = render(<FinSegmentedButton label="Period, xsmall" size="xsmall" options={PERIODS} />);
+    expect(xsmall.firstElementChild).toHaveAttribute('data-size', 'xsmall');
     const { container: medium } = render(<FinSegmentedButton label="Period, medium" options={PERIODS} />);
     expect(medium.firstElementChild).not.toHaveAttribute('data-size');
   });

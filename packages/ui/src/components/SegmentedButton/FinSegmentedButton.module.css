@@ -35,3 +35,10 @@
   gap: var(--fin-space-xs);
   border-radius: var(--fin-radius-m);
 }
+
+/* XSmall (code only, 2 Nov 2026): the segments flush, the track only their background; Radius-S as the segments. */
+.track[data-size="xsmall"] {
+  gap: 0;
+  padding: 0;
+  border-radius: var(--fin-radius-s);
+}

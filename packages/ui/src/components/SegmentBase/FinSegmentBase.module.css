@@ -92,6 +92,18 @@
   padding: var(--fin-space-xs);
 }
 
+/* XSmall (code only, 2 Nov 2026): padding 0 / Space-M, Button/Small, Radius-S; 24 tall, icon only 24 with a 16 icon. */
+.segment[data-size="xsmall"] {
+  gap: var(--fin-space-xs);
+  padding: 0 var(--fin-space-m);
+  border-radius: var(--fin-radius-s);
+  font: var(--fin-font-button-small);
+}
+
+.segment[data-size="xsmall"][data-icon-only] {
+  padding: var(--fin-space-xs);
+}
+
 /* One line, no fixed max width; "…" when the segment is narrower. */
 .label {
   min-width: 0;
