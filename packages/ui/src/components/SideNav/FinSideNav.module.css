@@ -160,12 +160,14 @@
   padding: var(--fin-space-l) 0;
 }
 
+/* A link (`profile.href`) or a button around the minimized avatar: no link underline under the initials. */
 .avatarAction {
   display: flex;
   padding: 0;
   border: 0;
   border-radius: var(--fin-radius-full);
   background: none;
+  text-decoration: none;
   cursor: pointer;
 }
 
