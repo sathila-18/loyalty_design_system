@@ -15,9 +15,10 @@ export interface FinSideSheetProps extends Omit<DialogHTMLAttributes<HTMLDialogE
   /** Called when the sheet asks to close: the close button, Esc, and a click on the scrim (`closeOnOverlayClick`). */
   onClose: () => void;
   /**
-   * Figma `Title` slot. A string is shown as Figma's default, a Text Box Display Small-H3 heading, up to two lines
-   * and then "…" (decided 26 Oct 2026; was one line); anything else is placed as it is (for example a FinTextBox
-   * with a heading and description). It names the sheet for screen readers.
+   * Figma `Title` slot. A string is shown as Figma's default, a Text Box Headline Large-H4 heading (Figma: Display
+   * Small-H3; changed by design 2 Nov 2026), up to two lines and then "…" (decided 26 Oct 2026; was one line);
+   * anything else is placed as it is (for example a FinTextBox with a heading and description). It names the sheet for
+   * screen readers.
    */
   title: ReactNode;
   /** The heading element for a string `title` (default 2). Changes the structure only, never the look. */
@@ -90,7 +91,7 @@ export function FinSideSheet({
           )}
           <div id={titleId} className={styles.title}>
             {typeof title === 'string' || typeof title === 'number' ? (
-              <FinTextBox type="h3" heading={title} headingLevel={headingLevel} truncateHeading={2} />
+              <FinTextBox type="h4" heading={title} headingLevel={headingLevel} truncateHeading={2} />
             ) : (
               title
             )}

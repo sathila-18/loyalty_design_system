@@ -134,7 +134,7 @@ export function TierForm({ open, onClose, tier, tiers, onSave }: TierFormProps) 
       onClose={close}
       // No close button: Cancel closes it, as Programme configuration's form (decided 27 Oct 2026; Figma has one).
       closeButton={false}
-      title={<FinTextBox type="h3" heading={tier ? 'Edit tier' : 'Add tier'} headingLevel={2} description="Tiers are common to every segment" truncateHeading />}
+      title={<FinTextBox type="h4" heading={tier ? 'Edit tier' : 'Add tier'} headingLevel={2} description="Tiers are common to every segment" truncateHeading />}
       buttonDock={{
         secondaryButton: { label: 'Cancel', onClick: close },
         primaryButton: tier ? { label: 'Save', type: 'submit', form: formId, disabled: !changed } : { label: 'Save tier', type: 'submit', form: formId },

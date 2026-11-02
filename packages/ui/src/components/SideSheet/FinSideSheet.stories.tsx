@@ -73,7 +73,7 @@ const meta: Meta<Args> = {
     closeOnOverlayClick: true,
   },
   argTypes: {
-    title: { control: 'text', description: 'Figma `Title` slot (`title`): a string is the Display Small-H3 heading, up to two lines' },
+    title: { control: 'text', description: 'Figma `Title` slot (`title`): a string is the Headline Large-H4 heading (Figma: Display Small-H3), up to two lines' },
     backButton: { control: 'boolean', description: 'Figma `Show Back Button` (`backButton`; off by default in code)' },
     closeButton: { control: 'boolean', description: 'Figma `Show Close Button` (`closeButton`)' },
     divider: { control: 'boolean', description: 'Figma `View Divider` (`divider`)' },
@@ -117,7 +117,7 @@ export const Form: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <SheetDemo
-      title={<FinTextBox type="h3" heading="Add programme configuration" headingLevel={2} description="Applies to one customer segment" truncateHeading />}
+      title={<FinTextBox type="h4" heading="Add programme configuration" headingLevel={2} description="Applies to one customer segment" truncateHeading />}
       closeOnOverlayClick={false}
       buttonDock={{
         secondaryButton: { label: 'Cancel', onClick: fn() },

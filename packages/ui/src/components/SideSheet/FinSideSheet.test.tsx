@@ -72,7 +72,7 @@ describe('FinSideSheet', () => {
 
   it('places any title node as it is, and names the dialog with it', () => {
     render(
-      <FinSideSheet open onClose={() => {}} title={<FinTextBox type="h3" heading="Add configuration" headingLevel={2} description="Applies to one segment" />} />,
+      <FinSideSheet open onClose={() => {}} title={<FinTextBox type="h4" heading="Add configuration" headingLevel={2} description="Applies to one segment" />} />,
     );
     expect(screen.getByRole('dialog', { name: /Add configuration/ })).toBeInTheDocument();
     expect(screen.getByText('Applies to one segment')).toBeInTheDocument();

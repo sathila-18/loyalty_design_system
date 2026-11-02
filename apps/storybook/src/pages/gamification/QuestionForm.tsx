@@ -143,7 +143,7 @@ export function QuestionForm({ open, question, lesson, onClose, onSave, offline 
         open={open}
         onClose={requestClose}
         closeButton={false}
-        title={<FinTextBox type="h3" heading={editing ? 'Edit question' : 'Add question'} headingLevel={2} description={lesson} truncateHeading />}
+        title={<FinTextBox type="h4" heading={editing ? 'Edit question' : 'Add question'} headingLevel={2} description={lesson} truncateHeading />}
         buttonDock={{
           secondaryButton: { label: 'Cancel', onClick: requestClose },
           primaryButton: editing

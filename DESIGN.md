@@ -3436,7 +3436,7 @@ Booleans `Show Back Button` (on), `Show Close Button` (on), `View Divider` (off)
 | Figma | Code |
 |---|---|
 | `Property 1` = Default | no prop (one variant) |
-| `Title` slot | `title: ReactNode` (required): a string becomes the Text Box Display Small-H3 heading, one line with "…", an `<h2>` (`headingLevel`); any other node is placed as it is |
+| `Title` slot | `title: ReactNode` (required): a string becomes the Text Box **Headline Large-H4** heading (Figma: Display Small-H3; changed by design 2 Nov 2026, as every title passed by the pages), one line with "…", an `<h2>` (`headingLevel`); any other node is placed as it is |
 | `Show Back Button` | `backButton?: boolean` (default false), `onBack`, `backLabel` (default "Back") |
 | `Show Close Button` | `closeButton?: boolean` (default true), `closeLabel` (default "Close") |
 | `View Divider` | `divider?: boolean` (default false) |
@@ -3976,6 +3976,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (2 Nov 2026):** the side nav's logo placeholder reads "Fintech loyalty" (§9.57; stories and pages).
 > - **Approved and merged (2 Nov 2026):** FinButtonDock's buttons hug their labels, Secondary and Primary at the right (§9.69; the details sheets' Edit too).
 > - **Approved and merged (2 Nov 2026):** fix: the minimized side nav's avatar link (`profile.href`) no longer underlines the initials (§9.57).
+> - **Built (2 Nov 2026), waiting for approval:** side sheet titles in Headline Large-H4 (24 / 33.6 Bold; Figma: Display Small-H3) in FinSideSheet and every page form (§9.70). Branch `feat/side-sheet-h4`.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4274,3 +4275,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 2 Nov 2026 | 0.2 | The hugged Button dock approved by design and merged into `main`. |
 | 2 Nov 2026 | 0.2 | **Fix** (FinSideNav): minimized, a profile with `href` wraps the avatar in a link, which took the browser's underline under the initials ("OJ"), on every page below 1280. The avatar's link now has no underline, as the expanded row's link already had (§9.57). |
 | 2 Nov 2026 | 0.2 | The minimized side nav avatar underline fix approved by design and merged into `main`. |
+| 2 Nov 2026 | 0.2 | **Side sheet title H4** (decided by design, code first): FinSideSheet's string title is Headline Large-H4 (24 / 33.6 Bold) instead of Display Small-H3 (28 / 39.2), and the forms' Text Box titles (Programme configuration, Tier, Lesson, Question) follow; description and gap unchanged; still up to two lines. Figma to follow (§9.70). |

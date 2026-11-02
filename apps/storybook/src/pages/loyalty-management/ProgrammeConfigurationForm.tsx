@@ -139,7 +139,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
       closeButton={false}
       title={
         <FinTextBox
-          type="h3"
+          type="h4"
           heading={config ? 'Edit programme configuration' : 'Add programme configuration'}
           headingLevel={2}
           description="Applies to one customer segment"

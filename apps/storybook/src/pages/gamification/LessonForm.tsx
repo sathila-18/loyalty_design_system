@@ -99,7 +99,7 @@ export function LessonForm({ open, lesson, focusArea, total, onClose, onSave, of
         open={open}
         onClose={requestClose}
         closeButton={false}
-        title={<FinTextBox type="h3" heading={editing ? 'Edit lesson' : 'Add lesson'} headingLevel={2} description={focusArea} truncateHeading />}
+        title={<FinTextBox type="h4" heading={editing ? 'Edit lesson' : 'Add lesson'} headingLevel={2} description={focusArea} truncateHeading />}
         buttonDock={{
           secondaryButton: { label: 'Cancel', onClick: requestClose },
           primaryButton: editing
