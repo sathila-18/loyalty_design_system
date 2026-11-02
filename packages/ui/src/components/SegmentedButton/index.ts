@@ -1,1 +1,6 @@
-export { FinSegmentedButton, type FinSegmentedButtonOption, type FinSegmentedButtonProps } from './FinSegmentedButton';
+export {
+  FinSegmentedButton,
+  type FinSegmentedButtonBehavior,
+  type FinSegmentedButtonOption,
+  type FinSegmentedButtonProps,
+} from './FinSegmentedButton';
