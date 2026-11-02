@@ -160,6 +160,7 @@ export const FinSelectField = forwardRef<HTMLButtonElement, FinSelectFieldProps>
                 form={form}
                 disabled={isDisabled}
                 className={styles.trigger}
+                data-size={size}
                 data-quiet={quiet || undefined}
                 onPointerDown={(event) => {
                   openedByPointer.current = true;

@@ -13,7 +13,9 @@
  * border-error with a bg-error-secondary halo.
  *
  * Small (code only, Figma doesn't have it yet; decided 21 Oct 2026): box 40 tall, padding 8 / 16 (Space-M /
- * Space-XL), icons 20 (the default chevron, the country selector's arrow; the slots take 20 icons); text unchanged.
+ * Space-XL), icons 20 (the default chevron, the country selector's arrow; the slots take 20 icons). The value, placeholder,
+ * prefix, suffix and mask are Body/Medium (14 / 21; decided by design 2 Nov 2026, was Body/Large), in the same 24 row
+ * (the input is 24 tall), so the box stays 40.
  *
  * Focused is the input (or `control`) having focus, not a button in an accessory slot (the password eye): reaching
  * that shows only its own focus ring (decided 21 Oct 2026). A button `control` (FinSelectField) is Focused only while
@@ -79,6 +81,11 @@
 
 .root[data-size="small"] .content {
   padding-block: var(--fin-space-m);
+}
+
+/* Small: Body/Medium text in the 24 row (decided by design 2 Nov 2026). */
+.root[data-size="small"] :is(.input, .mask, .affix) {
+  font: var(--fin-font-body-medium);
 }
 
 .root[data-variant="mobile-number"] .content {

@@ -1,7 +1,7 @@
 /*
  * FinSelectField (DESIGN.md §9). The box, label, ring and helper text are FinInputBase's (variant Select); this file
  * styles the button in place of the input. The value is Body/Large text-primary, the placeholder text-placeholder, as
- * the input; the whole box opens the menu.
+ * the input (Body/Medium when Small); the whole box opens the menu.
  */
 
 .trigger {
@@ -26,6 +26,11 @@
   content: '';
   position: absolute;
   inset: 0;
+}
+
+/* Small: Body/Medium (decided by design 2 Nov 2026), in the same 24 row, so the box stays 40. */
+.trigger[data-size="small"] {
+  font: var(--fin-font-body-medium);
 }
 
 .trigger:disabled {
