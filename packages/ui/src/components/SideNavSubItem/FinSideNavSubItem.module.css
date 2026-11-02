@@ -47,9 +47,10 @@
 /*
  * Tree (code only, 2 Nov 2026; the side nav's `variant="tree"`): connected tree lines, decorative (CSS only, no text,
  * no pointer events). The line sits under the section's icon centre (the header's Space-L padding + half its 20 icon),
- * 1px border-subtle. Each sub item draws, from the gap above it (Space-XS, the sections' and sub items' gap), the line
- * down to its middle and a connector curving (Radius-S) right to Space-XS before its text (Space-6XL in); every sub
- * item but the last carries the line on below, from where its corner starts curving. Over a selected item's fill too.
+ * 1px border-default (border-subtle was too faint; changed by design 2 Nov 2026). Each sub item draws, from the gap
+ * above it (Space-XS, the sections' and sub items' gap), the line down to its middle and a connector curving
+ * (Radius-S) right to Space-XS before its text (Space-6XL in); every sub item but the last carries the line on below,
+ * from where its corner starts curving. Over a selected item's fill too.
  */
 .item[data-variant="tree"] {
   --tree-line: calc(var(--fin-space-l) + var(--fin-size-20) / 2 - 1px);
@@ -61,7 +62,7 @@
 .item[data-variant="tree"]::after {
   position: absolute;
   left: var(--tree-line);
-  border-left: 1px solid var(--fin-border-subtle);
+  border-left: 1px solid var(--fin-border-default);
   content: "";
   pointer-events: none;
 }
@@ -70,7 +71,7 @@
   top: calc(-1 * var(--fin-space-xs));
   bottom: 50%;
   width: calc(var(--fin-space-6xl) - var(--fin-space-xs) - var(--tree-line));
-  border-bottom: 1px solid var(--fin-border-subtle);
+  border-bottom: 1px solid var(--fin-border-default);
   border-bottom-left-radius: var(--fin-radius-s);
 }
 
