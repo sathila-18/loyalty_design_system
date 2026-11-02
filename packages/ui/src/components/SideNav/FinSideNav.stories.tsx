@@ -52,14 +52,15 @@ const MENU_PROFILE = { ...STATIC_PROFILE, menu: ACCOUNT_MENU };
 
 /**
  * A stand-in for the product logo (Figma Logo sizes, Small, Coloured, With text): the `image` placeholder and
- * "Company Name". There's no logo yet; apps pass theirs in `logo` (DESIGN.md §6).
+ * the product name, "Fintech loyalty" (Figma: "Company Name"; decided by design 2 Nov 2026). Apps pass their logo
+ * in `logo` (DESIGN.md §6).
  */
 const LogoPlaceholder = () => (
   <span className={styles.logo}>
     <span className={styles.logoImage}>
       <FinIcon name="image" size={36} color="brand" />
     </span>
-    <span className={styles.companyName}>Company name</span>
+    <span className={styles.companyName}>Fintech loyalty</span>
   </span>
 );
 

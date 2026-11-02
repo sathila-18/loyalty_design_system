@@ -34,7 +34,7 @@
   display: flex;
 }
 
-/* The logo placeholder: the 40 image (Figma Logo sizes) and "Company Name" (Title/Medium, decided 21 Oct 2026). */
+/* The logo placeholder: the 40 image (Figma Logo sizes) and the product name, "Fintech loyalty" (Title/Medium, decided 21 Oct 2026; the name 2 Nov 2026). */
 .logo {
   display: flex;
   gap: var(--fin-space-l);

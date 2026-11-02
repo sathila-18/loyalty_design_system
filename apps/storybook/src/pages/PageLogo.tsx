@@ -7,6 +7,6 @@ export const PageLogo = () => (
     <span className={styles.logoImage}>
       <FinIcon name="image" size={36} color="brand" />
     </span>
-    <span className={styles.companyName}>Company name</span>
+    <span className={styles.companyName}>Fintech loyalty</span>
   </span>
 );
