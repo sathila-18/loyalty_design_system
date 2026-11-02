@@ -93,4 +93,20 @@ describe('FinAppShell', () => {
     expect(screen.getByRole('link', { name: 'Saltar al contenido' })).toBeInTheDocument();
     expect(screen.getByTestId('shell')).toBeInTheDocument();
   });
+
+  it('passes the side nav\'s variant through sideNav', () => {
+    render(
+      <FinAppShell
+        sideNav={{
+          sections: [{ icon: 'loyalty', label: 'Loyalty', pages: [{ label: 'Tiers', href: '/tiers' }] }],
+          currentHref: '/tiers',
+          variant: 'tree',
+        }}
+        header={{ heading: 'Tiers' }}
+      >
+        <p>Content</p>
+      </FinAppShell>,
+    );
+    expect(screen.getByRole('link', { name: 'Tiers' })).toHaveAttribute('data-variant', 'tree');
+  });
 });

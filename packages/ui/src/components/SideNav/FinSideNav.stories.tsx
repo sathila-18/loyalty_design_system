@@ -14,6 +14,7 @@ import {
   type FinSideNavSection,
   type FinSideNavTheme,
   type FinSideNavType,
+  type FinSideNavVariant,
 } from './FinSideNav';
 import styles from './FinSideNav.stories.module.css';
 
@@ -142,6 +143,7 @@ interface Args {
   showProfile: boolean;
   profileAction: 'menu' | 'link' | 'none';
   role: 'Admin' | 'Super admin' | 'none';
+  variant: FinSideNavVariant;
 }
 
 /**
@@ -155,7 +157,7 @@ const KNOWN_CONTRAST_ISSUES = ['[data-selected="sub-item"]'];
 const meta: Meta<Args> = {
   title: 'Components/Side nav/Side menu',
   parameters: { layout: 'fullscreen', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  args: { type: 'expanded', menu: '#dashboard', showLogo: true, showProfile: true, profileAction: 'menu', role: 'Admin' },
+  args: { type: 'expanded', menu: '#dashboard', showLogo: true, showProfile: true, profileAction: 'menu', role: 'Admin', variant: 'default' },
   argTypes: {
     type: { control: 'inline-radio', options: ['expanded', 'minimized'], description: 'Figma `Type` (click the button to change it)' },
     menu: {
@@ -175,8 +177,13 @@ const meta: Meta<Args> = {
       options: ['Admin', 'Super admin', 'none'],
       description: "`profile.role`: the badge in the account menu's header",
     },
+    variant: {
+      control: 'inline-radio',
+      options: ['default', 'tree'],
+      description: '`variant` (code only): `tree` draws connected tree lines to a section’s pages',
+    },
   },
-  render: function Render({ type, menu, showLogo, showProfile, profileAction, role }) {
+  render: function Render({ type, menu, showLogo, showProfile, profileAction, role, variant }) {
     const menuProfile = useAccountProfile(role === 'none' ? undefined : role);
     // The collapse button changes the type; the `type` control sets it again.
     const [ownType, setOwnType] = useStoryState(type);
@@ -189,6 +196,7 @@ const meta: Meta<Args> = {
             currentHref={href}
             type={ownType}
             onTypeChange={setOwnType}
+            variant={variant}
             {...(showLogo ? { logo: <LogoPlaceholder /> } : {})}
             {...(showProfile ? { profile: profileAction === 'menu' ? menuProfile : profileAction === 'link' ? PROFILE : STATIC_PROFILE } : {})}
           />
@@ -321,5 +329,91 @@ export const LongContent: Story = {
         />
       )}
     </Routed>
+  ),
+};
+
+/** Sections for the tree gallery: one, two and many pages, with long labels. */
+const TREE_SECTIONS: FinSideNavSection[] = [
+  { icon: 'home', label: 'Dashboard', href: '#dashboard' },
+  { icon: 'desktop_windows', label: 'System configuration', pages: [{ label: 'General settings', href: '#system/general' }] },
+  {
+    icon: 'sports_esports',
+    label: 'Gamification',
+    pages: [
+      { label: 'Badge management', href: '#gamification/badges' },
+      { label: 'Focus & learning', href: '#gamification/learning' },
+    ],
+  },
+  {
+    icon: 'loyalty',
+    label: 'Loyalty management',
+    pages: [
+      { label: 'Program configuration', href: '#loyalty/program' },
+      { label: 'Tier management', href: '#loyalty/tiers' },
+      { label: 'Reward catalog for members in every segment and region', href: '#loyalty/rewards' },
+      { label: 'Point expiry rules', href: '#loyalty/expiry' },
+      { label: 'Partner merchants and their reward catalogs', href: '#loyalty/partners' },
+      { label: 'Campaigns', href: '#loyalty/campaigns' },
+    ],
+  },
+  { icon: 'assignment', label: 'Report management', href: '#reports' },
+];
+
+function TreeNav({ current, type = 'expanded', variant = 'tree' }: { current: string; type?: FinSideNavType; variant?: FinSideNavVariant }) {
+  return (
+    <Routed start={current}>
+      {(href) => (
+        <FinSideNav
+          sections={TREE_SECTIONS}
+          currentHref={href}
+          defaultType={type}
+          variant={variant}
+          className={styles.short}
+          logo={<LogoPlaceholder />}
+          profile={STATIC_PROFILE}
+        />
+      )}
+    </Routed>
+  );
+}
+
+/**
+ * The tree style (code only, 2 Nov 2026; `variant="tree"`): a 1px `border-subtle` line from under the section's icon to
+ * the middle of its last page, and a connector curving into each page, ending 4 before its text. Decorative only.
+ * One, two and many pages (long labels end in "…"); a closed group and the minimized nav show no lines. Click
+ * the sections and pages.
+ */
+export const TreeStyle: Story = {
+  name: 'Tree style',
+  render: () => (
+    <div className={styles.gallery}>
+      {[
+        { name: 'One page', current: '#system/general' },
+        { name: 'Two pages', current: '#gamification/learning' },
+        { name: 'Many pages, long labels', current: '#loyalty/rewards' },
+        { name: 'Groups closed', current: '#dashboard' },
+        { name: 'Minimized: no lines', current: '#loyalty/rewards', type: 'minimized' as const },
+      ].map(({ name, current, type }) => (
+        <figure key={name} className={styles.figure}>
+          <figcaption className={styles.caption}>{name}</figcaption>
+          <TreeNav current={current} {...(type ? { type } : {})} />
+        </figure>
+      ))}
+    </div>
+  ),
+};
+
+/** The same nav in both styles: Default (Figma's) and Tree (code only). */
+export const DefaultAndTree: Story = {
+  name: 'Default and tree',
+  render: () => (
+    <div className={styles.gallery}>
+      {(['default', 'tree'] as const).map((variant) => (
+        <figure key={variant} className={styles.figure}>
+          <figcaption className={styles.caption}>{variant === 'default' ? 'Default' : 'Tree'}</figcaption>
+          <TreeNav current="#loyalty/tiers" variant={variant} />
+        </figure>
+      ))}
+    </div>
   ),
 };

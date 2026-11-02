@@ -9,4 +9,5 @@ export {
   type FinSideNavTheme,
   type FinSideNavThemeItem,
   type FinSideNavType,
+  type FinSideNavVariant,
 } from './FinSideNav';

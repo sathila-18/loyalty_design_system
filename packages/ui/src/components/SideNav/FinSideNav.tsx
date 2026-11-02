@@ -57,6 +57,9 @@ export interface FinSideNavProfile {
   menu?: FinSideNavMenuEntry[];
 }
 
+/** Code only (2 Nov 2026): `default` (Figma's sub items) or `tree` (connected tree lines). */
+export type FinSideNavVariant = 'default' | 'tree';
+
 /** The theme choices in the account menu. `system` follows the device (`prefers-color-scheme`). */
 export type FinSideNavTheme = 'system' | 'light' | 'dark';
 
@@ -112,6 +115,11 @@ export interface FinSideNavProps extends Omit<HTMLAttributes<HTMLElement>, 'chil
   defaultType?: FinSideNavType;
   /** Called when the collapse button (or a section clicked while minimized) changes the type. */
   onTypeChange?: (type: FinSideNavType) => void;
+  /**
+   * Code only (2 Nov 2026): how a section's pages are drawn. `default` (Figma's) or `tree`: connected tree lines from
+   * the section's icon to each page (decorative; DESIGN.md §9.57). Default `default`.
+   */
+  variant?: FinSideNavVariant;
   /** The collapse button's name when expanded. Default "Collapse menu". */
   collapseLabel?: string;
   /** The collapse button's name when minimized. Default "Expand menu". */
@@ -137,6 +145,7 @@ export function FinSideNav({
   type: typeProp,
   defaultType,
   onTypeChange,
+  variant = 'default',
   collapseLabel = 'Collapse menu',
   expandLabel = 'Expand menu',
   className,
@@ -299,6 +308,7 @@ export function FinSideNav({
                         href={page.href}
                         linkAs={Link}
                         selected={page.href === currentHref}
+                        variant={variant}
                       >
                         {page.label}
                       </FinSideNavSubItem>

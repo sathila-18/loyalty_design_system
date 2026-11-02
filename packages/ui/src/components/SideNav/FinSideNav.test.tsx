@@ -246,4 +246,21 @@ describe('FinSideNav', () => {
     expect(onValueChange).toHaveBeenCalledWith('dark');
     expect(screen.getByRole('menu')).toBeInTheDocument();
   });
+
+  it('variant tree: the open section\'s pages get the tree lines (decorative); links and names unchanged', async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<FinSideNav sections={SECTIONS} type="expanded" currentHref="/loyalty/tiers" />);
+    const tiers = screen.getByRole('link', { name: 'Tier management' });
+    expect(tiers).not.toHaveAttribute('data-variant');
+    rerender(<FinSideNav sections={SECTIONS} type="expanded" currentHref="/loyalty/tiers" variant="tree" />);
+    const links = [screen.getByRole('link', { name: 'Program configuration' }), screen.getByRole('link', { name: 'Tier management' })];
+    for (const link of links) expect(link).toHaveAttribute('data-variant', 'tree');
+    expect(links[1]).toHaveAttribute('aria-current', 'page');
+    expect(links[1]).toHaveAccessibleName('Tier management');
+    // A closed section shows no pages, so no lines.
+    await user.click(screen.getByRole('button', { name: 'Loyalty management' }));
+    expect(screen.queryByRole('link', { name: 'Tier management' })).toBeNull();
+    rerender(<FinSideNav sections={SECTIONS} type="minimized" currentHref="/loyalty/tiers" variant="tree" />);
+    expect(document.querySelector('[data-variant="tree"]')).toBeNull();
+  });
 });

@@ -58,6 +58,7 @@ interface Args {
   title: string;
   description: string;
   blocks: number;
+  variant: 'default' | 'tree';
 }
 
 /**
@@ -75,15 +76,20 @@ const meta: Meta<Args> = {
   title: 'Components/Layout/App shell',
   parameters: { layout: 'fullscreen', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
   globals: { viewport: { value: 'desktop1920', isRotated: false } },
-  args: { title: 'Programme configuration', description: 'One configuration per customer segment', blocks: 3 },
+  args: { title: 'Programme configuration', description: 'One configuration per customer segment', blocks: 3, variant: 'default' },
   argTypes: {
     title: { control: 'text', description: "The header's title" },
     description: { control: 'text', description: "The header's description" },
     blocks: { control: { type: 'range', min: 1, max: 20 }, description: 'Sample content blocks (more than fit: the content scrolls, the header stays)' },
+    variant: {
+      control: 'inline-radio',
+      options: ['default', 'tree'],
+      description: "The side nav's `variant` (code only), through `sideNav`: `tree` draws connected tree lines to a section's pages",
+    },
   },
-  render: ({ title, description, blocks }) => (
+  render: ({ title, description, blocks, variant }) => (
     <FinAppShell
-      sideNav={{ sections: SECTIONS, currentHref: '#loyalty/programme', profile: PROFILE, logo: <LogoPlaceholder /> }}
+      sideNav={{ sections: SECTIONS, currentHref: '#loyalty/programme', profile: PROFILE, logo: <LogoPlaceholder />, variant }}
       header={{ heading: title, bodyContent: description, backButton: false, notificationProps: { notification: 'number', count: 120 } }}
     >
       <SampleContent blocks={blocks} />

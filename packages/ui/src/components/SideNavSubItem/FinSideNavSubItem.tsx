@@ -8,6 +8,11 @@ export interface FinSideNavSubItemProps extends Omit<AnchorHTMLAttributes<HTMLAn
   children: ReactNode;
   /** The link element, for a router's link component (React Router `Link`, `next/link`). Default `a`. */
   linkAs?: ElementType;
+  /**
+   * Code only (2 Nov 2026), from the side nav's `variant`: `tree` draws the connected tree lines (decorative, CSS
+   * only). Default `default`.
+   */
+  variant?: 'default' | 'tree';
 }
 
 /**
@@ -17,7 +22,7 @@ export interface FinSideNavSubItemProps extends Omit<AnchorHTMLAttributes<HTMLAn
  * **Internal:** part of the side nav.
  */
 export const FinSideNavSubItem = forwardRef<HTMLAnchorElement, FinSideNavSubItemProps>(function FinSideNavSubItem(
-  { selected = false, children, linkAs: Link = 'a', className, ...rest },
+  { selected = false, children, linkAs: Link = 'a', variant = 'default', className, ...rest },
   ref,
 ) {
   return (
@@ -26,6 +31,7 @@ export const FinSideNavSubItem = forwardRef<HTMLAnchorElement, FinSideNavSubItem
       ref={ref}
       className={className ? `${styles.item} ${className}` : styles.item}
       data-selected={selected ? '' : undefined}
+      data-variant={variant === 'tree' ? 'tree' : undefined}
       aria-current={selected ? 'page' : undefined}
     >
       <span className={styles.label}>{children}</span>
