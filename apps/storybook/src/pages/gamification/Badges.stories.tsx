@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within } from 'storybook/test';
-import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
+import { PAGE_KNOWN_CONTRAST_ISSUES, withPageTheme } from '../pageShell';
 import { ALL_BADGES, FIGMA_BADGES } from './badgeModel';
 import { Badges, type BadgesProps } from './Badges';
 
@@ -23,6 +23,7 @@ type PageArgs = Omit<BadgesProps, 'badges'> & { rows: number };
 
 const meta: Meta<PageArgs> = {
   title: 'Pages/Gamification/Badges',
+  decorators: [withPageTheme],
   parameters: {
     layout: 'fullscreen',
     controls: { include: ['rows'] },

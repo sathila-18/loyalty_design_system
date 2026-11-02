@@ -3,7 +3,7 @@ import { FinAppShell, FinAvatar, FinDialog, FinEmptyState, FinTable, type FinTab
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import pageStyles from '../common/PageStates.module.css';
-import { pageSideNav } from '../pageShell';
+import { usePageSideNav } from '../pageShell';
 import { RecordDetails } from '../RecordDetails';
 import { BadgeForm } from './BadgeForm';
 import type { Badge } from './badgeModel';
@@ -43,6 +43,7 @@ const columns: FinTableColumn<Badge>[] = [
  * and then shows a snackbar (`428:52801`). Empty states and the Common states (`api`) as the other pages.
  */
 export function Badges({ badges: initialBadges, onAction = () => undefined, api = {} }: BadgesProps) {
+  const sideNav = usePageSideNav('#gamification/badges');
   const [badges, setBadges] = useState(initialBadges);
   const [viewing, setViewing] = useState<Badge | null>(null);
   // Each Add or Edit starts a fresh form (the sheet remounts); the sheet keeps its badge while it closes.
@@ -113,7 +114,7 @@ export function Badges({ badges: initialBadges, onAction = () => undefined, api 
 
   return (
     <FinAppShell
-      sideNav={pageSideNav('#gamification/badges')}
+      sideNav={sideNav}
       header={{ heading: 'Badges', bodyContent: 'Badges members earn as they use the programme', backButton: false, notificationProps: { notification: 'number', count: 120 } }}
     >
       <div className={pageStyles.page}>

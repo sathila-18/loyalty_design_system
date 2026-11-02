@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { fn, userEvent, within } from 'storybook/test';
 import { ProgrammeConfiguration } from '../loyalty-management/ProgrammeConfiguration';
 import { FIGMA_CONFIGS, MANY_CONFIGS, SEGMENTS } from '../loyalty-management/programmeConfigData';
-import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
+import { PAGE_KNOWN_CONTRAST_ISSUES, withPageTheme } from '../pageShell';
 import type { PageApi } from './pageApi';
 
 type Args = Required<PageApi>;
@@ -24,6 +24,7 @@ const rowAction = async (canvasElement: HTMLElement, segment: string, action: st
  */
 const meta: Meta<Args> = {
   title: 'Pages/Common states',
+  decorators: [withPageTheme],
   parameters: {
     layout: 'fullscreen',
     a11y: { context: { include: ['body'], exclude: PAGE_KNOWN_CONTRAST_ISSUES } },

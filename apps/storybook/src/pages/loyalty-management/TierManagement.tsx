@@ -9,7 +9,7 @@ import {
   type FinTableColumn,
   type FinTableFilters,
 } from '@finspace-loyalty/ui';
-import { pageSideNav } from '../pageShell';
+import { usePageSideNav } from '../pageShell';
 import { PendingLink } from '../PendingLink';
 import { RecordDetails } from '../RecordDetails';
 import { TierForm, type TierValues } from './TierForm';
@@ -61,6 +61,7 @@ const columns: FinTableColumn<Tier>[] = [
  * nothing to show, an empty state replaces the table (code first).
  */
 export function TierManagement({ tiers: initialTiers, onAction = () => undefined }: TierManagementProps) {
+  const sideNav = usePageSideNav('#loyalty/tiers');
   const [tiers, setTiers] = useState(initialTiers);
   const [adding, setAdding] = useState(false);
   const [viewing, setViewing] = useState<Tier | null>(null);
@@ -123,7 +124,7 @@ export function TierManagement({ tiers: initialTiers, onAction = () => undefined
 
   return (
     <FinAppShell
-      sideNav={pageSideNav('#loyalty/tiers')}
+      sideNav={sideNav}
       header={{
         heading: 'Tier management',
         bodyContent: 'Thresholds and earn multipliers',

@@ -5,7 +5,7 @@ import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi 
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import pageStyles from '../common/PageStates.module.css';
 import { LevelLink, LevelLinkProvider } from '../LevelLink';
-import { pageSideNav } from '../pageShell';
+import { usePageSideNav } from '../pageShell';
 import { RecordDetails } from '../RecordDetails';
 import { FocusAreaForm } from './FocusAreaForm';
 import { count, nextId, padded, placeAt, removeFrom, type FocusArea, type Lesson, type Question } from './focusAreaModel';
@@ -53,6 +53,7 @@ type Removing =
  * goes up a level.
  */
 export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefined, api = {} }: FocusAreasProps) {
+  const sideNav = usePageSideNav('#gamification/focus');
   const [areas, setAreas] = useState(focusAreas);
   const [level, setLevel] = useState<{ areaId: number | null; lessonId: number | null }>({
     areaId: initialLevel?.areaId ?? null,
@@ -335,7 +336,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
 
   return (
     <LevelLinkProvider navigate={navigate}>
-      <FinAppShell sideNav={pageSideNav('#gamification/focus')} header={{ ...header, notificationProps: { notification: 'number', count: 120 } }}>
+      <FinAppShell sideNav={sideNav} header={{ ...header, notificationProps: { notification: 'number', count: 120 } }}>
         <div className={pageStyles.page}>
           {!online && <ConnectionError />}
           {table}

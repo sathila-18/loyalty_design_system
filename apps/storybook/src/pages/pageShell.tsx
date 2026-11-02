@@ -1,4 +1,7 @@
-import type { FinAppShellProps, FinSideNavSection } from '@finspace-loyalty/ui';
+import type { FinAppShellProps, FinSideNavSection, FinSideNavTheme, FinSideNavThemeItem } from '@finspace-loyalty/ui';
+import type { Decorator } from '@storybook/react-vite';
+import { createContext, useContext } from 'react';
+import { useEffect, useGlobals, useState } from 'storybook/preview-api';
 import { PageLogo } from './PageLogo';
 
 /**
@@ -23,15 +26,65 @@ export const PAGE_SECTIONS: FinSideNavSection[] = [
   { icon: 'plagiarism', label: 'System audit', href: '#audit' },
 ];
 
-const PAGE_PROFILE = { name: 'Olivia James', email: 'oliviajames@email.com', initials: 'OJ', href: '#account' };
+const PAGE_PROFILE = { name: 'Olivia James', email: 'oliviajames@email.com', initials: 'OJ', role: 'Admin' };
 
-/** The side nav props for a page, open at `currentHref`. */
-export const pageSideNav = (currentHref: string): FinAppShellProps['sideNav'] => ({
-  sections: PAGE_SECTIONS,
-  currentHref,
-  profile: PAGE_PROFILE,
-  logo: <PageLogo />,
-});
+type PageTheme = Pick<FinSideNavThemeItem, 'value' | 'onValueChange'>;
+
+/** The account menu's Theme row, from `withPageTheme`. */
+const PageThemeContext = createContext<PageTheme | null>(null);
+
+/**
+ * Every page story's decorator: the account menu's Theme row drives Storybook's theme toolbar (the stories stand in
+ * for the app, which sets `data-theme` on `<html>`). Light and Dark set it; System follows the device's
+ * `prefers-color-scheme`, also when it changes. Storybook's hooks: only decorators and story functions can read the
+ * toolbar, so the pages get it through context.
+ */
+export const withPageTheme: Decorator = function PageTheme(Story) {
+  const [globals, updateGlobals] = useGlobals();
+  const [system, setSystem] = useState(false);
+  useEffect(() => {
+    if (!system) return;
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+    const follow = () => updateGlobals({ theme: query.matches ? 'dark' : 'light' });
+    follow();
+    query.addEventListener('change', follow);
+    return () => query.removeEventListener('change', follow);
+  }, [system, updateGlobals]);
+  const theme: PageTheme = {
+    value: system ? 'system' : globals['theme'] === 'dark' ? 'dark' : 'light',
+    onValueChange: (next: FinSideNavTheme) => {
+      setSystem(next === 'system');
+      if (next !== 'system') updateGlobals({ theme: next });
+    },
+  };
+  return (
+    <PageThemeContext.Provider value={theme}>
+      <Story />
+    </PageThemeContext.Provider>
+  );
+};
+
+/**
+ * The side nav props for a page, open at `currentHref`, with the account menu (DESIGN.md §9.57): My profile,
+ * Settings, the Theme row (with `withPageTheme`) and Log out.
+ */
+export function usePageSideNav(currentHref: string): FinAppShellProps['sideNav'] {
+  const theme = useContext(PageThemeContext);
+  return {
+    sections: PAGE_SECTIONS,
+    currentHref,
+    profile: {
+      ...PAGE_PROFILE,
+      menu: [
+        { label: 'My profile', onSelect: () => {} },
+        { label: 'Settings', onSelect: () => {} },
+        ...(theme ? [{ type: 'theme' as const, ...theme }] : []),
+        { label: 'Log out', onSelect: () => {}, separator: true },
+      ],
+    },
+    logo: <PageLogo />,
+  };
+}
 
 /**
  * Accepted contrast exceptions (DESIGN.md §10 #3) that every page shows: the selected section's label in the side

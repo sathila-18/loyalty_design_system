@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within } from 'storybook/test';
-import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
+import { PAGE_KNOWN_CONTRAST_ISSUES, withPageTheme } from '../pageShell';
 import { RewardCatalog, type RewardCatalogProps } from './RewardCatalog';
 import { ALL_REWARDS, FIGMA_REWARDS } from './rewardCatalogData';
 
@@ -30,6 +30,7 @@ type PageArgs = Omit<RewardCatalogProps, 'rewards'> & { rows: number };
 
 const meta: Meta<PageArgs> = {
   title: 'Pages/Loyalty management/Reward catalog',
+  decorators: [withPageTheme],
   parameters: {
     layout: 'fullscreen',
     controls: { include: ['rows'] },

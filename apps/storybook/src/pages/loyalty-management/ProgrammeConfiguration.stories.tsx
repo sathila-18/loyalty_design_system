@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within } from 'storybook/test';
-import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
+import { PAGE_KNOWN_CONTRAST_ISSUES, withPageTheme } from '../pageShell';
 import { ProgrammeConfiguration, type ProgrammeConfigurationProps } from './ProgrammeConfiguration';
 import { ALL_CONFIGS, FIGMA_CONFIGS, MANY_CONFIGS, SEGMENTS } from './programmeConfigData';
 
@@ -28,6 +28,7 @@ type PageArgs = Omit<ProgrammeConfigurationProps, 'configs'> & { rows: number };
 
 const meta: Meta<PageArgs> = {
   title: 'Pages/Loyalty management/Programme configuration',
+  decorators: [withPageTheme],
   parameters: {
     layout: 'fullscreen',
     controls: { include: ['rows'] },

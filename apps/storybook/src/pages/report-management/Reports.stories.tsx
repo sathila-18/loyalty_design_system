@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within } from 'storybook/test';
-import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
+import { PAGE_KNOWN_CONTRAST_ISSUES, withPageTheme } from '../pageShell';
 import { ALL_CUSTOMERS, FIGMA_CUSTOMERS } from './reportData';
 import { Reports, type ReportsProps } from './Reports';
 
@@ -16,6 +16,7 @@ type PageArgs = Omit<ReportsProps, 'customers'> & { rows: number };
 
 const meta: Meta<PageArgs> = {
   title: 'Pages/Report management/Reports',
+  decorators: [withPageTheme],
   parameters: {
     layout: 'fullscreen',
     controls: { include: ['rows'] },

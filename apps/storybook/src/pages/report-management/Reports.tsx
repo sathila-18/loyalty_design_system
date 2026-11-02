@@ -15,7 +15,7 @@ import { useBackOnline, usePageLoad, usePageNotices, type PageApi } from '../com
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import pageStyles from '../common/PageStates.module.css';
 import { LevelLink, LevelLinkProvider } from '../LevelLink';
-import { pageSideNav } from '../pageShell';
+import { usePageSideNav } from '../pageShell';
 import { ACTIVITY_TYPES, DURATIONS, TIERS, activeBalance, number, rangeStart, shortDate, signed, type Activity, type Customer, type Duration } from './reportModel';
 import styles from './Reports.module.css';
 
@@ -69,6 +69,7 @@ const activityColumns: FinTableColumn<Activity>[] = [
  * Consumption type chip is dropped (decided 28 Oct 2026).
  */
 export function Reports({ customers, initialCustomerId, onAction = () => undefined, api = {} }: ReportsProps) {
+  const sideNav = usePageSideNav('#reports');
   const [customerId, setCustomerId] = useState<number | null>(initialCustomerId ?? null);
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState<FinTableFilters>({});
@@ -221,7 +222,7 @@ export function Reports({ customers, initialCustomerId, onAction = () => undefin
 
   return (
     <LevelLinkProvider navigate={navigate}>
-      <FinAppShell sideNav={pageSideNav('#reports')} header={{ ...header, notificationProps: { notification: 'number', count: 120 } }}>
+      <FinAppShell sideNav={sideNav} header={{ ...header, notificationProps: { notification: 'number', count: 120 } }}>
         <div className={pageStyles.page}>
           {!online && <ConnectionError />}
           {content}

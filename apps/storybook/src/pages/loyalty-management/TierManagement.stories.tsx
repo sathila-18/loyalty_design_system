@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within } from 'storybook/test';
-import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
+import { PAGE_KNOWN_CONTRAST_ISSUES, withPageTheme } from '../pageShell';
 import { TierManagement, type TierManagementProps } from './TierManagement';
 import type { Tier } from './tiers';
 
@@ -56,6 +56,7 @@ type PageArgs = Omit<TierManagementProps, 'tiers'> & { rows: number };
 
 const meta: Meta<PageArgs> = {
   title: 'Pages/Loyalty management/Tier management',
+  decorators: [withPageTheme],
   parameters: {
     layout: 'fullscreen',
     controls: { include: ['rows'] },

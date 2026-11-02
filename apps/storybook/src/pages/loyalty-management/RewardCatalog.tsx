@@ -3,7 +3,7 @@ import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinBadgeTone, typ
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
 import { NOT_AVAILABLE } from '../common/format';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
-import { pageSideNav } from '../pageShell';
+import { usePageSideNav } from '../pageShell';
 import { RecordDetails } from '../RecordDetails';
 import styles from '../common/PageStates.module.css';
 import { AddRewardForm } from './AddRewardForm';
@@ -55,6 +55,7 @@ const columns: FinTableColumn<Reward>[] = [
  * the other pages.
  */
 export function RewardCatalog({ rewards: initialRewards, onAction = () => undefined, api = {} }: RewardCatalogProps) {
+  const sideNav = usePageSideNav('#loyalty/rewards');
   const [rewards, setRewards] = useState(initialRewards);
   const [viewing, setViewing] = useState<Reward | null>(null);
   // The dialog keeps the last reward while it closes, so its text doesn't change.
@@ -131,7 +132,7 @@ export function RewardCatalog({ rewards: initialRewards, onAction = () => undefi
 
   return (
     <FinAppShell
-      sideNav={pageSideNav('#loyalty/rewards')}
+      sideNav={sideNav}
       header={{
         heading: 'Reward catalog',
         bodyContent: 'Rewards members can redeem with their points',

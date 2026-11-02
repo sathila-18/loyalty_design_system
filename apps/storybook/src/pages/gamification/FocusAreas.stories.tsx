@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within } from 'storybook/test';
-import { PAGE_KNOWN_CONTRAST_ISSUES } from '../pageShell';
+import { PAGE_KNOWN_CONTRAST_ISSUES, withPageTheme } from '../pageShell';
 import { ALL_FOCUS_AREAS, FIGMA_FOCUS_AREAS } from './focusAreaData';
 import { FocusAreas, type FocusAreasProps } from './FocusAreas';
 
@@ -30,6 +30,7 @@ type PageArgs = Omit<FocusAreasProps, 'focusAreas'> & { rows: number };
 
 const meta: Meta<PageArgs> = {
   title: 'Pages/Gamification/Focus areas',
+  decorators: [withPageTheme],
   parameters: {
     layout: 'fullscreen',
     controls: { include: ['rows'] },

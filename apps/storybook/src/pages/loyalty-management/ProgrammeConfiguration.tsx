@@ -3,7 +3,7 @@ import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinTableColumn, t
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
 import { NOT_AVAILABLE } from '../common/format';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
-import { pageSideNav } from '../pageShell';
+import { usePageSideNav } from '../pageShell';
 import styles from '../common/PageStates.module.css';
 import { RecordDetails } from '../RecordDetails';
 import { ProgrammeConfigurationForm, type ProgrammeConfigValues } from './ProgrammeConfigurationForm';
@@ -79,6 +79,7 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
  * (a snackbar with Try again).
  */
 export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAction = () => undefined, api = {} }: ProgrammeConfigurationProps) {
+  const sideNav = usePageSideNav('#loyalty/programme');
   const [configs, setConfigs] = useState(initialConfigs);
   const [adding, setAdding] = useState(false);
   const [viewing, setViewing] = useState<ProgrammeConfig | null>(null);
@@ -157,7 +158,7 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
 
   return (
     <FinAppShell
-      sideNav={pageSideNav('#loyalty/programme')}
+      sideNav={sideNav}
       header={{
         heading: 'Programme configuration',
         bodyContent: 'One configuration per customer segment',
