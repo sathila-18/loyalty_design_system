@@ -1,14 +1,16 @@
 'use client';
 
 import { finBreakpoint } from '@finspace-loyalty/tokens/breakpoints';
-import { Fragment, useEffect, useState, type ElementType, type HTMLAttributes, type MouseEvent, type ReactNode } from 'react';
+import { Fragment, useEffect, useId, useState, type ElementType, type HTMLAttributes, type MouseEvent, type ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinAvatar } from '../Avatar';
+import { FinBadge } from '../Badge';
 import { FinButton } from '../Button';
 import { FinListItem } from '../ListItem';
 import { FinListStandard } from '../ListStandard';
 import { FinMenu, FinMenuDivider } from '../Menu';
+import { FinSegmentedButton } from '../SegmentedButton';
 import { FinSideNavItem, type FinSideNavItemSelected } from '../SideNavItem';
 import { FinSideNavSubItem } from '../SideNavSubItem';
 import styles from './FinSideNav.module.css';
@@ -39,15 +41,49 @@ export interface FinSideNavProfile {
   /** The avatar's photo; without it, `initials`, then the default icon (FinAvatar's fallback). */
   src?: string;
   initials?: string;
+  /**
+   * Code only (2 Nov 2026): the user's role ("Admin", "Super admin"), a neutral FinBadge beside the name in the account
+   * menu's header. The menu only.
+   */
+  role?: string;
   /** Where the row goes (for example the account page). With `href` or `onClick` the row shows the chevron. */
   href?: string;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
   /**
    * An account menu (code first, 22 Oct 2026): tapping the row (or the avatar when minimized) opens an action menu of
-   * these items instead of going anywhere. Takes the place of `href` / `onClick`.
+   * these items instead of going anywhere. Takes the place of `href` / `onClick`. 320 wide, with the user's name, email
+   * and `role` at the top (2 Nov 2026).
    */
-  menu?: FinSideNavMenuItem[];
+  menu?: FinSideNavMenuEntry[];
 }
+
+/** The theme choices in the account menu. `system` follows the device (`prefers-color-scheme`). */
+export type FinSideNavTheme = 'system' | 'light' | 'dark';
+
+/**
+ * The account menu's Theme row (code first, 2 Nov 2026): "Theme" with System, Light and Dark as icon-only menu item
+ * radios. Picking one keeps the menu open, so the change shows. The app applies the theme (`data-theme` on `<html>`).
+ */
+export interface FinSideNavThemeItem {
+  type: 'theme';
+  /** The current choice, shown selected. */
+  value: FinSideNavTheme;
+  onValueChange: (value: FinSideNavTheme) => void;
+  /** The row's title. Default "Theme". */
+  label?: string;
+  /** The choices' names (read by screen readers). Default "System", "Light", "Dark". */
+  optionLabels?: Partial<Record<FinSideNavTheme, string>>;
+  /** A line before this row, to group the ones after it. */
+  separator?: boolean;
+}
+
+/** An account menu entry: an item, or the Theme row. */
+export type FinSideNavMenuEntry = FinSideNavMenuItem | FinSideNavThemeItem;
+
+const isThemeItem = (entry: FinSideNavMenuEntry): entry is FinSideNavThemeItem => 'type' in entry && entry.type === 'theme';
+
+/** The account menu: 320 (2 × Size-120 + Size-80; decided 2 Nov 2026). */
+const ACCOUNT_MENU_WIDTH = 'calc(2 * var(--fin-size-120) + var(--fin-size-80))';
 
 /** One item in the account menu. */
 export interface FinSideNavMenuItem {
@@ -167,21 +203,58 @@ export function FinSideNav({
   // The account menu lines up with the user's area when expanded, and opens beside the nav when minimized.
   const [navEl, setNavEl] = useState<HTMLElement | null>(null);
   const [footerEl, setFooterEl] = useState<HTMLDivElement | null>(null);
+  const themeTitleId = useId();
   const accountItems = profile?.menu?.map((item, index) => (
-    <Fragment key={`${item.label}-${index}`}>
+    <Fragment key={isThemeItem(item) ? `theme-${index}` : `${item.label}-${index}`}>
       {item.separator && index > 0 && <FinMenuDivider />}
-      <FinListStandard
-        as="li"
-        size="small"
-        behavior="menuitem"
-        divider={false}
-        title={item.label}
-        {...(item.icon ? { leadingAccessory: 'icon' as const, icon: item.icon } : {})}
-        disabled={item.disabled ?? false}
-        onClick={item.onSelect}
-      />
+      {isThemeItem(item) ? (
+        // Not an item itself: the row holds a group of menu item radios (the menu's one stop is the selected theme).
+        <li role="none">
+          <FinListStandard
+            size="small"
+            divider={false}
+            title={item.label ?? 'Theme'}
+            titleId={themeTitleId}
+            trailing={
+              <FinSegmentedButton
+                behavior="menuitemradio"
+                iconOnly
+                aria-labelledby={themeTitleId}
+                value={item.value}
+                onValueChange={(next) => item.onValueChange(next as FinSideNavTheme)}
+                options={[
+                  { value: 'system', label: item.optionLabels?.system ?? 'System', icon: 'desktop_windows' },
+                  { value: 'light', label: item.optionLabels?.light ?? 'Light', icon: 'light_mode' },
+                  { value: 'dark', label: item.optionLabels?.dark ?? 'Dark', icon: 'dark_mode' },
+                ]}
+              />
+            }
+          />
+        </li>
+      ) : (
+        <FinListStandard
+          as="li"
+          size="small"
+          behavior="menuitem"
+          divider={false}
+          title={item.label}
+          {...(item.icon ? { leadingAccessory: 'icon' as const, icon: item.icon } : {})}
+          disabled={item.disabled ?? false}
+          onClick={item.onSelect}
+        />
+      )}
     </Fragment>
   ));
+  // The account menu's header: who's signed in, not clickable (FinMenu draws the line under it).
+  const accountHeader = profile?.menu && (
+    <FinListStandard
+      size="small"
+      divider={false}
+      title={profile.name}
+      {...(profile.email !== undefined ? { description: profile.email } : {})}
+      {...(profile.role !== undefined ? { trailing: <FinBadge tone="neutral">{profile.role}</FinBadge> } : {})}
+    />
+  );
   const profileActionProps = profile
     ? profile.href !== undefined
       ? { href: profile.href, onClick: profile.onClick }
@@ -251,8 +324,10 @@ export function FinSideNav({
           {profile.menu && expanded ? (
             <FinMenu
               placement="top-start"
-              width="trigger"
+              width={ACCOUNT_MENU_WIDTH}
               anchor={footerEl}
+              header={accountHeader}
+              headerPadding="none"
               label="Account"
               trigger={(menuProps) => (
                 <FinListItem
@@ -283,7 +358,10 @@ export function FinSideNav({
             <div className={styles.profileMinimized} data-interactive="">
               <FinMenu
                 placement="right-end"
+                width={ACCOUNT_MENU_WIDTH}
                 anchor={navEl}
+                header={accountHeader}
+                headerPadding="none"
                 label="Account"
                 trigger={(menuProps) => (
                   <button {...menuProps} type="button" className={styles.avatarAction} aria-label={avatarName}>

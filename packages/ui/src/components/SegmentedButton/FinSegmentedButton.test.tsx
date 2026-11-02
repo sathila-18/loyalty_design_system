@@ -110,4 +110,56 @@ describe('FinSegmentedButton', () => {
     expect(container.querySelector('input[type="hidden"]')).toHaveAttribute('value', 'light');
     expect(container.querySelector('input[type="hidden"]')).toHaveAttribute('name', 'theme');
   });
+
+  it('icon only: shows the icons, keeps each label as the name, fills the selected icon', () => {
+    const { container } = render(
+      <FinSegmentedButton
+        label="Theme"
+        iconOnly
+        defaultValue="light"
+        options={[
+          { value: 'light', label: 'Light', icon: 'light_mode' },
+          { value: 'dark', label: 'Dark', icon: 'dark_mode' },
+        ]}
+      />,
+    );
+    expect(container.firstElementChild).toHaveAttribute('data-icon-only');
+    const light = screen.getByRole('radio', { name: 'Light' });
+    expect(light).toHaveAttribute('data-icon-only');
+    expect(light.querySelector('[data-filled]')).not.toBeNull();
+    expect(screen.getByRole('radio', { name: 'Dark' }).querySelector('[data-filled]')).toBeNull();
+  });
+
+  it('in a menu: menu item radios with no tab stop; ←/→ move without picking, Enter picks', async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <FinSegmentedButton
+        label="Theme"
+        behavior="menuitemradio"
+        iconOnly
+        defaultValue="system"
+        onValueChange={onValueChange}
+        options={[
+          { value: 'system', label: 'System', icon: 'desktop_windows' },
+          { value: 'light', label: 'Light', icon: 'light_mode' },
+          { value: 'dark', label: 'Dark', icon: 'dark_mode' },
+        ]}
+      />,
+    );
+    expect(screen.getByRole('group', { name: 'Theme' })).toBeInTheDocument();
+    expect(screen.queryByRole('radiogroup')).toBeNull();
+    const radios = screen.getAllByRole('menuitemradio');
+    for (const radio of radios) expect(radio).toHaveAttribute('tabindex', '-1');
+    expect(radios[0]).toHaveAttribute('aria-checked', 'true');
+    radios[0]!.focus();
+    await user.keyboard('{ArrowLeft}');
+    expect(radios[2]).toHaveFocus();
+    expect(onValueChange).not.toHaveBeenCalled();
+    await user.keyboard('{ArrowDown}{Home}');
+    expect(radios[2]).toHaveFocus();
+    await user.keyboard('{Enter}');
+    expect(onValueChange).toHaveBeenCalledWith('dark');
+    expect(radios[2]).toHaveAttribute('aria-checked', 'true');
+  });
 });

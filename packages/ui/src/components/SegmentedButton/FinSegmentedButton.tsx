@@ -10,11 +10,18 @@ export interface FinSegmentedButtonOption {
   value: string;
   /** The segment's label. */
   label: string;
-  /** A 20px leading icon (icons only, as the segment base). */
+  /** A 20px leading icon (icons only, as the segment base). Needed with `iconOnly`. */
   icon?: FinIconName;
   /** Makes just this segment unavailable (decided 19 Oct 2026); it uses the segment's Disabled look. */
   disabled?: boolean;
 }
+
+/**
+ * Code only (2 Nov 2026): `radio` (default) is a radio group with its own tab stop; `menuitemradio` is the same choice
+ * inside a FinMenu: a group of menu item radios the menu moves focus to (↑/↓ land on the selected one), ←/→ move
+ * between them and Enter, Space or a click picks one. Picking doesn't close the menu.
+ */
+export type FinSegmentedButtonBehavior = 'radio' | 'menuitemradio';
 
 /** The group's name: a visible label elsewhere (`aria-labelledby`), or `label` read by screen readers only. */
 type FinSegmentedButtonName = { label: string; 'aria-labelledby'?: never } | { label?: never; 'aria-labelledby': string };
@@ -33,15 +40,23 @@ export type FinSegmentedButtonProps = Omit<HTMLAttributes<HTMLDivElement>, 'onCh
     disabled?: boolean;
     /** Submits the selected value in a form, under this name. */
     name?: string;
+    /**
+     * Code only (2 Nov 2026): the segments show only their icons (every option needs `icon`), 36 squares, and the track
+     * is as wide as they are instead of filling its container. Each label stays as the segment's name.
+     */
+    iconOnly?: boolean;
+    /** Default `radio`. See FinSegmentedButtonBehavior. */
+    behavior?: FinSegmentedButtonBehavior;
   };
 
 /**
  * A single choice between a few options (Figma Segmented button; DESIGN.md §9): FinSegmentBase segments on a track.
  * A radio group: one tab stop (the selected segment); the arrow keys move and select, wrapping; Home and End jump
- * to the ends; disabled segments are skipped. `ref` goes to the track.
+ * to the ends; disabled segments are skipped. In a menu (`behavior="menuitemradio"`), menu item radios: ←/→ move,
+ * Enter or Space picks. `ref` goes to the track.
  */
 export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonProps>(function FinSegmentedButton(
-  { options, value, defaultValue, onValueChange, disabled = false, name, label, className, ...rest },
+  { options, value, defaultValue, onValueChange, disabled = false, name, label, iconOnly = false, behavior = 'radio', className, ...rest },
   ref,
 ) {
   const firstEnabled = options.find((o) => !o.disabled)?.value;
@@ -62,11 +77,21 @@ export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonP
     onValueChange?.(next);
   };
 
-  // Arrow keys move and select (wrapping), Home / End jump to the ends; disabled segments are skipped.
+  const inMenu = behavior === 'menuitemradio';
+
+  // Arrow keys move and select (wrapping), Home / End jump to the ends; disabled segments are skipped. In a menu,
+  // only ←/→, and they move without picking (Enter or Space picks); ↑/↓, Home and End are the menu's.
   const onSegmentKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
     const at = enabledIndexes.indexOf(index);
     if (at === -1) return;
     const last = enabledIndexes.length - 1;
+    if (inMenu) {
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+      const to = (at + (event.key === 'ArrowRight' ? 1 : -1) + enabledIndexes.length) % enabledIndexes.length;
+      segments.current[enabledIndexes[to]!]?.focus();
+      return;
+    }
     const step: Record<string, number> = { ArrowRight: at + 1, ArrowDown: at + 1, ArrowLeft: at - 1, ArrowUp: at - 1, Home: 0, End: last };
     if (!(event.key in step)) return;
     event.preventDefault();
@@ -78,11 +103,12 @@ export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonP
     <div
       {...rest}
       ref={ref}
-      role="radiogroup"
+      role={inMenu ? 'group' : 'radiogroup'}
       aria-label={label}
       aria-disabled={disabled || undefined}
       className={className ? `${styles.track} ${className}` : styles.track}
       data-disabled={disabled || undefined}
+      data-icon-only={iconOnly || undefined}
     >
       {options.map((option, i) => (
         <FinSegmentBase
@@ -91,11 +117,12 @@ export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonP
             segments.current[i] = el;
           }}
           className={styles.segment}
-          role="radio"
+          role={inMenu ? 'menuitemradio' : 'radio'}
           aria-checked={option.value === selected}
           selected={option.value === selected}
           disabled={disabled || option.disabled === true}
-          tabIndex={i === tabStop ? 0 : -1}
+          tabIndex={!inMenu && i === tabStop ? 0 : -1}
+          iconOnly={iconOnly}
           {...(option.icon ? { leadingIcon: option.icon } : {})}
           onClick={() => choose(i)}
           onKeyDown={(event) => onSegmentKeyDown(event, i)}

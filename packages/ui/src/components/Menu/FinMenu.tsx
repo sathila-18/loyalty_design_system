@@ -65,6 +65,11 @@ export interface FinMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
    * moves into a field here (it isn't focused on open); ArrowDown moves into the options and Enter chooses the first.
    */
   header?: ReactNode;
+  /**
+   * Code only (2 Nov 2026): the header's padding. `default` (Space-L) for a field; `none` for a list row, which brings
+   * its own (the account menu's name and email), so it lines up with the rows below. Default `default`.
+   */
+  headerPadding?: 'default' | 'none';
   /** Placed against, and `width="trigger"` measured from, this element instead of the trigger (a field's box). */
   anchor?: HTMLElement | null;
   /** Controlled open state. */
@@ -98,7 +103,8 @@ export function FinMenuDivider() {
 
 const FOCUSABLE = 'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])';
 const ITEM = {
-  action: '[role="menuitem"]:not(:disabled)',
+  // Menu item radios (a segmented control in a row) are one stop: the checked one.
+  action: '[role="menuitem"]:not(:disabled), [role="menuitemradio"][aria-checked="true"]:not(:disabled)',
   navigation: 'a[href]',
   filter: FOCUSABLE,
   select: '[role="option"]:not([aria-disabled="true"])',
@@ -126,6 +132,7 @@ export function FinMenu({
   children,
   footer,
   header,
+  headerPadding = 'default',
   anchor,
   open: openProp,
   defaultOpen = false,
@@ -141,6 +148,7 @@ export function FinMenu({
   const open = openProp ?? openState;
   const triggerId = useId();
   const menuId = useId();
+  const headerId = useId();
   /**
    * Where focus goes when the menu opens. Opened with the keyboard: the first (or last) row, with its focus ring.
    * Opened with a pointer, or by the app: the menu itself (`container`), so no ring shows until the keyboard is used;
@@ -250,8 +258,12 @@ export function FinMenu({
     const list = items();
     if (list.length === 0) return;
     // -1: focus is on the menu itself (opened with a pointer), so ArrowDown goes to the first row (a select's chosen
-    // option), ArrowUp the last.
-    const index = list.indexOf(document.activeElement as HTMLElement);
+    // option), ArrowUp the last. On an unchecked menu item radio (moved to with ←/→), its group's stop counts.
+    const active = document.activeElement as HTMLElement | null;
+    const radioStop = active?.matches('[role="menuitemradio"]')
+      ? active.closest('[role="group"]')?.querySelector<HTMLElement>('[role="menuitemradio"][aria-checked="true"]')
+      : null;
+    const index = list.indexOf((radioStop ?? active) as HTMLElement);
     const chosen = kind === 'select' ? list.findIndex((el) => el.getAttribute('aria-selected') === 'true') : -1;
     if (index === -1 && chosen !== -1 && (step === 1 || step === -1)) {
       list[chosen]?.focus();
@@ -402,10 +414,20 @@ export function FinMenu({
     ...(width !== 'content' && width !== 'trigger' ? { '--menu-width': width } : {}),
   } as CSSProperties;
 
+  // An action menu's header (the account menu's name and email) describes it to screen readers.
+  const hasHeader = header !== undefined && header !== null;
   let body: ReactNode;
   if (kind === 'action')
     body = (
-      <ul role="menu" id={menuId} {...name} className={`${styles.list} ${styles.focusTarget}`} tabIndex={-1} data-menu-focus>
+      <ul
+        role="menu"
+        id={menuId}
+        {...name}
+        aria-describedby={hasHeader ? headerId : undefined}
+        className={`${styles.list} ${styles.focusTarget}`}
+        tabIndex={-1}
+        data-menu-focus
+      >
         {children}
       </ul>
     );
@@ -448,8 +470,8 @@ export function FinMenu({
           {...(kind === 'filter' ? { role: 'dialog', id: menuId, tabIndex: -1, ...name } : {})}
         >
           <MenuKindContext.Provider value={kind}>
-            {header !== undefined && header !== null && (
-              <div className={styles.header} data-menu-header>
+            {hasHeader && (
+              <div id={headerId} className={styles.header} data-menu-header data-padding={headerPadding === 'none' ? 'none' : undefined}>
                 {header}
               </div>
             )}

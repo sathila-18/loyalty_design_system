@@ -1,8 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type MouseEvent, type ReactNode } from 'react';
+// Storybook's hooks, for the story functions that also read the theme toolbar (`useGlobals`): its hooks and React's
+// can't be mixed in one story function.
+import { useEffect as useStoryEffect, useGlobals, useState as useStoryState } from 'storybook/preview-api';
+import { userEvent, within } from 'storybook/test';
 import { FinIcon } from '../../icons/FinIcon';
 import avatarSample from '../Avatar/avatar-sample.jpg';
-import { FinSideNav, type FinSideNavMenuItem, type FinSideNavProps, type FinSideNavSection, type FinSideNavType } from './FinSideNav';
+import {
+  FinSideNav,
+  type FinSideNavMenuEntry,
+  type FinSideNavProfile,
+  type FinSideNavProps,
+  type FinSideNavSection,
+  type FinSideNavTheme,
+  type FinSideNavType,
+} from './FinSideNav';
 import styles from './FinSideNav.stories.module.css';
 
 /** The Figma Side Menu's menu. */
@@ -41,14 +53,45 @@ const SECTIONS: FinSideNavSection[] = [
 
 const STATIC_PROFILE = { name: 'Olivia James', email: 'oliviajames@email.com', src: avatarSample, initials: 'OJ' };
 const PROFILE = { ...STATIC_PROFILE, href: '#account' };
-/** The account menu's items (an example: they follow the product). */
-const ACCOUNT_MENU: FinSideNavMenuItem[] = [
-  { label: 'My profile', icon: 'person', onSelect: () => {} },
-  { label: 'Notifications', icon: 'notifications', onSelect: () => {} },
-  { label: 'Settings', icon: 'settings', onSelect: () => {} },
-  { label: 'Log out', icon: 'logout', onSelect: () => {}, separator: true },
-];
-const MENU_PROFILE = { ...STATIC_PROFILE, menu: ACCOUNT_MENU };
+/**
+ * The Theme row, linked to Storybook's theme toolbar (the stories stand in for the app, which sets `data-theme` on
+ * `<html>`): Light and Dark set it; System follows the device's `prefers-color-scheme`, also when it changes.
+ */
+function useStoryTheme() {
+  const [globals, updateGlobals] = useGlobals();
+  const [system, setSystem] = useStoryState(false);
+  useStoryEffect(() => {
+    if (!system) return;
+    const query = window.matchMedia('(prefers-color-scheme: dark)');
+    const follow = () => updateGlobals({ theme: query.matches ? 'dark' : 'light' });
+    follow();
+    query.addEventListener('change', follow);
+    return () => query.removeEventListener('change', follow);
+  }, [system, updateGlobals]);
+  const value: FinSideNavTheme = system ? 'system' : globals['theme'] === 'dark' ? 'dark' : 'light';
+  const onValueChange = (next: FinSideNavTheme) => {
+    setSystem(next === 'system');
+    if (next !== 'system') updateGlobals({ theme: next });
+  };
+  return { value, onValueChange };
+}
+
+/** The account menu (an example: the items follow the product): no leading icons; Log out last, after a line. */
+function useAccountProfile(role: string | undefined, profile: Omit<FinSideNavProfile, 'menu'> = STATIC_PROFILE): FinSideNavProfile {
+  const theme = useStoryTheme();
+  const menu: FinSideNavMenuEntry[] = [
+    { label: 'My profile', onSelect: () => {} },
+    { label: 'Settings', onSelect: () => {} },
+    { type: 'theme', ...theme },
+    { label: 'Log out', onSelect: () => {}, separator: true },
+  ];
+  return { ...profile, ...(role ? { role } : {}), menu };
+}
+
+/** Opens the account menu, as a click on the profile row (or the avatar, minimized) does. */
+const openAccountMenu = async (canvasElement: HTMLElement, name: string | RegExp = 'Olivia James') => {
+  await userEvent.click(within(canvasElement).getByRole('button', { name }));
+};
 
 /**
  * A stand-in for the product logo (Figma Logo sizes, Small, Coloured, With text): the `image` placeholder and
@@ -98,6 +141,7 @@ interface Args {
   showLogo: boolean;
   showProfile: boolean;
   profileAction: 'menu' | 'link' | 'none';
+  role: 'Admin' | 'Super admin' | 'none';
 }
 
 /**
@@ -111,7 +155,7 @@ const KNOWN_CONTRAST_ISSUES = ['[data-selected="sub-item"]'];
 const meta: Meta<Args> = {
   title: 'Components/Side nav/Side menu',
   parameters: { layout: 'fullscreen', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  args: { type: 'expanded', menu: '#dashboard', showLogo: true, showProfile: true, profileAction: 'menu' },
+  args: { type: 'expanded', menu: '#dashboard', showLogo: true, showProfile: true, profileAction: 'menu', role: 'Admin' },
   argTypes: {
     type: { control: 'inline-radio', options: ['expanded', 'minimized'], description: 'Figma `Type` (click the button to change it)' },
     menu: {
@@ -126,14 +170,17 @@ const meta: Meta<Args> = {
       options: ['menu', 'link', 'none'],
       description: 'The profile row opens an account menu (`profile.menu`), is a link (with the chevron), or is static',
     },
+    role: {
+      control: 'inline-radio',
+      options: ['Admin', 'Super admin', 'none'],
+      description: "`profile.role`: the badge in the account menu's header",
+    },
   },
-  render: function Render({ type, menu, showLogo, showProfile, profileAction }) {
-    const [ownType, setOwnType] = useState(type);
-    const [shownType, setShownType] = useState(type);
-    if (shownType !== type) {
-      setShownType(type);
-      setOwnType(type);
-    }
+  render: function Render({ type, menu, showLogo, showProfile, profileAction, role }) {
+    const menuProfile = useAccountProfile(role === 'none' ? undefined : role);
+    // The collapse button changes the type; the `type` control sets it again.
+    const [ownType, setOwnType] = useStoryState(type);
+    useStoryEffect(() => setOwnType(type), [type]);
     return (
       <Routed key={menu} start={menu}>
         {(href) => (
@@ -143,7 +190,7 @@ const meta: Meta<Args> = {
             type={ownType}
             onTypeChange={setOwnType}
             {...(showLogo ? { logo: <LogoPlaceholder /> } : {})}
-            {...(showProfile ? { profile: profileAction === 'menu' ? MENU_PROFILE : profileAction === 'link' ? PROFILE : STATIC_PROFILE } : {})}
+            {...(showProfile ? { profile: profileAction === 'menu' ? menuProfile : profileAction === 'link' ? PROFILE : STATIC_PROFILE } : {})}
           />
         )}
       </Routed>
@@ -155,6 +202,43 @@ export default meta;
 type Story = StoryObj<Args>;
 
 export const Playground: Story = {};
+
+/**
+ * The account menu, open (code first, 2 Nov 2026): who's signed in with their role, My profile, Settings, the Theme row
+ * and Log out; 320 wide. Picking a theme keeps the menu open and switches the canvas (System follows the device).
+ */
+export const AccountMenu: Story = {
+  name: 'Account menu',
+  play: async ({ canvasElement }) => {
+    await openAccountMenu(canvasElement);
+  },
+};
+
+/** Minimized: the avatar opens the same menu beside the nav. */
+export const AccountMenuMinimized: Story = {
+  name: 'Account menu, minimized',
+  args: { type: 'minimized' },
+  play: async ({ canvasElement }) => {
+    await openAccountMenu(canvasElement, /Olivia James/);
+  },
+};
+
+/** A long name and email end in "…" before the badge; "Super admin" is the longer role. */
+export const AccountMenuLongName: Story = {
+  name: 'Account menu, long name',
+  args: { role: 'Super admin' },
+  render: function Render({ role }) {
+    const profile = useAccountProfile(role === 'none' ? undefined : role, {
+      ...STATIC_PROFILE,
+      name: 'Olivia Alexandra James-Fernando',
+      email: 'olivia.alexandra.james-fernando@email.com',
+    });
+    return <FinSideNav sections={SECTIONS} currentHref="#dashboard" defaultType="expanded" logo={<LogoPlaceholder />} profile={profile} />;
+  },
+  play: async ({ canvasElement }) => {
+    await openAccountMenu(canvasElement, 'Olivia Alexandra James-Fernando');
+  },
+};
 
 /** A Figma menu: the section opened by a click, or the current page's section. */
 function Menu({ current, open, type }: { current: string; open?: string | undefined; type: FinSideNavType }) {

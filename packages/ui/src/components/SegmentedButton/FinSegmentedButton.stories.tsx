@@ -92,3 +92,26 @@ export const Keyboard: Story = {
     await userEvent.tab();
   },
 };
+
+/**
+ * Code only (2 Nov 2026): `iconOnly` shows just the icons, 36 squares (the selected one filled), on a track as wide
+ * as they are; each label stays as the segment's name. Inside a menu it's the account menu's Theme row
+ * (`behavior="menuitemradio"`, Components/Side nav/Side menu › Account menu).
+ */
+export const IconOnly: Story = {
+  name: 'Icon only',
+  render: () => (
+    <div className={styles.frame}>
+      <FinSegmentedButton
+        label="Theme"
+        iconOnly
+        defaultValue="light"
+        options={[
+          { value: 'system', label: 'System', icon: 'desktop_windows' },
+          { value: 'light', label: 'Light', icon: 'light_mode' },
+          { value: 'dark', label: 'Dark', icon: 'dark_mode' },
+        ]}
+      />
+    </div>
+  ),
+};

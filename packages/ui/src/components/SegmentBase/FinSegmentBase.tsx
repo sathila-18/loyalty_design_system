@@ -12,6 +12,11 @@ export interface FinSegmentBaseProps extends Omit<ButtonHTMLAttributes<HTMLButto
   selected?: boolean;
   /** Figma `Show Leading Accessory` with its icon (icons only for now, decided 19 Oct 2026): 20px, colored by the segment. */
   leadingIcon?: FinIconName;
+  /**
+   * Code only (2 Nov 2026): only `leadingIcon` shows, in a 36 square (padding Space-M all round), filled when selected;
+   * the label stays as hidden text, so it's still the button's name. Needs `leadingIcon`.
+   */
+  iconOnly?: boolean;
 }
 
 /**
@@ -21,7 +26,7 @@ export interface FinSegmentBaseProps extends Omit<ButtonHTMLAttributes<HTMLButto
  * **Internal:** not exported from the package; use FinSegmentedButton.
  */
 export const FinSegmentBase = forwardRef<HTMLButtonElement, FinSegmentBaseProps>(function FinSegmentBase(
-  { children, selected = false, leadingIcon, type = 'button', className, ...rest },
+  { children, selected = false, leadingIcon, iconOnly = false, type = 'button', className, ...rest },
   ref,
 ) {
   return (
@@ -31,10 +36,11 @@ export const FinSegmentBase = forwardRef<HTMLButtonElement, FinSegmentBaseProps>
       type={type}
       className={className ? `${styles.segment} ${className}` : styles.segment}
       data-selected={selected || undefined}
+      data-icon-only={(iconOnly && leadingIcon !== undefined) || undefined}
     >
       {leadingIcon && (
         <span className={styles.icon}>
-          <FinIcon name={leadingIcon} size={20} />
+          <FinIcon name={leadingIcon} size={20} filled={iconOnly && selected} />
         </span>
       )}
       <span className={styles.label}>{children}</span>

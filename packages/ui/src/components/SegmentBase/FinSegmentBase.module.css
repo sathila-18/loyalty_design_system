@@ -74,10 +74,26 @@
   color: var(--segment-icon);
 }
 
+/* Icon only (code only, 2 Nov 2026): a 36 square, the 20 icon with Space-M all round. */
+.segment[data-icon-only] {
+  position: relative;
+  padding: var(--fin-space-m);
+}
+
 /* One line, no fixed max width; "…" when the segment is narrower. */
 .label {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The label stays in the button, hidden, as its name. */
+.segment[data-icon-only] .label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
 }

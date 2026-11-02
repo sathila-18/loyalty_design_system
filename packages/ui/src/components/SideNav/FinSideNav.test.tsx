@@ -213,4 +213,37 @@ describe('FinSideNav', () => {
     await user.click(screen.getByRole('button', { name: 'Olivia James' }));
     expect(screen.getByRole('menuitem', { name: 'Settings' })).toBeInTheDocument();
   });
+
+  it('account menu: the user, their role and the Theme row; picking a theme keeps it open', async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(
+      <FinSideNav
+        sections={SECTIONS}
+        type="expanded"
+        profile={{
+          ...PROFILE,
+          role: 'Admin',
+          menu: [
+            { label: 'My profile', onSelect: () => {} },
+            { label: 'Settings', onSelect: () => {} },
+            { type: 'theme', value: 'light', onValueChange },
+            { label: 'Log out', onSelect: () => {}, separator: true },
+          ],
+        }}
+      />,
+    );
+    await user.click(screen.getByRole('button', { name: 'Olivia James' }));
+    const menu = screen.getByRole('menu', { name: 'Account' });
+    expect(menu).toHaveAccessibleDescription(/Olivia James.*oliviajames@email\.com.*Admin/);
+    expect(menu.closest('[popover]')).toHaveAttribute('data-width', 'custom');
+    expect(within(menu).getAllByRole('menuitem').map((item) => item.textContent)).toEqual(['My profile', 'Settings', 'Log out']);
+    const group = within(menu).getByRole('group', { name: 'Theme' });
+    const radios = within(group).getAllByRole('menuitemradio');
+    ['System', 'Light', 'Dark'].forEach((name, i) => expect(radios[i]).toHaveAccessibleName(name));
+    expect(within(group).getByRole('menuitemradio', { name: 'Light' })).toHaveAttribute('aria-checked', 'true');
+    await user.click(within(group).getByRole('menuitemradio', { name: 'Dark' }));
+    expect(onValueChange).toHaveBeenCalledWith('dark');
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+  });
 });

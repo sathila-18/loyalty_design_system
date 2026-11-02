@@ -87,6 +87,11 @@
   border-bottom: 1px solid var(--fin-border-subtle);
 }
 
+/* Code only (2 Nov 2026): a list row brings its own padding. */
+.header[data-padding="none"] {
+  padding: 0;
+}
+
 /* Code first (22 Oct 2026): buttons kept at the bottom, a line above, right aligned. */
 .footer {
   display: flex;

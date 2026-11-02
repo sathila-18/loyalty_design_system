@@ -211,4 +211,42 @@ describe('FinMenu', () => {
     expect(surface).toHaveAttribute('data-max-height');
     expect(surface).toHaveAttribute('popover', 'manual');
   });
+
+  it('treats a group of menu item radios as one stop (the checked one); picking one keeps the menu open', async () => {
+    const user = userEvent.setup();
+    function Themed() {
+      const [theme, setTheme] = useState('light');
+      return (
+        <FinMenu label="Account" trigger={<FinButton>Account</FinButton>} header={<p>Olivia James</p>} headerPadding="none">
+          <FinListStandard as="li" behavior="menuitem" title="Settings" />
+          <li role="none">
+            <div role="group" aria-label="Theme">
+              {['light', 'dark'].map((t) => (
+                <button key={t} type="button" role="menuitemradio" tabIndex={-1} aria-checked={theme === t} onClick={() => setTheme(t)}>
+                  {t}
+                </button>
+              ))}
+            </div>
+          </li>
+          <FinListStandard as="li" behavior="menuitem" title="Log out" />
+        </FinMenu>
+      );
+    }
+    render(<Themed />);
+    await user.click(screen.getByRole('button', { name: 'Account' }));
+    const menu = screen.getByRole('menu', { name: 'Account' });
+    expect(menu).toHaveAccessibleDescription('Olivia James');
+    expect(document.querySelector('[data-menu-header]')).toHaveAttribute('data-padding', 'none');
+    await user.keyboard('{ArrowDown}{ArrowDown}');
+    expect(screen.getByRole('menuitemradio', { name: 'light' })).toHaveFocus();
+    await user.keyboard('{ArrowDown}');
+    expect(screen.getByRole('menuitem', { name: 'Log out' })).toHaveFocus();
+    await user.click(screen.getByRole('menuitemradio', { name: 'dark' }));
+    expect(screen.getByRole('menuitemradio', { name: 'dark' })).toHaveAttribute('aria-checked', 'true');
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+    // From an unchecked radio, the arrows go on from the group's stop.
+    screen.getByRole('menuitemradio', { name: 'light' }).focus();
+    await user.keyboard('{ArrowUp}');
+    expect(screen.getByRole('menuitem', { name: 'Settings' })).toHaveFocus();
+  });
 });

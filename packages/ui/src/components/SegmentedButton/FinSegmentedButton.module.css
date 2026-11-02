@@ -20,3 +20,12 @@
 .segment {
   flex: 1 1 0;
 }
+
+/* Icon only (code only, 2 Nov 2026): as wide as the 36 segments, not the container. */
+.track[data-icon-only] {
+  display: inline-flex;
+}
+
+.track[data-icon-only] .segment {
+  flex: none;
+}
