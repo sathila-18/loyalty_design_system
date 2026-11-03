@@ -45,7 +45,7 @@ If this file and Figma disagree, **Figma wins**. Flag the difference so this fil
 
 1. **Tokens only.** Components never contain raw hex values, pixel numbers or font sizes. Every color, space, radius, text style and shadow comes from a token. The only exceptions are artwork colors inside logos, flags, payment icons and illustrations.
 2. **Use semantic colors in components.** Components use the `Color collection` tokens (`bg-*`, `text-*`, `border-*`, `fg-*`, `Alpha-*`). Primitive and alias colors exist only so semantic tokens can point to them.
-3. **Light, dark and brand.** Every semantic color has a Light and a Dark value. Components must look correct in both. Theme and brand are set on `<html>` with `data-theme="light|dark"` and `data-brand="finspace"`. Never branch on theme or brand inside a component; read the token.
+3. **Light, dark and brand.** Every semantic color has a Light and a Dark value. Components must look correct in both. Theme and brand are set on `<html>` with `data-theme="light|dark"` and `data-brand="finspace|burgundy"` (§3.10). Never branch on theme or brand inside a component; read the token.
 4. **Desktop layout.** The product is desktop only. No mobile layouts.
 
    | Rule | Value | Token |
@@ -70,38 +70,38 @@ If this file and Figma disagree, **Figma wins**. Flag the difference so this fil
 
 ## 3. Foundations: tokens
 
-Source: `tokens/design.tokens.json`, with 434 variables in 5 collections.
+Source: `tokens/design.tokens.json`, with 528 variables in 5 collections (3 Nov 2026; was 434).
 
 | Collection | Count | Modes | Purpose |
 |---|---|---|---|
-| `Primitives` | 151 | — | Raw color scales, type scale, sizes |
-| `Alias Typography` | 92 | `Finspace` (brand) | Text style building blocks (family, weight, size, line height) |
-| `Alias Colors` | 77 | `Finspace` (brand) | Role names for primitive scales. **This is the brand layer.** |
+| `Primitives` | 238 | — | Raw color scales, type scale, sizes. Includes the `Burgundy theme` group (87): the Burgundy scale plus 77 copies of the Fintech scales, which aren't generated (§3.1, §3.9) |
+| `Alias Typography` | 92 | one mode, **shared by every brand** | Text style building blocks (family, weight, size, line height) |
+| `Alias Colors` | 84 | **`Finspace`, `Burgundy theme`** (brands) | Role names for primitive scales. **This is the brand layer.** 77 + the 7 Primary dark aliases (3 Nov 2026) |
 | `Color collection` | 87 | **Light / Dark** | **Semantic colors that components use** |
 | `Alias Spacing & Radius` | 24 | — | Spacing and radius scales |
 
 ### 3.0 How the layers work
 
 ```
-Primitives (raw hex)  →  Alias Colors (brand mode: Finspace)  →  Color collection (Light / Dark)  →  components
+Primitives (raw hex)  →  Alias Colors (brand modes: Finspace, Burgundy)  →  Color collection (Light / Dark)  →  components
 ```
 
 | Layer | Figma collection | Modes | Code scoping |
 |---|---|---|---|
 | 1. Primitives | `Primitives` | none | `:root` |
-| 2. Alias (brand) | `Alias Colors` | **one mode per brand** (today: `Finspace`) | `[data-brand="…"]` |
-| 2. Alias typography (brand) | `Alias Typography` | **one mode per brand** (today: `Finspace`) | `[data-brand="…"]` |
+| 2. Alias (brand) | `Alias Colors` | **one mode per brand** (today: `Finspace`, `Burgundy theme`) | `[data-brand="…"]`; Finspace also on `:root` |
+| 2. Alias typography | `Alias Typography` | one mode, shared (a brand could get its own mode later) | `:root` while shared; `[data-brand="…"]` once it has a mode per brand |
 | 3. Semantic (theme) | `Color collection` | **Light / Dark** | `[data-theme="light|dark"]` |
 
 - **Brands live in the alias layer as modes.** Each brand mode points the same alias names (`Primary-500`, `Secondary-500`…) at that brand's primitives. Adding a brand = adding a mode in `Alias Colors` (and its primitives); semantic tokens and components don't change.
 - **Light and Dark live in the semantic layer as modes.** Semantic tokens point at alias names, so every brand gets Light and Dark automatically.
 - **In code** the two attributes combine freely on `<html>`: `data-brand` picks the alias values, `data-theme` picks the semantic mapping.
 - **`data-brand` goes on `<html>` only** (decided 14 Oct 2026). Semantic colors are computed where `data-theme` is set, so a `data-brand` further down the page wouldn't update them. `data-theme` may also be set on an inner element (for example side-by-side Light/Dark previews in Storybook).
-- The token build reads the `Alias Colors` modes from the export and writes one `[data-brand]` block per mode. It does the same for `Alias Typography`, so a brand can also change fonts and type scale. Today there's one brand mode, `Finspace`, exported as `data-brand="finspace"`.
+- The token build reads the `Alias Colors` modes from the export and writes one `[data-brand]` block per mode: `data-brand="finspace"` (the default, also on `:root`) and `data-brand="burgundy"`. `Alias Typography` has one mode today, so both brands share it (it's written once, on `:root`). If it gets one mode per brand (the same names as `Alias Colors`), the build writes it per brand too, so a brand could change fonts and type scale. See §3.10.
 
 ### 3.1 Primitive colors
 
-_Collection `Primitives` → `Colors/Fintech`. Never use these directly in components; use the semantic tokens below._
+_Collection `Primitives` → `Colors/Fintech`, plus each extra brand's own scale (`Colors/Burgundy theme/Burgundy`, added 3 Nov 2026). Never use these directly in components; use the semantic tokens below._
 
 | Scale | 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -115,27 +115,50 @@ _Collection `Primitives` → `Colors/Fintech`. Never use these directly in compo
 | Yellow (`Warning-*`) | `#fdf3e7` | `#f8d9b3` | `#f5c68f` | `#f1ac5c` | `#ee9c3c` | `#ea830b` | `#d5770a` | `#a65d08` | `#814806` | `#623705` |
 | Red (`Error-*`) | `#f9e8e8` | `#edb7b9` | `#e49497` | `#d86468` | `#d1454a` | `#c5171d` | `#b3151a` | `#8c1015` | `#6c0d10` | `#530a0c` |
 
+| Burgundy (`Burgundy-*`, `--fin-palette-burgundy-*`) — Burgundy brand only | `#f0e6eb` | `#d0b0c0` | `#b98aa1` | `#985476` | `#85335c` | `#660033` | `#5d002e` | `#480024` | `#38001c` | `#2b0015` |
+
 Brand Key (hidden from publishing in Figma): `White` = `#ffffff`, `Black` = `#000000`
+
+**The `Burgundy theme` group also holds copies** of Gray, White, Graphite, Platinum, Blue, Green, Yellow, Red and Brand Key (77 variables, the same values as Fintech's; checked 3 Nov 2026). Nothing points at them, so they **aren't generated**: only the Burgundy scale is (decided 3 Nov 2026). Their names would also clash with Fintech's. The build stops with an error if a variable ever points at a copy (§3.9).
 
 ### 3.2 Alias colors (brand layer)
 
-_Collection `Alias Colors` → `Colors/Fintech`. Role names that point 1:1 at a primitive scale (step for step)._
+_Collection `Alias Colors` → `Colors/Fintech`, modes **Finspace** and **Burgundy theme** (§3.10). Role names that point 1:1 at a primitive scale (step for step). **In Burgundy only Primary differs**; every other group is the same in both brands._
 
-| Alias group | Token pattern | Points to |
-|---|---|---|
-| Primary | `Primary-50 … -900` | Electric Indigo |
-| Secondary | `Secondary-50 … -900` | Gray (near-black) |
-| Tertiary | `Tertiary-50 … -900` | Graphite |
-| Tertiary1 | `Tertiary1-50 … -900` | Platinum |
-| Tertiary2 | `Tertiary2-500 … -900` | White |
-| Success | `Success-50 … -900` | Green |
-| Warning | `Warning-50 … -900` | Yellow |
-| Error | `Error-50 … -900` | Red |
-| Key | `White`, `Black` | Brand Key White, Black |
+| Alias group | Token pattern | Points to (Finspace) | Points to (Burgundy) |
+|---|---|---|---|
+| Primary | `Primary-50 … -900` | Electric Indigo | **Burgundy** |
+| Primary dark | `Primary-dark-*` (7) | Primary steps | Burgundy steps (table below) |
+| Secondary | `Secondary-50 … -900` | Gray (near-black) | Same |
+| Tertiary | `Tertiary-50 … -900` | Graphite | Same |
+| Tertiary1 | `Tertiary1-50 … -900` | Platinum | Same |
+| Tertiary2 | `Tertiary2-500 … -900` | White | Same |
+| Success | `Success-50 … -900` | Green | Same |
+| Warning | `Warning-50 … -900` | Yellow | Same |
+| Error | `Error-50 … -900` | Red | Same |
+| Key | `White`, `Black` | Brand Key White, Black | Same |
 
+#### Primary dark (added 3 Nov 2026)
+
+_The brand colors the **Dark** theme uses for actions and brand fills. A brand needs its own steps in Dark: a scale step that reads well on Finspace's indigo can be too dark in another brand. 17 semantic tokens point here in Dark (§3.3); Light still uses the Primary scale. Finspace's values are the steps its Dark theme used before, so Finspace looks the same. Descriptions are Figma's._
+
+| Token | CSS | Finspace | Burgundy | Use (Figma description) |
+|---|---|---|---|---|
+| `Primary-dark-action` | `--fin-color-primary-dark-action` | Primary-400 `#817cff` | Burgundy-200 `#b98aa1` | Brand action colour in dark mode: links, action text, icons, active borders |
+| `Primary-dark-hovered` | `--fin-color-primary-dark-hovered` | Primary-300 `#9691ff` | Burgundy-100 `#d0b0c0` | Hover state of action text, icons and borders in dark mode |
+| `Primary-dark-pressed` | `--fin-color-primary-dark-pressed` | Primary-200 `#b7b4ff` | Burgundy-50 `#f0e6eb` | Pressed state of action text, icons and borders in dark mode |
+| `Primary-dark-focus` | `--fin-color-primary-dark-focus` | Primary-300 `#9691ff` | Burgundy-200 `#b98aa1` | Focus ring colour in dark mode |
+| `Primary-dark-fill` | `--fin-color-primary-dark-fill` | Primary-500 `#625bff` | Burgundy-300 `#985476` | Primary button and brand backgrounds in dark mode |
+| `Primary-dark-fill-hovered` | `--fin-color-primary-dark-fill-hovered` | Primary-400 `#817cff` | Burgundy-400 `#85335c` | Hover state of primary buttons in dark mode |
+| `Primary-dark-fill-pressed` | `--fin-color-primary-dark-fill-pressed` | Primary-300 `#9691ff` | Burgundy-500 `#660033` | Pressed state of primary buttons in dark mode |
+
+- **Fills go opposite ways** (intended, design 3 Nov 2026): Finspace's dark button fill gets lighter on hover and press (500 → 400 → 300); Burgundy's gets darker (300 → 400 → 500).
+- Finspace's values point at its **Primary aliases**; Burgundy's point straight at **Burgundy primitives**. Both resolve the same way in code.
 ### 3.3 Semantic colors (Light / Dark)
 
 _Collection `Color collection`, modes **Light** and **Dark**. **Components must only use these.** Hex values are resolved for reference; code must reference the token, not the hex._
+
+**Hex values are Finspace's.** In Burgundy every `Primary-*` is the same Burgundy step (§3.2), so a cell that reads `Primary-500` is `Burgundy-500` there. Since 3 Nov 2026, **17 Dark values point at the Primary dark aliases** (§3.2) instead of the Primary scale; those cells show both brands. Light didn't change. The other Dark values on the Primary scale (`bg-active`, `bg-active-hover`, `bg-action-secondary*`, the info tokens, `Alpha-brand`) follow the plain scale in both brands (fine for now, decided 3 Nov 2026; the info tokens move to a new blue later, §10 #79).
 
 #### Background
 
@@ -145,12 +168,12 @@ _Collection `Color collection`, modes **Light** and **Dark**. **Components must 
 | `bg-secondary` | Tertiary1-200 `#f5f5f5` | Tertiary-900 `#292929` | Side nav |
 | `bg-tertiary` | Tertiary1-400 `#ededed` | Tertiary-800 `#363636` | Info callout notification backgrounds |
 | `bg-neutral` | Tertiary1-500 `#e9e9e9` | Tertiary-700 `#464646` | Badge neutral background |
-| `bg-brand` | Primary-500 `#625bff` | Primary-500 `#625bff` | Brand related backgrounds |
+| `bg-brand` | Primary-500 `#625bff` | **Primary-dark-fill**: Finspace Primary-500 `#625bff` · Burgundy Burgundy-300 `#985476` | Brand related backgrounds |
 | `bg-active` | Primary-50 `#efefff` | Primary-900 `#29266b` | Active or selected state backgrounds |
 | `bg-active-hover` | Primary-100 `#ceccff` | Primary-800 `#36328c` | Hover state of active or selected backgrounds |
-| `bg-action-primary` | Primary-500 `#625bff` | Primary-500 `#625bff` | Primary button backgrounds |
-| `bg-action-primary_hovered` | Primary-600 `#5953e8` | Primary-400 `#817cff` | Hover state of primary buttons |
-| `bg-action-primary_pressed` | Primary-700 `#4641b5` | Primary-300 `#9691ff` | Pressed state of primary buttons |
+| `bg-action-primary` | Primary-500 `#625bff` | **Primary-dark-fill**: Finspace Primary-500 `#625bff` · Burgundy Burgundy-300 `#985476` | Primary button backgrounds |
+| `bg-action-primary_hovered` | Primary-600 `#5953e8` | **Primary-dark-fill-hovered**: Finspace Primary-400 `#817cff` · Burgundy Burgundy-400 `#85335c` | Hover state of primary buttons |
+| `bg-action-primary_pressed` | Primary-700 `#4641b5` | **Primary-dark-fill-pressed**: Finspace Primary-300 `#9691ff` · Burgundy Burgundy-500 `#660033` | Pressed state of primary buttons |
 | `bg-action-secondary` | Primary-50 `#efefff` | Primary-900 `#29266b` | Secondary button background (Figma description still says "swipe button", see §10) |
 | `bg-action-secondary_hovered` | Primary-100 `#ceccff` | Primary-800 `#36328c` | Hover state of secondary buttons |
 | `bg-action-secondary_pressed` | Primary-200 `#b7b4ff` | Primary-700 `#4641b5` | Pressed state of secondary buttons |
@@ -186,9 +209,9 @@ _Collection `Color collection`, modes **Light** and **Dark**. **Components must 
 | `text-white_both` | White `#ffffff` | White `#ffffff` | Text on purple or red in both themes: primary and destructive buttons, Brand badge, badge indicator. Matches `fg-white_both`. New 14 Oct 2026. |
 | `text-white_subtle` | Tertiary1-600 `#d4d4d4` | Tertiary1-600 `#d4d4d4` | Secondary text on brand backgrounds. Renamed from `text-inverse_subtle` (14 Oct 2026). |
 | `text-dark_both` | Secondary-500 `#19191a` | Secondary-500 `#19191a` | Dark text in both light and dark modes |
-| `text-action` | Primary-500 `#625bff` | Primary-400 `#817cff` | Text links, secondary buttons |
-| `text-pressed` | Primary-700 `#4641b5` | Primary-200 `#b7b4ff` | Pressed state for text links. Dark was Primary-300 until 19 Oct 2026 (§10 #39) |
-| `text-hovered` | Primary-600 `#5953e8` | Primary-300 `#9691ff` | Hover state for text links. Dark was Primary-200 until 19 Oct 2026 (§10 #39) |
+| `text-action` | Primary-500 `#625bff` | **Primary-dark-action**: Finspace Primary-400 `#817cff` · Burgundy Burgundy-200 `#b98aa1` | Text links, secondary buttons |
+| `text-pressed` | Primary-700 `#4641b5` | **Primary-dark-pressed**: Finspace Primary-200 `#b7b4ff` · Burgundy Burgundy-50 `#f0e6eb` | Pressed state for text links. Dark was Primary-300 until 19 Oct 2026 (§10 #39) |
+| `text-hovered` | Primary-600 `#5953e8` | **Primary-dark-hovered**: Finspace Primary-300 `#9691ff` · Burgundy Burgundy-100 `#d0b0c0` | Hover state for text links. Dark was Primary-200 until 19 Oct 2026 (§10 #39) |
 | `text-success` | Success-700 `#217740` | Success-100 `#bee4cc` | Success texts |
 | `text-error` | Error-500 `#c5171d` | Error-100 `#edb7b9` | Error texts |
 | `text-info` | Primary-700 `#4641b5` | Primary-100 `#ceccff` | Information texts |
@@ -201,11 +224,11 @@ _Collection `Color collection`, modes **Light** and **Dark**. **Components must 
 | `border-default` | Tertiary1-600 `#d4d4d4` | Tertiary-700 `#464646` | Default border color. Also for dividers |
 | `border-subtle` | Tertiary1-400 `#ededed` | Tertiary-800 `#363636` | Subtle border |
 | `border-strong` | Tertiary-400 `#818181` | Tertiary-200 `#b7b7b7` | Strong border (checkbox, radio buttons, Secondary badge). Was Tertiary-300 / Tertiary-500 until 19 Oct 2026 (below 3:1, §10 #3) |
-| `border-active` | Primary-500 `#625bff` | Primary-400 `#817cff` | Active or selected states; typing state of input fields |
-| `border-hovered` | Primary-600 `#5953e8` | Primary-300 `#9691ff` | Hover state for borders |
-| `border-pressed` | Primary-700 `#4641b5` | Primary-200 `#b7b4ff` | Pressed state for borders |
-| `border-focused` | Primary-400 `#817cff` | Primary-300 `#9691ff` | Focus ring and focused states |
-| `border-action-primary` | Primary-500 `#625bff` | Primary-500 `#625bff` | Outline (secondary) buttons |
+| `border-active` | Primary-500 `#625bff` | **Primary-dark-action**: Finspace Primary-400 `#817cff` · Burgundy Burgundy-200 `#b98aa1` | Active or selected states; typing state of input fields |
+| `border-hovered` | Primary-600 `#5953e8` | **Primary-dark-hovered**: Finspace Primary-300 `#9691ff` · Burgundy Burgundy-100 `#d0b0c0` | Hover state for borders |
+| `border-pressed` | Primary-700 `#4641b5` | **Primary-dark-pressed**: Finspace Primary-200 `#b7b4ff` · Burgundy Burgundy-50 `#f0e6eb` | Pressed state for borders |
+| `border-focused` | Primary-400 `#817cff` | **Primary-dark-focus**: Finspace Primary-300 `#9691ff` · Burgundy Burgundy-200 `#b98aa1` | Focus ring and focused states |
+| `border-action-primary` | Primary-500 `#625bff` | **Primary-dark-fill**: Finspace Primary-500 `#625bff` · Burgundy Burgundy-300 `#985476` | Outline (secondary) buttons |
 | `border-disabled` | Tertiary1-500 `#e9e9e9` | Tertiary-800 `#363636` | Disabled borders |
 | `border-inverse` | Tertiary2-500 `#ffffff` | Secondary-500 `#19191a` | Borders on brand color |
 | `border-success` | Success-500 `#2ea85a` | Success-400 `#58b97b` | Success border |
@@ -219,17 +242,17 @@ _Collection `Color collection`, modes **Light** and **Dark**. **Components must 
 |---|---|---|---|
 | `fg-primary` | Secondary-500 `#19191a` | Tertiary2-500 `#ffffff` | Primary icon color |
 | `fg-secondary` | Tertiary-500 `#626262` | Tertiary-200 `#b7b7b7` | Secondary icons (input fields, close, chevron) |
-| `fg-brand` | Primary-500 `#625bff` | Primary-400 `#817cff` | Brand related icons |
+| `fg-brand` | Primary-500 `#625bff` | **Primary-dark-action**: Finspace Primary-400 `#817cff` · Burgundy Burgundy-200 `#b98aa1` | Brand related icons |
 | `fg-placeholder` | Tertiary-300 `#969696` | Tertiary-400 `#818181` | Input field icons |
-| `fg-active` | Primary-600 `#5953e8` | Primary-300 `#9691ff` | Icons in active state |
+| `fg-active` | Primary-600 `#5953e8` | **Primary-dark-hovered**: Finspace Primary-300 `#9691ff` · Burgundy Burgundy-100 `#d0b0c0` | Icons in active state |
 | `fg-disabled` | Tertiary-200 `#b7b7b7` | Tertiary-600 `#595959` | Disabled icons |
 | `fg-disabled-on_bg` | Tertiary-300 `#969696` | Tertiary-500 `#626262` | Disabled icons on a background |
 | `fg-inverse` | Tertiary2-500 `#ffffff` | Secondary-500 `#19191a` | Icons on brand color |
 | `fg-dark_both` | Secondary-500 `#19191a` | Secondary-500 `#19191a` | Dark icons in both light and dark modes |
 | `fg-white_both` | Tertiary2-500 `#ffffff` | Tertiary2-500 `#ffffff` | Light icons on brand color in both modes |
-| `fg-action` | Primary-500 `#625bff` | Primary-400 `#817cff` | Action icons |
-| `fg-hovered` | Primary-600 `#5953e8` | Primary-300 `#9691ff` | Hover state for action icons |
-| `fg-pressed` | Primary-700 `#4641b5` | Primary-200 `#b7b4ff` | Pressed state for action icons |
+| `fg-action` | Primary-500 `#625bff` | **Primary-dark-action**: Finspace Primary-400 `#817cff` · Burgundy Burgundy-200 `#b98aa1` | Action icons |
+| `fg-hovered` | Primary-600 `#5953e8` | **Primary-dark-hovered**: Finspace Primary-300 `#9691ff` · Burgundy Burgundy-100 `#d0b0c0` | Hover state for action icons |
+| `fg-pressed` | Primary-700 `#4641b5` | **Primary-dark-pressed**: Finspace Primary-200 `#b7b4ff` · Burgundy Burgundy-50 `#f0e6eb` | Pressed state for action icons |
 | `fg-success` | Success-600 `#2a9952` | Success-200 `#9fd7b3` | Success icons |
 | `fg-error` | Error-500 `#c5171d` | Error-200 `#e49497` | Error icons |
 | `fg-info` | Primary-600 `#5953e8` | Primary-200 `#b7b4ff` | Information icons |
@@ -359,10 +382,11 @@ All generated code lives in `packages/tokens/dist/` and is **generated from `tok
 **Theming in CSS:**
 
 ```css
-:root                    { /* primitives */ }
-:root, [data-brand="finspace"] { /* alias colors + alias typography → primitives */ }
-:root, [data-theme="light"]   { /* semantic colors → alias colors */ }
-[data-theme="dark"]           { /* semantic colors → alias colors */ }
+:root                          { /* primitives + alias typography (shared by every brand) */ }
+:root, [data-brand="finspace"] { /* alias colors → primitives (Finspace, the default) */ }
+[data-brand="burgundy"]        { /* alias colors → primitives (Burgundy) */ }
+:root, [data-theme="light"]    { /* semantic colors → alias colors */ }
+[data-theme="dark"]            { /* semantic colors → alias colors */ }
 ```
 
 ### 3.9 Export quirks the token build must handle
@@ -374,8 +398,26 @@ All generated code lives in `packages/tokens/dist/` and is **generated from `tok
 - `LineHeight-64px 2` has a stray ` 2` in its name. Generate it as `line-height-64px`.
 - `Primitives/Sizes`: `Size-1024` to `Size-1920` are generated as breakpoints only (§3.7). `Size-375` isn't generated (`Size-343` is, since 22 Oct 2026: `--fin-size-343`). The other sizes are generated as `--fin-palette-size-*` and are only reached through the spacing and radius tokens.
 - `Font style/Primary` is the font family, not a style.
-- **Mode names aren't in the export when a collection has only one mode.** TokensBrücke writes `mode: {}` for `Alias Colors` and `Alias Typography` (one mode, `Finspace`), and only writes mode names for `Color collection` (Light/Dark). The token build therefore has a small config that names the single brand `finspace`. When a second brand mode is added, the export will list both modes and the build should read them from there.
+- **Mode names aren't in the export when a collection has only one mode.** TokensBrücke writes `mode: {}` for a single-mode collection. **Since 3 Nov 2026 `Alias Colors` has two modes, so the export lists them** (`Finspace`, `Burgundy theme`) and the build reads the brands from there: adding a brand in Figma needs no build change (apart from its primitive scale, below). Only `Alias Typography` is still `mode: {}`; the build treats a single-mode `Alias Typography` as **shared by every brand** and writes it on `:root` (if it gets modes, they must match the `Alias Colors` modes, or the build stops). The `finspace` name config is now only a fallback if `Alias Colors` ever goes back to one mode.
+- **Brand code names come from the mode names:** kebab case, with a trailing " theme" dropped: `Finspace` → `finspace`, `Burgundy theme` → `burgundy` (`data-brand="burgundy"`). Renaming the Figma mode to "Burgundy" gives the same code name. Two modes with the same code name stop the build.
+- **A brand's primitive group copies every Fintech scale** (`Colors/Burgundy theme/Gray`, …; 77 copies, same values). Only the scales listed per brand in the build (`BRAND_SCALES`: Burgundy → `Burgundy`) are generated, as `--fin-palette-<scale>-<step>`. A reference to a copy that isn't generated stops the build. A new brand adds one line there.
+- **An alias can point at another alias** (Finspace's `Primary-dark-*` → `Primary-*`) **or at a primitive** (Burgundy's `Primary-dark-*` → `Burgundy-*`). Both are kept as `var()` within the brand block.
 - **Styles aren't in the export** (shadows, text styles, grids). Shadows and grids are recorded in §4 and hand-written in `packages/tokens/src/styles.css`. Text styles are generated by the token build as `--fin-font-*` shorthands from the `Alias Typography` variables, one per group (23).
+
+### 3.10 Brands (added 3 Nov 2026)
+
+| Brand | Figma mode | `data-brand` | Primary | Status |
+|---|---|---|---|---|
+| Finspace | `Finspace` | `finspace` (**default**: also on `:root`, and first in `finBrands`) | Electric Indigo | Live |
+| Burgundy | `Burgundy theme` | `burgundy` | Burgundy | **Not live**: a11y exceptions open (§10 #80) |
+
+- **Where it's set:** `data-brand` on `<html>` only, with `data-theme` (§3.0). Without it, Finspace applies.
+- **In code:** `finBrands` (`['finspace', 'burgundy']`) and the type `FinBrand` from `@finspace-loyalty/tokens`. The Storybook **Brand** toolbar lists every brand in `finBrands`.
+- **What a brand changes:** only the `Alias Colors` values (today only `Primary-*` and `Primary-dark-*`). Semantic tokens, components and typography are the same for every brand.
+- **Checks:** `pnpm test:a11y` runs every story for **every brand × theme** (4 projects: `a11y-finspace-light`, `a11y-finspace-dark`, `a11y-burgundy-light`, `a11y-burgundy-dark`), kept permanently (decided 3 Nov 2026).
+- **Exceptions for a brand** (decided 3 Nov 2026): a contrast failure in a brand can only be accepted by design, one at a time, and **each exception is specific**: one token pair or one story's element, for one brand and one theme (an axe `exclude` selector starting `html[data-brand="…"][data-theme="…"]`). A whole check, story or brand is never switched off. Each one is listed in §10 with its reason and planned fix. Any new failure still fails `test:a11y`.
+- **⚠️ A brand's exception list must be empty before that brand goes live.**
+- **Adding a brand:** add a mode to `Alias Colors` (and to `Alias Typography` only if it needs its own type) and its primitive scale in Figma; export; add its scale to `BRAND_SCALES` in `packages/tokens/build.ts`; bump `EXPECTED.tokens`; run the build, the Finspace comparison, the contrast table and `pnpm test:a11y`; update this table.
 
 ---
 
@@ -3978,6 +4020,8 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 76 | **Side nav: the tree style, code only** (2 Nov 2026): FinSideNav `variant="tree"` (§9.57, §9.47) draws connected tree lines from a section's icon to its pages; built in code first, as design's brief, with Default (Figma's) staying the default. To add to Figma: the Side Menu (and Sub selection) with a tree option: a 1px `border-default` line (`border-subtle` was too faint) under the section's icon centre (22 in), ending at the middle of the last page; a connector to each page ending 4 (`Space-XS`) before its text (36 in), curving with `Radius-S`; not shown when minimized. | Side nav | ⏳ Design to add in Figma |
 | 77 | **Table: the bordered style, code only** (3 Nov 2026): FinTable `variant="bordered"` (§9.45) draws a 1px `border-subtle` line with `Radius-S` (8) round the header and rows; the toolbar and footer stay outside it. Built in code first at design's request, with Default (no border) staying the default. To add to Figma: a bordered table frame on the Table parts, for screens that use it. | Table | ⏳ Design to add in Figma |
 | 78 | **Tooltip: behaviour, code first** (3 Nov 2026): Figma Plain Tooltip shows only the look. Decided by design: opens 250 ms after hover or at once on keyboard focus, 4 (`Space-XS`) from the trigger, no arrow, flips at the window edge; long single line text wraps at 343. `Look=Basic` (in the 13 Oct inventory) is no longer in Figma; FinTooltip has no `look` prop. Nothing to change in Figma unless design wants the gap or wrapping shown there. | Tooltips | ✅ Decided |
+| 79 | **Dark tokens still on the plain Primary scale, and the info tokens** (3 Nov 2026, second brand): in Dark, `bg-active`, `bg-active-hover`, `bg-action-secondary` (+ hovered, pressed), `Alpha-brand` and the info tokens `bg-info`, `bg-info_secondary`, `text-info`, `fg-info`, `border-info` point at `Primary-*`, not at the Primary dark aliases (§3.2), so in Burgundy they turn burgundy. **Decided by design 3 Nov 2026:** the non-info ones are fine for now; **the info tokens move to a new blue later** (also fixes `border-info` Dark, already planned). Until then Burgundy Dark has `border-info` and `bg-info` at 2.20:1 on `bg-primary` (§10 #80). | Foundation › Color collection | ⏳ Later (new blue) |
+| 80 | **Burgundy: contrast exceptions** (3 Nov 2026). Rule (§3.10): each exception is one token pair or one story's element, for one brand and theme, accepted by design, with a reason and a planned fix; a whole check or brand is never switched off; any new failure still fails `test:a11y`; **a brand's list must be empty before it goes live**. **`pnpm test:a11y` passes in all four projects** (1888 tests, 3 Nov 2026), so no axe exclusion is needed. The token contrast table found 4 Burgundy-only failures the stories don't exercise (hover states and non-text contrast aren't checked by axe; two tokens aren't used by any component): (1) `text-secondary` on `bg-active-hover`, **Light**, 2.95:1: a Selected table row or list row while hovered (FinTableRow, FinListStandard); hover only, the same pair Finspace accepted at 3.80:1 (§10 #3). Planned fix: design to choose a lighter `bg-active-hover` step for Burgundy or a darker hover text. (2) `border-info` on `bg-primary`, **Dark**, 2.20:1: the Info badge's outline (FinBadge `info`); the label passes (9.57:1). Planned fix: the new info blue (§10 #79). (3) `bg-info` on `bg-primary`, **Dark**, 2.20:1: no component uses `bg-info` today. Planned fix: the new info blue (§10 #79). (4) `text-white_subtle` on `bg-brand`, **Dark**, 3.67:1: no component uses it today; Finspace fails it too (3.18:1, §10 #3). Planned fix: with §10 #3. **Status: proposed, awaiting design approval.** Burgundy isn't live until this list is empty. | Foundation › Color collection | ❓ Design to approve |
 
 ---
 
@@ -4049,6 +4093,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (3 Nov 2026):** FinTable's bordered style (`variant="bordered"`, code only, §9.45, §10 #77), used on every list page's table (§8.6).
 > - **Approved and merged (3 Nov 2026):** `FinTooltip` (§9.82, Plain Tooltip: single line and rich), with FinTextBox `tone="inverse"` (§9.21).
 > - **Approved and merged (3 Nov 2026):** the account menu's Theme row tooltips (System, Light, Dark; FinSegmentedButton `tooltips`, FinTooltip `describesTrigger`, one open at a time, Escape caught first) (§9.34, §9.57, §9.82).
+> - **In review (3 Nov 2026):** the second brand, Burgundy (§3.10; branch `feat/brands`): token build for brands, Primary dark aliases, a11y per brand × theme; proposed exceptions §10 #80.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4368,3 +4413,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 3 Nov 2026 | 0.2 | **FinTooltip** (§9.82, Figma Plain Tooltip): single line and rich, Floating UI in the top layer, 250 ms hover delay, keyboard focus, Escape; FinTextBox `tone="inverse"` (code only, §9.21); §10 #78. Approved and merged into `main`. |
 | 3 Nov 2026 | 0.2 | **Theme row tooltips** (decided by design): System, Light and Dark show their names in single line tooltips on hover and keyboard focus; FinSegmentedButton `tooltips` (code only, §9.34); FinTooltip `describesTrigger` (code only), one open at a time, Escape caught first (§9.82, §9.57). |
 | 3 Nov 2026 | 0.2 | The Theme row tooltips approved by design and merged into `main`. |
+| 3 Nov 2026 | 0.2 | **Second brand: Burgundy** (§3.10). New export (528 variables): `Alias Colors` has the modes `Finspace` and `Burgundy theme` (only Primary differs), the 7 **Primary dark** aliases (§3.2), and 17 Dark semantic tokens pointing at them (§3.3; Light unchanged). The token build reads brands from the export (`data-brand="finspace"`, the default, and `"burgundy"`), shares the single-mode Alias Typography, generates only the Burgundy scale from the brand's primitive group (§3.1, §3.9). Finspace checked unchanged: every variable resolves to the same value as `main` in Light and Dark. Label L/M/S 500, `bg-icons` Dark, `text-hovered`/`text-pressed` Dark and `border-strong` confirmed as on `main` (no change in this export). `pnpm test:a11y` now runs every brand × theme (4 projects, permanent). Contrast table and proposed Burgundy exceptions: §10 #80; Dark Primary-scale and info tokens: §10 #79. |

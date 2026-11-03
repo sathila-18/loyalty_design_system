@@ -20,6 +20,12 @@ const PREFIX = 'fin';
 
 /** Single-mode collections export `mode: {}`, so the brand needs a name (§3.9). */
 const SINGLE_MODE_BRAND = 'finspace';
+/**
+ * Brand primitives (§3.1, §3.10): Figma copies every Fintech scale into each brand's group, but a
+ * brand only adds its own scale. Only these scales are generated; the copies are skipped (their
+ * names would clash with Fintech's). A reference to a skipped copy stops the build.
+ */
+const BRAND_SCALES: Record<string, string[]> = { 'Burgundy theme': ['Burgundy'] };
 /** `Primitives/Sizes` exported as breakpoints only (§3.7). Other sizes ≥ 343 are mobile widths. */
 const BREAKPOINTS: Record<string, string> = {
   'Size-1024': 'md',
@@ -39,7 +45,7 @@ const TYPE_PARTS: Record<string, string> = {
 };
 /** Added after every font family so text never falls back to the browser's serif (§3.4). Figma only has the family. */
 const FONT_FALLBACK = 'system-ui, sans-serif';
-const EXPECTED = { tokens: 434, textStyles: 23 };
+const EXPECTED = { tokens: 528, textStyles: 23 };
 
 // ---------------------------------------------------------------------------
 // 1. Read the export
@@ -88,7 +94,11 @@ function place({ path }: Source): { layer: Layer; key: string } | null {
 
   switch (collection) {
     case 'Primitives':
-      if (group === 'Colors') return { layer: 'palette', key: kebab(leaf) };
+      if (group === 'Colors') {
+        const [, , family, scale] = path;
+        if (family !== 'Fintech' && !BRAND_SCALES[family!]?.includes(scale!)) return null;
+        return { layer: 'palette', key: kebab(leaf) };
+      }
       if (group === 'Sizes') {
         if (SKIPPED_SIZES.has(leaf)) return null;
         if (BREAKPOINTS[leaf]) return { layer: 'breakpoint', key: BREAKPOINTS[leaf] };
@@ -117,10 +127,14 @@ function place({ path }: Source): { layer: Layer; key: string } | null {
 }
 
 const placed = new Map<string, { layer: Layer; key: string; source: Source }>();
+const skipped = new Set<string>();
 const taken = new Set<string>();
 for (const source of sources) {
   const spot = place(source);
-  if (!spot) continue;
+  if (!spot) {
+    skipped.add(source.path.join('.'));
+    continue;
+  }
   const id = `${spot.layer}.${spot.key}`;
   if (taken.has(id)) throw new Error(`Two variables map to ${id}`);
   taken.add(id);
@@ -135,6 +149,7 @@ const round = (n: number, digits: number) => Number(n.toFixed(digits));
 
 function reference(ref: string): string {
   const target = placed.get(ref.slice(1, -1));
+  if (!target && skipped.has(ref.slice(1, -1))) throw new Error(`${ref} points at a variable that isn't generated (§3.9)`);
   if (!target) throw new Error(`Unresolved reference ${ref}`);
   return `{${target.layer}.${target.key}}`;
 }
@@ -169,7 +184,8 @@ function tree(brand: string | undefined, theme: string | undefined): Tree {
   const out: Tree = {};
   for (const { layer, key, source } of placed.values()) {
     const collection = source.path[0];
-    const mode = collection === 'Color collection' ? theme : layer === 'color' || layer === 'font' ? brand : undefined;
+    const branded = layer === 'color' || (layer === 'font' && !sharedType);
+    const mode = collection === 'Color collection' ? theme : branded ? brand : undefined;
     const raw = mode ? source.token.$extensions!.mode![mode]! : source.token.$value;
     (out[layer] ??= {})[key] = { $type: source.token.$type, $value: normalise(raw, source) };
     // Fixed sizes (§3.8): every Primitives/Sizes value is also exposed as --fin-size-<n>, for
@@ -180,9 +196,15 @@ function tree(brand: string | undefined, theme: string | undefined): Tree {
   return out;
 }
 
-const brands = [...new Set([...modesOf('Alias Colors'), ...modesOf('Alias Typography')])];
-if (brands.length > 1 && brands.includes(undefined)) {
-  throw new Error('Alias Colors and Alias Typography must have the same brand modes');
+/**
+ * Brands are the Alias Colors modes (§3.10). Alias Typography may have the same modes, or a single
+ * mode that every brand shares (today: shared).
+ */
+const brands = modesOf('Alias Colors');
+const typeModes = modesOf('Alias Typography');
+const sharedType = typeModes.length === 1 && typeModes[0] === undefined;
+if (!sharedType && typeModes.join() !== brands.join()) {
+  throw new Error(`Alias Typography modes (${typeModes.join()}) must match the brands (${brands.join()}) or be a single mode`);
 }
 const themes = modesOf('Color collection');
 if (themes.join() !== 'Light,Dark') throw new Error(`Expected Light/Dark modes, found ${themes.join()}`);
@@ -313,13 +335,19 @@ function referenceFile(): string {
 // 5. Write dist/
 // ---------------------------------------------------------------------------
 
-const brandName = (mode: string | undefined) => kebab(mode ?? SINGLE_MODE_BRAND);
+/** `Finspace` → `finspace`, `Burgundy theme` → `burgundy`: a trailing "theme" in the mode name is dropped (§3.9). */
+const brandName = (mode: string | undefined) => kebab((mode ?? SINGLE_MODE_BRAND).replace(/\s+theme$/i, ''));
 const themeName = (mode: string) => mode.toLowerCase();
 const css = 'css/variables';
 
+if (new Set(brands.map(brandName)).size !== brands.length) throw new Error(`Two brand modes share a code name: ${brands.join()}`);
+
 const blocks: string[] = [];
+// A shared (single-mode) Alias Typography goes with the primitives, so every brand gets it.
+const shared: Layer[] = ['palette', 'space', 'radius', 'size', ...(sharedType ? (['font'] as Layer[]) : [])];
+const branded: Layer[] = sharedType ? ['color'] : ['color', 'font'];
 const [primitives, ts, customMedia, tsBreakpoints] = await render(withTextStyles(tree(brands[0], themes[0])), [
-  { format: css, filter: ['palette', 'space', 'radius', 'size'], selector: ':root' },
+  { format: css, filter: shared, selector: ':root' },
   { format: 'fin/ts' },
   { format: 'fin/custom-media', filter: ['breakpoint'] },
   { format: 'fin/ts-breakpoints', filter: ['breakpoint'] },
@@ -328,7 +356,7 @@ blocks.push(primitives!);
 
 for (const [i, brand] of brands.entries()) {
   const [block] = await render(withTextStyles(tree(brand, themes[0])), [
-    { format: css, filter: ['color', 'font'], selector: `${i === 0 ? ':root,\n' : ''}[data-brand="${brandName(brand)}"]` },
+    { format: css, filter: branded, selector: `${i === 0 ? ':root,\n' : ''}[data-brand="${brandName(brand)}"]` },
   ]);
   blocks.push(block!);
 }

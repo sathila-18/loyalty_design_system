@@ -40,7 +40,7 @@ export const Reference: StoryObj = {
         // Alias colors are defined per [data-brand] block, so each brand can be shown here side by side.
         <div key={brand} data-brand={brand} className={styles.section}>
           <Section title={`Alias colors (--fin-color-*), brand: ${brand}`}>
-            {byGroup(aliases).map(([group, items]) => (
+            {byGroup<{ name: string; group: string; value: string }>(aliases).map(([group, items]) => (
               <div key={group} className={styles.section}>
                 <h3 className={styles.cardTitle}>{group}</h3>
                 <div className={styles.grid}>

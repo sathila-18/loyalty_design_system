@@ -3,11 +3,18 @@ import { setProjectAnnotations } from '@storybook/react-vite';
 import { inject } from 'vitest';
 import * as projectAnnotations from './preview';
 
+import type { FinBrand, FinTheme } from '@finspace-loyalty/tokens';
+
 declare module 'vitest' {
   export interface ProvidedContext {
-    theme: 'light' | 'dark';
+    brand: FinBrand;
+    theme: FinTheme;
   }
 }
 
-// Each Vitest project (a11y-light, a11y-dark) runs all stories with its theme as the toolbar global.
-setProjectAnnotations([a11yAnnotations, projectAnnotations, { initialGlobals: { theme: inject('theme') } }]);
+// Each Vitest project (a11y-<brand>-<theme>) runs all stories with its brand and theme as the toolbar globals.
+setProjectAnnotations([
+  a11yAnnotations,
+  projectAnnotations,
+  { initialGlobals: { brand: inject('brand'), theme: inject('theme') } },
+]);

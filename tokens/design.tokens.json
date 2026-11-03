@@ -1442,6 +1442,724 @@
             }
           }
         }
+      },
+      "Burgundy theme": {
+        "Burgundy": {
+          "Burgundy-50": {
+            "$type": "color",
+            "$value": "#f0e6eb",
+            "$description": "Dashboard palette #EFEFFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Burgundy-100": {
+            "$type": "color",
+            "$value": "#d0b0c0",
+            "$description": "Dashboard palette #CECCFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Burgundy-200": {
+            "$type": "color",
+            "$value": "#b98aa1",
+            "$description": "Dashboard palette #B7B4FF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Burgundy-300": {
+            "$type": "color",
+            "$value": "#985476",
+            "$description": "Dashboard palette #9691FF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Burgundy-400": {
+            "$type": "color",
+            "$value": "#85335c",
+            "$description": "Dashboard palette #817CFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Burgundy-500": {
+            "$type": "color",
+            "$value": "#660033",
+            "$description": "Dashboard palette #625BFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Burgundy-600": {
+            "$type": "color",
+            "$value": "#5d002e",
+            "$description": "Dashboard palette #5953E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Burgundy-700": {
+            "$type": "color",
+            "$value": "#480024",
+            "$description": "Dashboard palette #4641B5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Burgundy-800": {
+            "$type": "color",
+            "$value": "#38001c",
+            "$description": "Dashboard palette #36328C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Burgundy-900": {
+            "$type": "color",
+            "$value": "#2b0015",
+            "$description": "Dashboard palette #29266B",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Gray": {
+          "Gray-50": {
+            "$type": "color",
+            "$value": "#e8e8e8",
+            "$description": "Dashboard Black palette #E8E8E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-100": {
+            "$type": "color",
+            "$value": "#b8b8b8",
+            "$description": "Dashboard Black palette #B8B8B8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-200": {
+            "$type": "color",
+            "$value": "#959596",
+            "$description": "Dashboard Black palette #959596",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-300": {
+            "$type": "color",
+            "$value": "#656566",
+            "$description": "Dashboard Black palette #656566",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-400": {
+            "$type": "color",
+            "$value": "#474748",
+            "$description": "Dashboard Black palette #474748",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-500": {
+            "$type": "color",
+            "$value": "#19191a",
+            "$description": "Dashboard Black palette #19191A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-600": {
+            "$type": "color",
+            "$value": "#171718",
+            "$description": "Dashboard Black palette #171718",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-700": {
+            "$type": "color",
+            "$value": "#121212",
+            "$description": "Dashboard Black palette #121212",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-800": {
+            "$type": "color",
+            "$value": "#0e0e0e",
+            "$description": "Dashboard Black palette #0E0E0E",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Gray-900": {
+            "$type": "color",
+            "$value": "#0b0b0b",
+            "$description": "Dashboard Black palette #0B0B0B",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "White": {
+          "White-500": {
+            "$type": "color",
+            "$value": "#ffffff",
+            "$description": "Dashboard palette #FFFFFF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-600": {
+            "$type": "color",
+            "$value": "#e8e8e8",
+            "$description": "Dashboard palette #E8E8E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-700": {
+            "$type": "color",
+            "$value": "#b5b5b5",
+            "$description": "Dashboard palette #B5B5B5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-800": {
+            "$type": "color",
+            "$value": "#8c8c8c",
+            "$description": "Dashboard palette #8C8C8C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-900": {
+            "$type": "color",
+            "$value": "#6b6b6b",
+            "$description": "Dashboard palette #6B6B6B",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Graphite": {
+          "Graphite-50": {
+            "$type": "color",
+            "$value": "#efefef",
+            "$description": "Dashboard palette #EFEFEF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-100": {
+            "$type": "color",
+            "$value": "#cecece",
+            "$description": "Dashboard palette #CECECE",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-200": {
+            "$type": "color",
+            "$value": "#b7b7b7",
+            "$description": "Dashboard palette #B7B7B7",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-300": {
+            "$type": "color",
+            "$value": "#969696",
+            "$description": "Dashboard palette #969696",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-400": {
+            "$type": "color",
+            "$value": "#818181",
+            "$description": "Dashboard palette #818181",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-500": {
+            "$type": "color",
+            "$value": "#626262",
+            "$description": "Dashboard palette #626262",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-600": {
+            "$type": "color",
+            "$value": "#595959",
+            "$description": "Dashboard palette #595959",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-700": {
+            "$type": "color",
+            "$value": "#464646",
+            "$description": "Dashboard palette #464646",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-800": {
+            "$type": "color",
+            "$value": "#363636",
+            "$description": "Dashboard palette #363636",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Graphite-900": {
+            "$type": "color",
+            "$value": "#292929",
+            "$description": "Dashboard palette #292929",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Platinum": {
+          "Platinum-50": {
+            "$type": "color",
+            "$value": "#fdfdfd",
+            "$description": "Dashboard palette #FDFDFD",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-100": {
+            "$type": "color",
+            "$value": "#f8f8f8",
+            "$description": "Dashboard palette #F8F8F8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-200": {
+            "$type": "color",
+            "$value": "#f5f5f5",
+            "$description": "Dashboard palette #F5F5F5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-300": {
+            "$type": "color",
+            "$value": "#f0f0f0",
+            "$description": "Dashboard palette #F0F0F0",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-400": {
+            "$type": "color",
+            "$value": "#ededed",
+            "$description": "Dashboard palette #EDEDED",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-500": {
+            "$type": "color",
+            "$value": "#e9e9e9",
+            "$description": "Dashboard palette #E9E9E9",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-600": {
+            "$type": "color",
+            "$value": "#d4d4d4",
+            "$description": "Dashboard palette #D4D4D4",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-700": {
+            "$type": "color",
+            "$value": "#a5a5a5",
+            "$description": "Dashboard palette #A5A5A5",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-800": {
+            "$type": "color",
+            "$value": "#808080",
+            "$description": "Dashboard palette #808080",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Platinum-900": {
+            "$type": "color",
+            "$value": "#626262",
+            "$description": "Dashboard palette #626262",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Blue": {
+          "Blue-50": {
+            "$type": "color",
+            "$value": "#e9e9fd",
+            "$description": "Dashboard palette #E9E9FD",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-100": {
+            "$type": "color",
+            "$value": "#bbbaf8",
+            "$description": "Dashboard palette #BBBAF8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-200": {
+            "$type": "color",
+            "$value": "#9b99f4",
+            "$description": "Dashboard palette #9B99F4",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-300": {
+            "$type": "color",
+            "$value": "#6d6bef",
+            "$description": "Dashboard palette #6D6BEF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-400": {
+            "$type": "color",
+            "$value": "#514eec",
+            "$description": "Dashboard palette #514EEC",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-500": {
+            "$type": "color",
+            "$value": "#2522e7",
+            "$description": "Dashboard palette #2522E7",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-600": {
+            "$type": "color",
+            "$value": "#221fd2",
+            "$description": "Dashboard palette #221FD2",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-700": {
+            "$type": "color",
+            "$value": "#1a18a4",
+            "$description": "Dashboard palette #1A18A4",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-800": {
+            "$type": "color",
+            "$value": "#14137f",
+            "$description": "Dashboard palette #14137F",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Blue-900": {
+            "$type": "color",
+            "$value": "#100e61",
+            "$description": "Dashboard palette #100E61",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Green": {
+          "Success-50": {
+            "$type": "color",
+            "$value": "#eaf6ef",
+            "$description": "Dashboard palette #EAF6EF",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-100": {
+            "$type": "color",
+            "$value": "#bee4cc",
+            "$description": "Dashboard palette #BEE4CC",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-200": {
+            "$type": "color",
+            "$value": "#9fd7b3",
+            "$description": "Dashboard palette #9FD7B3",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-300": {
+            "$type": "color",
+            "$value": "#73c590",
+            "$description": "Dashboard palette #73C590",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-400": {
+            "$type": "color",
+            "$value": "#58b97b",
+            "$description": "Dashboard palette #58B97B",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-500": {
+            "$type": "color",
+            "$value": "#2ea85a",
+            "$description": "Dashboard palette #2EA85A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-600": {
+            "$type": "color",
+            "$value": "#2a9952",
+            "$description": "Dashboard palette #2A9952",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-700": {
+            "$type": "color",
+            "$value": "#217740",
+            "$description": "Dashboard palette #217740",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-800": {
+            "$type": "color",
+            "$value": "#195c32",
+            "$description": "Dashboard palette #195C32",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Success-900": {
+            "$type": "color",
+            "$value": "#134726",
+            "$description": "Dashboard palette #134726",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Yellow": {
+          "Warning-50": {
+            "$type": "color",
+            "$value": "#fdf3e7",
+            "$description": "Dashboard palette #FDF3E7",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-100": {
+            "$type": "color",
+            "$value": "#f8d9b3",
+            "$description": "Dashboard palette #F8D9B3",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-200": {
+            "$type": "color",
+            "$value": "#f5c68f",
+            "$description": "Dashboard palette #F5C68F",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-300": {
+            "$type": "color",
+            "$value": "#f1ac5c",
+            "$description": "Dashboard palette #F1AC5C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-400": {
+            "$type": "color",
+            "$value": "#ee9c3c",
+            "$description": "Dashboard palette #EE9C3C",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-500": {
+            "$type": "color",
+            "$value": "#ea830b",
+            "$description": "Dashboard palette #EA830B",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-600": {
+            "$type": "color",
+            "$value": "#d5770a",
+            "$description": "Dashboard palette #D5770A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-700": {
+            "$type": "color",
+            "$value": "#a65d08",
+            "$description": "Dashboard palette #A65D08",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-800": {
+            "$type": "color",
+            "$value": "#814806",
+            "$description": "Dashboard palette #814806",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Warning-900": {
+            "$type": "color",
+            "$value": "#623705",
+            "$description": "Dashboard palette #623705",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Red": {
+          "Error-50": {
+            "$type": "color",
+            "$value": "#f9e8e8",
+            "$description": "Dashboard palette #F9E8E8",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-100": {
+            "$type": "color",
+            "$value": "#edb7b9",
+            "$description": "Dashboard palette #EDB7B9",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-200": {
+            "$type": "color",
+            "$value": "#e49497",
+            "$description": "Dashboard palette #E49497",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-300": {
+            "$type": "color",
+            "$value": "#d86468",
+            "$description": "Dashboard palette #D86468",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-400": {
+            "$type": "color",
+            "$value": "#d1454a",
+            "$description": "Dashboard palette #D1454A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-500": {
+            "$type": "color",
+            "$value": "#c5171d",
+            "$description": "Dashboard palette #C5171D",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-600": {
+            "$type": "color",
+            "$value": "#b3151a",
+            "$description": "Dashboard palette #B3151A",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-700": {
+            "$type": "color",
+            "$value": "#8c1015",
+            "$description": "Dashboard palette #8C1015",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-800": {
+            "$type": "color",
+            "$value": "#6c0d10",
+            "$description": "Dashboard palette #6C0D10",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Error-900": {
+            "$type": "color",
+            "$value": "#530a0c",
+            "$description": "Dashboard palette #530A0C",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Brand Key": {
+          "White": {
+            "$type": "color",
+            "$value": "#ffffff",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Black": {
+            "$type": "color",
+            "$value": "#000000",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        }
       }
     }
   },
@@ -2238,7 +2956,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-50}",
             "$description": "Electric-Indigo 50 — #EFEFFF",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-50}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-50}"
+              }
             }
           },
           "Primary-100": {
@@ -2246,7 +2967,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-100}",
             "$description": "Electric-Indigo 100 — #CECCFF",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-100}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-100}"
+              }
             }
           },
           "Primary-200": {
@@ -2254,7 +2978,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-200}",
             "$description": "Electric-Indigo 200 — #B7B4FF",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-200}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-200}"
+              }
             }
           },
           "Primary-300": {
@@ -2262,7 +2989,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-300}",
             "$description": "Electric-Indigo 300 — #9691FF",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-300}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-300}"
+              }
             }
           },
           "Primary-400": {
@@ -2270,7 +3000,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-400}",
             "$description": "Electric-Indigo 400 — #817CFF",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-400}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-400}"
+              }
             }
           },
           "Primary-500": {
@@ -2278,7 +3011,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-500}",
             "$description": "Electric-Indigo 500 — #625BFF",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-500}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-500}"
+              }
             }
           },
           "Primary-600": {
@@ -2286,7 +3022,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-600}",
             "$description": "Electric-Indigo 600 — #5953E8",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-600}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-600}"
+              }
             }
           },
           "Primary-700": {
@@ -2294,7 +3033,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-700}",
             "$description": "Electric-Indigo 700 — #4641B5",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-700}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-700}"
+              }
             }
           },
           "Primary-800": {
@@ -2302,7 +3044,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-800}",
             "$description": "Electric-Indigo 800 — #36328C",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-800}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-800}"
+              }
             }
           },
           "Primary-900": {
@@ -2310,7 +3055,10 @@
             "$value": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-900}",
             "$description": "Electric-Indigo 900 — #29266B",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-900}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-900}"
+              }
             }
           }
         },
@@ -2320,7 +3068,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-50}",
             "$description": "Black 50 — #E8E8E8",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-50}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-50}"
+              }
             }
           },
           "Secondary-100": {
@@ -2328,7 +3079,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-100}",
             "$description": "Black 100 — #B8B8B8",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-100}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-100}"
+              }
             }
           },
           "Secondary-200": {
@@ -2336,7 +3090,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-200}",
             "$description": "Black 200 — #959596",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-200}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-200}"
+              }
             }
           },
           "Secondary-300": {
@@ -2344,7 +3101,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-300}",
             "$description": "Black 300 — #656566",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-300}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-300}"
+              }
             }
           },
           "Secondary-400": {
@@ -2352,7 +3112,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-400}",
             "$description": "Black 400 — #474748",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-400}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-400}"
+              }
             }
           },
           "Secondary-500": {
@@ -2360,7 +3123,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-500}",
             "$description": "Black 500 — #19191A",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-500}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-500}"
+              }
             }
           },
           "Secondary-600": {
@@ -2368,7 +3134,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-600}",
             "$description": "Black 600 — #171718",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-600}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-600}"
+              }
             }
           },
           "Secondary-700": {
@@ -2376,7 +3145,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-700}",
             "$description": "Black 700 — #121212",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-700}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-700}"
+              }
             }
           },
           "Secondary-800": {
@@ -2384,7 +3156,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-800}",
             "$description": "Black 800 — #0E0E0E",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-800}"
+              }
             }
           },
           "Secondary-900": {
@@ -2392,7 +3167,10 @@
             "$value": "{Primitives.Colors.Fintech.Gray.Gray-900}",
             "$description": "Black 900 — #0B0B0B",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-900}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-900}"
+              }
             }
           }
         },
@@ -2402,7 +3180,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-50}",
             "$description": "Graphite 50 — #EFEFEF",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-50}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-50}"
+              }
             }
           },
           "Tertiary-100": {
@@ -2410,7 +3191,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-100}",
             "$description": "Graphite 100 — #CECECE",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-100}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-100}"
+              }
             }
           },
           "Tertiary-200": {
@@ -2418,7 +3202,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
             "$description": "Graphite 200 — #B7B7B7",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-200}"
+              }
             }
           },
           "Tertiary-300": {
@@ -2426,7 +3213,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-300}",
             "$description": "Graphite 300 — #969696",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-300}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-300}"
+              }
             }
           },
           "Tertiary-400": {
@@ -2434,7 +3224,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
             "$description": "Graphite 400 — #818181",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-400}"
+              }
             }
           },
           "Tertiary-500": {
@@ -2442,7 +3235,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
             "$description": "Graphite 500 — #626262",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-500}"
+              }
             }
           },
           "Tertiary-600": {
@@ -2450,7 +3246,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-600}",
             "$description": "Graphite 600 — #595959",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-600}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-600}"
+              }
             }
           },
           "Tertiary-700": {
@@ -2458,7 +3257,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
             "$description": "Graphite 700 — #464646",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-700}"
+              }
             }
           },
           "Tertiary-800": {
@@ -2466,7 +3268,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
             "$description": "Graphite 800 — #363636",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-800}"
+              }
             }
           },
           "Tertiary-900": {
@@ -2474,7 +3279,10 @@
             "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-900}",
             "$description": "Graphite 900 — #292929",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-900}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-900}"
+              }
             }
           }
         },
@@ -2484,7 +3292,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-50}",
             "$description": "Platinum 50 — #FDFDFD",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-50}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-50}"
+              }
             }
           },
           "Tertiary1-100": {
@@ -2492,7 +3303,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-100}",
             "$description": "Platinum 100 — #F8F8F8",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-100}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-100}"
+              }
             }
           },
           "Tertiary1-200": {
@@ -2500,7 +3314,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-200}",
             "$description": "Platinum 200 — #F5F5F5",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-200}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-200}"
+              }
             }
           },
           "Tertiary1-300": {
@@ -2508,7 +3325,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-300}",
             "$description": "Platinum 300 — #F0F0F0",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-300}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-300}"
+              }
             }
           },
           "Tertiary1-400": {
@@ -2516,7 +3336,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-400}",
             "$description": "Platinum 400 — #EDEDED",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-400}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-400}"
+              }
             }
           },
           "Tertiary1-500": {
@@ -2524,7 +3347,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-500}",
             "$description": "Platinum 500 — #E9E9E9",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-500}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-500}"
+              }
             }
           },
           "Tertiary1-600": {
@@ -2532,7 +3358,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-600}",
             "$description": "Platinum 600 — #D4D4D4",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-600}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-600}"
+              }
             }
           },
           "Tertiary1-700": {
@@ -2540,7 +3369,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-700}",
             "$description": "Platinum 700 — #A5A5A5",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-700}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-700}"
+              }
             }
           },
           "Tertiary1-800": {
@@ -2548,7 +3380,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-800}",
             "$description": "Platinum 800 — #808080",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-800}"
+              }
             }
           },
           "Tertiary1-900": {
@@ -2556,7 +3391,10 @@
             "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-900}",
             "$description": "Platinum 900 — #626262",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-900}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-900}"
+              }
             }
           }
         },
@@ -2566,7 +3404,10 @@
             "$value": "{Primitives.Colors.Fintech.White.White-500}",
             "$description": "White 500 — #FFFFFF",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.White.White-500}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-500}"
+              }
             }
           },
           "Tertiary2-600": {
@@ -2574,7 +3415,10 @@
             "$value": "{Primitives.Colors.Fintech.White.White-600}",
             "$description": "White 600 — #E8E8E8",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.White.White-600}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-600}"
+              }
             }
           },
           "Tertiary2-700": {
@@ -2582,7 +3426,10 @@
             "$value": "{Primitives.Colors.Fintech.White.White-700}",
             "$description": "White 700 — #B5B5B5",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.White.White-700}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-700}"
+              }
             }
           },
           "Tertiary2-800": {
@@ -2590,7 +3437,10 @@
             "$value": "{Primitives.Colors.Fintech.White.White-800}",
             "$description": "White 800 — #8C8C8C",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.White.White-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-800}"
+              }
             }
           },
           "Tertiary2-900": {
@@ -2598,7 +3448,10 @@
             "$value": "{Primitives.Colors.Fintech.White.White-900}",
             "$description": "White 900 — #6B6B6B",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.White.White-900}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-900}"
+              }
             }
           }
         },
@@ -2608,7 +3461,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-50}",
             "$description": "Green 50 — #EAF6EF",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-50}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-50}"
+              }
             }
           },
           "Success-100": {
@@ -2616,7 +3472,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-100}",
             "$description": "Green 100 — #BEE4CC",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-100}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-100}"
+              }
             }
           },
           "Success-200": {
@@ -2624,7 +3483,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-200}",
             "$description": "Green 200 — #9FD7B3",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-200}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-200}"
+              }
             }
           },
           "Success-300": {
@@ -2632,7 +3494,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-300}",
             "$description": "Green 300 — #73C590",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-300}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-300}"
+              }
             }
           },
           "Success-400": {
@@ -2640,7 +3505,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-400}",
             "$description": "Green 400 — #58B97B",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-400}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-400}"
+              }
             }
           },
           "Success-500": {
@@ -2648,7 +3516,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-500}",
             "$description": "Green 500 — #2EA85A",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-500}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-500}"
+              }
             }
           },
           "Success-600": {
@@ -2656,7 +3527,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-600}",
             "$description": "Green 600 — #2A9952",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-600}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-600}"
+              }
             }
           },
           "Success-700": {
@@ -2664,7 +3538,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-700}",
             "$description": "Green 700 — #217740",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-700}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-700}"
+              }
             }
           },
           "Success-800": {
@@ -2672,7 +3549,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-800}",
             "$description": "Green 800 — #195C32",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-800}"
+              }
             }
           },
           "Success-900": {
@@ -2680,7 +3560,10 @@
             "$value": "{Primitives.Colors.Fintech.Green.Success-900}",
             "$description": "Green 900 — #134726",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Green.Success-900}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-900}"
+              }
             }
           }
         },
@@ -2690,7 +3573,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-50}",
             "$description": "Yellow 50 — #FDF3E7",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-50}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-50}"
+              }
             }
           },
           "Warning-100": {
@@ -2698,7 +3584,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-100}",
             "$description": "Yellow 100 — #F8D9B3",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-100}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-100}"
+              }
             }
           },
           "Warning-200": {
@@ -2706,7 +3595,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-200}",
             "$description": "Yellow 200 — #F5C68F",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-200}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-200}"
+              }
             }
           },
           "Warning-300": {
@@ -2714,7 +3606,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-300}",
             "$description": "Yellow 300 — #F1AC5C",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-300}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-300}"
+              }
             }
           },
           "Warning-400": {
@@ -2722,7 +3617,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-400}",
             "$description": "Yellow 400 — #EE9C3C",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-400}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-400}"
+              }
             }
           },
           "Warning-500": {
@@ -2730,7 +3628,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-500}",
             "$description": "Yellow 500 — #EA830B",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-500}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-500}"
+              }
             }
           },
           "Warning-600": {
@@ -2738,7 +3639,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-600}",
             "$description": "Yellow 600 — #D5770A",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-600}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-600}"
+              }
             }
           },
           "Warning-700": {
@@ -2746,7 +3650,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-700}",
             "$description": "Yellow 700 — #A65D08",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-700}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-700}"
+              }
             }
           },
           "Warning-800": {
@@ -2754,7 +3661,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-800}",
             "$description": "Yellow 800 — #814806",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-800}"
+              }
             }
           },
           "Warning-900": {
@@ -2762,7 +3672,10 @@
             "$value": "{Primitives.Colors.Fintech.Yellow.Warning-900}",
             "$description": "Yellow 900 — #623705",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-900}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-900}"
+              }
             }
           }
         },
@@ -2772,7 +3685,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-50}",
             "$description": "Red 50 — #F9E8E8",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-50}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-50}"
+              }
             }
           },
           "Error-100": {
@@ -2780,7 +3696,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-100}",
             "$description": "Red 100 — #EDB7B9",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-100}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-100}"
+              }
             }
           },
           "Error-200": {
@@ -2788,7 +3707,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-200}",
             "$description": "Red 200 — #E49497",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-200}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-200}"
+              }
             }
           },
           "Error-300": {
@@ -2796,7 +3718,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-300}",
             "$description": "Red 300 — #D86468",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-300}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-300}"
+              }
             }
           },
           "Error-400": {
@@ -2804,7 +3729,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-400}",
             "$description": "Red 400 — #D1454A",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-400}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-400}"
+              }
             }
           },
           "Error-500": {
@@ -2812,7 +3740,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-500}",
             "$description": "Red 500 — #C5171D",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-500}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-500}"
+              }
             }
           },
           "Error-600": {
@@ -2820,7 +3751,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-600}",
             "$description": "Red 600 — #B3151A",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-600}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-600}"
+              }
             }
           },
           "Error-700": {
@@ -2828,7 +3762,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-700}",
             "$description": "Red 700 — #8C1015",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-700}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-700}"
+              }
             }
           },
           "Error-800": {
@@ -2836,7 +3773,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-800}",
             "$description": "Red 800 — #6C0D10",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-800}"
+              }
             }
           },
           "Error-900": {
@@ -2844,7 +3784,10 @@
             "$value": "{Primitives.Colors.Fintech.Red.Error-900}",
             "$description": "Red 900 — #530A0C",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Red.Error-900}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-900}"
+              }
             }
           }
         },
@@ -2854,7 +3797,10 @@
             "$value": "{Primitives.Colors.Fintech.Brand Key.White}",
             "$description": "",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Brand Key.White}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Brand Key.White}"
+              }
             }
           },
           "Black": {
@@ -2862,7 +3808,89 @@
             "$value": "{Primitives.Colors.Fintech.Brand Key.Black}",
             "$description": "",
             "$extensions": {
-              "mode": {}
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Brand Key.Black}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Brand Key.Black}"
+              }
+            }
+          }
+        },
+        "Primary dark": {
+          "Primary-dark-action": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-400}",
+            "$description": "Brand action colour in dark mode: links, action text, icons, active borders",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-400}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-200}"
+              }
+            }
+          },
+          "Primary-dark-hovered": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-300}",
+            "$description": "Hover state of action text, icons and borders in dark mode",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-300}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-100}"
+              }
+            }
+          },
+          "Primary-dark-pressed": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-200}",
+            "$description": "Pressed state of action text, icons and borders in dark mode",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-200}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-50}"
+              }
+            }
+          },
+          "Primary-dark-focus": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-300}",
+            "$description": "Focus ring colour in dark mode",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-300}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-200}"
+              }
+            }
+          },
+          "Primary-dark-fill": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+            "$description": "Primary button and brand backgrounds in dark mode",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-300}"
+              }
+            }
+          },
+          "Primary-dark-fill-hovered": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-400}",
+            "$description": "Hover state of primary buttons in dark mode",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-400}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-400}"
+              }
+            }
+          },
+          "Primary-dark-fill-pressed": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Primary.Primary-300}",
+            "$description": "Pressed state of primary buttons in dark mode",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-300}",
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-500}"
+              }
             }
           }
         }
@@ -2922,7 +3950,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-500}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-fill}"
           }
         }
       },
@@ -2955,7 +3983,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-500}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-fill}"
           }
         }
       },
@@ -2966,7 +3994,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-fill-hovered}"
           }
         }
       },
@@ -2977,7 +4005,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-fill-pressed}"
           }
         }
       },
@@ -3320,7 +4348,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-action}"
           }
         }
       },
@@ -3331,7 +4359,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-200}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-pressed}"
           }
         }
       },
@@ -3342,7 +4370,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-hovered}"
           }
         }
       },
@@ -3432,7 +4460,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-action}"
           }
         }
       },
@@ -3443,7 +4471,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-hovered}"
           }
         }
       },
@@ -3454,7 +4482,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-200}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-pressed}"
           }
         }
       },
@@ -3465,7 +4493,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-400}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-focus}"
           }
         }
       },
@@ -3476,7 +4504,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-500}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-fill}"
           }
         }
       },
@@ -3577,7 +4605,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-action}"
           }
         }
       },
@@ -3599,7 +4627,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-hovered}"
           }
         }
       },
@@ -3665,7 +4693,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-action}"
           }
         }
       },
@@ -3676,7 +4704,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-hovered}"
           }
         }
       },
@@ -3687,7 +4715,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Primary.Primary-700}",
-            "Dark": "{Alias Colors.Colors.Fintech.Primary.Primary-200}"
+            "Dark": "{Alias Colors.Colors.Fintech.Primary dark.Primary-dark-pressed}"
           }
         }
       },
@@ -4160,7 +5188,7 @@
         "Color collection",
         "Alias Spacing & Radius"
       ],
-      "createdAt": "2026-10-29T09:09:45.158Z"
+      "createdAt": "2026-11-03T12:36:06.315Z"
     }
   }
 }
