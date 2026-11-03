@@ -21,11 +21,12 @@ interface Args {
   label: string;
   size: 'medium' | 'small' | 'xsmall';
   iconOnly: boolean;
+  tooltips: boolean;
 }
 
 const meta: Meta<Args> = {
   title: 'Components/Segmented button',
-  args: { segments: 3, showIcons: false, disabled: false, label: 'Period', size: 'medium', iconOnly: false },
+  args: { segments: 3, showIcons: false, disabled: false, label: 'Period', size: 'medium', iconOnly: false, tooltips: false },
   argTypes: {
     segments: { control: { type: 'range', min: 2, max: 5 }, description: 'Figma `Show Button 1 / 2 / 3` (code: at least 2)' },
     showIcons: { control: 'boolean', name: 'Show Leading Icon', description: 'The segments’ `Show Leading Accessory`' },
@@ -33,8 +34,9 @@ const meta: Meta<Args> = {
     label: { control: 'text', description: 'The group’s name for screen readers' },
     size: { control: 'inline-radio', options: ['medium', 'small', 'xsmall'], description: '`size`: `small` and `xsmall` are code only (2 Nov 2026)' },
     iconOnly: { control: 'boolean', description: '`iconOnly` (code only): the icons alone, labels as their names' },
+    tooltips: { control: 'boolean', description: '`tooltips` (code only, with `iconOnly`): each label in a tooltip on hover and keyboard focus', if: { arg: 'iconOnly' } },
   },
-  render: ({ segments, showIcons, disabled, label, size, iconOnly }) => (
+  render: ({ segments, showIcons, disabled, label, size, iconOnly, tooltips }) => (
     <div className={styles.frame}>
       <FinSegmentedButton
         key={segments}
@@ -43,6 +45,7 @@ const meta: Meta<Args> = {
         disabled={disabled}
         size={size}
         iconOnly={iconOnly}
+        tooltips={tooltips}
       />
     </div>
   ),
@@ -152,7 +155,7 @@ export const Sizes: Story = {
           <FinSegmentedButton label="Theme, small" iconOnly size="small" options={theme} defaultValue="light" />
         </div>
         <div>
-          <FinSegmentedButton label="Theme, xsmall" iconOnly size="xsmall" options={theme} defaultValue="light" />
+          <FinSegmentedButton label="Theme, xsmall" iconOnly tooltips size="xsmall" options={theme} defaultValue="light" />
         </div>
       </div>
     );

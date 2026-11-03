@@ -41,6 +41,12 @@ interface FinTooltipBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
   defaultOpen?: boolean;
   /** Called when it asks to open or close (hover, focus, Escape). */
   onOpenChange?: (open: boolean) => void;
+  /**
+   * Code only (3 Nov 2026): the trigger is described by the tooltip (`aria-describedby`; default `true`). `false` when
+   * the tooltip only repeats the trigger's own name (an icon only control named by its label): screen readers don't
+   * hear it twice, and the tooltip is hidden from them (`aria-hidden`).
+   */
+  describesTrigger?: boolean;
 }
 
 interface FinTooltipSingleLineProps extends FinTooltipBaseProps {
@@ -63,6 +69,12 @@ interface FinTooltipRichProps extends FinTooltipBaseProps {
 }
 
 export type FinTooltipProps = FinTooltipSingleLineProps | FinTooltipRichProps;
+
+/**
+ * Only one tooltip is open at a time (3 Nov 2026): opening one closes the last (say, the one under a resting pointer
+ * when the keyboard moves focus to another trigger). Set in effects only, never at import or render.
+ */
+let closeOpenTooltip: (() => void) | null = null;
 
 /** A length custom property of an element, in px (a token, so values stay in CSS). */
 function cssPx(element: Element, property: string) {
@@ -87,7 +99,7 @@ function isFocusVisible(element: Element) {
  * A tooltip (Figma Plain Tooltip, Look=Black; DESIGN.md §9): `bg-direct`, `text-inverse`, Radius-S, no arrow, 4
  * (Space-XS) from its trigger in the top layer. It opens 250 ms after the pointer rests on the trigger, or at once
  * when the trigger gets keyboard focus; it closes when the pointer leaves (it can move onto the tooltip), on blur and
- * on Escape. Never on touch. The trigger is described by it (`aria-describedby`); it holds text only.
+ * on Escape. Never on touch. One is open at a time. The trigger is described by it (`aria-describedby`); it holds text only.
  */
 export function FinTooltip({
   children,
@@ -99,6 +111,7 @@ export function FinTooltip({
   open: openProp,
   defaultOpen = false,
   onOpenChange,
+  describesTrigger = true,
   className,
   id: idProp,
   ...rest
@@ -153,16 +166,29 @@ export function FinTooltip({
     if (!open && shown) tooltipEl.hidePopover();
   }, [open, tooltipEl]);
 
-  // Escape closes it, wherever focus is (WCAG 1.4.13: dismissable without moving the pointer or focus).
+  // One at a time: this one, once open, closes any other.
+  useEffect(() => {
+    if (!open) return;
+    const close = () => setOpen(false);
+    closeOpenTooltip?.();
+    closeOpenTooltip = close;
+    return () => {
+      if (closeOpenTooltip === close) closeOpenTooltip = null;
+    };
+  }, [open, setOpen]);
+
+  // Escape closes it, wherever focus is (WCAG 1.4.13: dismissable without moving the pointer or focus). Caught first
+  // (capture) and kept there, so inside a menu or dialog the first Escape closes only the tooltip, the next the menu.
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
+      event.stopPropagation();
       clear();
       setOpen(false);
     };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    document.addEventListener('keydown', onKeyDown, true);
+    return () => document.removeEventListener('keydown', onKeyDown, true);
   }, [open, setOpen, clear]);
 
   const own = children.props as {
@@ -180,7 +206,7 @@ export function FinTooltip({
       setTriggerEl(node);
       setRef(own.ref, node);
     },
-    'aria-describedby': own['aria-describedby'] ? `${own['aria-describedby']} ${id}` : id,
+    'aria-describedby': !describesTrigger ? own['aria-describedby'] : own['aria-describedby'] ? `${own['aria-describedby']} ${id}` : id,
     onPointerEnter: (event: PointerEvent<HTMLElement>) => {
       own.onPointerEnter?.(event);
       if (event.pointerType === 'touch') return;
@@ -223,6 +249,7 @@ export function FinTooltip({
         ref={setTooltipEl}
         id={id}
         role="tooltip"
+        aria-hidden={describesTrigger ? undefined : true}
         popover="manual"
         hidden={!open}
         className={className ? `${styles.tooltip} ${className}` : styles.tooltip}

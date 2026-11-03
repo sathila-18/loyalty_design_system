@@ -65,7 +65,7 @@ export type FinSideNavTheme = 'system' | 'light' | 'dark';
 
 /**
  * The account menu's Theme row (code first, 2 Nov 2026): "Theme" with System, Light and Dark as icon-only menu item
- * radios. Picking one keeps the menu open, so the change shows. The app applies the theme (`data-theme` on `<html>`).
+ * radios, each with its name in a tooltip on hover and keyboard focus (3 Nov 2026). Picking one keeps the menu open, so the change shows. The app applies the theme (`data-theme` on `<html>`).
  */
 export interface FinSideNavThemeItem {
   type: 'theme';
@@ -228,6 +228,7 @@ export function FinSideNav({
               <FinSegmentedButton
                 behavior="menuitemradio"
                 iconOnly
+                tooltips
                 size="xsmall"
                 aria-labelledby={themeTitleId}
                 value={item.value}

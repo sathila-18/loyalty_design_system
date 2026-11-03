@@ -1,4 +1,4 @@
-import { act, render, screen, within } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { forwardRef, type AnchorHTMLAttributes } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -245,6 +245,29 @@ describe('FinSideNav', () => {
     await user.click(within(group).getByRole('menuitemradio', { name: 'Dark' }));
     expect(onValueChange).toHaveBeenCalledWith('dark');
     expect(screen.getByRole('menu')).toBeInTheDocument();
+  });
+
+  it('theme row: each choice shows its name in a tooltip on hover; the first Escape closes the tooltip, the next the menu', async () => {
+    const user = userEvent.setup();
+    render(
+      <FinSideNav
+        sections={SECTIONS}
+        type="expanded"
+        profile={{ ...PROFILE, menu: [{ label: 'My profile', onSelect: () => {} }, { type: 'theme', value: 'light', onValueChange: () => {} }] }}
+      />,
+    );
+    await user.click(screen.getByRole('button', { name: 'Olivia James' }));
+    const dark = screen.getByRole('menuitemradio', { name: 'Dark' });
+    await user.hover(dark);
+    const shown = () => document.querySelector('[role="tooltip"]:not([hidden])');
+    await waitFor(() => expect(shown()).toHaveTextContent('Dark'));
+    // The name is already "Dark": the tooltip doesn't describe it again.
+    expect(dark).not.toHaveAccessibleDescription();
+    await user.keyboard('{Escape}');
+    expect(shown()).toBeNull();
+    expect(screen.getByRole('menu', { name: 'Account' })).toBeInTheDocument();
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('menu')).toBeNull();
   });
 
   it('variant tree: the open section\'s pages get the tree lines (decorative); links and names unchanged', async () => {

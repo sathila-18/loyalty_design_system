@@ -2,6 +2,7 @@
 
 import { forwardRef, useRef, useState, type HTMLAttributes, type KeyboardEvent } from 'react';
 import type { FinIconName } from '../../icons/finIcons';
+import { FinTooltip } from '../Tooltip';
 import { FinSegmentBase, type FinSegmentBaseSize } from '../SegmentBase';
 import styles from './FinSegmentedButton.module.css';
 
@@ -48,6 +49,11 @@ export type FinSegmentedButtonProps = Omit<HTMLAttributes<HTMLDivElement>, 'onCh
      * is as wide as they are instead of filling its container. Each label stays as the segment's name.
      */
     iconOnly?: boolean;
+    /**
+     * Code only (3 Nov 2026): with `iconOnly`, each segment shows its label in a single line FinTooltip (above it) on
+     * hover and keyboard focus. The label is already the segment's name, so the tooltip doesn't describe it again.
+     */
+    tooltips?: boolean;
     /** Default `radio`. See FinSegmentedButtonBehavior. */
     behavior?: FinSegmentedButtonBehavior;
     /**
@@ -66,7 +72,7 @@ export type FinSegmentedButtonProps = Omit<HTMLAttributes<HTMLDivElement>, 'onCh
  * Enter or Space picks. `ref` goes to the track.
  */
 export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonProps>(function FinSegmentedButton(
-  { options, value, defaultValue, onValueChange, disabled = false, name, label, iconOnly = false, behavior = 'radio', size = 'medium', className, ...rest },
+  { options, value, defaultValue, onValueChange, disabled = false, name, label, iconOnly = false, tooltips = false, behavior = 'radio', size = 'medium', className, ...rest },
   ref,
 ) {
   const firstEnabled = options.find((o) => !o.disabled)?.value;
@@ -121,27 +127,36 @@ export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonP
       data-icon-only={iconOnly || undefined}
       data-size={size === 'medium' ? undefined : size}
     >
-      {options.map((option, i) => (
-        <FinSegmentBase
-          key={option.value}
-          ref={(el) => {
-            segments.current[i] = el;
-          }}
-          className={styles.segment}
-          role={inMenu ? 'menuitemradio' : 'radio'}
-          aria-checked={option.value === selected}
-          selected={option.value === selected}
-          disabled={disabled || option.disabled === true}
-          tabIndex={!inMenu && i === tabStop ? 0 : -1}
-          iconOnly={iconOnly}
-          size={size}
-          {...(option.icon ? { leadingIcon: option.icon } : {})}
-          onClick={() => choose(i)}
-          onKeyDown={(event) => onSegmentKeyDown(event, i)}
-        >
-          {option.label}
-        </FinSegmentBase>
-      ))}
+      {options.map((option, i) => {
+        const segment = (
+          <FinSegmentBase
+            key={option.value}
+            ref={(el) => {
+              segments.current[i] = el;
+            }}
+            className={styles.segment}
+            role={inMenu ? 'menuitemradio' : 'radio'}
+            aria-checked={option.value === selected}
+            selected={option.value === selected}
+            disabled={disabled || option.disabled === true}
+            tabIndex={!inMenu && i === tabStop ? 0 : -1}
+            iconOnly={iconOnly}
+            size={size}
+            {...(option.icon ? { leadingIcon: option.icon } : {})}
+            onClick={() => choose(i)}
+            onKeyDown={(event) => onSegmentKeyDown(event, i)}
+          >
+            {option.label}
+          </FinSegmentBase>
+        );
+        return iconOnly && tooltips ? (
+          <FinTooltip key={option.value} content={option.label} describesTrigger={false}>
+            {segment}
+          </FinTooltip>
+        ) : (
+          segment
+        );
+      })}
       {name !== undefined && selected !== undefined && <input type="hidden" name={name} value={selected} />}
     </div>
   );

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
@@ -171,5 +171,23 @@ describe('FinSegmentedButton', () => {
     expect(xsmall.firstElementChild).toHaveAttribute('data-size', 'xsmall');
     const { container: medium } = render(<FinSegmentedButton label="Period, medium" options={PERIODS} />);
     expect(medium.firstElementChild).not.toHaveAttribute('data-size');
+  });
+
+  it('tooltips (code only, icon only): each segment shows its label in a tooltip on hover, without describing it again', async () => {
+    const user = userEvent.setup();
+    const options: FinSegmentedButtonProps['options'] = [
+      { value: 'light', label: 'Light', icon: 'light_mode' },
+      { value: 'dark', label: 'Dark', icon: 'dark_mode' },
+    ];
+    const { rerender } = render(<FinSegmentedButton label="View" options={options} iconOnly />);
+    await user.hover(screen.getByRole('radio', { name: 'Dark' }));
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    expect(document.querySelector('[role="tooltip"]:not([hidden])')).toBeNull();
+    rerender(<FinSegmentedButton label="View" options={options} iconOnly tooltips />);
+    const dark = screen.getByRole('radio', { name: 'Dark' });
+    await user.unhover(dark);
+    await user.hover(dark);
+    await waitFor(() => expect(document.querySelector('[role="tooltip"]:not([hidden])')).toHaveTextContent('Dark'));
+    expect(dark).not.toHaveAccessibleDescription();
   });
 });

@@ -158,4 +158,32 @@ describe('FinTooltip', () => {
     );
     expect(screen.getByRole('tooltip')).toBeInTheDocument();
   });
+
+  it('describesTrigger off (code only): no description on the trigger, and hidden from screen readers', () => {
+    render(
+      <FinTooltip content="Edit" describesTrigger={false} defaultOpen>
+        <FinButton aria-label="Edit">E</FinButton>
+      </FinTooltip>,
+    );
+    expect(screen.getByRole('button', { name: 'Edit' })).not.toHaveAccessibleDescription();
+    expect(screen.queryByRole('tooltip')).toBeNull();
+    expect(screen.getByRole('tooltip', { hidden: true })).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('is the only one open: opening another closes it', async () => {
+    const user = userEvent.setup();
+    render(
+      <>
+        <FinTooltip content="First tip" defaultOpen>
+          <FinButton>First</FinButton>
+        </FinTooltip>
+        <FinTooltip content="Second tip">
+          <FinButton>Second</FinButton>
+        </FinTooltip>
+      </>,
+    );
+    expect(screen.getByRole('tooltip')).toHaveTextContent('First tip');
+    await user.hover(screen.getByRole('button', { name: 'Second' }));
+    await waitFor(() => expect(screen.getAllByRole('tooltip').map((t) => t.textContent)).toEqual(['Second tip']));
+  });
 });
