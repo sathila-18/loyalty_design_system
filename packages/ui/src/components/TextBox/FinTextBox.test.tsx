@@ -18,6 +18,13 @@ describe('FinTextBox', () => {
     expect(screen.getByRole('heading', { level: n })).toHaveTextContent('Heading');
   });
 
+  it('marks the inverse tone (code only) and nothing by default', () => {
+    const { container, rerender } = render(<FinTextBox type="h6" heading="Title" description="Text" />);
+    expect(container.firstElementChild).not.toHaveAttribute('data-tone');
+    rerender(<FinTextBox type="h6" heading="Title" description="Text" tone="inverse" />);
+    expect(container.firstElementChild).toHaveAttribute('data-tone', 'inverse');
+  });
+
   it('headingLevel changes the element, not the look', () => {
     const { container } = render(<FinTextBox type="h3" headingLevel={2} heading="Dialog title" />);
     expect(screen.getByRole('heading', { level: 2, name: 'Dialog title' })).toBeInTheDocument();

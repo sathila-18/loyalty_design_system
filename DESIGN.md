@@ -685,7 +685,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 43 | `Profile image` | Avatar | `432:1610` | `FinProfileImage` | **Avatar**, icons · Type: Icon/Image (code: from `src`) · badge button: camera / edit (§9.6) | ⚠️ (frame 100 = `Size-96` + `Space-XS`, approved 15 Oct 2026) | ✅ |
 | 44 | `bar-with-text` (renamed in Figma 15 Oct 2026: `Progress-progress bar` → `Progress-full` → `bar-with-text`) | Progress | `31:2122` | `FinBarWithText` | **Progress bar** (Large, Steps=4), **Text Box** (Center, Display Small-H3) · Progress: 25/50/75/100% · Description: True/False · 375 wide (a mobile-era width), gap `Space-XL` · built from FinProgressBar and FinTextBox; spans the middle 6 grid columns (§9.22) | ⚠️ | ✅ |
 | 45 | `spinner-with-text` (renamed from `Progress-Spinner` in Figma, 15 Oct 2026) | Progress | `33:2348` | `FinSpinnerWithText` | **Spinner**, Text Box · built from FinSpinner and FinTextBox; loader added; spans the middle 6 grid columns (§9.23) | ⚠️ (zero padding from another library) | ✅ |
-| 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black/Basic | ⚠️ (§10 #16) | ⬜ |
+| 46 | `Plain Tooltip` | Tooltips | `476:752` | `FinTooltip` | Text Box · Type: Single line/Rich · Look: Black (Basic is no longer in Figma, 3 Nov 2026) | ⚠️ (§10 #16) | ✅ |
 | 47 | `Pagination group` | Table | `3151:14607` | `FinPagination` | **Pagination item**; its arrows (all-button instances with a grey outline override in Figma) are drawn by FinPagination itself (§9.39) · public, Components/Pagination | ⚠️ | ✅ |
 | 48 | `Main Selection` | Side nav | `3140:10997` | `FinSideNavItem` | Side nav `Icon`, sub selection, `20px` icon (the chevron; was `24px`, 29 Oct 2026) · `State` (Hovered / Pressed in CSS; Selected - BG / Selected → `selected: 'item' \| 'sub-item'`) · `Expanded` · `Type`: Full/Minimized · `Show dropdown` from the sub items · Expanded slot · **internal**, part of the side nav (§9.48) | ⚠️ (raw chevron colors, §10 #52) | ✅ |
 | 49 | `Header notification` | Header | `3178:24467` | `FinHeaderNotificationButton` | 48px bg, Badge - indicator, `24px` · State (runtime: Default/Hovered/Pressed/Disabled) · Notification: None/Dot/Number · **public** (§9.62) | ⚠️ (48px bg padding `Spacing 8px` from another library → `--fin-space-m`) | ✅ |
@@ -1689,6 +1689,7 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 | — | `headingLevel` (1–6): the heading **element** for the page's structure; defaults to the number in `type`; changes the structure only, never the look (decided 15 Oct 2026) |
 | — (Figma Checkbox `State=Disabled` overrides its Text Box) | `disabled`: heading and description use `--fin-text-disabled` (added 19 Oct 2026 for FinCheckbox, §9.30) |
 | — (code only) | `truncateHeading`: the heading stays on one line (`true`) or up to two (`2`) and ends in "…" (added 22 Oct 2026 for FinHeader, §9.63; `2` added 26 Oct 2026 for FinSideSheet; off by default) |
+| — (code only) | `tone: 'default' \| 'inverse'` (default `'default'`): `inverse` puts the heading and description in `--fin-text-inverse`, for a Text Box on a `bg-direct` surface (added 3 Nov 2026 for FinTooltip's rich type, §9.82; `data-tone`) |
 
 **Tokens used:**
 
@@ -3851,6 +3852,45 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Built, approved and merged (28 Oct 2026).** Storybook: Components/Stat card (Playground, Reports, Customer history, Narrow). Checked in Chrome against Figma: 364 × 94.6 at the screens' width, padding 20, radius 16, `#efefff`, label 14 semibold (`text-secondary`, lighter than the screens' `#474748`), value 24 bold `#19191a` (Light); Dark uses the Dark tokens. A long label ends in "…", a long value wraps.
 
+### 9.82 FinTooltip (Plain Tooltip) — public
+
+**Figma:** page **Tooltips**, component set `Plain Tooltip` `476:752`: `Type` = Single line (`476:753`) / Rich tooltip (`476:755`) × `Look` = Black (the only look; "Basic" in the 13 Oct scan is gone). Read 3 Nov 2026.
+
+**Layout:** `bg-direct`, `text-inverse`, `Radius-S` (8), no arrow, no shadow, at least 24 tall (Figma's raw 24, here `Size-24`). **Single line:** padding `Space-M` (8) above and below, `Space-XL` (16) at the sides; Caption L (Figma binds it to another library, §10 #16: `--fin-font-caption-large`); one line up to 343 of text (`Size-343`), then it **wraps** (decided 3 Nov 2026; Figma keeps it on one line). **Rich tooltip:** padding `Space-L` (12) above and below, 16 at the sides; a **FinTextBox** `type="h6"` (Headline Small-H6, Body M, 4 apart), 343 wide, in the new `tone="inverse"` (§9.21), so the tooltip is 375. Never wider than the window (Space-M from each edge).
+
+**Figma → code:**
+
+| Figma | Prop |
+|---|---|
+| `Type` | `type: 'single-line' \| 'rich'` (default `'single-line'`) |
+| `Look` (Black only) | — (no prop: one option, decided 3 Nov 2026) |
+| Single line's text ("Supporting text") | `content: ReactNode` |
+| Rich: Text Box's `Show Heading` / `Show Description` + text | `heading`, `description` (shown when passed) |
+| — (code only) | `placement: 'top' \| 'bottom' \| 'left' \| 'right'` (default `'top'`); it flips when there isn't room and shifts to stay in the window |
+| — (code only) | `open` / `defaultOpen`, `onOpenChange`: controlled or uncontrolled |
+| — | `children`: the trigger, one element (a button, a link, an icon only button) |
+
+**Behaviour (code first; Figma shows the look only; decided by design 3 Nov 2026):** placed with Floating UI (as FinMenu) in the top layer (`popover="manual"`), **4 (`Space-XS`) from the trigger**. **Opens 250 ms** after the pointer rests on the trigger, or **at once on keyboard focus** (`:focus-visible`; not on a click's focus). **Closes** when the pointer leaves (after 100 ms, so the pointer can **move onto the tooltip** and it stays), on blur, on **Escape** (focus stays on the trigger) and when the trigger is pressed. **Never on touch.** No animation (§5).
+
+**Accessibility:** `role="tooltip"`, always in the page (hidden when closed), and the trigger's `aria-describedby` points to it (added to any description the trigger already has), so screen readers read it as the trigger's description. Text only: no links or buttons in it. WCAG 1.4.13 (content on hover or focus): dismissable (Escape), hoverable, persistent. Contrast: Light white on `#19191a`, Dark `text-inverse` on `#fdfdfd`, both above 4.5:1. A disabled button gets no pointer or focus events; give it a tooltip on an enabled wrapper or don't.
+
+**Tokens used:** `--fin-bg-direct`, `--fin-text-inverse`, `--fin-radius-s`, `--fin-size-24`, `--fin-size-343`, `--fin-space-m`, `--fin-space-l`, `--fin-space-xl`, `--fin-space-xs` (gap), `--fin-font-caption-large`; the Text Box's H6 tokens.
+
+**API:**
+
+```tsx
+<FinTooltip content="Edit this tier">
+  <FinButton icon="only-icon" iconName="edit" variant="secondary">Edit</FinButton>
+</FinTooltip>
+
+<FinTooltip type="rich" heading="Points expiry" description="Points expire 36 months after they're earned.">
+  <FinButton icon="only-icon" iconName="info" variant="secondary">About points expiry</FinButton>
+</FinTooltip>
+```
+
+**Built, approved and merged (3 Nov 2026).** Storybook: Components/Tooltips/Plain tooltip (Playground, Types (Figma), Placements, Long text, Flips at the edge, On icon buttons). Checked in Chrome against Figma: single line 8/16 padding, 34 tall ("Supporting text" 121 wide, Figma 122: font rendering); rich 12/16 padding, 375 wide; Radius 8; the gap 4; Light `#19191a` / white, Dark `#fdfdfd` / `text-inverse`; opens at 250 ms on hover and at once on Tab, Escape and leaving close it, it flips at the window's top edge, and long text wraps at 375.
+
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -3932,6 +3972,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 75 | **Checkbox: the unticked box's border is below 3:1** (29 Oct 2026): design changed Base-Checkbox's Unselected, Enabled stroke from `border-strong` to **`border-default`** (§9.29). Its contrast is below WCAG 2.2 1.4.11's 3:1 for a control's outline everywhere it's used: Light 1.48 on `bg-primary`, 1.36 on `bg-secondary`, 1.27 on `bg-tertiary` (the table header), 1.30 on `bg-active` (a selected row); Dark 1.86 / 1.54 / 1.28 / 1.40 (`border-strong` was 3.33–3.90 Light, 6.03–8.76 Dark). **Accepted by design (29 Oct 2026):** "in our scenarios the checkbox is not the main thing, and `border-strong` highlights it more than we need". Hovered, Pressed, Disabled, Selected and Indeterminate are unchanged. The automated a11y run doesn't check non-text contrast, so it still passes; an audit would flag it. Affects every checkbox (FinCheckbox, the table, list checkbox rows, filters). | Checkbox | ✅ Accepted by design |
 | 76 | **Side nav: the tree style, code only** (2 Nov 2026): FinSideNav `variant="tree"` (§9.57, §9.47) draws connected tree lines from a section's icon to its pages; built in code first, as design's brief, with Default (Figma's) staying the default. To add to Figma: the Side Menu (and Sub selection) with a tree option: a 1px `border-default` line (`border-subtle` was too faint) under the section's icon centre (22 in), ending at the middle of the last page; a connector to each page ending 4 (`Space-XS`) before its text (36 in), curving with `Radius-S`; not shown when minimized. | Side nav | ⏳ Design to add in Figma |
 | 77 | **Table: the bordered style, code only** (3 Nov 2026): FinTable `variant="bordered"` (§9.45) draws a 1px `border-subtle` line with `Radius-S` (8) round the header and rows; the toolbar and footer stay outside it. Built in code first at design's request, with Default (no border) staying the default. To add to Figma: a bordered table frame on the Table parts, for screens that use it. | Table | ⏳ Design to add in Figma |
+| 78 | **Tooltip: behaviour, code first** (3 Nov 2026): Figma Plain Tooltip shows only the look. Decided by design: opens 250 ms after hover or at once on keyboard focus, 4 (`Space-XS`) from the trigger, no arrow, flips at the window edge; long single line text wraps at 343. `Look=Basic` (in the 13 Oct inventory) is no longer in Figma; FinTooltip has no `look` prop. Nothing to change in Figma unless design wants the gap or wrapping shown there. | Tooltips | ✅ Decided |
 
 ---
 
@@ -4001,6 +4042,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (2 Nov 2026):** every page's side nav in the tree style (§8.6, §9.57).
 > - **Approved and merged (3 Nov 2026):** table spacing: FinTable's toolbar 16 above the table (was 32), FinAppShell content padding 24 all round (was 36 above) (§9.45, §9.67, §9.68).
 > - **Approved and merged (3 Nov 2026):** FinTable's bordered style (`variant="bordered"`, code only, §9.45, §10 #77), used on every list page's table (§8.6).
+> - **Approved and merged (3 Nov 2026):** `FinTooltip` (§9.82, Plain Tooltip: single line and rich), with FinTextBox `tone="inverse"` (§9.21).
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4317,3 +4359,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 3 Nov 2026 | 0.2 | **Table: bordered style** (code only, decided by design): FinTable `variant` (`default` / `bordered`), a 1px `border-subtle` line with Radius-S (8) round the header and rows, the toolbar and footer outside it; `FinTableVariant` exported; stories Default and bordered, Bordered; the Playground's `variant` control (§9.45, §10 #77). |
 | 3 Nov 2026 | 0.2 | **Pages in the bordered table style**: every list page's table uses `variant="bordered"` (decided by design; `PAGE_TABLE_VARIANT` in `pageShell.tsx`); side sheet tables stay default (§8.6, §9.45). |
 | 3 Nov 2026 | 0.2 | The bordered table style and the pages in it approved by design and merged into `main`. |
+| 3 Nov 2026 | 0.2 | **FinTooltip** (§9.82, Figma Plain Tooltip): single line and rich, Floating UI in the top layer, 250 ms hover delay, keyboard focus, Escape; FinTextBox `tone="inverse"` (code only, §9.21); §10 #78. Approved and merged into `main`. |

@@ -59,4 +59,5 @@ export * from './components/SelectField';
 export * from './components/HeaderNotificationButton';
 export * from './components/Header';
 export * from './components/Menu';
+export * from './components/Tooltip';
 export * from './components/AppShell';

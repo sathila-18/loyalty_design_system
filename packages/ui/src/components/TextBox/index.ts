@@ -4,4 +4,5 @@ export {
   type FinTextBoxType,
   type FinTextBoxAlign,
   type FinHeadingLevel,
+  type FinTextBoxTone,
 } from './FinTextBox';

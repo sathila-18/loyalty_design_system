@@ -5,6 +5,8 @@ import styles from './FinTextBox.module.css';
 export type FinTextBoxType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 export type FinTextBoxAlign = 'left' | 'center' | 'right';
 export type FinHeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
+/** Code only (3 Nov 2026): `default` or `inverse` (`text-inverse`, on a `bg-direct` surface such as FinTooltip). */
+export type FinTextBoxTone = 'default' | 'inverse';
 
 interface FinTextBoxBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Figma `Type`: the heading's look (Display Large-H1 … Headline Small-H6) and the description's text style. */
@@ -30,6 +32,11 @@ interface FinTextBoxBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
    */
   disabled?: boolean;
   /**
+   * Code only (3 Nov 2026): the heading and description in `text-inverse` (`inverse`), for a Text Box on a `bg-direct`
+   * surface (FinTooltip's rich type, Figma Plain Tooltip). Default `default`.
+   */
+  tone?: FinTextBoxTone;
+  /**
    * The heading stays on one line (`true`) or up to two (`2`) and ends in "…" when it doesn't fit (code only; added
    * 22 Oct 2026 for FinHeader, two lines 26 Oct 2026 for FinSideSheet).
    */
@@ -54,6 +61,7 @@ export function FinTextBox({
   description,
   headingLevel,
   disabled = false,
+  tone = 'default',
   truncateHeading = false,
   labelBadge,
   labelBadgeLabel,
@@ -62,7 +70,7 @@ export function FinTextBox({
 }: FinTextBoxProps) {
   const Heading = `h${headingLevel ?? Number(type.slice(1))}` as 'h1';
   return (
-    <div {...rest} className={className ? `${styles.textBox} ${className}` : styles.textBox} data-type={type} data-align={align} data-disabled={disabled || undefined} data-truncate-heading={truncateHeading === 2 ? '2' : truncateHeading ? '' : undefined}>
+    <div {...rest} className={className ? `${styles.textBox} ${className}` : styles.textBox} data-type={type} data-align={align} data-disabled={disabled || undefined} data-tone={tone === 'inverse' ? 'inverse' : undefined} data-truncate-heading={truncateHeading === 2 ? '2' : truncateHeading ? '' : undefined}>
       {label !== undefined &&
         (labelBadge ? (
           <FinLabel size={labelSize} badge badgeLabel={labelBadgeLabel}>

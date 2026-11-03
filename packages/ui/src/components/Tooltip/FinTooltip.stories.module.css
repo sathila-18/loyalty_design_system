@@ -1,0 +1,42 @@
+/* Layout for the FinTooltip stories only (not part of the component). */
+
+/* Room round the triggers, so open tooltips sit inside the story and don't cover each other. */
+.stage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-12xl);
+  align-items: center;
+  padding: var(--fin-space-12xl);
+}
+
+/* The four placements, as a cross round the middle. */
+.cross {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: var(--fin-space-12xl);
+  place-items: center;
+  justify-content: center;
+  padding: var(--fin-space-12xl);
+}
+
+.cross > :nth-child(1) {
+  grid-area: 1 / 2;
+}
+
+.cross > :nth-child(2) {
+  grid-area: 2 / 1;
+}
+
+.cross > :nth-child(3) {
+  grid-area: 2 / 3;
+}
+
+.cross > :nth-child(4) {
+  grid-area: 3 / 2;
+}
+
+/* A trigger at the very top of the story, so a tooltip asked for on top has to flip below. */
+.edge {
+  display: flex;
+  justify-content: center;
+}

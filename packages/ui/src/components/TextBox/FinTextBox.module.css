@@ -47,6 +47,12 @@
   -webkit-line-clamp: 2;
 }
 
+/* On a bg-direct surface (code only, 3 Nov 2026; FinTooltip's rich type). */
+.textBox[data-tone="inverse"] .heading,
+.textBox[data-tone="inverse"] .description {
+  color: var(--fin-text-inverse);
+}
+
 /* Inside a disabled control (Figma Checkbox, State=Disabled). */
 .textBox[data-disabled] .heading,
 .textBox[data-disabled] .description {
