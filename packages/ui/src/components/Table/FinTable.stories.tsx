@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState, type CSSProperties } from 'react';
 import { FinAssistChip } from '../AssistChip';
+import { FinEmptyState } from '../EmptyState';
 import { FinListStandard } from '../ListStandard';
 import { FinMenu } from '../Menu';
-import { FinTable, type FinTableColumn, type FinTableRowId } from './FinTable';
+import { FinTable, type FinTableColumn, type FinTableRowId, type FinTableVariant } from './FinTable';
 import styles from './FinTable.stories.module.css';
 
 interface Member {
@@ -63,6 +64,7 @@ interface Args {
   rowsPerPage: number;
   selectable: boolean;
   clickable: boolean;
+  variant: FinTableVariant;
 }
 
 /**
@@ -71,15 +73,20 @@ interface Args {
  */
 const meta: Meta<Args> = {
   title: 'Components/Table',
-  args: { rowCount: 45, rowsPerPage: 10, selectable: true, clickable: true },
+  args: { rowCount: 45, rowsPerPage: 10, selectable: true, clickable: true, variant: 'default' },
   argTypes: {
     rowCount: { control: { type: 'number', min: 0, max: 500 }, description: 'Rows in the table' },
     rowsPerPage: { control: { type: 'number', min: 1, max: 50 }, description: 'Rows per page at the start (`defaultRowsPerPage`; the footer menu changes it)' },
     selectable: { control: 'boolean', description: 'Select cells and "select all" (Figma `Select Cell`)' },
     clickable: { control: 'boolean', description: 'onRowClick set: a row click opens its details' },
+    variant: {
+      control: 'inline-radio',
+      options: ['default', 'bordered'],
+      description: '`variant` (code only): `bordered` draws a 1px border-subtle line with Radius-S (8) round the header and rows',
+    },
   },
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  render: function Playground({ rowCount, rowsPerPage, selectable, clickable }) {
+  render: function Playground({ rowCount, rowsPerPage, selectable, clickable, variant }) {
     const [opened, setOpened] = useState('none');
     return (
       <>
@@ -91,6 +98,7 @@ const meta: Meta<Args> = {
           getRowId={(m) => m.id}
           defaultRowsPerPage={rowsPerPage}
           selectable={selectable}
+          variant={variant}
           {...(clickable ? { onRowClick: (m: Member) => setOpened(m.name) } : {})}
         />
         <p className={styles.readout}>Details opened (a side sheet would open): {opened}</p>
@@ -332,4 +340,77 @@ export const Loading: StoryObj<{ loading: boolean }> = {
       loading={loading}
     />
   ),
+};
+
+/**
+ * The two styles (code only, 3 Nov 2026; `variant`): `default`, no outer border, and `bordered`, a 1px `border-subtle`
+ * line with Radius-S (8) round the header and rows. The toolbar and footer stay outside the border, 16 from it.
+ */
+export const DefaultAndBordered: Story = {
+  name: 'Default and bordered',
+  render: () => (
+    <div className={styles.styles}>
+      {(['default', 'bordered'] as const).map((variant) => (
+        <figure key={variant} className={styles.figure}>
+          <figcaption className={styles.caption}>{variant === 'default' ? 'Default' : 'Bordered'}</figcaption>
+          <FinTable
+            label={`Members (${variant})`}
+            columns={columns()}
+            rows={makeMembers(23)}
+            getRowId={(m) => m.id}
+            defaultRowsPerPage={5}
+            toolbar={{ search: { label: 'Search members', placeholder: 'Search members' }, actionLabel: 'Add member' }}
+            variant={variant}
+          />
+        </figure>
+      ))}
+    </div>
+  ),
+};
+
+/**
+ * The bordered style's hard cases: scrolling sideways in a narrow (480) container, with the ⋮ column fixed at the end
+ * and its shadow inside the border; ticked rows (their fill follows the corners); the empty state inside the frame;
+ * and loading. Hover a row to see its fill at the corners.
+ */
+export const Bordered: Story = {
+  render: function Bordered() {
+    const [selected, setSelected] = useState<FinTableRowId[]>([1, 3]);
+    const action = [{ label: 'View details', icon: 'visibility' as const, onSelect: () => undefined }];
+    return (
+      <div className={styles.styles}>
+        <figure className={styles.figure}>
+          <figcaption className={styles.caption}>Scrolling sideways, rows ticked</figcaption>
+          <div className={styles.narrow}>
+            <FinTable
+              label="Members (scrolling)"
+              columns={columns()}
+              rows={makeMembers(6)}
+              getRowId={(m) => m.id}
+              getRowLabel={(m) => m.name}
+              selectedIds={selected}
+              onSelectionChange={setSelected}
+              rowActions={action}
+              variant="bordered"
+            />
+          </div>
+        </figure>
+        <figure className={styles.figure}>
+          <figcaption className={styles.caption}>Empty</figcaption>
+          <FinTable
+            label="Members (empty)"
+            columns={columns()}
+            rows={[]}
+            getRowId={(m) => m.id}
+            variant="bordered"
+            empty={<FinEmptyState icon="search" size="small" heading="No members match the filter" description="Change or clear the filter." />}
+          />
+        </figure>
+        <figure className={styles.figure}>
+          <figcaption className={styles.caption}>Loading</figcaption>
+          <FinTable label="Members (loading)" columns={columns()} rows={[]} getRowId={(m) => m.id} rowActions={action} variant="bordered" loading />
+        </figure>
+      </div>
+    );
+  },
 };

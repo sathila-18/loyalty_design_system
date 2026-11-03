@@ -3,7 +3,7 @@ import { FinAppShell, FinAvatar, FinDialog, FinEmptyState, FinTable, type FinTab
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import pageStyles from '../common/PageStates.module.css';
-import { usePageSideNav } from '../pageShell';
+import { PAGE_TABLE_VARIANT, usePageSideNav } from '../pageShell';
 import { RecordDetails } from '../RecordDetails';
 import { BadgeForm } from './BadgeForm';
 import type { Badge } from './badgeModel';
@@ -121,6 +121,7 @@ export function Badges({ badges: initialBadges, onAction = () => undefined, api 
         {!online && <ConnectionError />}
         <FinTable
           label="Badges"
+          variant={PAGE_TABLE_VARIANT}
           columns={columns}
           rows={status === 'ready' ? rows : []}
           loading={status === 'loading'}

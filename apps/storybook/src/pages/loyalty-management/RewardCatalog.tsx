@@ -3,7 +3,7 @@ import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinBadgeTone, typ
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
 import { NOT_AVAILABLE } from '../common/format';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
-import { usePageSideNav } from '../pageShell';
+import { PAGE_TABLE_VARIANT, usePageSideNav } from '../pageShell';
 import { RecordDetails } from '../RecordDetails';
 import styles from '../common/PageStates.module.css';
 import { AddRewardForm } from './AddRewardForm';
@@ -144,6 +144,7 @@ export function RewardCatalog({ rewards: initialRewards, onAction = () => undefi
         {!online && <ConnectionError />}
         <FinTable
           label="Rewards"
+          variant={PAGE_TABLE_VARIANT}
           columns={columns}
           rows={status === 'ready' ? rows : []}
           loading={status === 'loading'}

@@ -32,6 +32,18 @@
 }
 
 /*
+ * `variant="bordered"` (code only, 3 Nov 2026): a 1px border-subtle line round the header and rows, Radius-S (8). The
+ * scroll area draws it and clips to its corners, so the header's grey and the rows' fills follow the curve; the
+ * fixed columns and their shadows stay inside it. The empty state gets the same frame. The toolbar and footer are
+ * outside it. The last row has no line, so the bottom isn't doubled.
+ */
+.root[data-variant="bordered"] .scroll,
+.root[data-variant="bordered"] .empty {
+  border: 1px solid var(--fin-border-subtle);
+  border-radius: var(--fin-radius-s);
+}
+
+/*
  * The row's line is its border, so borders are collapsed. Min width comes from the columns (set in TSX), plus the
  * select column (a 24 checkbox with 16 either side: 56) and the ⋮ column (a 32 button with 16 either side: 64); both
  * narrow, 16 instead of the cells' 24 (decided by design 29 Oct 2026; were 72 and 80).

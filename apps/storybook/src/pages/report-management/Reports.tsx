@@ -15,7 +15,7 @@ import { useBackOnline, usePageLoad, usePageNotices, type PageApi } from '../com
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import pageStyles from '../common/PageStates.module.css';
 import { LevelLink, LevelLinkProvider } from '../LevelLink';
-import { usePageSideNav } from '../pageShell';
+import { PAGE_TABLE_VARIANT, usePageSideNav } from '../pageShell';
 import { ACTIVITY_TYPES, DURATIONS, TIERS, activeBalance, number, rangeStart, shortDate, signed, type Activity, type Customer, type Duration } from './reportModel';
 import styles from './Reports.module.css';
 
@@ -137,6 +137,7 @@ export function Reports({ customers, initialCustomerId, onAction = () => undefin
           // A new table per level, so it starts scrolled to the left (not where the list was scrolled, at narrow widths).
           key={`history-${customer.id}`}
           label={`${customer.name}'s points history`}
+          variant={PAGE_TABLE_VARIANT}
           columns={activityColumns}
           rows={rows}
           getRowId={(a) => a.id}
@@ -189,6 +190,7 @@ export function Reports({ customers, initialCustomerId, onAction = () => undefin
         <FinTable
           key="customers"
           label="Customers"
+          variant={PAGE_TABLE_VARIANT}
           columns={customerColumns}
           rows={status === 'ready' ? rows : []}
           loading={status === 'loading'}

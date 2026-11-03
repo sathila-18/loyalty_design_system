@@ -5,7 +5,7 @@ import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi 
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import pageStyles from '../common/PageStates.module.css';
 import { LevelLink, LevelLinkProvider } from '../LevelLink';
-import { usePageSideNav } from '../pageShell';
+import { PAGE_TABLE_VARIANT, usePageSideNav } from '../pageShell';
 import { RecordDetails } from '../RecordDetails';
 import { FocusAreaForm } from './FocusAreaForm';
 import { count, nextId, padded, placeAt, removeFrom, type FocusArea, type Lesson, type Question } from './focusAreaModel';
@@ -233,6 +233,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
         // A new table per level, so it starts scrolled to the left (not where the last level was scrolled).
         key={`questions-${lesson.id}`}
         label="Questions"
+        variant={PAGE_TABLE_VARIANT}
         columns={questionColumns}
         rows={rows}
         getRowId={(q) => q.id}
@@ -265,6 +266,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
       <FinTable
         key={`lessons-${area.id}`}
         label="Lessons"
+        variant={PAGE_TABLE_VARIANT}
         columns={lessonColumns}
         rows={rows}
         getRowId={(l) => l.id}
@@ -299,6 +301,7 @@ export function FocusAreas({ focusAreas, initialLevel, onAction = () => undefine
       <FinTable
         key="focus-areas"
         label="Focus areas"
+        variant={PAGE_TABLE_VARIANT}
         columns={areaColumns}
         rows={status === 'ready' ? rows : []}
         loading={status === 'loading'}

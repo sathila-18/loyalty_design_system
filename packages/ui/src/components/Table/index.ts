@@ -6,4 +6,5 @@ export {
   type FinTableRowAction,
   type FinTableRowId,
   type FinTableSort,
+  type FinTableVariant,
 } from './FinTable';

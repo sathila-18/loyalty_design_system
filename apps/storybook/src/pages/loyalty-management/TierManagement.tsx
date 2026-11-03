@@ -9,7 +9,7 @@ import {
   type FinTableColumn,
   type FinTableFilters,
 } from '@finspace-loyalty/ui';
-import { usePageSideNav } from '../pageShell';
+import { PAGE_TABLE_VARIANT, usePageSideNav } from '../pageShell';
 import { PendingLink } from '../PendingLink';
 import { RecordDetails } from '../RecordDetails';
 import { TierForm, type TierValues } from './TierForm';
@@ -134,6 +134,7 @@ export function TierManagement({ tiers: initialTiers, onAction = () => undefined
     >
       <FinTable
         label="Tiers"
+        variant={PAGE_TABLE_VARIANT}
         columns={columns}
         rows={rows}
         getRowId={(t) => t.id}

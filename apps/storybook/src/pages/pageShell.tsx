@@ -1,4 +1,4 @@
-import type { FinAppShellProps, FinSideNavSection, FinSideNavTheme, FinSideNavThemeItem } from '@finspace-loyalty/ui';
+import type { FinAppShellProps, FinSideNavSection, FinSideNavTheme, FinSideNavThemeItem, FinTableVariant } from '@finspace-loyalty/ui';
 import type { Decorator } from '@storybook/react-vite';
 import { createContext, useContext } from 'react';
 import { useEffect, useGlobals, useState } from 'storybook/preview-api';
@@ -63,6 +63,13 @@ export const withPageTheme: Decorator = function PageTheme(Story) {
     </PageThemeContext.Provider>
   );
 };
+
+/**
+ * Every list page's table style (DESIGN.md §8.6, §9.45): bordered (code only; decided by design 3 Nov 2026), a 1px
+ * border-subtle line with Radius-S (8) round the header and rows. Change it here for every page. The tables in side
+ * sheets (Record details, Add reward's Added rules) keep the default.
+ */
+export const PAGE_TABLE_VARIANT: FinTableVariant = 'bordered';
 
 /**
  * The side nav props for a page, open at `currentHref`, in the tree style (code only; decided by design

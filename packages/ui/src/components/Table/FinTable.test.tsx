@@ -48,6 +48,19 @@ describe('FinTable', () => {
     expect(within(second!).queryByRole('checkbox')).toBeNull();
   });
 
+  it('is the default style unless variant is bordered, and keeps the style in the empty and loading states', () => {
+    const { container, rerender } = render(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} />);
+    const root = container.firstElementChild as HTMLElement;
+    expect(root).toHaveAttribute('data-variant', 'default');
+    rerender(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} variant="bordered" />);
+    expect(root).toHaveAttribute('data-variant', 'bordered');
+    rerender(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} variant="bordered" loading />);
+    expect(root).toHaveAttribute('data-variant', 'bordered');
+    rerender(<FinTable label="Members" columns={columns} rows={[]} getRowId={(m) => m.id} variant="bordered" empty={<p>No members</p>} />);
+    expect(root).toHaveAttribute('data-variant', 'bordered');
+    expect(screen.getByText('No members')).toBeInTheDocument();
+  });
+
   it('shows every row and no footer with footer off', () => {
     render(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} footer={false} />);
     expect(bodyRows()).toHaveLength(23);

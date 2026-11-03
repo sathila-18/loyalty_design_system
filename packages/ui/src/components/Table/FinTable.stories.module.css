@@ -15,3 +15,20 @@
 .widthBox {
   max-width: var(--story-width);
 }
+
+/* The style stories: one table under another, Space-6XL apart, each with its name above (Default and bordered). */
+.styles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-6xl);
+}
+
+.figure {
+  margin: 0;
+}
+
+.caption {
+  margin-bottom: var(--fin-space-m);
+  font: var(--fin-font-label-medium);
+  color: var(--fin-text-secondary);
+}

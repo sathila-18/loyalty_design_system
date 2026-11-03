@@ -16,6 +16,12 @@ import styles from './FinTable.module.css';
 
 export type FinTableRowId = string | number;
 
+/**
+ * Code only (3 Nov 2026): `default` (no outer border) or `bordered` (a 1px `border-subtle` line round the header and
+ * rows, Radius-S, 8). The toolbar and footer stay outside the border; the empty state and loading rows are inside it.
+ */
+export type FinTableVariant = 'default' | 'bordered';
+
 /** The table's sort: one column at a time. */
 export interface FinTableSort {
   key: string;
@@ -176,6 +182,11 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
   loading?: boolean;
   /** The status read while loading. Default "Loading " and the `label` ("Loading programme configurations"). */
   loadingLabel?: string;
+  /**
+   * Code only (3 Nov 2026): the table's style. `default` (no outer border) or `bordered`: a 1px `border-subtle` line
+   * with Radius-S (8) round the header and rows (and the empty state). The toolbar and footer stay outside it.
+   */
+  variant?: FinTableVariant;
 }
 
 /**
@@ -209,8 +220,8 @@ const columnStyle = (width: number) => ({ '--fin-table-column-width': `${width}p
  * on), from columns and rows as data. Code only (no Figma component): it adds no visuals beyond the 16 (`Space-XL`)
  * gap above the footer. Columns are fixed (`width`), flexible (the default, sharing the rest equally) or have a `minWidth`; the select
  * column is fixed at 56 (the ⋮ column at 64). When the columns don't fit, the table scrolls sideways; long text ends in "…". "Select all"
- * acts on the current page; selection is by row ID and kept across pages. No outer border; the last row has no line
- * under it. `ref` goes to the root.
+ * acts on the current page; selection is by row ID and kept across pages. No outer border unless `variant` is
+ * `bordered`; the last row has no line under it. `ref` goes to the root.
  */
 function FinTableInner<Row>(
   {
@@ -248,6 +259,7 @@ function FinTableInner<Row>(
     empty,
     loading,
     loadingLabel,
+    variant = 'default',
     className,
     ...rest
   }: FinTableProps<Row>,
@@ -406,7 +418,7 @@ function FinTableInner<Row>(
   );
 
   return (
-    <div {...rest} ref={ref} className={className ? `${styles.root} ${className}` : styles.root} data-empty={showEmpty ? '' : undefined}>
+    <div {...rest} ref={ref} className={className ? `${styles.root} ${className}` : styles.root} data-empty={showEmpty ? '' : undefined} data-variant={variant}>
       {loading !== undefined && (
         <span role="status" className={styles.hidden}>
           {loading ? (loadingLabel ?? `Loading ${label.charAt(0).toLowerCase()}${label.slice(1)}`) : ''}

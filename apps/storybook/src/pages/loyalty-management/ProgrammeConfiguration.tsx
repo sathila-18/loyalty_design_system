@@ -3,7 +3,7 @@ import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinTableColumn, t
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
 import { NOT_AVAILABLE } from '../common/format';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
-import { usePageSideNav } from '../pageShell';
+import { PAGE_TABLE_VARIANT, usePageSideNav } from '../pageShell';
 import styles from '../common/PageStates.module.css';
 import { RecordDetails } from '../RecordDetails';
 import { ProgrammeConfigurationForm, type ProgrammeConfigValues } from './ProgrammeConfigurationForm';
@@ -170,6 +170,7 @@ export function ProgrammeConfiguration({ configs: initialConfigs, segments, onAc
         {!online && <ConnectionError />}
         <FinTable
           label="Programme configurations"
+          variant={PAGE_TABLE_VARIANT}
           columns={columns}
           rows={status === 'ready' ? rows : []}
           loading={status === 'loading'}
