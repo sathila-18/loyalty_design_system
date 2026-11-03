@@ -135,7 +135,7 @@ export const Members: Story = {
 
 /**
  * With a toolbar (`toolbar`, Figma Table Header, §9.67): a search (here it narrows the rows by name), a filter slot
- * (a Large Assist chip with a select menu) and the main action, 32 above the table.
+ * (a Large Assist chip with a select menu) and the main action, 16 above the table.
  */
 export const WithToolbar: Story = {
   name: 'With toolbar',

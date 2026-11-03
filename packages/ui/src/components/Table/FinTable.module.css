@@ -1,7 +1,8 @@
 /*
  * FinTable (DESIGN.md §9). Code only: the Header row, Table rows and Table footer, with no outer border, background
  * or radius. Fixed table layout: fixed columns take their width, flexible ones share the rest equally, and long text
- * ends in "…". Below the columns' minimum the table scrolls sideways. 16 (Space-XL) above the footer.
+ * ends in "…". Below the columns' minimum the table scrolls sideways. 16 (Space-XL) below the toolbar and above the footer (the toolbar's gap
+ * changed from 32 to 16, 3 Nov 2026).
  */
 
 .root {
@@ -9,11 +10,6 @@
   flex-direction: column;
   gap: var(--fin-space-xl);
   min-width: 0;
-}
-
-/* The toolbar is 32 above the table (Figma: Space-4XL): the root's 16 plus 16 more. */
-.toolbar {
-  margin-bottom: var(--fin-space-xl);
 }
 
 .scroll {

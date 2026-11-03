@@ -151,8 +151,8 @@ export interface FinTableProps<Row> extends Omit<HTMLAttributes<HTMLDivElement>,
   /** The ⋮ column's name for screen readers (its header is empty on screen). Default "Actions". */
   rowActionsHeader?: string;
   /**
-   * The toolbar above the table (Figma Table Header, §9.67): a search, a filter slot and the main action, 32 above
-   * the table (22 Oct 2026). Without it, none.
+   * The toolbar above the table (Figma Table Header, §9.67): a search, a filter slot and the main action, 16 above
+   * the table (Space-XL; 32 until 3 Nov 2026). Without it, none.
    */
   toolbar?: FinTableToolbarProps;
   /**
@@ -412,7 +412,7 @@ function FinTableInner<Row>(
           {loading ? (loadingLabel ?? `Loading ${label.charAt(0).toLowerCase()}${label.slice(1)}`) : ''}
         </span>
       )}
-      {toolbar && <FinTableToolbar {...toolbar} className={toolbar.className ? `${styles.toolbar} ${toolbar.className}` : styles.toolbar} />}
+      {toolbar && <FinTableToolbar {...toolbar} />}
       {showEmpty ? (
         <div className={styles.empty}>{empty}</div>
       ) : (
