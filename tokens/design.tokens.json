@@ -9,6 +9,14 @@
           "$extensions": {
             "mode": {}
           }
+        },
+        "Sampath": {
+          "$type": "string",
+          "$value": "Hanken Grotesk",
+          "$description": "",
+          "$extensions": {
+            "mode": {}
+          }
         }
       },
       "Font Weight": {
@@ -2160,6 +2168,806 @@
             }
           }
         }
+      },
+      "Sampath": {
+        "Orange": {
+          "Orange-50": {
+            "$type": "color",
+            "$value": "#fde7d6",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Orange-100": {
+            "$type": "color",
+            "$value": "#fcd5ba",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Orange-200": {
+            "$type": "color",
+            "$value": "#fac199",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Orange-300": {
+            "$type": "color",
+            "$value": "#f8a56a",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Orange-400": {
+            "$type": "color",
+            "$value": "#f6944d",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Orange-500": {
+            "$type": "color",
+            "$value": "#f47921",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Orange-600": {
+            "$type": "color",
+            "$value": "#de6e1e",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Orange-700": {
+            "$type": "color",
+            "$value": "#ad5617",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Orange-800": {
+            "$type": "color",
+            "$value": "#864312",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Orange-900": {
+            "$type": "color",
+            "$value": "#66330e",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Spring-wood": {
+          "Spring-wood-50": {
+            "$type": "color",
+            "$value": "#fefefd",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Spring-wood-100": {
+            "$type": "color",
+            "$value": "#fdfbfa",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Spring-wood-200": {
+            "$type": "color",
+            "$value": "#fbf9f8",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Spring-wood-300": {
+            "$type": "color",
+            "$value": "#faf7f4",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Spring-wood-400": {
+            "$type": "color",
+            "$value": "#f9f5f2",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Spring-wood-500": {
+            "$type": "color",
+            "$value": "#f7f3ef",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Spring-wood-600": {
+            "$type": "color",
+            "$value": "#e1ddd9",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Spring-wood-700": {
+            "$type": "color",
+            "$value": "#afadaa",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Spring-wood-800": {
+            "$type": "color",
+            "$value": "#888683",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Spring-wood-900": {
+            "$type": "color",
+            "$value": "#686664",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Mirage": {
+          "Mirage-50": {
+            "$type": "color",
+            "$value": "#e8e8e9",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Mirage-100": {
+            "$type": "color",
+            "$value": "#b6b9bc",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Mirage-200": {
+            "$type": "color",
+            "$value": "#93979c",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Mirage-300": {
+            "$type": "color",
+            "$value": "#62686e",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Mirage-400": {
+            "$type": "color",
+            "$value": "#434a52",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Mirage-500": {
+            "$type": "color",
+            "$value": "#141d27",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Mirage-600": {
+            "$type": "color",
+            "$value": "#121a23",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Mirage-700": {
+            "$type": "color",
+            "$value": "#0e151c",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Mirage-800": {
+            "$type": "color",
+            "$value": "#0b1015",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Mirage-900": {
+            "$type": "color",
+            "$value": "#080c10",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Woodsmoke": {
+          "Woodsmoke-50": {
+            "$type": "color",
+            "$value": "#e8e8e8",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Woodsmoke-100": {
+            "$type": "color",
+            "$value": "#b6b6b7",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Woodsmoke-200": {
+            "$type": "color",
+            "$value": "#939394",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Woodsmoke-300": {
+            "$type": "color",
+            "$value": "#626263",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Woodsmoke-400": {
+            "$type": "color",
+            "$value": "#1e1e21",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Woodsmoke-500": {
+            "$type": "color",
+            "$value": "#141416",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Woodsmoke-600": {
+            "$type": "color",
+            "$value": "#121214",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Woodsmoke-700": {
+            "$type": "color",
+            "$value": "#0e0e10",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Woodsmoke-800": {
+            "$type": "color",
+            "$value": "#0b0b0c",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Woodsmoke-900": {
+            "$type": "color",
+            "$value": "#080809",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Violet": {
+          "Violet-50": {
+            "$type": "color",
+            "$value": "#efeafc",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Violet-100": {
+            "$type": "color",
+            "$value": "#cdbff5",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Violet-200": {
+            "$type": "color",
+            "$value": "#b59ff1",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Violet-300": {
+            "$type": "color",
+            "$value": "#9374ea",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Violet-400": {
+            "$type": "color",
+            "$value": "#7e59e6",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Violet-500": {
+            "$type": "color",
+            "$value": "#5e2fe0",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Violet-600": {
+            "$type": "color",
+            "$value": "#562bcc",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Violet-700": {
+            "$type": "color",
+            "$value": "#43219f",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Violet-800": {
+            "$type": "color",
+            "$value": "#341a7b",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Violet-900": {
+            "$type": "color",
+            "$value": "#27145e",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Peach-Yellow": {
+          "Peach-Yellow-50": {
+            "$type": "color",
+            "$value": "#fffcf6",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Peach-Yellow-100": {
+            "$type": "color",
+            "$value": "#fef6e3",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Peach-Yellow-200": {
+            "$type": "color",
+            "$value": "#fdf1d6",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Peach-Yellow-300": {
+            "$type": "color",
+            "$value": "#fcebc3",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Peach-Yellow-400": {
+            "$type": "color",
+            "$value": "#fce7b8",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Peach-Yellow-500": {
+            "$type": "color",
+            "$value": "#fbe1a6",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Peach-Yellow-600": {
+            "$type": "color",
+            "$value": "#e4cd97",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Peach-Yellow-700": {
+            "$type": "color",
+            "$value": "#b2a076",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Peach-Yellow-800": {
+            "$type": "color",
+            "$value": "#8a7c5b",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Peach-Yellow-900": {
+            "$type": "color",
+            "$value": "#695f46",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "White": {
+          "White-500": {
+            "$type": "color",
+            "$value": "#ffffff",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-600": {
+            "$type": "color",
+            "$value": "#e8e8e8",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-700": {
+            "$type": "color",
+            "$value": "#b5b5b5",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-800": {
+            "$type": "color",
+            "$value": "#8c8c8c",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "White-900": {
+            "$type": "color",
+            "$value": "#6b6b6b",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Green": {
+          "Green-50": {
+            "$type": "color",
+            "$value": "#eaf6ef",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Green-100": {
+            "$type": "color",
+            "$value": "#bee4cc",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Green-200": {
+            "$type": "color",
+            "$value": "#9fd7b3",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Green-300": {
+            "$type": "color",
+            "$value": "#73c590",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Green-400": {
+            "$type": "color",
+            "$value": "#58b97b",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Green-500": {
+            "$type": "color",
+            "$value": "#2ea85a",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Green-600": {
+            "$type": "color",
+            "$value": "#2a9952",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Green-700": {
+            "$type": "color",
+            "$value": "#217740",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Green-800": {
+            "$type": "color",
+            "$value": "#195c32",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Green-900": {
+            "$type": "color",
+            "$value": "#134726",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Red": {
+          "Red-50": {
+            "$type": "color",
+            "$value": "#f9e9e9",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Red-100": {
+            "$type": "color",
+            "$value": "#edbaba",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Red-200": {
+            "$type": "color",
+            "$value": "#e49998",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Red-300": {
+            "$type": "color",
+            "$value": "#d86b69",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Red-400": {
+            "$type": "color",
+            "$value": "#d14e4c",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Red-500": {
+            "$type": "color",
+            "$value": "#c5221f",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Red-600": {
+            "$type": "color",
+            "$value": "#b31f1c",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Red-700": {
+            "$type": "color",
+            "$value": "#8c1816",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Red-800": {
+            "$type": "color",
+            "$value": "#6c1311",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Red-900": {
+            "$type": "color",
+            "$value": "#530e0d",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Yellow": {
+          "Yellow-50": {
+            "$type": "color",
+            "$value": "#fffcf6",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Yellow-100": {
+            "$type": "color",
+            "$value": "#fef6e3",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Yellow-200": {
+            "$type": "color",
+            "$value": "#fdf1d6",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Yellow-300": {
+            "$type": "color",
+            "$value": "#fcebc3",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Yellow-400": {
+            "$type": "color",
+            "$value": "#fce7b8",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Yellow-500": {
+            "$type": "color",
+            "$value": "#fbe1a6",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Yellow-600": {
+            "$type": "color",
+            "$value": "#e4cd97",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Yellow-700": {
+            "$type": "color",
+            "$value": "#b2a076",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Yellow-800": {
+            "$type": "color",
+            "$value": "#8a7c5b",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Yellow-900": {
+            "$type": "color",
+            "$value": "#695f46",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        },
+        "Brand Key": {
+          "White": {
+            "$type": "color",
+            "$value": "#ffffff",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          },
+          "Black": {
+            "$type": "color",
+            "$value": "#000000",
+            "$description": "",
+            "$extensions": {
+              "mode": {}
+            }
+          }
+        }
       }
     }
   },
@@ -2170,7 +2978,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2178,7 +2990,11 @@
         "$value": "{Primitives.Typography.Font Weight.Bold-700}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Bold-700}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Bold-700}",
+            "Sampath": "{Primitives.Typography.Font Weight.Bold-700}"
+          }
         }
       },
       "Font size": {
@@ -2186,7 +3002,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-48px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-48px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-48px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-48px}"
+          }
         }
       },
       "Line height": {
@@ -2194,7 +3014,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-48px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-48px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-48px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-48px}"
+          }
         }
       }
     },
@@ -2204,7 +3028,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2212,7 +3040,11 @@
         "$value": "{Primitives.Typography.Font Weight.Bold-700}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Bold-700}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Bold-700}",
+            "Sampath": "{Primitives.Typography.Font Weight.Bold-700}"
+          }
         }
       },
       "Font size": {
@@ -2220,7 +3052,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-36px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-36px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-36px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-36px}"
+          }
         }
       },
       "Line height": {
@@ -2228,7 +3064,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-36px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-36px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-36px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-36px}"
+          }
         }
       }
     },
@@ -2238,7 +3078,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2246,7 +3090,11 @@
         "$value": "{Primitives.Typography.Font Weight.Bold-700}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Bold-700}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Bold-700}",
+            "Sampath": "{Primitives.Typography.Font Weight.Bold-700}"
+          }
         }
       },
       "Font size": {
@@ -2254,7 +3102,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-28px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-28px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-28px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-28px}"
+          }
         }
       },
       "Line height": {
@@ -2262,7 +3114,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-28px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-28px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-28px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-28px}"
+          }
         }
       }
     },
@@ -2272,7 +3128,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2280,7 +3140,11 @@
         "$value": "{Primitives.Typography.Font Weight.Bold-700}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Bold-700}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Bold-700}",
+            "Sampath": "{Primitives.Typography.Font Weight.Bold-700}"
+          }
         }
       },
       "Font size": {
@@ -2288,7 +3152,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-24px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-24px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-24px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-24px}"
+          }
         }
       },
       "Line height": {
@@ -2296,7 +3164,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-24px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-24px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-24px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-24px}"
+          }
         }
       }
     },
@@ -2306,7 +3178,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2314,7 +3190,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2322,7 +3202,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-20px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-20px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-20px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-20px}"
+          }
         }
       },
       "Line height": {
@@ -2330,7 +3214,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-20px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-20px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-20px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-20px}"
+          }
         }
       }
     },
@@ -2340,7 +3228,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2348,7 +3240,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2356,7 +3252,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-16px}"
+          }
         }
       },
       "Line height": {
@@ -2364,7 +3264,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-16px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-16px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-16px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-16px}"
+          }
         }
       }
     },
@@ -2374,7 +3278,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2382,7 +3290,11 @@
         "$value": "{Primitives.Typography.Font Weight.Regular-400}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Regular-400}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Regular-400}",
+            "Sampath": "{Primitives.Typography.Font Weight.Regular-400}"
+          }
         }
       },
       "Font size": {
@@ -2390,7 +3302,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-16px}"
+          }
         }
       },
       "Line height": {
@@ -2398,7 +3314,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-16px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-16px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-16px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-16px}"
+          }
         }
       }
     },
@@ -2408,7 +3328,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2416,7 +3340,11 @@
         "$value": "{Primitives.Typography.Font Weight.Regular-400}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Regular-400}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Regular-400}",
+            "Sampath": "{Primitives.Typography.Font Weight.Regular-400}"
+          }
         }
       },
       "Font size": {
@@ -2424,7 +3352,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-14px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-14px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-14px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-14px}"
+          }
         }
       },
       "Line height": {
@@ -2432,7 +3364,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-14px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-14px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-14px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-14px}"
+          }
         }
       }
     },
@@ -2442,7 +3378,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2450,7 +3390,11 @@
         "$value": "{Primitives.Typography.Font Weight.Regular-400}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Regular-400}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Regular-400}",
+            "Sampath": "{Primitives.Typography.Font Weight.Regular-400}"
+          }
         }
       },
       "Font size": {
@@ -2458,7 +3402,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-12px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-12px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-12px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-12px}"
+          }
         }
       },
       "Line height": {
@@ -2466,7 +3414,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-12px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-12px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-12px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-12px}"
+          }
         }
       }
     },
@@ -2476,7 +3428,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2484,7 +3440,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2492,7 +3452,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-32px}",
         "$description": "To show balance",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-32px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-32px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-32px}"
+          }
         }
       },
       "Line height": {
@@ -2500,7 +3464,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-32px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-32px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-32px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-32px}"
+          }
         }
       }
     },
@@ -2510,7 +3478,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2518,7 +3490,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2526,7 +3502,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-18px}",
         "$description": "To show balance",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-18px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-18px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-18px}"
+          }
         }
       },
       "Line height": {
@@ -2534,7 +3514,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-18px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-18px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-18px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-18px}"
+          }
         }
       }
     },
@@ -2544,7 +3528,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2552,7 +3540,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2560,7 +3552,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-16px}"
+          }
         }
       },
       "Line height": {
@@ -2568,7 +3564,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-16px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-16px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-16px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-16px}"
+          }
         }
       }
     },
@@ -2578,7 +3578,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2586,7 +3590,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2594,7 +3602,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-14px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-14px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-14px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-14px}"
+          }
         }
       },
       "Line height": {
@@ -2602,7 +3614,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-14px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-14px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-14px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-14px}"
+          }
         }
       }
     },
@@ -2612,7 +3628,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2620,7 +3640,11 @@
         "$value": "{Primitives.Typography.Font Weight.Medium-500}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Sampath": "{Primitives.Typography.Font Weight.Medium-500}"
+          }
         }
       },
       "Font size": {
@@ -2628,7 +3652,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-16px}"
+          }
         }
       },
       "Line height": {
@@ -2636,7 +3664,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-16px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-16px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-16px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-16px}"
+          }
         }
       }
     },
@@ -2646,7 +3678,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2654,7 +3690,11 @@
         "$value": "{Primitives.Typography.Font Weight.Medium-500}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Sampath": "{Primitives.Typography.Font Weight.Medium-500}"
+          }
         }
       },
       "Font size": {
@@ -2662,7 +3702,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-14px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-14px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-14px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-14px}"
+          }
         }
       },
       "Line height": {
@@ -2670,7 +3714,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-14px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-14px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-14px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-14px}"
+          }
         }
       }
     },
@@ -2680,7 +3728,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2688,7 +3740,11 @@
         "$value": "{Primitives.Typography.Font Weight.Medium-500}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Sampath": "{Primitives.Typography.Font Weight.Medium-500}"
+          }
         }
       },
       "Font size": {
@@ -2696,7 +3752,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-12px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-12px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-12px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-12px}"
+          }
         }
       },
       "Line height": {
@@ -2704,7 +3764,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-12px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-12px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-12px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-12px}"
+          }
         }
       }
     },
@@ -2714,7 +3778,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2722,7 +3790,11 @@
         "$value": "{Primitives.Typography.Font Weight.Medium-500}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Sampath": "{Primitives.Typography.Font Weight.Medium-500}"
+          }
         }
       },
       "Font size": {
@@ -2730,7 +3802,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-12px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-12px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-12px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-12px}"
+          }
         }
       },
       "Line height": {
@@ -2738,7 +3814,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-12px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-12px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-12px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-12px}"
+          }
         }
       }
     },
@@ -2748,7 +3828,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2756,7 +3840,11 @@
         "$value": "{Primitives.Typography.Font Weight.Medium-500}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.Medium-500}",
+            "Sampath": "{Primitives.Typography.Font Weight.Medium-500}"
+          }
         }
       },
       "Font size": {
@@ -2764,7 +3852,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-11px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-11px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-11px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-11px}"
+          }
         }
       },
       "Line height": {
@@ -2772,7 +3864,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-11px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-11px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-11px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-11px}"
+          }
         }
       }
     },
@@ -2782,7 +3878,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2790,7 +3890,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2798,7 +3902,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-10px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-10px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-10px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-10px}"
+          }
         }
       },
       "Line height": {
@@ -2806,7 +3914,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-10px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-10px}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-10px}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-10px}"
+          }
         }
       }
     },
@@ -2816,7 +3928,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2824,7 +3940,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2832,7 +3952,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-18px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-18px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-18px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-18px}"
+          }
         }
       },
       "Line height": {
@@ -2840,7 +3964,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-Label}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-Label}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-Label}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-Label}"
+          }
         }
       }
     },
@@ -2850,7 +3978,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2858,7 +3990,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2866,7 +4002,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-16px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-16px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-16px}"
+          }
         }
       },
       "Line height": {
@@ -2874,7 +4014,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-Label}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-Label}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-Label}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-Label}"
+          }
         }
       }
     },
@@ -2884,7 +4028,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2892,7 +4040,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2900,7 +4052,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-14px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-14px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-14px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-14px}"
+          }
         }
       },
       "Line height": {
@@ -2908,7 +4064,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-Label}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-Label}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-Label}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-Label}"
+          }
         }
       }
     },
@@ -2918,7 +4078,11 @@
         "$value": "{Primitives.Typography.Font style.Primary}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font style.Primary}",
+            "Burgundy theme": "{Primitives.Typography.Font style.Primary}",
+            "Sampath": "{Primitives.Typography.Font style.Sampath}"
+          }
         }
       },
       "Font weight": {
@@ -2926,7 +4090,11 @@
         "$value": "{Primitives.Typography.Font Weight.SemiBold-600}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Burgundy theme": "{Primitives.Typography.Font Weight.SemiBold-600}",
+            "Sampath": "{Primitives.Typography.Font Weight.SemiBold-600}"
+          }
         }
       },
       "Font size": {
@@ -2934,7 +4102,11 @@
         "$value": "{Primitives.Typography.Font Size.FontSize-12px}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Font Size.FontSize-12px}",
+            "Burgundy theme": "{Primitives.Typography.Font Size.FontSize-12px}",
+            "Sampath": "{Primitives.Typography.Font Size.FontSize-12px}"
+          }
         }
       },
       "Line height": {
@@ -2942,7 +4114,11 @@
         "$value": "{Primitives.Typography.Line Height.LineHeight-Label}",
         "$description": "",
         "$extensions": {
-          "mode": {}
+          "mode": {
+            "Finspace": "{Primitives.Typography.Line Height.LineHeight-Label}",
+            "Burgundy theme": "{Primitives.Typography.Line Height.LineHeight-Label}",
+            "Sampath": "{Primitives.Typography.Line Height.LineHeight-Label}"
+          }
         }
       }
     }
@@ -2958,7 +4134,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-50}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-50}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-50}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-50}"
               }
             }
           },
@@ -2969,7 +4146,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-100}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-100}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-100}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-100}"
               }
             }
           },
@@ -2980,7 +4158,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-200}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-200}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-200}"
               }
             }
           },
@@ -2991,7 +4170,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-300}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-300}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-300}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-300}"
               }
             }
           },
@@ -3002,7 +4182,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-400}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-400}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-400}"
               }
             }
           },
@@ -3013,7 +4194,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-500}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-500}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-500}"
               }
             }
           },
@@ -3024,7 +4206,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-600}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-600}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-600}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-600}"
               }
             }
           },
@@ -3035,7 +4218,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-700}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-700}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-700}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-700}"
               }
             }
           },
@@ -3046,7 +4230,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-800}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-800}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-800}"
               }
             }
           },
@@ -3057,7 +4242,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Electric-Indigo.Electric-Indigo-900}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-900}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-900}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-900}"
               }
             }
           }
@@ -3070,7 +4256,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-50}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-50}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-50}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-50}"
               }
             }
           },
@@ -3081,7 +4268,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-100}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-100}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-100}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-100}"
               }
             }
           },
@@ -3092,7 +4280,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-200}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-200}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-200}"
               }
             }
           },
@@ -3103,7 +4292,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-300}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-300}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-300}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-300}"
               }
             }
           },
@@ -3114,7 +4304,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-400}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-400}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-400}"
               }
             }
           },
@@ -3125,7 +4316,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-500}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-500}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-500}"
               }
             }
           },
@@ -3136,7 +4328,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-600}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-600}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-600}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-600}"
               }
             }
           },
@@ -3147,7 +4340,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-700}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-700}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-700}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-700}"
               }
             }
           },
@@ -3158,7 +4352,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-800}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-800}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-800}"
               }
             }
           },
@@ -3169,7 +4364,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Gray.Gray-900}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-900}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Gray.Gray-900}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-900}"
               }
             }
           }
@@ -3182,7 +4378,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-50}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-50}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-50}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-50}"
               }
             }
           },
@@ -3193,7 +4390,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-100}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-100}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-100}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-100}"
               }
             }
           },
@@ -3204,7 +4402,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-200}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-200}"
               }
             }
           },
@@ -3215,7 +4414,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-300}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-300}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-300}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-300}"
               }
             }
           },
@@ -3226,7 +4426,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-400}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-400}"
               }
             }
           },
@@ -3237,7 +4438,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-500}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-500}"
               }
             }
           },
@@ -3248,7 +4450,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-600}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-600}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-600}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-600}"
               }
             }
           },
@@ -3259,7 +4462,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-700}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-700}"
               }
             }
           },
@@ -3270,7 +4474,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-800}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-800}"
               }
             }
           },
@@ -3281,7 +4486,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-900}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-900}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-900}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-900}"
               }
             }
           }
@@ -3294,7 +4500,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-50}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-50}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-50}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-50}"
               }
             }
           },
@@ -3305,7 +4512,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-100}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-100}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-100}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-100}"
               }
             }
           },
@@ -3316,7 +4524,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-200}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-200}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-200}"
               }
             }
           },
@@ -3327,7 +4536,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-300}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-300}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-300}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-300}"
               }
             }
           },
@@ -3338,7 +4548,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-400}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-400}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-400}"
               }
             }
           },
@@ -3349,7 +4560,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-500}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-500}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-500}"
               }
             }
           },
@@ -3360,7 +4572,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-600}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-600}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-600}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-600}"
               }
             }
           },
@@ -3371,7 +4584,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-700}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-700}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-700}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-700}"
               }
             }
           },
@@ -3382,7 +4596,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-800}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-800}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-800}"
               }
             }
           },
@@ -3393,7 +4608,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-900}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-900}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-900}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-900}"
               }
             }
           }
@@ -3406,7 +4622,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.White.White-500}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-500}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-500}",
+                "Sampath": "{Primitives.Colors.Sampath.White.White-500}"
               }
             }
           },
@@ -3417,7 +4634,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.White.White-600}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-600}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-600}",
+                "Sampath": "{Primitives.Colors.Sampath.White.White-600}"
               }
             }
           },
@@ -3428,7 +4646,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.White.White-700}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-700}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-700}",
+                "Sampath": "{Primitives.Colors.Sampath.White.White-700}"
               }
             }
           },
@@ -3439,7 +4658,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.White.White-800}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-800}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-800}",
+                "Sampath": "{Primitives.Colors.Sampath.White.White-800}"
               }
             }
           },
@@ -3450,7 +4670,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.White.White-900}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-900}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.White.White-900}",
+                "Sampath": "{Primitives.Colors.Sampath.White.White-900}"
               }
             }
           }
@@ -3463,7 +4684,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-50}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-50}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-50}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-50}"
               }
             }
           },
@@ -3474,7 +4696,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-100}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-100}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-100}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-100}"
               }
             }
           },
@@ -3485,7 +4708,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-200}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-200}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-200}"
               }
             }
           },
@@ -3496,7 +4720,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-300}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-300}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-300}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-300}"
               }
             }
           },
@@ -3507,7 +4732,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-400}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-400}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-400}"
               }
             }
           },
@@ -3518,7 +4744,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-500}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-500}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-500}"
               }
             }
           },
@@ -3529,7 +4756,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-600}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-600}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-600}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-600}"
               }
             }
           },
@@ -3540,7 +4768,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-700}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-700}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-700}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-700}"
               }
             }
           },
@@ -3551,7 +4780,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-800}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-800}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-800}"
               }
             }
           },
@@ -3562,7 +4792,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Green.Success-900}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-900}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Green.Success-900}",
+                "Sampath": "{Primitives.Colors.Sampath.Green.Green-900}"
               }
             }
           }
@@ -3575,7 +4806,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-50}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-50}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-50}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-50}"
               }
             }
           },
@@ -3586,7 +4818,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-100}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-100}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-100}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-100}"
               }
             }
           },
@@ -3597,7 +4830,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-200}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-200}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-200}"
               }
             }
           },
@@ -3608,7 +4842,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-300}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-300}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-300}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-300}"
               }
             }
           },
@@ -3619,7 +4854,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-400}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-400}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-400}"
               }
             }
           },
@@ -3630,7 +4866,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-500}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-500}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-500}"
               }
             }
           },
@@ -3641,7 +4878,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-600}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-600}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-600}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-600}"
               }
             }
           },
@@ -3652,7 +4890,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-700}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-700}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-700}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-700}"
               }
             }
           },
@@ -3663,7 +4902,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-800}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-800}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-800}"
               }
             }
           },
@@ -3674,7 +4914,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Yellow.Warning-900}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-900}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Yellow.Warning-900}",
+                "Sampath": "{Primitives.Colors.Sampath.Yellow.Yellow-900}"
               }
             }
           }
@@ -3687,7 +4928,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-50}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-50}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-50}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-50}"
               }
             }
           },
@@ -3698,7 +4940,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-100}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-100}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-100}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-100}"
               }
             }
           },
@@ -3709,7 +4952,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-200}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-200}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-200}"
               }
             }
           },
@@ -3720,7 +4964,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-300}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-300}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-300}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-300}"
               }
             }
           },
@@ -3731,7 +4976,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-400}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-400}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-400}"
               }
             }
           },
@@ -3742,7 +4988,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-500}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-500}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-500}"
               }
             }
           },
@@ -3753,7 +5000,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-600}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-600}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-600}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-600}"
               }
             }
           },
@@ -3764,7 +5012,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-700}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-700}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-700}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-700}"
               }
             }
           },
@@ -3775,7 +5024,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-800}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-800}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-800}"
               }
             }
           },
@@ -3786,7 +5036,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Red.Error-900}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-900}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Red.Error-900}",
+                "Sampath": "{Primitives.Colors.Sampath.Red.Red-900}"
               }
             }
           }
@@ -3799,7 +5050,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Brand Key.White}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Brand Key.White}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Brand Key.White}",
+                "Sampath": "{Primitives.Colors.Sampath.Brand Key.White}"
               }
             }
           },
@@ -3810,7 +5062,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Primitives.Colors.Fintech.Brand Key.Black}",
-                "Burgundy theme": "{Primitives.Colors.Fintech.Brand Key.Black}"
+                "Burgundy theme": "{Primitives.Colors.Fintech.Brand Key.Black}",
+                "Sampath": "{Primitives.Colors.Sampath.Brand Key.Black}"
               }
             }
           }
@@ -3823,7 +5076,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-400}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-200}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-500}"
               }
             }
           },
@@ -3834,7 +5088,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-300}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-100}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-100}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-400}"
               }
             }
           },
@@ -3845,7 +5100,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-200}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-50}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-50}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-300}"
               }
             }
           },
@@ -3856,7 +5112,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-300}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-200}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-500}"
               }
             }
           },
@@ -3867,7 +5124,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-500}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-300}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-300}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-500}"
               }
             }
           },
@@ -3878,7 +5136,8 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-400}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-400}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-600}"
               }
             }
           },
@@ -3889,7 +5148,240 @@
             "$extensions": {
               "mode": {
                 "Finspace": "{Alias Colors.Colors.Fintech.Primary.Primary-300}",
-                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-500}"
+                "Burgundy theme": "{Primitives.Colors.Burgundy theme.Burgundy.Burgundy-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Orange.Orange-700}"
+              }
+            }
+          }
+        },
+        "Neutral dark": {
+          "Neutral-dark-bg": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+                "Burgundy theme": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}",
+                "Sampath": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}"
+              }
+            }
+          },
+          "Neutral-dark-border": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-700}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-700}",
+                "Burgundy theme": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-700}",
+                "Sampath": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-900}"
+              }
+            }
+          },
+          "Neutral-dark-surface-2": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-900}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-900}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-900}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-400}"
+              }
+            }
+          },
+          "Neutral-dark-surface-3": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-400}"
+              }
+            }
+          },
+          "Neutral-dark-disabled-bg": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-300}"
+              }
+            }
+          },
+          "Neutral-dark-secondary": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-600}"
+              }
+            }
+          },
+          "Neutral-dark-tertiary": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-300}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-300}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-300}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-700}"
+              }
+            }
+          },
+          "Neutral-dark-placeholder": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-100}"
+              }
+            }
+          },
+          "Neutral-dark-disabled": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-600}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-600}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-600}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-300}"
+              }
+            }
+          },
+          "Neutral-dark-disabled-on_bg": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-100}"
+              }
+            }
+          },
+          "Neutral-dark-bg-neutral": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-400}"
+              }
+            }
+          },
+          "Neutral-dark-bg-icons": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-700}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-400}"
+              }
+            }
+          },
+          "Neutral-dark-border-subtle": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-400}"
+              }
+            }
+          },
+          "Neutral-dark-border-disabled": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-800}",
+                "Sampath": "{Primitives.Colors.Sampath.Woodsmoke.Woodsmoke-300}"
+              }
+            }
+          }
+        },
+        "Neutral light": {
+          "Neutral-light-bg": {
+            "$type": "color",
+            "$value": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+                "Burgundy theme": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+                "Sampath": "{Primitives.Colors.Sampath.White.White-500}"
+              }
+            }
+          },
+          "Neutral-light-surface-2": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Platinum.Platinum-200}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Platinum.Platinum-200}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Platinum.Platinum-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-500}"
+              }
+            }
+          },
+          "Neutral-light-disabled": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-200}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-100}"
+              }
+            }
+          },
+          "Neutral-light-secondary": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-500}",
+                "Sampath": "{Primitives.Colors.Sampath.Mirage.Mirage-300}"
+              }
+            }
+          },
+          "Neutral-light-border-strong": {
+            "$type": "color",
+            "$value": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
+            "$description": "",
+            "$extensions": {
+              "mode": {
+                "Finspace": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
+                "Burgundy theme": "{Primitives.Colors.Fintech.Graphite.Graphite-400}",
+                "Sampath": "{Primitives.Colors.Sampath.Spring-wood.Spring-wood-800}"
               }
             }
           }
@@ -3901,23 +5393,23 @@
     "Background": {
       "bg-primary": {
         "$type": "color",
-        "$value": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
+        "$value": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-bg}",
         "$description": "Use this for main background of the screens, and dialog boxes, and side sheets",
         "$extensions": {
           "mode": {
-            "Light": "{Alias Colors.Colors.Fintech.Tertiary2.Tertiary2-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Secondary.Secondary-500}"
+            "Light": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-bg}",
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-bg}"
           }
         }
       },
       "bg-secondary": {
         "$type": "color",
-        "$value": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-200}",
+        "$value": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-surface-2}",
         "$description": "Use this color for side nav",
         "$extensions": {
           "mode": {
-            "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-200}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-900}"
+            "Light": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-surface-2}",
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-surface-2}"
           }
         }
       },
@@ -3928,7 +5420,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-surface-3}"
           }
         }
       },
@@ -3939,7 +5431,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-700}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-bg-neutral}"
           }
         }
       },
@@ -4115,7 +5607,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-disabled-bg}"
           }
         }
       },
@@ -4225,7 +5717,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-700}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-bg-icons}"
           }
         }
       }
@@ -4249,7 +5741,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-300}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-secondary}"
           }
         }
       },
@@ -4260,7 +5752,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Secondary.Secondary-400}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-tertiary}"
           }
         }
       },
@@ -4271,18 +5763,18 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-placeholder}"
           }
         }
       },
       "text-disabled": {
         "$type": "color",
-        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}",
+        "$value": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-disabled}",
         "$description": "Use this for disabled text",
         "$extensions": {
           "mode": {
-            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-600}"
+            "Light": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-disabled}",
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-disabled}"
           }
         }
       },
@@ -4293,7 +5785,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-disabled-on_bg}"
           }
         }
       },
@@ -4427,7 +5919,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-600}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-700}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-border}"
           }
         }
       },
@@ -4438,17 +5930,17 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-400}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-border-subtle}"
           }
         }
       },
       "border-strong": {
         "$type": "color",
-        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-400}",
+        "$value": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-border-strong}",
         "$description": "Strong version of border color (radio buttons)",
         "$extensions": {
           "mode": {
-            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-400}",
+            "Light": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-border-strong}",
             "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}"
           }
         }
@@ -4515,7 +6007,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary1.Tertiary1-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-800}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-border-disabled}"
           }
         }
       },
@@ -4589,12 +6081,12 @@
       },
       "fg-secondary": {
         "$type": "color",
-        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}",
+        "$value": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-secondary}",
         "$description": "Secondary icon color. (input fields, Close, cheveron)",
         "$extensions": {
           "mode": {
-            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}"
+            "Light": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-secondary}",
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-secondary}"
           }
         }
       },
@@ -4616,7 +6108,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-400}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-placeholder}"
           }
         }
       },
@@ -4633,12 +6125,12 @@
       },
       "fg-disabled": {
         "$type": "color",
-        "$value": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}",
+        "$value": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-disabled}",
         "$description": "disabled icon",
         "$extensions": {
           "mode": {
-            "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-200}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-600}"
+            "Light": "{Alias Colors.Colors.Fintech.Neutral light.Neutral-light-disabled}",
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-disabled}"
           }
         }
       },
@@ -4649,7 +6141,7 @@
         "$extensions": {
           "mode": {
             "Light": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-300}",
-            "Dark": "{Alias Colors.Colors.Fintech.Tertiary.Tertiary-500}"
+            "Dark": "{Alias Colors.Colors.Fintech.Neutral dark.Neutral-dark-disabled-on_bg}"
           }
         }
       },
@@ -5188,7 +6680,7 @@
         "Color collection",
         "Alias Spacing & Radius"
       ],
-      "createdAt": "2026-11-03T12:36:06.315Z"
+      "createdAt": "2026-11-04T11:24:48.631Z"
     }
   }
 }
