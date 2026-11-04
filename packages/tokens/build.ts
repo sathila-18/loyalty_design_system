@@ -18,14 +18,32 @@ const SOURCE = join(here, '../../tokens/design.tokens.json');
 const DIST = join(here, 'dist');
 const PREFIX = 'fin';
 
+/**
+ * Figma mode → brand code name (`data-brand`), for Alias Colors and Alias Typography (§3.9, §3.10).
+ * Explicit, so renaming a mode in Figma can't change a brand's code name. An unknown mode stops the build.
+ */
+const BRAND_SLUGS: Record<string, string> = {
+  Finspace: 'finspace',
+  'Burgundy theme': 'burgundy',
+  Burgundy: 'burgundy',
+  Sampath: 'sampath',
+};
 /** Single-mode collections export `mode: {}`, so the brand needs a name (§3.9). */
 const SINGLE_MODE_BRAND = 'finspace';
 /**
- * Brand primitives (§3.1, §3.10): Figma copies every Fintech scale into each brand's group, but a
- * brand only adds its own scale. Only these scales are generated; the copies are skipped (their
- * names would clash with Fintech's). A reference to a skipped copy stops the build.
+ * Brand primitives (§3.1, §3.10), keyed by the primitive group. Only these scales are generated.
+ * Burgundy: Figma copies every Fintech scale into its group, but only the Burgundy scale is its own;
+ * the copies are skipped (their names would clash with Fintech's). A reference to a skipped scale
+ * stops the build. Sampath: its own scales, generated with a `sampath-` prefix
+ * (`--fin-palette-sampath-orange-500`) because some names (`White-*`, `Brand Key`) clash with Fintech's.
  */
-const BRAND_SCALES: Record<string, string[]> = { 'Burgundy theme': ['Burgundy'] };
+const BRAND_SCALES: Record<string, { scales: string[]; prefix?: string }> = {
+  'Burgundy theme': { scales: ['Burgundy'] },
+  Sampath: {
+    scales: ['Orange', 'Mirage', 'Woodsmoke', 'Spring-wood', 'White', 'Green', 'Red', 'Yellow', 'Brand Key'],
+    prefix: 'sampath',
+  },
+};
 /** `Primitives/Sizes` exported as breakpoints only (§3.7). Other sizes ≥ 343 are mobile widths. */
 const BREAKPOINTS: Record<string, string> = {
   'Size-1024': 'md',
@@ -45,7 +63,7 @@ const TYPE_PARTS: Record<string, string> = {
 };
 /** Added after every font family so text never falls back to the browser's serif (§3.4). Figma only has the family. */
 const FONT_FALLBACK = 'system-ui, sans-serif';
-const EXPECTED = { tokens: 528, textStyles: 23 };
+const EXPECTED = { tokens: 645, textStyles: 23 };
 
 // ---------------------------------------------------------------------------
 // 1. Read the export
@@ -96,8 +114,12 @@ function place({ path }: Source): { layer: Layer; key: string } | null {
     case 'Primitives':
       if (group === 'Colors') {
         const [, , family, scale] = path;
-        if (family !== 'Fintech' && !BRAND_SCALES[family!]?.includes(scale!)) return null;
-        return { layer: 'palette', key: kebab(leaf) };
+        if (family === 'Fintech') return { layer: 'palette', key: kebab(leaf) };
+        const brand = BRAND_SCALES[family!];
+        if (!brand?.scales.includes(scale!)) return null;
+        // Sampath's Brand Key leaves are bare `White`/`Black`: keep the scale in the name.
+        const name = scale === 'Brand Key' ? `${scale}-${leaf}` : leaf;
+        return { layer: 'palette', key: kebab(brand.prefix ? `${brand.prefix}-${name}` : name) };
       }
       if (group === 'Sizes') {
         if (SKIPPED_SIZES.has(leaf)) return null;
@@ -157,7 +179,9 @@ function reference(ref: string): string {
 function normalise(value: RawValue, source: Source): string | number {
   if (typeof value === 'string') {
     if (value.startsWith('{')) return reference(value);
-    return source.path.at(-2) === 'Font style' ? `${value}, ${FONT_FALLBACK}` : value;
+    if (source.path.at(-2) !== 'Font style') return value;
+    // Multi-word families are quoted (`"Hanken Grotesk"`); one-word names stay as they were (`Inter`).
+    return `${/\s/.test(value) ? `"${value}"` : value}, ${FONT_FALLBACK}`;
   }
   if (typeof value === 'number') return value;
   if ('alpha' in value) {
@@ -185,7 +209,7 @@ function tree(brand: string | undefined, theme: string | undefined): Tree {
   for (const { layer, key, source } of placed.values()) {
     const collection = source.path[0];
     const branded = layer === 'color' || (layer === 'font' && !sharedType);
-    const mode = collection === 'Color collection' ? theme : branded ? brand : undefined;
+    const mode = collection === 'Color collection' ? theme : branded ? modeOf(source, brand) : undefined;
     const raw = mode ? source.token.$extensions!.mode![mode]! : source.token.$value;
     (out[layer] ??= {})[key] = { $type: source.token.$type, $value: normalise(raw, source) };
     // Fixed sizes (§3.8): every Primitives/Sizes value is also exposed as --fin-size-<n>, for
@@ -196,16 +220,53 @@ function tree(brand: string | undefined, theme: string | undefined): Tree {
   return out;
 }
 
+/** `Finspace` → `finspace`, `Burgundy theme` → `burgundy`, `Sampath` → `sampath`: from BRAND_SLUGS only (§3.9). */
+function brandName(mode: string | undefined): string {
+  if (mode === undefined) return SINGLE_MODE_BRAND;
+  const slug = BRAND_SLUGS[mode];
+  if (!slug) throw new Error(`Unknown brand mode "${mode}": add it to BRAND_SLUGS in build.ts (§3.9)`);
+  return slug;
+}
+
 /**
- * Brands are the Alias Colors modes (§3.10). Alias Typography may have the same modes, or a single
- * mode that every brand shares (today: shared).
+ * Brands are the Alias Colors modes (§3.10). Alias Typography has the same brands as modes (matched by
+ * code name, so `Burgundy` and `Burgundy theme` are the same brand), or a single mode every brand shares.
  */
 const brands = modesOf('Alias Colors');
 const typeModes = modesOf('Alias Typography');
 const sharedType = typeModes.length === 1 && typeModes[0] === undefined;
-if (!sharedType && typeModes.join() !== brands.join()) {
+const slugs = (modes: (string | undefined)[]) => modes.map(brandName).sort().join();
+if (new Set(brands.map(brandName)).size !== brands.length) throw new Error(`Two brand modes share a code name: ${brands.join()}`);
+if (!sharedType && slugs(typeModes) !== slugs(brands)) {
   throw new Error(`Alias Typography modes (${typeModes.join()}) must match the brands (${brands.join()}) or be a single mode`);
 }
+
+/** The mode of a branded variable's collection for a brand (Alias Colors and Alias Typography may spell it differently). */
+function modeOf(source: Source, brand: string | undefined): string | undefined {
+  if (brand === undefined) return undefined;
+  const modes = Object.keys(source.token.$extensions?.mode ?? {});
+  const mode = modes.find((m) => brandName(m) === brandName(brand));
+  if (!mode) throw new Error(`${source.path.join('/')} has no mode for brand ${brandName(brand)}`);
+  return mode;
+}
+
+/**
+ * Per-brand typography (§3.4): only the font family may differ between brands. Sizes, weights and
+ * line heights must be the same in every mode, or the build stops. The family goes in the
+ * [data-brand] blocks; everything else, including the text-style shorthands, stays on :root.
+ */
+if (!sharedType) {
+  for (const { layer, source } of placed.values()) {
+    if (layer !== 'font') continue;
+    const values = new Set(brands.map((b) => JSON.stringify(source.token.$extensions!.mode![modeOf(source, b)!])));
+    if (values.size > 1 && source.path.at(-1) !== 'Font family') {
+      throw new Error(`${source.path.join('/')} differs between brands; only the font family may (§3.4)`);
+    }
+  }
+}
+/** Variables written per brand: alias colors, and the font families once typography has brand modes. */
+const isBranded = (t: TransformedToken) =>
+  layer(t) === 'color' || (!sharedType && layer(t) === 'font' && String(t.path[1]).endsWith('-family'));
 const themes = modesOf('Color collection');
 if (themes.join() !== 'Light,Dark') throw new Error(`Expected Light/Dark modes, found ${themes.join()}`);
 
@@ -283,7 +344,10 @@ StyleDictionary.registerFormat({
 });
 
 /** Formats one tree; returns each file's output in order. */
-async function render(tokens: Tree, files: { format: string; filter?: Layer[]; selector?: string }[]) {
+async function render(
+  tokens: Tree,
+  files: { format: string; filter?: Layer[] | ((t: TransformedToken) => boolean); selector?: string }[],
+) {
   const sd = new StyleDictionary({
     tokens,
     log: { verbosity: 'silent', warnings: 'disabled' },
@@ -293,7 +357,9 @@ async function render(tokens: Tree, files: { format: string; filter?: Layer[]; s
         files: files.map(({ format, filter, selector }, i) => ({
           destination: `${i}`,
           format,
-          ...(filter && { filter: (t: TransformedToken) => filter.includes(layer(t)) }),
+          ...(filter && {
+            filter: typeof filter === 'function' ? filter : (t: TransformedToken) => filter.includes(layer(t)),
+          }),
           options: { selector, outputReferences: true, showFileHeader: false },
         })),
       },
@@ -310,7 +376,9 @@ async function render(tokens: Tree, files: { format: string; filter?: Layer[]; s
 function referenceFile(): string {
   const cssName = (l: Layer, key: string) => `--${PREFIX}-${l}-${key}`;
   const colors = [...placed.values()].filter((t) => t.source.path[0] === 'Primitives' && t.source.path[1] === 'Colors');
-  const palette = colors.map((t) => ({ name: cssName('palette', t.key), group: t.source.path.at(-2)! }));
+  // Prefixed brand scales are labelled with their brand (`Sampath / White`), so they don't merge with Fintech's `White`.
+  const paletteGroup = ({ path }: Source) => (BRAND_SCALES[path[2]!]?.prefix ? `${path[2]} / ${path.at(-2)}` : path.at(-2)!);
+  const palette = colors.map((t) => ({ name: cssName('palette', t.key), group: paletteGroup(t.source) }));
   const alias = Object.fromEntries(
     brands.map((brand) => [
       brandName(brand),
@@ -335,17 +403,13 @@ function referenceFile(): string {
 // 5. Write dist/
 // ---------------------------------------------------------------------------
 
-/** `Finspace` → `finspace`, `Burgundy theme` → `burgundy`: a trailing "theme" in the mode name is dropped (§3.9). */
-const brandName = (mode: string | undefined) => kebab((mode ?? SINGLE_MODE_BRAND).replace(/\s+theme$/i, ''));
 const themeName = (mode: string) => mode.toLowerCase();
 const css = 'css/variables';
 
-if (new Set(brands.map(brandName)).size !== brands.length) throw new Error(`Two brand modes share a code name: ${brands.join()}`);
-
 const blocks: string[] = [];
-// A shared (single-mode) Alias Typography goes with the primitives, so every brand gets it.
-const shared: Layer[] = ['palette', 'space', 'radius', 'size', ...(sharedType ? (['font'] as Layer[]) : [])];
-const branded: Layer[] = sharedType ? ['color'] : ['color', 'font'];
+// Primitives, spacing, radius, sizes and typography (except branded font families) on :root.
+const SHARED: Layer[] = ['palette', 'space', 'radius', 'size', 'font'];
+const shared = (t: TransformedToken) => SHARED.includes(layer(t)) && !isBranded(t);
 const [primitives, ts, customMedia, tsBreakpoints] = await render(withTextStyles(tree(brands[0], themes[0])), [
   { format: css, filter: shared, selector: ':root' },
   { format: 'fin/ts' },
@@ -356,7 +420,7 @@ blocks.push(primitives!);
 
 for (const [i, brand] of brands.entries()) {
   const [block] = await render(withTextStyles(tree(brand, themes[0])), [
-    { format: css, filter: branded, selector: `${i === 0 ? ':root,\n' : ''}[data-brand="${brandName(brand)}"]` },
+    { format: css, filter: isBranded, selector: `${i === 0 ? ':root,\n' : ''}[data-brand="${brandName(brand)}"]` },
   ]);
   blocks.push(block!);
 }

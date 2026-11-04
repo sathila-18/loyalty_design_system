@@ -8,7 +8,7 @@ import styles from './FinHeader.stories.module.css';
  * The bell's number badge is FinBadgeIndicator Red, whose number fails 4.5:1 in Dark (3.97:1, DESIGN.md §10 #3,
  * accepted). Only that badge is left out of the a11y check, in Dark.
  */
-const KNOWN_CONTRAST_ISSUES = ['html[data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"][data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])'];
 
 interface Args {
   heading: string;

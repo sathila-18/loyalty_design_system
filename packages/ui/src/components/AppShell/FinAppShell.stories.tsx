@@ -70,7 +70,7 @@ interface Args {
  * Accepted contrast exceptions (DESIGN.md §10 #3): a selected section's label in the side nav (4.32:1), and the bell's
  * number badge in Dark (3.97:1). Only those are left out of the a11y check, as in the side nav and header stories.
  */
-const KNOWN_CONTRAST_ISSUES = ['[data-selected="sub-item"]', 'html[data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] [data-selected="sub-item"]', 'html[data-brand="finspace"][data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])'];
 
 const meta: Meta<Args> = {
   title: 'Components/Layout/App shell',

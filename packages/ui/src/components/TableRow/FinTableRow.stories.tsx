@@ -30,7 +30,7 @@ interface Args extends Pick<FinTableRowProps, 'selected' | 'selectCell'> {
  * text on a Selected row while hovered (`text-secondary` on `bg-active-hover`, 3.80:1; hover isn't part of the run).
  * Only links on Selected rows are left out of the check.
  */
-const KNOWN_CONTRAST_ISSUES = ['tr[data-selected] a'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] tr[data-selected] a'];
 
 const meta: Meta<Args> = {
   title: 'Internal/Table/Table row',

@@ -28,7 +28,7 @@ interface Args {
  * text stories (DESIGN.md §9.20). The country menu's dial code on the Selected row in Dark is the accepted List-standard
  * caption exception (4.48:1, §10 #3, as the List stories). Only those are left out of the a11y check.
  */
-const KNOWN_CONTRAST_ISSUES = ['[data-tone="disabled"]', 'html[data-theme="dark"] li[data-selected] [data-thickness]'];
+const KNOWN_CONTRAST_ISSUES = ['[data-tone="disabled"]', 'html[data-brand="finspace"][data-theme="dark"] li[data-selected] [data-thickness]'];
 
 /**
  * A single-line text field (Figma Input field-standard). Hover, focus and type in it to see the states; Payment groups a

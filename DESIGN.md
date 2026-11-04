@@ -70,38 +70,38 @@ If this file and Figma disagree, **Figma wins**. Flag the difference so this fil
 
 ## 3. Foundations: tokens
 
-Source: `tokens/design.tokens.json`, with 528 variables in 5 collections (3 Nov 2026; was 434).
+Source: `tokens/design.tokens.json`, with 645 variables in 5 collections (4 Nov 2026; was 528 on 3 Nov, 434 before).
 
 | Collection | Count | Modes | Purpose |
 |---|---|---|---|
-| `Primitives` | 238 | — | Raw color scales, type scale, sizes. Includes the `Burgundy theme` group (87): the Burgundy scale plus 77 copies of the Fintech scales, which aren't generated (§3.1, §3.9) |
-| `Alias Typography` | 92 | one mode, **shared by every brand** | Text style building blocks (family, weight, size, line height) |
-| `Alias Colors` | 84 | **`Finspace`, `Burgundy theme`** (brands) | Role names for primitive scales. **This is the brand layer.** 77 + the 7 Primary dark aliases (3 Nov 2026) |
-| `Color collection` | 87 | **Light / Dark** | **Semantic colors that components use** |
-| `Alias Spacing & Radius` | 24 | — | Spacing and radius scales |
+| `Primitives` | 337 | — | Raw color scales, type scale, sizes. Includes the `Burgundy theme` group (87): the Burgundy scale plus 77 copies of the Fintech scales, which aren't generated (§3.1, §3.9); the `Sampath` group (97), Sampath's own scales (§3.1); and the Sampath font family `Font style/Sampath` (§3.4) |
+| `Alias Typography` | 92 | **`Finspace`, `Burgundy theme`, `Sampath`** (brands; since 4 Nov 2026) | Text style building blocks (family, weight, size, line height). **Only the font family differs** between brands (§3.4) |
+| `Alias Colors` | 103 | **`Finspace`, `Burgundy theme`, `Sampath`** (brands) | Role names for primitive scales. **This is the brand layer.** 77 + the 7 Primary dark aliases (3 Nov 2026) + 14 Neutral dark and 5 Neutral light aliases (4 Nov 2026, §3.2) |
+| `Color collection` | 88 | **Light / Dark** | **Semantic colors that components use** |
+| `Alias Spacing & Radius` | 25 | — | Spacing and radius scales |
 
 ### 3.0 How the layers work
 
 ```
-Primitives (raw hex)  →  Alias Colors (brand modes: Finspace, Burgundy)  →  Color collection (Light / Dark)  →  components
+Primitives (raw hex)  →  Alias Colors (brand modes: Finspace, Burgundy, Sampath)  →  Color collection (Light / Dark)  →  components
 ```
 
 | Layer | Figma collection | Modes | Code scoping |
 |---|---|---|---|
 | 1. Primitives | `Primitives` | none | `:root` |
-| 2. Alias (brand) | `Alias Colors` | **one mode per brand** (today: `Finspace`, `Burgundy theme`) | `[data-brand="…"]`; Finspace also on `:root` |
-| 2. Alias typography | `Alias Typography` | one mode, shared (a brand could get its own mode later) | `:root` while shared; `[data-brand="…"]` once it has a mode per brand |
+| 2. Alias (brand) | `Alias Colors` | **one mode per brand** (today: `Finspace`, `Burgundy theme`, `Sampath`) | `[data-brand="…"]`; Finspace also on `:root` |
+| 2. Alias typography | `Alias Typography` | **one mode per brand** since 4 Nov 2026 (only the font family differs) | Font families in `[data-brand="…"]`; sizes, weights, line heights and the text-style shorthands on `:root` |
 | 3. Semantic (theme) | `Color collection` | **Light / Dark** | `[data-theme="light|dark"]` |
 
 - **Brands live in the alias layer as modes.** Each brand mode points the same alias names (`Primary-500`, `Secondary-500`…) at that brand's primitives. Adding a brand = adding a mode in `Alias Colors` (and its primitives); semantic tokens and components don't change.
 - **Light and Dark live in the semantic layer as modes.** Semantic tokens point at alias names, so every brand gets Light and Dark automatically.
 - **In code** the two attributes combine freely on `<html>`: `data-brand` picks the alias values, `data-theme` picks the semantic mapping.
-- **`data-brand` goes on `<html>` only** (decided 14 Oct 2026). Semantic colors are computed where `data-theme` is set, so a `data-brand` further down the page wouldn't update them. `data-theme` may also be set on an inner element (for example side-by-side Light/Dark previews in Storybook).
-- The token build reads the `Alias Colors` modes from the export and writes one `[data-brand]` block per mode: `data-brand="finspace"` (the default, also on `:root`) and `data-brand="burgundy"`. `Alias Typography` has one mode today, so both brands share it (it's written once, on `:root`). If it gets one mode per brand (the same names as `Alias Colors`), the build writes it per brand too, so a brand could change fonts and type scale. See §3.10.
+- **`data-brand` goes on `<html>` only** (decided 14 Oct 2026; restated 4 Nov 2026 for the per-brand font). Semantic colors and the text-style shorthands are computed where `data-theme` and `:root` set them, so a `data-brand` further down the page would change the alias variables but **not** the semantic colors or the font in the `--fin-font-*` shorthands: half a brand. Never set it on an inner element, not even in a preview. `data-theme` may also be set on an inner element (for example side-by-side Light/Dark previews in Storybook).
+- The token build reads the `Alias Colors` modes from the export and writes one `[data-brand]` block per mode: `data-brand="finspace"` (the default, also on `:root`), `"burgundy"` and `"sampath"`. Since 4 Nov 2026 `Alias Typography` has the same brand modes; the build writes only the **font families** per brand and stops if any size, weight or line height differs between brands (§3.4). See §3.10.
 
 ### 3.1 Primitive colors
 
-_Collection `Primitives` → `Colors/Fintech`, plus each extra brand's own scale (`Colors/Burgundy theme/Burgundy`, added 3 Nov 2026). Never use these directly in components; use the semantic tokens below._
+_Collection `Primitives` → `Colors/Fintech`, plus each extra brand's own scales (`Colors/Burgundy theme/Burgundy`, added 3 Nov 2026; `Colors/Sampath/*`, added 4 Nov 2026). Never use these directly in components; use the semantic tokens below._
 
 | Scale | 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -119,41 +119,95 @@ _Collection `Primitives` → `Colors/Fintech`, plus each extra brand's own scale
 
 Brand Key (hidden from publishing in Figma): `White` = `#ffffff`, `Black` = `#000000`
 
+#### Sampath scales (added 4 Nov 2026)
+
+_`Colors/Sampath/*`, generated as **`--fin-palette-sampath-<scale>-<step>`**: the `sampath-` prefix is needed because some names (`White-*`, `Brand Key`) clash with Fintech's (§3.9). Unlike Burgundy's group, these are Sampath's own values, not copies. Sampath brand only._
+
+| Scale (Sampath role) | 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Orange (Primary, Primary dark) | `#fde7d6` | `#fcd5ba` | `#fac199` | `#f8a56a` | `#f6944d` | `#f47921` | `#de6e1e` | `#ad5617` | `#864312` | `#66330e` |
+| Mirage (Secondary) | `#e8e8e9` | `#b6b9bc` | `#93979c` | `#62686e` | `#434a52` | `#141d27` | `#121a23` | `#0e151c` | `#0b1015` | `#080c10` |
+| Woodsmoke (Tertiary) | `#e8e8e8` | `#b6b6b7` | `#939394` | `#626263` | `#1e1e21` | `#141416` | `#121214` | `#0e0e10` | `#0b0b0c` | `#080809` |
+| Spring-wood (Tertiary1) | `#fefefd` | `#fdfbfa` | `#fbf9f8` | `#faf7f4` | `#f9f5f2` | `#f7f3ef` | `#e1ddd9` | `#afadaa` | `#888683` | `#686664` |
+| White (Tertiary2) | — | — | — | — | — | `#ffffff` | `#e8e8e8` | `#b5b5b5` | `#8c8c8c` | `#6b6b6b` |
+| Green (Success) | `#eaf6ef` | `#bee4cc` | `#9fd7b3` | `#73c590` | `#58b97b` | `#2ea85a` | `#2a9952` | `#217740` | `#195c32` | `#134726` |
+| Yellow (Warning) | `#fffcf6` | `#fef6e3` | `#fdf1d6` | `#fcebc3` | `#fce7b8` | `#fbe1a6` | `#e4cd97` | `#b2a076` | `#8a7c5b` | `#695f46` |
+| Red (Error) | `#f9e9e9` | `#edbaba` | `#e49998` | `#d86b69` | `#d14e4c` | `#c5221f` | `#b31f1c` | `#8c1816` | `#6c1311` | `#530e0d` |
+
+Brand Key (`--fin-palette-sampath-brand-key-white`, `-black`): `#ffffff`, `#000000`.
+
+- **Green** has Fintech's values. **Red** is close to Fintech's but not the same (Red-400 `#d14e4c` vs Error-400 `#d1454a`, so white on it is 4.28:1, §10). **Yellow** is a pale scale (the same values as Sampath's `Peach-Yellow`), which is why Sampath's warning text and icons fail in Light (§10).
+- **Not generated:** `Violet` and `Peach-Yellow` (20 variables) are in the group, but no alias points at them. The build only generates the scales listed for Sampath in `BRAND_SCALES` and stops if anything points at a scale that isn't listed. Violet is Sampath's own info colour; today Sampath's info tokens are orange (§10 #81).
+
 **The `Burgundy theme` group also holds copies** of Gray, White, Graphite, Platinum, Blue, Green, Yellow, Red and Brand Key (77 variables, the same values as Fintech's; checked 3 Nov 2026). Nothing points at them, so they **aren't generated**: only the Burgundy scale is (decided 3 Nov 2026). Their names would also clash with Fintech's. The build stops with an error if a variable ever points at a copy (§3.9).
 
 ### 3.2 Alias colors (brand layer)
 
-_Collection `Alias Colors` → `Colors/Fintech`, modes **Finspace** and **Burgundy theme** (§3.10). Role names that point 1:1 at a primitive scale (step for step). **In Burgundy only Primary differs**; every other group is the same in both brands._
+_Collection `Alias Colors` → `Colors/Fintech`, modes **Finspace**, **Burgundy theme** and **Sampath** (§3.10). Role names that point 1:1 at a primitive scale (step for step). **In Burgundy only Primary differs**; **Sampath points every group at its own scales** (§3.1)._
 
-| Alias group | Token pattern | Points to (Finspace) | Points to (Burgundy) |
-|---|---|---|---|
-| Primary | `Primary-50 … -900` | Electric Indigo | **Burgundy** |
-| Primary dark | `Primary-dark-*` (7) | Primary steps | Burgundy steps (table below) |
-| Secondary | `Secondary-50 … -900` | Gray (near-black) | Same |
-| Tertiary | `Tertiary-50 … -900` | Graphite | Same |
-| Tertiary1 | `Tertiary1-50 … -900` | Platinum | Same |
-| Tertiary2 | `Tertiary2-500 … -900` | White | Same |
-| Success | `Success-50 … -900` | Green | Same |
-| Warning | `Warning-50 … -900` | Yellow | Same |
-| Error | `Error-50 … -900` | Red | Same |
-| Key | `White`, `Black` | Brand Key White, Black | Same |
+| Alias group | Token pattern | Points to (Finspace) | Points to (Burgundy) | Points to (Sampath) |
+|---|---|---|---|---|
+| Primary | `Primary-50 … -900` | Electric Indigo | **Burgundy** | **Orange** |
+| Primary dark | `Primary-dark-*` (7) | Primary steps | Burgundy steps (table below) | Orange steps (table below) |
+| Secondary | `Secondary-50 … -900` | Gray (near-black) | Same | **Mirage** |
+| Tertiary | `Tertiary-50 … -900` | Graphite | Same | **Woodsmoke** |
+| Tertiary1 | `Tertiary1-50 … -900` | Platinum | Same | **Spring-wood** |
+| Tertiary2 | `Tertiary2-500 … -900` | White | Same | Sampath White |
+| Success | `Success-50 … -900` | Green | Same | Sampath Green |
+| Warning | `Warning-50 … -900` | Yellow | Same | Sampath Yellow |
+| Error | `Error-50 … -900` | Red | Same | Sampath Red |
+| Key | `White`, `Black` | Brand Key White, Black | Same | Sampath Brand Key |
+| Neutral dark | `Neutral-dark-*` (14) | Fintech steps (table below) | Same | Sampath steps (table below) |
+| Neutral light | `Neutral-light-*` (5) | Fintech steps (table below) | Same | Sampath steps (table below) |
 
 #### Primary dark (added 3 Nov 2026)
 
 _The brand colors the **Dark** theme uses for actions and brand fills. A brand needs its own steps in Dark: a scale step that reads well on Finspace's indigo can be too dark in another brand. 17 semantic tokens point here in Dark (§3.3); Light still uses the Primary scale. Finspace's values are the steps its Dark theme used before, so Finspace looks the same. Descriptions are Figma's._
 
-| Token | CSS | Finspace | Burgundy | Use (Figma description) |
-|---|---|---|---|---|
-| `Primary-dark-action` | `--fin-color-primary-dark-action` | Primary-400 `#817cff` | Burgundy-200 `#b98aa1` | Brand action colour in dark mode: links, action text, icons, active borders |
-| `Primary-dark-hovered` | `--fin-color-primary-dark-hovered` | Primary-300 `#9691ff` | Burgundy-100 `#d0b0c0` | Hover state of action text, icons and borders in dark mode |
-| `Primary-dark-pressed` | `--fin-color-primary-dark-pressed` | Primary-200 `#b7b4ff` | Burgundy-50 `#f0e6eb` | Pressed state of action text, icons and borders in dark mode |
-| `Primary-dark-focus` | `--fin-color-primary-dark-focus` | Primary-300 `#9691ff` | Burgundy-200 `#b98aa1` | Focus ring colour in dark mode |
-| `Primary-dark-fill` | `--fin-color-primary-dark-fill` | Primary-500 `#625bff` | Burgundy-300 `#985476` | Primary button and brand backgrounds in dark mode |
-| `Primary-dark-fill-hovered` | `--fin-color-primary-dark-fill-hovered` | Primary-400 `#817cff` | Burgundy-400 `#85335c` | Hover state of primary buttons in dark mode |
-| `Primary-dark-fill-pressed` | `--fin-color-primary-dark-fill-pressed` | Primary-300 `#9691ff` | Burgundy-500 `#660033` | Pressed state of primary buttons in dark mode |
+| Token | CSS | Finspace | Burgundy | Sampath | Use (Figma description) |
+|---|---|---|---|---|---|
+| `Primary-dark-action` | `--fin-color-primary-dark-action` | Primary-400 `#817cff` | Burgundy-200 `#b98aa1` | Orange-500 `#f47921` | Brand action colour in dark mode: links, action text, icons, active borders |
+| `Primary-dark-hovered` | `--fin-color-primary-dark-hovered` | Primary-300 `#9691ff` | Burgundy-100 `#d0b0c0` | Orange-400 `#f6944d` | Hover state of action text, icons and borders in dark mode |
+| `Primary-dark-pressed` | `--fin-color-primary-dark-pressed` | Primary-200 `#b7b4ff` | Burgundy-50 `#f0e6eb` | Orange-300 `#f8a56a` | Pressed state of action text, icons and borders in dark mode |
+| `Primary-dark-focus` | `--fin-color-primary-dark-focus` | Primary-300 `#9691ff` | Burgundy-200 `#b98aa1` | Orange-500 `#f47921` | Focus ring colour in dark mode |
+| `Primary-dark-fill` | `--fin-color-primary-dark-fill` | Primary-500 `#625bff` | Burgundy-300 `#985476` | Orange-500 `#f47921` | Primary button and brand backgrounds in dark mode |
+| `Primary-dark-fill-hovered` | `--fin-color-primary-dark-fill-hovered` | Primary-400 `#817cff` | Burgundy-400 `#85335c` | Orange-600 `#de6e1e` | Hover state of primary buttons in dark mode |
+| `Primary-dark-fill-pressed` | `--fin-color-primary-dark-fill-pressed` | Primary-300 `#9691ff` | Burgundy-500 `#660033` | Orange-700 `#ad5617` | Pressed state of primary buttons in dark mode |
 
 - **Fills go opposite ways** (intended, design 3 Nov 2026): Finspace's dark button fill gets lighter on hover and press (500 → 400 → 300); Burgundy's gets darker (300 → 400 → 500).
 - Finspace's values point at its **Primary aliases**; Burgundy's point straight at **Burgundy primitives**. Both resolve the same way in code.
+- **Sampath** fills like Burgundy (darker on hover and press: Orange 500 → 600 → 700), and uses Orange-500 for both the action colour and the fill, so white on Sampath's Primary buttons is 2.76:1 in both themes (§10).
+
+#### Neutral dark and Neutral light (added 4 Nov 2026)
+
+_Role aliases for the greys the semantic tokens use: **Neutral dark** (14) for the Dark theme, **Neutral light** (5) for a few Light tokens. 19 semantic tokens point here (§3.3)._
+
+**Why they exist:** before 4 Nov 2026 those semantic tokens pointed at fixed steps of the Fintech-shaped aliases (for example `bg-secondary` Dark = `Tertiary-900`). That worked while every brand shared Fintech's greys. Sampath's grey scales (Mirage, Woodsmoke, Spring-wood) don't put the right shades at the same step numbers, so one fixed step can't serve both. Each brand now points these roles wherever it needs. **Finspace and Burgundy point them at exactly the values the semantic tokens had before**, so both look the same (checked 4 Nov 2026: every variable on `main` resolves to the same value on the branch, Light and Dark, in headless Chrome).
+
+| Alias | CSS | Finspace and Burgundy | Sampath | Used by (semantic) |
+|---|---|---|---|---|
+| `Neutral-dark-bg` | `--fin-color-neutral-dark-bg` | Secondary-500 `#19191a` | Tertiary-500 (Woodsmoke) `#141416` | `bg-primary` Dark |
+| `Neutral-dark-surface-2` | `--fin-color-neutral-dark-surface-2` | Graphite-900 `#292929` | Woodsmoke-400 `#1e1e21` | `bg-secondary` Dark |
+| `Neutral-dark-surface-3` | `--fin-color-neutral-dark-surface-3` | Graphite-800 `#363636` | Mirage-400 `#434a52` | `bg-tertiary` Dark |
+| `Neutral-dark-bg-neutral` | `--fin-color-neutral-dark-bg-neutral` | Graphite-700 `#464646` | Mirage-400 `#434a52` | `bg-neutral` Dark |
+| `Neutral-dark-bg-icons` | `--fin-color-neutral-dark-bg-icons` | Graphite-700 `#464646` | Mirage-400 `#434a52` | `bg-icons` Dark |
+| `Neutral-dark-disabled-bg` | `--fin-color-neutral-dark-disabled-bg` | Graphite-800 `#363636` | Woodsmoke-300 `#626263` | `bg-disabled` Dark |
+| `Neutral-dark-secondary` | `--fin-color-neutral-dark-secondary` | Graphite-200 `#b7b7b7` | Spring-wood-600 `#e1ddd9` | `text-secondary`, `fg-secondary` Dark |
+| `Neutral-dark-tertiary` | `--fin-color-neutral-dark-tertiary` | Graphite-300 `#969696` | Spring-wood-700 `#afadaa` | `text-tertiary` Dark |
+| `Neutral-dark-placeholder` | `--fin-color-neutral-dark-placeholder` | Graphite-400 `#818181` | Mirage-100 `#b6b9bc` | `text-placeholder`, `fg-placeholder` Dark |
+| `Neutral-dark-disabled` | `--fin-color-neutral-dark-disabled` | Graphite-600 `#595959` | Mirage-300 `#62686e` | `text-disabled`, `fg-disabled` Dark |
+| `Neutral-dark-disabled-on_bg` | `--fin-color-neutral-dark-disabled-on-bg` | Graphite-500 `#626262` | Mirage-100 `#b6b9bc` | `text-disabled-on_bg`, `fg-disabled-on_bg` Dark |
+| `Neutral-dark-border` | `--fin-color-neutral-dark-border` | Tertiary-700 `#464646` | Tertiary1-900 (Spring-wood) `#686664` | `border-default` Dark |
+| `Neutral-dark-border-subtle` | `--fin-color-neutral-dark-border-subtle` | Graphite-800 `#363636` | Mirage-400 `#434a52` | `border-subtle` Dark |
+| `Neutral-dark-border-disabled` | `--fin-color-neutral-dark-border-disabled` | Graphite-800 `#363636` | Woodsmoke-300 `#626263` | `border-disabled` Dark |
+| `Neutral-light-bg` | `--fin-color-neutral-light-bg` | Tertiary2-500 `#ffffff` | Sampath White-500 `#ffffff` | `bg-primary` Light |
+| `Neutral-light-surface-2` | `--fin-color-neutral-light-surface-2` | Platinum-200 `#f5f5f5` | Spring-wood-500 `#f7f3ef` | `bg-secondary` Light |
+| `Neutral-light-disabled` | `--fin-color-neutral-light-disabled` | Graphite-200 `#b7b7b7` | Mirage-100 `#b6b9bc` | `text-disabled`, `fg-disabled` Light |
+| `Neutral-light-secondary` | `--fin-color-neutral-light-secondary` | Graphite-500 `#626262` | Mirage-300 `#62686e` | `fg-secondary` Light |
+| `Neutral-light-border-strong` | `--fin-color-neutral-light-border-strong` | Graphite-400 `#818181` | Spring-wood-800 `#888683` | `border-strong` Light |
+
+- Some Finspace values point at Fintech primitives directly (`Graphite-*`, `Platinum-*`) rather than at the `Tertiary*` aliases; they resolve to the same hex.
+- **Sampath Light surfaces** don't follow Finspace's order: `bg-tertiary` (Tertiary1-400 `#f9f5f2`) is **lighter** than `bg-secondary` (`#f7f3ef`), and `border-subtle` is the same colour as `bg-tertiary` (1.08:1 on white). Grey panels, table headers and subtle borders barely separate from white. Open for design's review (§10 #82).
 ### 3.3 Semantic colors (Light / Dark)
 
 _Collection `Color collection`, modes **Light** and **Dark**. **Components must only use these.** Hex values are resolved for reference; code must reference the token, not the hex._
@@ -279,7 +333,9 @@ _Alpha tokens point at an alias color plus an opacity (Figma's color + opacity v
 
 Font family: **Inter** (`Primitives/Typography/Font style/Primary`), self-hosted, weights 400, 500, 600, 700. Letter spacing 0 for all styles.
 
-**Fallback stack (design decision, 14 Oct 2026):** `Inter, system-ui, sans-serif`. Figma only has `Inter`, so the token value stays `Inter`; The token build appends the fallbacks to every font family value (`--fin-palette-font-family-primary: Inter, system-ui, sans-serif`), so all `--fin-font-*` shorthands get them and a future brand font would too. Text never falls back to the browser's default serif font if Inter fails to load.
+**Per brand (added 4 Nov 2026):** `Alias Typography` has a mode per brand. **Only the font family differs**: Finspace and Burgundy use Inter; **Sampath uses Hanken Grotesk** (`Font style/Sampath`, `--fin-palette-font-family-sampath`), self-hosted from `@fontsource/hanken-grotesk` (weights 400–800, Latin and Latin Extended; 800 is bundled for the Sampath brief, no text style uses it). Sizes, weights and line heights are the same in every brand; **the token build stops** if any of them differs (sizes per brand would change every component's layout). The family parts (`--fin-font-*-family`) are written per brand in `[data-brand]`; the shorthands (`--fin-font-body-large`…) stay on `:root` and pick up the brand's family, so components need no change. The browser only downloads Hanken Grotesk where `data-brand="sampath"` is set on `<html>`. Hanken Grotesk is a little wider than Inter at the same size, so labels in fixed-width places (buttons, table cells, side nav) can truncate sooner: check them in Sampath. Storybook's preview loads both fonts before a story renders, so the a11y check never measures the fallback font.
+
+**Fallback stack (design decision, 14 Oct 2026):** `Inter, system-ui, sans-serif`. Figma only has `Inter`, so the token value stays `Inter`; The token build appends the fallbacks to every font family value (`--fin-palette-font-family-primary: Inter, system-ui, sans-serif`), so all `--fin-font-*` shorthands get them, brand fonts too (`--fin-palette-font-family-sampath: "Hanken Grotesk", system-ui, sans-serif`; a family with a space is quoted). Text never falls back to the browser's default serif font if Inter fails to load.
 
 | Text style (Figma) | Variable group | Weight | Size | Line height | Note |
 |---|---|---|---|---|---|
@@ -308,7 +364,7 @@ Font family: **Inter** (`Primitives/Typography/Font style/Primary`), self-hosted
 | `Button/Small` | `Button S` | 600 | 12 | 24 |  |
 
 - Line heights follow 1.3 (32 px and up), 1.4 (18–28 px) and 1.5 (16 px and below), except the Button styles, which use a fixed 24.
-- `ExtraBold-800` exists in Primitives but no style uses it, so weight 800 isn't bundled.
+- `ExtraBold-800` exists in Primitives but no style uses it, so Inter's weight 800 isn't bundled (Hanken Grotesk's is, above).
 
 ### 3.5 Spacing
 
@@ -382,9 +438,10 @@ All generated code lives in `packages/tokens/dist/` and is **generated from `tok
 **Theming in CSS:**
 
 ```css
-:root                          { /* primitives + alias typography (shared by every brand) */ }
-:root, [data-brand="finspace"] { /* alias colors → primitives (Finspace, the default) */ }
-[data-brand="burgundy"]        { /* alias colors → primitives (Burgundy) */ }
+:root                          { /* primitives + alias typography (sizes, weights, line heights, text-style shorthands) */ }
+:root, [data-brand="finspace"] { /* alias colors → primitives + font families (Finspace, the default) */ }
+[data-brand="burgundy"]        { /* alias colors → primitives + font families (Burgundy) */ }
+[data-brand="sampath"]         { /* alias colors → primitives + font families (Sampath) */ }
 :root, [data-theme="light"]    { /* semantic colors → alias colors */ }
 [data-theme="dark"]            { /* semantic colors → alias colors */ }
 ```
@@ -398,10 +455,11 @@ All generated code lives in `packages/tokens/dist/` and is **generated from `tok
 - `LineHeight-64px 2` has a stray ` 2` in its name. Generate it as `line-height-64px`.
 - `Primitives/Sizes`: `Size-1024` to `Size-1920` are generated as breakpoints only (§3.7). `Size-375` isn't generated (`Size-343` is, since 22 Oct 2026: `--fin-size-343`). The other sizes are generated as `--fin-palette-size-*` and are only reached through the spacing and radius tokens.
 - `Font style/Primary` is the font family, not a style.
-- **Mode names aren't in the export when a collection has only one mode.** TokensBrücke writes `mode: {}` for a single-mode collection. **Since 3 Nov 2026 `Alias Colors` has two modes, so the export lists them** (`Finspace`, `Burgundy theme`) and the build reads the brands from there: adding a brand in Figma needs no build change (apart from its primitive scale, below). Only `Alias Typography` is still `mode: {}`; the build treats a single-mode `Alias Typography` as **shared by every brand** and writes it on `:root` (if it gets modes, they must match the `Alias Colors` modes, or the build stops). The `finspace` name config is now only a fallback if `Alias Colors` ever goes back to one mode.
-- **Brand code names come from the mode names:** kebab case, with a trailing " theme" dropped: `Finspace` → `finspace`, `Burgundy theme` → `burgundy` (`data-brand="burgundy"`). Renaming the Figma mode to "Burgundy" gives the same code name. Two modes with the same code name stop the build.
-- **A brand's primitive group copies every Fintech scale** (`Colors/Burgundy theme/Gray`, …; 77 copies, same values). Only the scales listed per brand in the build (`BRAND_SCALES`: Burgundy → `Burgundy`) are generated, as `--fin-palette-<scale>-<step>`. A reference to a copy that isn't generated stops the build. A new brand adds one line there.
+- **Mode names aren't in the export when a collection has only one mode.** TokensBrücke writes `mode: {}` for a single-mode collection. **Since 3 Nov 2026 `Alias Colors` has two modes, so the export lists them** (`Finspace`, `Burgundy theme`) and the build reads the brands from there: adding a brand in Figma needs no build change (apart from its primitive scale, below). Since 4 Nov 2026 `Alias Typography` has the brand modes too (spelled `Burgundy` there, `Burgundy theme` in `Alias Colors`: matched by code name). Its modes must match the brands, or the build stops; a single-mode `Alias Typography` would still be shared by every brand. The `finspace` name config is now only a fallback if `Alias Colors` ever goes back to one mode.
+- **Brand code names come from a fixed list** (`BRAND_SLUGS` in `build.ts`, since 4 Nov 2026): `Finspace` → `finspace`, `Burgundy theme` and `Burgundy` → `burgundy`, `Sampath` → `sampath`. Renaming a mode in Figma can't change a brand's code name; **an unknown mode stops the build** (add it to `BRAND_SLUGS`). Two modes with the same code name stop the build.
+- **A brand's primitive group copies every Fintech scale** (`Colors/Burgundy theme/Gray`, …; 77 copies, same values). Only the scales listed per brand in the build (`BRAND_SCALES`: Burgundy → `Burgundy`; Sampath → its 9 used scales, §3.1) are generated, as `--fin-palette-<scale>-<step>`, or `--fin-palette-<prefix>-<scale>-<step>` when the brand has a prefix (Sampath: `sampath-`, because its `White` and `Brand Key` names clash with Fintech's; `Brand Key` keeps the scale in the name: `--fin-palette-sampath-brand-key-white`). A reference to a scale that isn't generated stops the build. A new brand adds one line there.
 - **An alias can point at another alias** (Finspace's `Primary-dark-*` → `Primary-*`) **or at a primitive** (Burgundy's `Primary-dark-*` → `Burgundy-*`). Both are kept as `var()` within the brand block.
+- **Per-brand typography:** only `Font family` may differ between the `Alias Typography` modes; any other difference stops the build (§3.4). `EXPECTED.tokens` is the export's variable count (645 since 4 Nov 2026).
 - **Styles aren't in the export** (shadows, text styles, grids). Shadows and grids are recorded in §4 and hand-written in `packages/tokens/src/styles.css`. Text styles are generated by the token build as `--fin-font-*` shorthands from the `Alias Typography` variables, one per group (23).
 
 ### 3.10 Brands (added 3 Nov 2026)
@@ -409,15 +467,18 @@ All generated code lives in `packages/tokens/dist/` and is **generated from `tok
 | Brand | Figma mode | `data-brand` | Primary | Status |
 |---|---|---|---|---|
 | Finspace | `Finspace` | `finspace` (**default**: also on `:root`, and first in `finBrands`) | Electric Indigo | Live |
-| Burgundy | `Burgundy theme` | `burgundy` | Burgundy | **Not live**: a11y exceptions open (§10 #80) |
+| Burgundy | `Burgundy theme` | `burgundy` | Burgundy | **Not live**: a11y exceptions open (§10 #80, #106–#109) |
+| Sampath | `Sampath` | `sampath` | Orange (and its own greys, status colours and font, Hanken Grotesk) | **Not live** (added 4 Nov 2026): a11y exceptions open (§10 #83–#105; open items #81, #82), including one high priority (§10 #103) |
 
-- **Where it's set:** `data-brand` on `<html>` only, with `data-theme` (§3.0). Without it, Finspace applies.
-- **In code:** `finBrands` (`['finspace', 'burgundy']`) and the type `FinBrand` from `@finspace-loyalty/tokens`. The Storybook **Brand** toolbar lists every brand in `finBrands`.
-- **What a brand changes:** only the `Alias Colors` values (today only `Primary-*` and `Primary-dark-*`). Semantic tokens, components and typography are the same for every brand.
-- **Checks:** `pnpm test:a11y` runs every story for **every brand × theme** (4 projects: `a11y-finspace-light`, `a11y-finspace-dark`, `a11y-burgundy-light`, `a11y-burgundy-dark`), kept permanently (decided 3 Nov 2026).
+- **Where it's set:** `data-brand` on `<html>` only, with `data-theme` (§3.0). Without it, Finspace applies. Never on an inner element: the semantic colors and text-style shorthands wouldn't follow it.
+- **In code:** `finBrands` (`['finspace', 'burgundy', 'sampath']`) and the type `FinBrand` from `@finspace-loyalty/tokens`. The Storybook **Brand** toolbar lists every brand in `finBrands`.
+- **What a brand changes:** the `Alias Colors` values (Burgundy: only `Primary-*` and `Primary-dark-*`; Sampath: every group, §3.2) and the font family (Sampath, §3.4). Semantic tokens, components, sizes and spacing are the same for every brand.
+- **Checks:** `pnpm test:a11y` runs every story for **every brand × theme** (6 projects: `a11y-<brand>-<light|dark>` for finspace, burgundy, sampath), kept permanently (decided 3 Nov 2026). On a low-memory machine run them one at a time: `pnpm --filter @finspace-loyalty/storybook exec vitest run --project a11y-sampath-light`.
 - **Exceptions for a brand** (decided 3 Nov 2026): a contrast failure in a brand can only be accepted by design, one at a time, and **each exception is specific**: one token pair or one story's element, for one brand and one theme (an axe `exclude` selector starting `html[data-brand="…"][data-theme="…"]`). A whole check, story or brand is never switched off. Each one is listed in §10 with its reason and planned fix. Any new failure still fails `test:a11y`.
+- **How exceptions are applied in code (4 Nov 2026):** brand exceptions live in `apps/storybook/.storybook/brandContrastExceptions.ts`, one entry per token pair with the elements that show it. They switch off **only axe's `color-contrast` rule** (through the rule's `selector`), **only on those elements**, **only** under `html[data-brand][data-theme]` for that brand and theme; every other rule still runs on them. axe's selector engine doesn't support `~` or `+` (an unsupported selector silently switched the rule off everywhere on 4 Nov 2026), so the file throws if one is used. Non-text contrast (3:1) and hover states aren't checked by axe; their exceptions are in §10 only.
+- **Story exclusions are Finspace-only (4 Nov 2026).** The older per-story `exclude` lists (Finspace's accepted §10 #3 pairs) used to apply to every brand, which hid 4 Burgundy failures and 6 Sampath ones. They now start `html[data-brand="finspace"]`. Exclusions for **disabled** content (`[data-disabled]`, `[data-tone="disabled"]`) stay on for every brand: WCAG 1.4.3 exempts inactive controls.
 - **⚠️ A brand's exception list must be empty before that brand goes live.**
-- **Adding a brand:** add a mode to `Alias Colors` (and to `Alias Typography` only if it needs its own type) and its primitive scale in Figma; export; add its scale to `BRAND_SCALES` in `packages/tokens/build.ts`; bump `EXPECTED.tokens`; run the build, the Finspace comparison, the contrast table and `pnpm test:a11y`; update this table.
+- **Adding a brand:** add a mode to `Alias Colors` and `Alias Typography` (only the family may differ) and its primitive scales in Figma; export; add the mode to `BRAND_SLUGS` and its scales to `BRAND_SCALES` (with a prefix if any name clashes) in `packages/tokens/build.ts`; bump `EXPECTED.tokens`; self-host a new font in `packages/ui/src/styles/fonts.css` and load it in Storybook's `preview.tsx`; run the build, the comparison with `main` (every existing brand unchanged), the contrast table and `pnpm test:a11y`; update this table.
 
 ---
 
@@ -4021,7 +4082,58 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 77 | **Table: the bordered style, code only** (3 Nov 2026): FinTable `variant="bordered"` (§9.45) draws a 1px `border-subtle` line with `Radius-S` (8) round the header and rows; the toolbar and footer stay outside it. Built in code first at design's request, with Default (no border) staying the default. To add to Figma: a bordered table frame on the Table parts, for screens that use it. | Table | ⏳ Design to add in Figma |
 | 78 | **Tooltip: behaviour, code first** (3 Nov 2026): Figma Plain Tooltip shows only the look. Decided by design: opens 250 ms after hover or at once on keyboard focus, 4 (`Space-XS`) from the trigger, no arrow, flips at the window edge; long single line text wraps at 343. `Look=Basic` (in the 13 Oct inventory) is no longer in Figma; FinTooltip has no `look` prop. Nothing to change in Figma unless design wants the gap or wrapping shown there. | Tooltips | ✅ Decided |
 | 79 | **Dark tokens still on the plain Primary scale, and the info tokens** (3 Nov 2026, second brand): in Dark, `bg-active`, `bg-active-hover`, `bg-action-secondary` (+ hovered, pressed), `Alpha-brand` and the info tokens `bg-info`, `bg-info_secondary`, `text-info`, `fg-info`, `border-info` point at `Primary-*`, not at the Primary dark aliases (§3.2), so in Burgundy they turn burgundy. **Decided by design 3 Nov 2026:** the non-info ones are fine for now; **the info tokens move to a new blue later** (also fixes `border-info` Dark, already planned). Until then Burgundy Dark has `border-info` and `bg-info` at 2.20:1 on `bg-primary` (§10 #80). | Foundation › Color collection | ⏳ Later (new blue) |
-| 80 | **Burgundy: contrast exceptions** (3 Nov 2026). Rule (§3.10): each exception is one token pair or one story's element, for one brand and theme, accepted by design, with a reason and a planned fix; a whole check or brand is never switched off; any new failure still fails `test:a11y`; **a brand's list must be empty before it goes live**. **`pnpm test:a11y` passes in all four projects** (1888 tests, 3 Nov 2026), so no axe exclusion is needed. The token contrast table found 4 Burgundy-only failures the stories don't exercise (hover states and non-text contrast aren't checked by axe; two tokens aren't used by any component): (1) `text-secondary` on `bg-active-hover`, **Light**, 2.95:1: a Selected table row or list row while hovered (FinTableRow, FinListStandard); hover only, the same pair Finspace accepted at 3.80:1 (§10 #3). Planned fix: design to choose a lighter `bg-active-hover` step for Burgundy or a darker hover text. (2) `border-info` on `bg-primary`, **Dark**, 2.20:1: the Info badge's outline (FinBadge `info`); the label passes (9.57:1). Planned fix: the new info blue (§10 #79). (3) `bg-info` on `bg-primary`, **Dark**, 2.20:1: no component uses `bg-info` today. Planned fix: the new info blue (§10 #79). (4) `text-white_subtle` on `bg-brand`, **Dark**, 3.67:1: no component uses it today; Finspace fails it too (3.18:1, §10 #3). Planned fix: with §10 #3. **All four accepted by design 3 Nov 2026** as documented exceptions until their fixes land. Burgundy isn't live until this list is empty. | Foundation › Color collection | ⏳ Accepted (4 open exceptions) |
+| 80 | **Burgundy: contrast exceptions** (3 Nov 2026). Rule (§3.10): each exception is one token pair or one story's element, for one brand and theme, accepted by design, with a reason and a planned fix; a whole check or brand is never switched off; any new failure still fails `test:a11y`; **a brand's list must be empty before it goes live**. **`pnpm test:a11y` passes in all four projects** (1888 tests, 3 Nov 2026), so no axe exclusion is needed. (Corrected 4 Nov 2026: that pass relied on Finspace's story exclusions, which applied to every brand. Scoped to Finspace, they showed 4 more Burgundy failures, the same pairs Finspace accepted under §10 #3: §10 #106–#109.) The token contrast table found 4 Burgundy-only failures the stories don't exercise (hover states and non-text contrast aren't checked by axe; two tokens aren't used by any component): (1) `text-secondary` on `bg-active-hover`, **Light**, 2.95:1: a Selected table row or list row while hovered (FinTableRow, FinListStandard); hover only, the same pair Finspace accepted at 3.80:1 (§10 #3). Planned fix: design to choose a lighter `bg-active-hover` step for Burgundy or a darker hover text. (2) `border-info` on `bg-primary`, **Dark**, 2.20:1: the Info badge's outline (FinBadge `info`); the label passes (9.57:1). Planned fix: the new info blue (§10 #79). (3) `bg-info` on `bg-primary`, **Dark**, 2.20:1: no component uses `bg-info` today. Planned fix: the new info blue (§10 #79). (4) `text-white_subtle` on `bg-brand`, **Dark**, 3.67:1: no component uses it today; Finspace fails it too (3.18:1, §10 #3). Planned fix: with §10 #3. **All four accepted by design 3 Nov 2026** as documented exceptions until their fixes land. Burgundy isn't live until this list is empty. | Foundation › Color collection | ⏳ Accepted (4 open exceptions) |
+
+#### Sampath brand (added 4 Nov 2026)
+
+Sampath (§3.10) is **not live**. Its exceptions follow the §3.10 rule: each is one token pair, for one brand and theme, accepted by design, with a cause and a planned fix; **the list must be empty before Sampath goes live**. Accepted 4 Nov 2026 **as they are, with no token changes in this branch**: the fixes come with a later Figma export. Ratios are WCAG contrast ratios, checked with the resolved tokens and by axe in `pnpm test:a11y` (text only; axe doesn't check non-text 3:1 or hover). In code: `apps/storybook/.storybook/brandContrastExceptions.ts` (§3.10).
+
+**Fix later** (in this order):
+1. **HIGH: the warning number badge** (§10 #103, 1.56:1): close to unreadable.
+2. **Warning text and icons in Light** (§10 #87, #88): Sampath's Yellow is a pale scale.
+3. **Info colour:** orange instead of Sampath's Violet (§10 #81). Clears the info banner exception (§10 #97).
+4. **Orange contrast:** `text-action` (§10 #83, #86, #99–#101), the white-on-orange buttons and badges (§10 #89–#93), and the icons on `bg-secondary` (§10 #84, #85, #94–#96).
+5. **Red:** white on Red-400 in Dark (4.28:1, §10 #98) would need a new alias, so Finspace doesn't change.
+6. **Light surface separation** (§10 #82, pending design's review).
+
+| # | Item | Where | Status |
+|---|---|---|---|
+| 81 | **Sampath info uses orange, not Sampath's Violet** (4 Nov 2026). Sampath's info tokens (`bg-info`, `bg-info_secondary`, `text-info`, `fg-info`, `border-info`) follow the Primary scale, so they're orange: info looks like a brand action, and `text-info` on `bg-info_secondary` fails in Light (§10 #97). Sampath's own system uses **Violet** for info; the scale is in the export (`Colors/Sampath/Violet`) but nothing points at it, so it isn't generated (§3.1). Same root cause as §10 #79 (info tokens on the Primary scale). Fix: point Sampath's info tokens at Violet (likely through an info alias, so Finspace doesn't change). | Foundation › Color collection, Sampath | ⏳ Later (new export) |
+| 82 | **Sampath Light: surfaces barely separate** (4 Nov 2026). `bg-secondary` `#f7f3ef` is 1.10:1 on white; `bg-tertiary` `#f9f5f2` is **lighter** than `bg-secondary` (Finspace's is darker), and `border-subtle` is the same colour as `bg-tertiary` (1.08:1 on white). The side nav, grey panels, table headers and subtle borders blend into white pages. Not a WCAG failure (surfaces and decorative borders have no contrast minimum), but the layout loses structure. To review in Storybook (Sampath Light). | Foundation › Color collection, Sampath | ❓ Design to review |
+| 83 | **Sampath: contrast exception: `text-action` on `bg-primary`, Light, 2.76:1.** WCAG 1.4.3 (text, 4.5:1). Cause: Sampath's action colour is its brand orange, Orange-500 `#f47921`, light on white. Elements: Secondary and Tertiary button labels, table link cells, the side nav's current page, the current step, the "Skip to content" link. Fix: a darker action step for Sampath text (Orange-700 `#ad5617` is 5.10:1 on white). | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 84 | **Sampath: contrast exception: `fg-action` on `bg-primary`, Light, 2.76:1.** WCAG 1.4.11 (non-text, 3:1). Cause: Orange-500, as #83. Elements: action icons (Secondary and Tertiary buttons, links). Not checked by axe. Fix: with #83. | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 85 | **Sampath: contrast exception: `fg-brand` on `bg-primary`, Light, 2.76:1.** WCAG 1.4.11 (3:1). Cause: Orange-500, as #83. Elements: brand icons on white. Not checked by axe. Fix: with #83. | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 86 | **Sampath: contrast exception: `text-hovered` on `bg-primary`, Light, 3.30:1.** WCAG 1.4.3 (4.5:1). Cause: Orange-600 `#de6e1e`. Elements: hovered Secondary and Tertiary buttons and links. Hover only, so axe doesn't check it (Finspace accepts hover states, §10 #3). Fix: with #83. | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 87 | **Sampath: contrast exception: `text-warning`, Light: 2.57:1 on `bg-primary`, 2.51:1 on `bg-warning_secondary`.** WCAG 1.4.3 (4.5:1). Cause: Sampath's Yellow is a pale scale; `text-warning` is Yellow-700 `#b2a076`. Elements: warning badges, warning helper text, warning banners and a banner's warning button. Fix: a real warning colour for Sampath, or a much darker step. | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 88 | **Sampath: contrast exception: `fg-warning`, Light: 1.56:1 on `bg-primary`, 1.52:1 on `bg-warning_secondary`.** WCAG 1.4.11 (3:1). Cause: pale Yellow, `fg-warning` is Yellow-600 `#e4cd97`. Elements: warning icons (helper text, banners, badges). Not checked by axe. Fix: with #87. | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 89 | **Sampath: contrast exception: `text-white_both` on `bg-action-primary`, Light and Dark, 2.76:1.** WCAG 1.4.3 (4.5:1). Cause: white on Orange-500 (Sampath uses the same fill in both themes, §3.2). Elements: every Primary button label. Fix: a darker fill, or dark text on the orange (Sampath's own system has the same pair). | Sampath Light, Dark | ✅ Accepted by design (4 Nov 2026); fix later |
+| 90 | **Sampath: contrast exception: `text-white_both` on `bg-brand`, Light and Dark, 2.76:1.** WCAG 1.4.3 (4.5:1). Cause: as #89. Elements: Primary badges (FinBadge `primary`). Fix: with #89. | Sampath Light, Dark | ✅ Accepted by design (4 Nov 2026); fix later |
+| 91 | **Sampath: contrast exception: `text-white_both` on `bg-action-primary_hovered`, Light and Dark, 3.30:1.** WCAG 1.4.3 (4.5:1). Cause: white on Orange-600. Elements: hovered Primary buttons. Hover only (not checked by axe; Finspace accepts hover states, §10 #3). Fix: with #89. | Sampath Light, Dark | ✅ Accepted by design (4 Nov 2026); fix later |
+| 92 | **Sampath: contrast exception: `fg-white_both` on `bg-action-primary`, Light and Dark, 2.76:1.** WCAG 1.4.11 (3:1). Cause: as #89. Elements: icons in Primary buttons. Not checked by axe. Fix: with #89. | Sampath Light, Dark | ✅ Accepted by design (4 Nov 2026); fix later |
+| 93 | **Sampath: contrast exception: `fg-white_both` on `bg-brand`, Light and Dark, 2.76:1.** WCAG 1.4.11 (3:1). Cause: as #89. Elements: icons on brand fills (Primary badges). Not checked by axe. Fix: with #89. | Sampath Light, Dark | ✅ Accepted by design (4 Nov 2026); fix later |
+| 94 | **Sampath: contrast exception: `fg-active` on `bg-secondary`, Light, 2.99:1.** WCAG 1.4.11 (3:1). Cause: Orange-600 `#de6e1e` on Spring-wood-500. Elements: the side nav chevron of the section that holds the current page. Not checked by axe. Fix: with #83. | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 95 | **Sampath: contrast exception: `fg-hovered` on `bg-secondary`, Light, 2.99:1.** WCAG 1.4.11 (3:1). Cause: as #94. Elements: hovered icons on the side nav and grey panels. Not checked by axe. Fix: with #83. | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 96 | **Sampath: contrast exception: `fg-info` on `bg-secondary`, Light, 2.99:1.** WCAG 1.4.11 (3:1). Cause: info is orange (#81). Elements: info icons on grey surfaces. Not checked by axe. Fix: Violet (#81). | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 97 | **Sampath: contrast exception: `text-info` on `bg-info_secondary`, Light, 4.27:1.** WCAG 1.4.3 (4.5:1). Cause: info is orange (§10 #81): Orange-700 on Orange-50. Elements: info banners (title, text, the Focus areas rule list, the banner's button) and info badges. **Clears when Sampath's info moves to Violet (§10 #81).** | Sampath Light | ✅ Accepted by design (4 Nov 2026); clears with §10 #81 |
+| 98 | **Sampath: contrast exception: `text-white_both` on `bg-action-destructive`, Dark, 4.28:1.** WCAG 1.4.3 (4.5:1). Cause: Sampath Red-400 `#d14e4c` is slightly lighter than Fintech's Error-400 `#d1454a` (4.51:1); Sampath's own system has the same pair. Elements: destructive buttons (every remove dialog). `bg-error` has the same value, but no element shows white on it today. Fix: **needs a new alias** for the Dark destructive fill, so Finspace doesn't change. | Sampath Dark | ✅ Accepted by design (4 Nov 2026); fix later |
+| 99 | **Sampath: contrast exception: `text-action` on `bg-secondary`, Light, 2.50:1.** WCAG 1.4.3 (4.5:1). Cause: Orange-500, as #83 (Finspace accepts the same element at 4.32:1, §10 #3). Elements: the side nav label of the section that holds the current page. Fix: with #83. | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 100 | **Sampath: contrast exception: `text-action` on `bg-active`, Light, 2.31:1.** WCAG 1.4.3 (4.5:1). Cause: Orange-500 on Orange-50, as #83. Elements: selected chips (toolbar and Duration filters), the current page in the pagination, links in a selected table row. Fix: with #83. | Sampath Light | ✅ Accepted by design (4 Nov 2026); fix later |
+| 101 | **Sampath: contrast exception: `text-action` on `bg-active`, Dark, 3.71:1.** WCAG 1.4.3 (4.5:1). Cause: Orange-500 on Orange-900. Elements: as #100. Fix: with #83. | Sampath Dark | ✅ Accepted by design (4 Nov 2026); fix later |
+| 102 | **Sampath: contrast exception (cross-brand): `text-tertiary` on `bg-tertiary`, Dark, 4.00:1.** WCAG 1.4.3 (4.5:1). The same pair Finspace accepts at 4.09:1 (§10 #3) and Burgundy at 4.08:1 (#108). Cause: Spring-wood-700 on Mirage-400. Elements: Grey table header titles (every table). Fix: a lighter `Neutral-dark-tertiary` or darker `Neutral-dark-surface-3` (all brands). | Sampath Dark (cross-brand) | ✅ Accepted by design (4 Nov 2026); fix later |
+| 103 | **⚠️ HIGH PRIORITY. Sampath: contrast exception: `text-inverse` on `fg-warning`, Light, 1.56:1.** WCAG 1.4.3 (4.5:1). **Close to unreadable; fix before Sampath goes live.** Cause: a white number on Sampath's pale yellow (Yellow-600 `#e4cd97`). Elements: the warning number badge (FinBadgeIndicator `warning`). Finspace accepts the same pair at 3.24:1 (§10 #3). Possible fixes: a dark number on the yellow, or a real warning colour for Sampath (#87). | Sampath Light | ⚠️ Accepted for now (4 Nov 2026); **HIGH: fix before Sampath goes live** |
+| 104 | **Sampath: contrast exception (cross-brand): `text-inverse` on `fg-success`, Light, 3.64:1.** WCAG 1.4.3 (4.5:1). Same pair and value as Finspace (§10 #3): Sampath's Green is Fintech's. Elements: the success number badge. Fix: with §10 #3. | Sampath Light (cross-brand) | ✅ Accepted by design (4 Nov 2026); fix later |
+| 105 | **Sampath: contrast exception (cross-brand): `text-inverse` on `fg-error`, Dark, 3.98:1.** WCAG 1.4.3 (4.5:1). Same pair as Finspace (3.97:1, §10 #3). Elements: the error number badge, including the bell's unread count in the header on every page. Fix: with §10 #3. | Sampath Dark (cross-brand) | ✅ Accepted by design (4 Nov 2026); fix later |
+
+#### Burgundy: the §10 #3 pairs (added 4 Nov 2026)
+
+Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3.10). Scoped to Finspace, these showed in Burgundy. **The same pairs Finspace accepted under §10 #3 (cross-brand).** Accepted for Burgundy by design 4 Nov 2026.
+
+| # | Item | Where | Status |
+|---|---|---|---|
+| 106 | **Burgundy (cross-brand): `text-inverse` on `fg-warning`, Light, 3.24:1.** WCAG 1.4.3 (4.5:1). Same as Finspace (§10 #3). Elements: the warning number badge. Fix: with §10 #3. | Burgundy Light (cross-brand) | ✅ Accepted by design (4 Nov 2026); fix later |
+| 107 | **Burgundy (cross-brand): `text-inverse` on `fg-success`, Light, 3.63:1.** WCAG 1.4.3 (4.5:1). Same as Finspace (§10 #3). Elements: the success number badge. Fix: with §10 #3. | Burgundy Light (cross-brand) | ✅ Accepted by design (4 Nov 2026); fix later |
+| 108 | **Burgundy (cross-brand): `text-tertiary` on `bg-tertiary`, Dark, 4.08:1.** WCAG 1.4.3 (4.5:1). Same as Finspace (4.09:1, §10 #3) and Sampath (#102). Elements: Grey table header titles. Fix: with #102. | Burgundy Dark (cross-brand) | ✅ Accepted by design (4 Nov 2026); fix later |
+| 109 | **Burgundy (cross-brand): `text-inverse` on `fg-error`, Dark, 3.96:1.** WCAG 1.4.3 (4.5:1). Same as Finspace (3.97:1, §10 #3). Elements: the error number badge, including the bell in the header. Fix: with §10 #3. | Burgundy Dark (cross-brand) | ✅ Accepted by design (4 Nov 2026); fix later |
 
 ---
 
@@ -4094,6 +4206,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 > - **Approved and merged (3 Nov 2026):** `FinTooltip` (§9.82, Plain Tooltip: single line and rich), with FinTextBox `tone="inverse"` (§9.21).
 > - **Approved and merged (3 Nov 2026):** the account menu's Theme row tooltips (System, Light, Dark; FinSegmentedButton `tooltips`, FinTooltip `describesTrigger`, one open at a time, Escape caught first) (§9.34, §9.57, §9.82).
 > - **Approved and merged (3 Nov 2026):** the second brand, Burgundy (§3.10): token build for brands, Primary dark aliases, a11y per brand × theme; 4 accepted Burgundy exceptions (§10 #80), so Burgundy isn't live yet.
+> - **On `feat/brand-sampath`, not merged (4 Nov 2026; waiting for design's review):** the third brand, **Sampath** (§3.10): its own scales, Neutral dark and Neutral light aliases (§3.2), Hanken Grotesk (§3.4), story exclusions scoped to Finspace, brand exceptions as `color-contrast` only (`brandContrastExceptions.ts`); §10 #81–#109 (one HIGH: #103). Sampath isn't live.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4415,3 +4528,4 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 3 Nov 2026 | 0.2 | The Theme row tooltips approved by design and merged into `main`. |
 | 3 Nov 2026 | 0.2 | **Second brand: Burgundy** (§3.10). New export (528 variables): `Alias Colors` has the modes `Finspace` and `Burgundy theme` (only Primary differs), the 7 **Primary dark** aliases (§3.2), and 17 Dark semantic tokens pointing at them (§3.3; Light unchanged). The token build reads brands from the export (`data-brand="finspace"`, the default, and `"burgundy"`), shares the single-mode Alias Typography, generates only the Burgundy scale from the brand's primitive group (§3.1, §3.9). Finspace checked unchanged: every variable resolves to the same value as `main` in Light and Dark. Label L/M/S 500, `bg-icons` Dark, `text-hovered`/`text-pressed` Dark and `border-strong` confirmed as on `main` (no change in this export). `pnpm test:a11y` now runs every brand × theme (4 projects, permanent). Contrast table and proposed Burgundy exceptions: §10 #80; Dark Primary-scale and info tokens: §10 #79. |
 | 3 Nov 2026 | 0.2 | The second brand (Burgundy) approved by design and merged into `main`; the 4 Burgundy contrast exceptions accepted (§10 #80). |
+| 4 Nov 2026 | 0.2 | **Third brand: Sampath** (§3.10), on `feat/brand-sampath`, not merged. New export (645 variables): `Alias Colors` and `Alias Typography` have the modes `Finspace`, `Burgundy theme` (`Burgundy` in typography), `Sampath`; Sampath points every alias group at its own scales (Orange, Mirage, Woodsmoke, Spring-wood, White, Green, Yellow, Red; §3.1, §3.2); 14 **Neutral dark** and 5 **Neutral light** aliases, which 19 semantic tokens now use, so a brand can pick its own greys (§3.2). Token build: brand code names from `BRAND_SLUGS` (an unknown mode stops the build), `BRAND_SCALES` with a `sampath-` prefix, per-brand font families (only the family may differ; the build stops otherwise), quoted multi-word families (§3.4, §3.9). **Hanken Grotesk** 400–800 self-hosted for Sampath, loaded by Storybook's preview (§3.4). Finspace and Burgundy checked unchanged: all 497 variables on `main` resolve to the same values on the branch in Light and Dark (headless Chrome). `test:a11y` has 6 projects; story exclusions now Finspace-only (they hid 4 Burgundy and 6 Sampath failures); brand exceptions switch off only axe's `color-contrast`, only on the listed elements (`apps/storybook/.storybook/brandContrastExceptions.ts`). §10 #81–#105 (Sampath, one HIGH: #103), #106–#109 (Burgundy, cross-brand). |

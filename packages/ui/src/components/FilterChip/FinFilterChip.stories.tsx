@@ -9,7 +9,7 @@ import styles from './FinFilterChip.stories.module.css';
 const SIZES: FinChipSize[] = ['xsmall', 'small', 'large'];
 
 /** Selected text contrast is accepted by design (DESIGN.md §10 #3); only Selected chips skip the a11y check. */
-const KNOWN_CONTRAST_ISSUES = ['[data-variant="selected"]'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] [data-variant="selected"]'];
 
 type Args = Omit<FinFilterChipProps, 'leadingIcon' | 'leadingAccessory'> & ChipLeadingArgs;
 

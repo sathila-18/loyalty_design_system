@@ -22,9 +22,9 @@ const DIGITS: { label: string; count: number | undefined }[] = [
  * badges are left out of the a11y check, in that theme; dots and every other combination are still checked.
  */
 const KNOWN_CONTRAST_ISSUES = [
-  'html[data-theme="light"] [data-tone="warning"]:is([data-shape="circle"], [data-shape="pill"])',
-  'html[data-theme="light"] [data-tone="success"]:is([data-shape="circle"], [data-shape="pill"])',
-  'html[data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])',
+  'html[data-brand="finspace"][data-theme="light"] [data-tone="warning"]:is([data-shape="circle"], [data-shape="pill"])',
+  'html[data-brand="finspace"][data-theme="light"] [data-tone="success"]:is([data-shape="circle"], [data-shape="pill"])',
+  'html[data-brand="finspace"][data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])',
 ];
 
 /** Figma `Digits`, for the controls only: in code the shape follows `count`. */

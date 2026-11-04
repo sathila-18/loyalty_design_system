@@ -2,6 +2,7 @@ import type { Decorator, Preview } from '@storybook/react-vite';
 import { finBrands, finThemes, type FinBrand, type FinTheme } from '@finspace-loyalty/tokens';
 // The same stylesheet apps get (tokens, fonts, reset), from source so changes reload live.
 import '../../../packages/ui/src/styles/index.css';
+import { colorContrastSelector } from './brandContrastExceptions';
 import styles from './preview.module.css';
 
 /**
@@ -54,11 +55,14 @@ const withThemeAndBrand: Decorator = (Story, { globals }) => {
 /**
  * Wait for the fonts before a story renders. Without the icon font, a glyph is plain text ("edit"),
  * and the a11y check judges it as words: contrast as text, and button text missing from the label.
+ * Both brand fonts are loaded (Inter; Hanken Grotesk for Sampath, DESIGN.md §3.4), so switching
+ * brand in the toolbar never measures text in the fallback font.
  */
 const loadFonts = async () => {
   await Promise.all([
     document.fonts.load('24px "Material Symbols Rounded"', 'home'),
     ...[400, 500, 600, 700].map((weight) => document.fonts.load(`${weight} 16px Inter`)),
+    ...[400, 500, 600, 700, 800].map((weight) => document.fonts.load(`${weight} 16px "Hanken Grotesk"`)),
   ]);
 };
 
@@ -94,6 +98,9 @@ const preview: Preview = {
     a11y: {
       test: 'error',
       options: { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } },
+      // Brand contrast exceptions accepted by design (DESIGN.md §10): color-contrast only, only on the listed
+      // elements, only for that brand and theme (brandContrastExceptions.ts).
+      config: { rules: [{ id: 'color-contrast', selector: colorContrastSelector() }] },
     },
     // Page background comes from the theme (reset.css), not Storybook's backgrounds tool.
     backgrounds: { disable: true },

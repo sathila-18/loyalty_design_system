@@ -4,7 +4,7 @@ import { FinPaginationItem } from './FinPaginationItem';
 import styles from './FinPaginationItem.stories.module.css';
 
 /** Selected text contrast is accepted by design (DESIGN.md §10 #3); only the Selected item skips the a11y check. */
-const KNOWN_CONTRAST_ISSUES = ['[data-selected]'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] [data-selected]'];
 
 interface Args {
   page: string;

@@ -76,7 +76,7 @@ export const DurationFilter: Story = {
   name: 'Duration filter',
   args: { rows: 25, initialCustomerId: 10 },
   // The open chip is Selected: its text contrast is accepted by design (DESIGN.md §10 #3), as the chips' own stories.
-  parameters: { a11y: { context: { include: ['body'], exclude: [...PAGE_KNOWN_CONTRAST_ISSUES, '[data-variant="selected"]'] } } },
+  parameters: { a11y: { context: { include: ['body'], exclude: [...PAGE_KNOWN_CONTRAST_ISSUES, 'html[data-brand="finspace"] [data-variant="selected"]'] } } },
   play: async ({ canvasElement }) => {
     await userEvent.click(await within(canvasElement).findByRole('button', { name: /Duration: All/ }));
   },

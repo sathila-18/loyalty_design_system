@@ -8,7 +8,7 @@ import { FinTableToolbar } from './FinTableToolbar';
 import styles from './FinTableToolbar.stories.module.css';
 
 /** Selected chips (an open Assist chip, a selected filter chip): the accepted Selected text contrast (DESIGN.md §10 #3). */
-const KNOWN_CONTRAST_ISSUES = ['[data-variant="selected"]'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] [data-variant="selected"]'];
 
 const SEGMENTS = ['All segments', 'Staff', 'VIP', 'Regular'];
 

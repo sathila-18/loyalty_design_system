@@ -54,9 +54,9 @@ const columns = (onEditTier: (m: Member) => void = () => undefined): FinTableCol
  * current page in the pagination. Only those are left out of the a11y check.
  */
 const KNOWN_CONTRAST_ISSUES = [
-  'html[data-theme="dark"] th[data-type="grey"] [data-size]',
-  'tr[data-selected] a',
-  'nav [data-selected]',
+  'html[data-brand="finspace"][data-theme="dark"] th[data-type="grey"] [data-size]',
+  'html[data-brand="finspace"] tr[data-selected] a',
+  'html[data-brand="finspace"] nav [data-selected]',
 ];
 
 interface Args {

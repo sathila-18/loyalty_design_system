@@ -151,7 +151,7 @@ interface Args {
  * (`text-action` on the nav's `bg-secondary`) is 4.32:1 Light / 4.34:1 Dark. Only those labels are left out of the
  * a11y check (as the Main selection stories).
  */
-const KNOWN_CONTRAST_ISSUES = ['[data-selected="sub-item"]'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] [data-selected="sub-item"]'];
 
 /** Matches Figma's properties (DESIGN.md §9). Click the sections, pages and collapse button. */
 const meta: Meta<Args> = {

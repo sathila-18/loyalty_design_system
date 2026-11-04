@@ -29,7 +29,7 @@ interface Args {
  * (DESIGN.md §10 #3, 20 Oct 2026): the caption on a Selected row in Dark (`text-tertiary` on `bg-active`, 4.48:1), left
  * out in Dark only; the Selected+hovered description (3.80:1 Light), not part of the run (hover).
  */
-const KNOWN_CONTRAST_ISSUES = ['li[data-disabled]', 'html[data-theme="dark"] li[data-selected] [data-thickness]'];
+const KNOWN_CONTRAST_ISSUES = ['li[data-disabled]', 'html[data-brand="finspace"][data-theme="dark"] li[data-selected] [data-thickness]'];
 
 const meta: Meta<Args> = {
   title: 'Components/List/Plain/List standard',

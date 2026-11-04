@@ -101,9 +101,9 @@ export function usePageSideNav(currentHref: string): FinAppShellProps['sideNav']
  * page in the pagination. Only those are left out of the pages' a11y check.
  */
 export const PAGE_KNOWN_CONTRAST_ISSUES = [
-  '[data-selected="sub-item"]',
-  'html[data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])',
-  'html[data-theme="dark"] th[data-type="grey"] [data-size]',
-  'tr[data-selected] a',
-  'main nav [data-selected]',
+  'html[data-brand="finspace"] [data-selected="sub-item"]',
+  'html[data-brand="finspace"][data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])',
+  'html[data-brand="finspace"][data-theme="dark"] th[data-type="grey"] [data-size]',
+  'html[data-brand="finspace"] tr[data-selected] a',
+  'html[data-brand="finspace"] main nav [data-selected]',
 ];

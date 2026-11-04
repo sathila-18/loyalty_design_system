@@ -13,7 +13,7 @@ const COUNTRIES = Object.keys(finFlags) as FinFlagCountry[];
  * its content; in the field it takes the field's width.
  */
 /** The dial code on the Selected row in Dark: the accepted List-standard caption exception (4.48:1, DESIGN.md §10 #3). */
-const KNOWN_CONTRAST_ISSUES = ['html[data-theme="dark"] li[data-selected] [data-thickness]'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"][data-theme="dark"] li[data-selected] [data-thickness]'];
 
 const meta: Meta<typeof FinCountrySelector> = {
   title: 'Internal/Input field/Country selector',

@@ -31,7 +31,7 @@ interface Args extends Pick<FinTableHeaderRowProps, 'selectCell'> {
  * Known contrast failure (DESIGN.md §10 #3, raised 19 Oct 2026): in Dark, the Grey cell's title (`text-tertiary` on
  * `bg-tertiary`) is 4.08:1. Only those titles, in Dark, are left out of the a11y check.
  */
-const KNOWN_CONTRAST_ISSUES = ['html[data-theme="dark"] th[data-type="grey"] [data-size]'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"][data-theme="dark"] th[data-type="grey"] [data-size]'];
 
 /** INTERNAL: part of the table (FinTable). Matches Figma's properties (DESIGN.md §9). */
 const meta: Meta<Args> = {

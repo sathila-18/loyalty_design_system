@@ -22,7 +22,7 @@ interface Args extends Pick<FinTableHeaderCellProps, 'type' | 'checkbox' | 'show
  * Known contrast failure (DESIGN.md §10 #3, raised 19 Oct 2026): in Dark, the Grey cell's title (`text-tertiary` on
  * `bg-tertiary`) is 4.08:1. Only that title, in Dark, is left out of the a11y check.
  */
-const KNOWN_CONTRAST_ISSUES = ['html[data-theme="dark"] th[data-type="grey"] [data-size]'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"][data-theme="dark"] th[data-type="grey"] [data-size]'];
 
 const FILTER_OPTIONS = ['Active', 'Inactive', 'Pending'].map((value) => ({ value, label: value }));
 

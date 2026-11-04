@@ -4,7 +4,7 @@ import { FinTableFooter } from './FinTableFooter';
 import styles from './FinTableFooter.stories.module.css';
 
 /** Selected page text contrast is accepted by design (DESIGN.md §10 #3); only the current page skips the a11y check. */
-const KNOWN_CONTRAST_ISSUES = ['[data-selected]'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] [data-selected]'];
 
 interface Args {
   totalRows: number;

@@ -19,7 +19,7 @@ const SIZE_NAMES: Record<FinChipSize, string> = { xsmall: 'XSmall', small: 'Smal
  * Known contrast failure (DESIGN.md §10 #3, accepted by design 19 Oct 2026): Selected text-action on bg-active is
  * 4.13:1 Light and 3.95:1 Dark. Only Selected chips are left out of the a11y check; every other Type is checked.
  */
-const KNOWN_CONTRAST_ISSUES = ['[data-variant="selected"]'];
+const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] [data-variant="selected"]'];
 
 type Args = Omit<FinChipBaseProps, 'leadingIcon' | 'leadingAccessory' | 'trailingIcon'> &
   ChipLeadingArgs & {
