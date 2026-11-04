@@ -1,6 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Decorator, Meta, StoryObj } from '@storybook/react-vite';
+import { createContext, useContext } from 'react';
 import { userEvent } from 'storybook/test';
 import { FinIcon } from '../../icons/FinIcon';
+import { FinLogo } from '../../logos';
 import type { FinSideNavSection } from '../SideNav';
 import { FinTextBox } from '../TextBox';
 import { FinAppShell } from './FinAppShell';
@@ -26,15 +28,26 @@ const SECTIONS: FinSideNavSection[] = [
 
 const PROFILE = { name: 'Olivia James', email: 'oliviajames@email.com', initials: 'OJ', href: '#account' };
 
-/** The logo slot: a placeholder, as the side nav stories (Figma's `Logo sizes` comes from another library, §10 #25). */
-const LogoPlaceholder = () => (
-  <span className={styles.logo}>
-    <span className={styles.logoImage}>
-      <FinIcon name="image" size={36} color="brand" />
-    </span>
-    <span className={styles.companyName}>Fintech loyalty</span>
-  </span>
+/** The Brand toolbar's value, for the logo (Storybook's hooks only work in decorators and story functions). */
+const StoryBrandContext = createContext<string | undefined>(undefined);
+const withStoryBrand: Decorator = (Story, { globals }) => (
+  <StoryBrandContext.Provider value={globals['brand'] as string | undefined}>
+    <Story />
+  </StoryBrandContext.Provider>
 );
+
+/** The logo slot, as the side nav stories: Sampath's logo under Sampath, else the "Fintech loyalty" placeholder (§9.83). */
+const LogoPlaceholder = () =>
+  useContext(StoryBrandContext) === 'sampath' ? (
+    <FinLogo brand="sampath" />
+  ) : (
+    <span className={styles.logo}>
+      <span className={styles.logoImage}>
+        <FinIcon name="image" size={36} color="brand" />
+      </span>
+      <span className={styles.companyName}>Fintech loyalty</span>
+    </span>
+  );
 
 /** A stand-in for the page content: blocks of text, so the shell's layout and scrolling show. */
 function SampleContent({ blocks = 3 }: { blocks?: number }) {
@@ -74,6 +87,7 @@ const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] [data-selected="sub-
 
 const meta: Meta<Args> = {
   title: 'Components/Layout/App shell',
+  decorators: [withStoryBrand],
   parameters: { layout: 'fullscreen', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
   globals: { viewport: { value: 'desktop1920', isRotated: false } },
   args: { title: 'Programme configuration', description: 'One configuration per customer segment', blocks: 3, variant: 'default' },

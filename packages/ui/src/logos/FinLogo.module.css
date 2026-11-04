@@ -1,0 +1,46 @@
+/*
+ * FinLogo (DESIGN.md §9.83). The logo is artwork: an <img> at its own ratio, the height from the Size-* tokens
+ * (Figma Logo sizes: Small 41, Medium 53, Large 82, mapped to 40 / 56 / 80; Small fits the side nav's 40 slot).
+ */
+
+.logo {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: var(--logo-height);
+  vertical-align: middle;
+}
+
+.logo[data-size="small"] {
+  --logo-height: var(--fin-size-40);
+}
+
+.logo[data-size="medium"] {
+  --logo-height: var(--fin-size-56);
+}
+
+.logo[data-size="large"] {
+  --logo-height: var(--fin-size-80);
+}
+
+.art {
+  display: block;
+  width: auto;
+  height: 100%;
+}
+
+/*
+ * `auto`: Colored in Light, White in Dark, from the nearest `data-theme` (on <html>, or a side-by-side panel). A theme
+ * selector in a component, as FinButtonBase's (§9.25): an image can't follow a color token.
+ */
+.logo[data-colour="auto"] > .art[data-version="white"] {
+  display: none;
+}
+
+[data-theme="dark"] .logo[data-colour="auto"] > .art[data-version="coloured"] {
+  display: none;
+}
+
+[data-theme="dark"] .logo[data-colour="auto"] > .art[data-version="white"] {
+  display: block;
+}

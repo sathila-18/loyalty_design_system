@@ -53,6 +53,11 @@ describe('public API', () => {
     expect(ui).toHaveProperty('isFinPaymentMethod');
   });
 
+  it('exports FinLogo and its brands', () => {
+    expect(ui).toHaveProperty('FinLogo');
+    expect(ui.FIN_LOGO_BRANDS).toEqual(['sampath']);
+  });
+
   it('exports FinFlag and its registry', () => {
     expect(ui).toHaveProperty('FinFlag');
     expect(ui).toHaveProperty('finFlags');

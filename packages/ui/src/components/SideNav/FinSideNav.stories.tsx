@@ -1,10 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState, type MouseEvent, type ReactNode } from 'react';
+import type { Decorator, Meta, StoryObj } from '@storybook/react-vite';
+import { createContext, useContext, useState, type MouseEvent, type ReactNode } from 'react';
 // Storybook's hooks, for the story functions that also read the theme toolbar (`useGlobals`): its hooks and React's
 // can't be mixed in one story function.
 import { useEffect as useStoryEffect, useGlobals, useState as useStoryState } from 'storybook/preview-api';
 import { userEvent, within } from 'storybook/test';
 import { FinIcon } from '../../icons/FinIcon';
+import { FinLogo } from '../../logos';
 import avatarSample from '../Avatar/avatar-sample.jpg';
 import {
   FinSideNav,
@@ -94,19 +95,31 @@ const openAccountMenu = async (canvasElement: HTMLElement, name: string | RegExp
   await userEvent.click(within(canvasElement).getByRole('button', { name }));
 };
 
-/**
- * A stand-in for the product logo (Figma Logo sizes, Small, Coloured, With text): the `image` placeholder and
- * the product name, "Fintech loyalty" (Figma: "Company Name"; decided by design 2 Nov 2026). Apps pass their logo
- * in `logo` (DESIGN.md §6).
- */
-const LogoPlaceholder = () => (
-  <span className={styles.logo}>
-    <span className={styles.logoImage}>
-      <FinIcon name="image" size={36} color="brand" />
-    </span>
-    <span className={styles.companyName}>Fintech loyalty</span>
-  </span>
+/** The Brand toolbar's value, for the logo (Storybook's hooks only work in decorators and story functions). */
+const StoryBrandContext = createContext<string | undefined>(undefined);
+const withStoryBrand: Decorator = (Story, { globals }) => (
+  <StoryBrandContext.Provider value={globals['brand'] as string | undefined}>
+    <Story />
+  </StoryBrandContext.Provider>
 );
+
+/**
+ * The logo slot follows the Brand toolbar (decided by design 4 Nov 2026): Sampath's logo (FinLogo, Small; White in
+ * Dark), or for Finspace and Burgundy a stand-in (Figma Logo sizes, Small, Coloured, With text): the `image`
+ * placeholder in the brand colour and the product name, "Fintech loyalty" (Figma: "Company Name"; decided by design
+ * 2 Nov 2026). Apps pass their logo in `logo` (DESIGN.md §6, §9.83).
+ */
+const LogoPlaceholder = () =>
+  useContext(StoryBrandContext) === 'sampath' ? (
+    <FinLogo brand="sampath" />
+  ) : (
+    <span className={styles.logo}>
+      <span className={styles.logoImage}>
+        <FinIcon name="image" size={36} color="brand" />
+      </span>
+      <span className={styles.companyName}>Fintech loyalty</span>
+    </span>
+  );
 
 /** Links in the stories change the current page instead of leaving Storybook. */
 function Routed({ start, children }: { start?: string; children: (href: string | undefined) => ReactNode }) {
@@ -156,6 +169,7 @@ const KNOWN_CONTRAST_ISSUES = ['html[data-brand="finspace"] [data-selected="sub-
 /** Matches Figma's properties (DESIGN.md §9). Click the sections, pages and collapse button. */
 const meta: Meta<Args> = {
   title: 'Components/Side nav/Side menu',
+  decorators: [withStoryBrand],
   parameters: { layout: 'fullscreen', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
   args: { type: 'expanded', menu: '#dashboard', showLogo: true, showProfile: true, profileAction: 'menu', role: 'Admin', variant: 'default' },
   argTypes: {

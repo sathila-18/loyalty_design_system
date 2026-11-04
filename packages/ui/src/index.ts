@@ -2,6 +2,7 @@
 export * from './icons';
 export * from './flags';
 export * from './payment';
+export * from './logos';
 export * from './components/IconContainer';
 export * from './components/Divider';
 export * from './components/Avatar';

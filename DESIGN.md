@@ -559,7 +559,7 @@ The four widths are the Storybook **viewport** options (toolbar), added 22 Oct 2
 | **Flags** | **`flag-icons` (lipis, MIT), self-hosted** (decided 19 Oct 2026): 4:3 rectangles and 1:1 squares (rounded into circles). Code is the source of truth, like icons; Figma's flags are visual reference only (§8.5) | Own artwork | **Never recolor, redraw or distort.** |
 | **Payment icons** | **Shopify's `activemerchant/payment_icons` (MIT), self-hosted** (decided 20 Oct 2026): 38 × 24 cards, pinned version, copied into `src/payment/library/` by `pnpm payment-icons` and committed; our own logos in `src/payment/custom/`; the Default card drawn in code. Code is the source of truth; Figma's Payment Icons are visual reference only (§8.5) | Own artwork | **Never recolor, redraw or distort.** Disabled is opacity 0.4, as flags |
 | **Dial codes** (data, not artwork) | **`libphonenumber-js` (MIT; Google's libphonenumber metadata)**, a pinned dev dependency (decided 21 Oct 2026): `pnpm dial-codes` writes `src/flags/finDialCodes.ts` (committed) for the flag countries; a test fails if it no longer matches the library. Used by FinTextField's Mobile number (§9.59) | — | — |
-| **Logos** (other) | Assets exported from Figma | Own artwork | **Never recolor, redraw or distort.** |
+| **Logos** (other) | Assets exported from Figma (brand logos: `FinLogo`, §9.83, files in `packages/ui/src/logos/<brand>/`) | Own artwork | **Never recolor, redraw or distort.** |
 
 - **For icons, the code is the source of truth (design decision, 14 Oct 2026).** Icons render from the self-hosted Material Symbols Rounded font by **ligature name**, never as SVGs. How an icon looks in Figma doesn't decide how it looks in code; design will update the Figma icons to match.
 - **Never draw, invent or approximate an icon.** If a needed icon has no Material Symbols equivalent, stop and ask design.
@@ -845,6 +845,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 |---|---|---|---|
 | `Flag icons` (circle + rectangle) | Icon types | `49:6026` | **Not exported.** Visual reference only: the artwork comes from `flag-icons` in code |
 | `Flag sizes` | Icon types | `49:13408` | **Not exported.** The reference for `FinFlag`'s sizes (XSmall…XLarge), shapes (Circle / Rectangle) and states (Default / Disabled) |
+| `Logo sizes`, Sampath set (**Foundation – Loyalty**, page Logo) | Logo | `18276:4231` | **Exported** (4 Nov 2026): the Colored and White, With and Without text PNGs, committed in `packages/ui/src/logos/sampath/`, shown by `FinLogo` (§9.83). The generic set (`18074:5317`, "Company Name") isn't exported: Storybook draws its placeholder |
 
 **Flags (decided 19 Oct 2026):** flag artwork comes from the open-source library **`flag-icons`** (lipis, MIT, exact version pinned), self-hosted, one file per flag loaded only when shown. **Code is the source of truth for flag artwork, like icons (§6.1)**; Figma's `Flag icons` and `Flag sizes` are visual reference only, and nothing is exported from or changed in Figma for flags. The component is `FinFlag` (§9.35). Figma's 4:3 rectangles match the library's 4:3; circles are the library's 1:1 squares rounded. Payment icons are separate (planned later).
 | `Payment Icons` | Icon types | `58:14556` | **Not exported** (except the look of `Default card`, drawn in code). Visual reference only: the logos come from `activemerchant/payment_icons` in code |
@@ -3999,6 +4000,39 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 **Built, approved and merged (3 Nov 2026).** Storybook: Components/Tooltips/Plain tooltip (Playground, Types (Figma), Placements, Long text, Flips at the edge, On icon buttons). Checked in Chrome against Figma: single line 8/16 padding, 34 tall ("Supporting text" 121 wide, Figma 122: font rendering); rich 12/16 padding, 375 wide; Radius 8; the gap 4; Light `#19191a` / white, Dark `#fdfdfd` / `text-inverse`; opens at 250 ms on hover and at once on Tab, Escape and leaving close it, it flips at the window's top edge, and long text wraps at 375.
 
 
+### 9.83 FinLogo (Logo sizes) — public
+
+**Figma:** **Foundation – Loyalty**, page **Logo** (`4148:2935`), one `Logo sizes` set per brand: `Size` = Large / Medium / Small × `Style` = Colored / White × `Type` = With text / Without text. **Sampath** (`18276:4231`, read 4 Nov 2026): With text Small 116 × 41, Medium 148 × 53, Large 231 × 82; Without text 39 × 41, 50 × 53, 77 × 82. The artwork is **PNG only** (no vectors in Figma): 770 × 275 With text, 300 × 318 the mark, about 6.6× the Small size, so sharp on retina screens. The other set (`18074:5317`) is the generic placeholder ("Company Name"). The **Side Menu** (component library) has a **Logo slot**, 170 × 40, in the Expanded header (`3727:24801`); Minimized has no logo.
+
+**Decided by design 4 Nov 2026:** (1) the side nav shows **Sampath's logo when the brand is Sampath**, **Small**, **White in Dark** (the Colored version's black text would disappear on the dark side nav). (2) **Finspace and Burgundy keep the placeholder**: the `image` icon in the brand colour (so burgundy in Burgundy) and "Fintech loyalty" (Figma still says "Company Name", §10 #111). (3) The Sampath files from Figma are used as they are and may ship; design will say when they're updated.
+
+**Figma → code:**
+
+| Figma | Prop |
+|---|---|
+| one set per brand | `brand: FinLogoBrand` (`FIN_LOGO_BRANDS`: `'sampath'`) |
+| `Size` | `size: 'small' \| 'medium' \| 'large'` (default `'small'`): heights **40 / 56 / 80** (`--fin-size-*`; Figma 41 / 53 / 82, no tokens; width from the artwork's ratio, so Small is 112 × 40 and fits the Side Menu's 40 slot) |
+| `Style` = Colored / White | `colour: 'auto' \| 'coloured' \| 'white'` (default **`'auto'`**, code only: Colored in Light, White in Dark) |
+| `Type` = With text / Without text | `showText` (default `true`) |
+| — | `label` (default the brand name, "Sampath Bank"), `decorative` |
+
+**How `auto` works:** both versions are in the page, and CSS shows the one for the nearest `data-theme` (`[data-theme="dark"] .logo`, a theme selector as FinButtonBase's, §9.25). No JavaScript, so it works in Next.js server rendering and in Storybook's Side by side. The two files are small (about 84 KB each With text).
+
+**Accessibility:** one image (`role="img"`) named by the brand; the `<img>`s inside have `alt=""`. `decorative` hides it next to a visible brand name. Artwork: not checked for contrast.
+
+**Tokens used:** `--fin-size-40`, `--fin-size-56`, `--fin-size-80`.
+
+**API:**
+
+```tsx
+<FinSideNav … logo={<FinLogo brand="sampath" />} />   // Small, Colored in Light, White in Dark
+<FinLogo brand="sampath" size="large" colour="white" showText={false} />
+```
+
+FinSideNav doesn't change: it keeps its `logo` slot (§9.57) and the app passes the logo for its brand. In Storybook the side nav, app shell and page stories follow the **Brand** toolbar: `FinLogo` under Sampath, the "Fintech loyalty" placeholder otherwise.
+
+**Built (4 Nov 2026).** Storybook: Components/Logo (Playground; Sizes (Figma): every size, With and Without text, Colored on a Light panel, White on a Dark one). Checked in Chrome on the Programme configuration page: Sampath Light the Colored logo 112 × 40, Sampath Dark the White one 112 × 40 (the files load); Finspace and Burgundy the placeholder, its icon in the brand colour.
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -4027,7 +4061,7 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | 22 | ~~`Side Menu`: 8 text layers have no text style.~~ **Fixed in Figma** (checked 21 Oct 2026). Only "Company Name" inside the `Logo sizes` logo has none (Inter Medium 16/26); the stories' placeholder uses Title/Medium (decided 21 Oct 2026). | Side nav | ✅ Fixed |
 | 23 | Icon names checked against Material Symbols Rounded (14 Oct 2026): all 29 §6.4 names render, but four are old Material Icons names. **Decided:** code uses the current names: `camera_alt` → `photo_camera`, `payment` → `credit_card`, `perm_identity` → `person`, `warning_amber` → `warning` (same glyph as `warning`, so one registry entry). List in §6.4. Figma icons will be updated by design later; for icons, code is the source of truth (§6.1). | Icons | ✅ Decided (14 Oct 2026) |
 | 24 | Overlay `Mobile` variant is out of scope; only `Desktop` is built. | Overlays | ✅ Decided (13 Oct 2026) |
-| 25 | **Components from other libraries** used inside components: ~~`Frame 3`~~ (gone) and `Logo sizes` with its `image` (Side Menu; 12 variants: Size × Colour × With / Without text; doesn't block: logos are artwork, so FinSideNav takes a `logo` slot, decided 21 Oct 2026, §9.57), ~~`Views / Dividers` (Side sheet)~~ (replaced by our Divider, 23 Oct 2026), `gb-L` (Flag sizes). Flags no longer block on this: flag artwork comes from `flag-icons` in code and `Flag sizes` is reference only (19 Oct 2026, §8.5). | Side nav, Side sheet, Icon types | 🔧 Fix in Figma |
+| 25 | **Components from other libraries** used inside components: ~~`Frame 3`~~ (gone) and `Logo sizes` with its `image` (Side Menu; 12 variants: Size × Colour × With / Without text; doesn't block: logos are artwork, so FinSideNav takes a `logo` slot, decided 21 Oct 2026, §9.57; since 4 Nov 2026 the Side Menu's logo is a Figma slot, "Logo slot" 170 × 40, and the brand logos are in Foundation – Loyalty › Logo, §9.83), ~~`Views / Dividers` (Side sheet)~~ (replaced by our Divider, 23 Oct 2026), `gb-L` (Flag sizes). Flags no longer block on this: flag artwork comes from `flag-icons` in code and `Flag sizes` is reference only (19 Oct 2026, §8.5). | Side nav, Side sheet, Icon types | 🔧 Fix in Figma |
 | 26 | **Table** page is complete and renamed (13 Oct 2026). Figma has the parts only; designers assemble tables on screens. **Decision:** code also gets a `FinTable` organism (§8 #74) built from those parts. Its API (columns/rows as data, selection, pagination) is written in §9 when built and agreed with design. `Property 1` on Table parts still needs naming (§10 #21). | Table | ✅ Decided |
 | 27 | **Dark-mode contrast: `text-error` on `bg-error-secondary`** was 4.19:1. Design updated the Dark status colors (14 Oct 2026): now 8.52:1, and every status text and icon color passes on `bg-primary`, `bg-secondary`, `bg-tertiary` and its own `bg-*_secondary` in Dark. | Foundation › Color collection (Dark) | ✅ Decided (14 Oct 2026) |
 | 28 | **Spacing shift (14 Oct 2026) in the component file.** These components use `Space-5XL`…`Space-12XL`, and still show the **old** values because the component file hasn't accepted the Foundation library update yet. After it does, they get smaller: `sub selection` (`3140:11076`) `Space-5XL` 40 → 36; `Pagination group` (`3151:14607`) `Space-6XL` 48 → 40 (only on the Figma frame around the samples; FinPagination doesn't use it, 19 Oct 2026); `Main Selection` (`3140:10997`) `Space-5XL` 40 → 36; `Header notification` (`3178:24467`) `Space-5XL` 40 → 36; ~~`Button dock` (`75:5858`) `Space-5XL` 40 → 36~~ (23 Oct 2026: Button dock's bottom padding is `Space-6XL`, 40, design; the Side sheet uses the Button dock component, so it's 40 there too); ~~`Side sheet` (`3120:30707`) `Space-5XL` 40 → 36~~ (26 Oct 2026: the Side sheet uses `Space-4XL`, 32, at the top, design; §9.70); `Side Menu` (`3142:11871`) `Space-5XL` 40 → 36. No other component uses those steps. Accept the library update, then confirm each new value or rebind. | Component file | ❓ Decide |
@@ -4135,6 +4169,13 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 108 | **Burgundy (cross-brand): `text-tertiary` on `bg-tertiary`, Dark, 4.08:1.** WCAG 1.4.3 (4.5:1). Same as Finspace (4.09:1, §10 #3) and Sampath (#102). Elements: Grey table header titles. Fix: with #102. | Burgundy Dark (cross-brand) | ✅ Accepted by design (4 Nov 2026); fix later |
 | 109 | **Burgundy (cross-brand): `text-inverse` on `fg-error`, Dark, 3.96:1.** WCAG 1.4.3 (4.5:1). Same as Finspace (3.97:1, §10 #3). Elements: the error number badge, including the bell in the header. Fix: with §10 #3. | Burgundy Dark (cross-brand) | ✅ Accepted by design (4 Nov 2026); fix later |
 
+#### Logos (added 4 Nov 2026)
+
+| # | Item | Where | Status |
+|---|---|---|---|
+| 110 | **Sampath's White logo has a blue mark** (4 Nov 2026). In Foundation – Loyalty › Logo, the Sampath `Style=White` source images have **white text and a blue mark** (the octagon and pot), not an all-white logo; Figma's own render shows them on a light box. Used as they are in Dark (decided by design 4 Nov 2026: use these files for now). If the mark should be white (or orange), design to update the files in Figma; code only swaps the PNGs in `packages/ui/src/logos/sampath/`. | Logo, Sampath | ⏳ Design to check |
+| 111 | **Figma's placeholder logo still says "Company Name"** (4 Nov 2026): the Side Menu's Logo slot and the generic `Logo sizes` set (`18074:5317`). Code shows "Fintech loyalty" (decided by design 2 Nov 2026). Also, Figma's Logo sizes heights (41 / 53 / 82 for Sampath, 40 / 54 / 80 for the generic set) have no tokens; code uses `Size-40` / `Size-56` / `Size-80` (§9.83). | Logo, Side nav | ⏳ Figma to update (optional) |
+
 ---
 
 ## 11. Changelog
@@ -4207,6 +4248,7 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 > - **Approved and merged (3 Nov 2026):** the account menu's Theme row tooltips (System, Light, Dark; FinSegmentedButton `tooltips`, FinTooltip `describesTrigger`, one open at a time, Escape caught first) (§9.34, §9.57, §9.82).
 > - **Approved and merged (3 Nov 2026):** the second brand, Burgundy (§3.10): token build for brands, Primary dark aliases, a11y per brand × theme; 4 accepted Burgundy exceptions (§10 #80), so Burgundy isn't live yet.
 > - **Approved and merged (4 Nov 2026):** the third brand, **Sampath** (§3.10): its own scales, Neutral dark and Neutral light aliases (§3.2), Hanken Grotesk (§3.4), story exclusions scoped to Finspace, brand exceptions as `color-contrast` only (`brandContrastExceptions.ts`); §10 #81–#109 (one HIGH: #103). Sampath isn't live.
+> - **On `feat/side-nav-logo`, not merged (4 Nov 2026; waiting for design's review):** `FinLogo` (§9.83, Figma Logo sizes; Sampath's logo, Colored in Light, White in Dark), shown in the side nav when the brand is Sampath; Finspace and Burgundy keep the "Fintech loyalty" placeholder. §10 #110, #111.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4530,3 +4572,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 3 Nov 2026 | 0.2 | The second brand (Burgundy) approved by design and merged into `main`; the 4 Burgundy contrast exceptions accepted (§10 #80). |
 | 4 Nov 2026 | 0.2 | **Third brand: Sampath** (§3.10). New export (645 variables): `Alias Colors` and `Alias Typography` have the modes `Finspace`, `Burgundy theme` (`Burgundy` in typography), `Sampath`; Sampath points every alias group at its own scales (Orange, Mirage, Woodsmoke, Spring-wood, White, Green, Yellow, Red; §3.1, §3.2); 14 **Neutral dark** and 5 **Neutral light** aliases, which 19 semantic tokens now use, so a brand can pick its own greys (§3.2). Token build: brand code names from `BRAND_SLUGS` (an unknown mode stops the build), `BRAND_SCALES` with a `sampath-` prefix, per-brand font families (only the family may differ; the build stops otherwise), quoted multi-word families (§3.4, §3.9). **Hanken Grotesk** 400–800 self-hosted for Sampath, loaded by Storybook's preview (§3.4). Finspace and Burgundy checked unchanged: all 497 variables on `main` resolve to the same values on the branch in Light and Dark (headless Chrome). `test:a11y` has 6 projects; story exclusions now Finspace-only (they hid 4 Burgundy and 6 Sampath failures); brand exceptions switch off only axe's `color-contrast`, only on the listed elements (`apps/storybook/.storybook/brandContrastExceptions.ts`). §10 #81–#105 (Sampath, one HIGH: #103), #106–#109 (Burgundy, cross-brand). |
 | 4 Nov 2026 | 0.2 | The third brand (Sampath) approved by design and merged into `main`; its exceptions (§10 #81–#105, one HIGH: #103) and Burgundy's cross-brand ones (§10 #106–#109) accepted. Sampath isn't live. |
+| 4 Nov 2026 | 0.2 | **FinLogo** (§9.83, Figma Logo sizes in Foundation – Loyalty): Sampath's logo, `size` Small / Medium / Large (40 / 56 / 80), `colour` auto (Colored in Light, White in Dark, by CSS) / coloured / white, `showText`; the Sampath PNGs from Figma committed in `packages/ui/src/logos/sampath/`. The side nav, app shell and page stories show it when the Brand toolbar is Sampath; Finspace and Burgundy keep the "Fintech loyalty" placeholder. §10 #110 (White logo's blue mark), #111. On `feat/side-nav-logo`, not merged. |

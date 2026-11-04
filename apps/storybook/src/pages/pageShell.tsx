@@ -28,13 +28,14 @@ export const PAGE_SECTIONS: FinSideNavSection[] = [
 
 const PAGE_PROFILE = { name: 'Olivia James', email: 'oliviajames@email.com', initials: 'OJ', role: 'Admin' };
 
-type PageTheme = Pick<FinSideNavThemeItem, 'value' | 'onValueChange'>;
+type PageTheme = Pick<FinSideNavThemeItem, 'value' | 'onValueChange'> & { brand?: string | undefined };
 
 /** The account menu's Theme row, from `withPageTheme`. */
 const PageThemeContext = createContext<PageTheme | null>(null);
 
 /**
- * Every page story's decorator: the account menu's Theme row drives Storybook's theme toolbar (the stories stand in
+ * Every page story's decorator: the account menu's Theme row drives Storybook's theme toolbar, and the logo follows
+ * the Brand toolbar (the stories stand in
  * for the app, which sets `data-theme` on `<html>`). Light and Dark set it; System follows the device's
  * `prefers-color-scheme`, also when it changes. Storybook's hooks: only decorators and story functions can read the
  * toolbar, so the pages get it through context.
@@ -51,6 +52,7 @@ export const withPageTheme: Decorator = function PageTheme(Story) {
     return () => query.removeEventListener('change', follow);
   }, [system, updateGlobals]);
   const theme: PageTheme = {
+    brand: globals['brand'] as string | undefined,
     value: system ? 'system' : globals['theme'] === 'dark' ? 'dark' : 'light',
     onValueChange: (next: FinSideNavTheme) => {
       setSystem(next === 'system');
@@ -87,11 +89,11 @@ export function usePageSideNav(currentHref: string): FinAppShellProps['sideNav']
       menu: [
         { label: 'My profile', onSelect: () => {} },
         { label: 'Settings', onSelect: () => {} },
-        ...(theme ? [{ type: 'theme' as const, ...theme }] : []),
+        ...(theme ? [{ type: 'theme' as const, value: theme.value, onValueChange: theme.onValueChange }] : []),
         { label: 'Log out', onSelect: () => {}, separator: true },
       ],
     },
-    logo: <PageLogo />,
+    logo: <PageLogo brand={theme?.brand} />,
   };
 }
 
