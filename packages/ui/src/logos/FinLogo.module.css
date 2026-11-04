@@ -1,14 +1,21 @@
 /*
  * FinLogo (DESIGN.md §9.83). The logo is artwork: an <img> at its own ratio, the height from the Size-* tokens
  * (Figma Logo sizes: Small 41, Medium 53, Large 82, mapped to 40 / 56 / 80; Small fits the side nav's 40 slot).
+ * The box is sized before the file loads (lazily), from the artwork's ratio, so nothing moves: With text 770 × 275,
+ * the mark 300 × 318 (Sampath's files).
  */
 
 .logo {
   display: inline-flex;
   flex: none;
   align-items: center;
+  width: calc(var(--logo-height) * 300 / 318);
   height: var(--logo-height);
   vertical-align: middle;
+}
+
+.logo[data-text] {
+  width: calc(var(--logo-height) * 770 / 275);
 }
 
 .logo[data-size="small"] {
@@ -25,8 +32,9 @@
 
 .art {
   display: block;
-  width: auto;
+  width: 100%;
   height: 100%;
+  object-fit: contain;
 }
 
 /*

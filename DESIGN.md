@@ -4016,7 +4016,9 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 | `Type` = With text / Without text | `showText` (default `true`) |
 | — | `label` (default the brand name, "Sampath Bank"), `decorative` |
 
-**How `auto` works:** both versions are in the page, and CSS shows the one for the nearest `data-theme` (`[data-theme="dark"] .logo`, a theme selector as FinButtonBase's, §9.25). No JavaScript, so it works in Next.js server rendering and in Storybook's Side by side. The two files are small (about 84 KB each With text).
+**How `auto` works:** both versions are in the page, and CSS shows the one for the nearest `data-theme` (`[data-theme="dark"] .logo`, a theme selector as FinButtonBase's, §9.25), so it switches with the theme without re-rendering, also in Storybook's Side by side.
+
+**Loading:** one lazy loader per file (`import.meta.glob`, as FinPaymentIcon and FinFlag; `'use client'`): a logo file is fetched only where it's shown, so apps of other brands don't carry it. A library build would otherwise inline every PNG in the main bundle (324 KB, checked 4 Nov 2026). The box is sized from the artwork's ratio before the file loads (With text 770 × 275, the mark 300 × 318), so nothing moves.
 
 **Accessibility:** one image (`role="img"`) named by the brand; the `<img>`s inside have `alt=""`. `decorative` hides it next to a visible brand name. Artwork: not checked for contrast.
 

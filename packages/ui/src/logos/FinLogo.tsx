@@ -1,8 +1,6 @@
-import type { HTMLAttributes } from 'react';
-import sampathColoured from './sampath/sampath-coloured.png';
-import sampathWhite from './sampath/sampath-white.png';
-import sampathMarkColoured from './sampath/sampath-mark-coloured.png';
-import sampathMarkWhite from './sampath/sampath-mark-white.png';
+'use client';
+
+import { useEffect, useState, type HTMLAttributes } from 'react';
 import type { FinLogoBrand } from './finLogos';
 import styles from './FinLogo.module.css';
 
@@ -29,20 +27,19 @@ export interface FinLogoProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'chi
   decorative?: boolean;
 }
 
-interface LogoArt {
-  name: string;
-  withText: Record<'coloured' | 'white', string>;
-  mark: Record<'coloured' | 'white', string>;
-}
+/** Each brand's name (the image's name). Files: `./<brand>/<brand>[-mark]-<coloured|white>.png`. */
+const NAMES: Record<FinLogoBrand, string> = { sampath: 'Sampath Bank' };
 
-/** Artwork exported from Figma (Foundation – Loyalty › Logo, `18276:4231`), as it is: never recolored or redrawn. */
-const LOGOS: Record<FinLogoBrand, LogoArt> = {
-  sampath: {
-    name: 'Sampath Bank',
-    withText: { coloured: sampathColoured, white: sampathWhite },
-    mark: { coloured: sampathMarkColoured, white: sampathMarkWhite },
-  },
-};
+/**
+ * Artwork exported from Figma (Foundation – Loyalty › Logo, `18276:4231`), as it is: never recolored or redrawn. One
+ * lazy loader per file, as FinPaymentIcon and FinFlag: a logo is fetched only where it's shown, so apps of other
+ * brands don't carry it (a library build would otherwise inline every PNG in the main bundle).
+ */
+const LOADERS = import.meta.glob<string>('./*/*.png', { query: '?url', import: 'default' });
+
+type Version = 'coloured' | 'white';
+const fileOf = (brand: FinLogoBrand, showText: boolean, version: Version) =>
+  `./${brand}/${brand}${showText ? '' : '-mark'}-${version}.png`;
 
 /**
  * A brand's logo (Figma Logo sizes; DESIGN.md §6.1, §9.83). Artwork, shown at its own ratio from the height. With
@@ -59,20 +56,36 @@ export function FinLogo({
   className,
   ...rest
 }: FinLogoProps) {
-  const art = LOGOS[brand];
-  const files = showText ? art.withText : art.mark;
-  const versions = colour === 'auto' ? (['coloured', 'white'] as const) : ([colour] as const);
+  const versions: Version[] = colour === 'auto' ? ['coloured', 'white'] : [colour];
+  const files = versions.map((version) => fileOf(brand, showText, version));
+  const key = files.join();
+  const [loaded, setLoaded] = useState<{ key: string; src: Record<string, string> }>();
+
+  useEffect(() => {
+    let current = true;
+    const wanted = key.split(',');
+    void Promise.all(wanted.map((file) => LOADERS[file]?.() ?? Promise.resolve(''))).then((srcs) => {
+      if (current) setLoaded({ key, src: Object.fromEntries(wanted.map((file, i) => [file, srcs[i] ?? ''])) });
+    });
+    return () => {
+      current = false;
+    };
+  }, [key]);
+
   return (
     <span
       {...rest}
       className={className ? `${styles.logo} ${className}` : styles.logo}
       data-size={size}
       data-colour={colour}
-      {...(decorative ? { 'aria-hidden': true } : { role: 'img', 'aria-label': label ?? art.name })}
+      data-text={showText || undefined}
+      {...(decorative ? { 'aria-hidden': true } : { role: 'img', 'aria-label': label ?? NAMES[brand] })}
     >
-      {versions.map((version) => (
-        <img key={version} className={styles.art} src={files[version]} alt="" data-version={version} draggable={false} />
-      ))}
+      {loaded?.key === key &&
+        versions.map((version, i) => {
+          const src = loaded.src[files[i]!];
+          return src ? <img key={version} className={styles.art} src={src} alt="" data-version={version} draggable={false} /> : null;
+        })}
     </span>
   );
 }
