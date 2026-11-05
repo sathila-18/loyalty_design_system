@@ -3,7 +3,7 @@
 import { useEffect, useState, type HTMLAttributes } from 'react';
 import { FinIcon, type FinIconSize } from '../icons/FinIcon';
 import { finPaymentMethods, isFinPaymentMethod, type FinPaymentMethod, type FinPaymentMethodEntry } from './finPaymentMethods';
-import styles from './FinPaymentIcon.module.css';
+import * as styles from './FinPaymentIcon.styles';
 
 export type FinPaymentIconSize = 'small' | 'medium' | 'large' | 'xlarge';
 
@@ -71,17 +71,17 @@ export function FinPaymentIcon({
   return (
     <span
       {...rest}
-      className={className ? `${styles.icon} ${className}` : styles.icon}
+      className={[styles.icon, styles.size[size], generic && styles.defaultCard, disabled && styles.disabled, className].filter(Boolean).join(' ')}
       data-size={size}
       data-default={generic || undefined}
       data-disabled={disabled || undefined}
       {...(decorative ? { 'aria-hidden': true } : { role: 'img', 'aria-label': name })}
     >
       {generic ? (
-        <FinIcon name="credit_card" size={DEFAULT_ICON_SIZE[size]} color="secondary" className={styles.art} />
+        <FinIcon name="credit_card" size={DEFAULT_ICON_SIZE[size]} color="secondary" className={styles.art.icon} />
       ) : (
         loaded?.file === file && (
-          <img className={styles.art} src={loaded.src} alt="" draggable={false} onError={() => setFailed(file)} />
+          <img className={styles.art.logo} src={loaded.src} alt="" draggable={false} onError={() => setFailed(file)} />
         )
       )}
     </span>

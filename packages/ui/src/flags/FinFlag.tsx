@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type HTMLAttributes } from 'react';
 import { finFlags, isFinFlagCountry, type FinFlagCountry } from './finFlags';
-import styles from './FinFlag.module.css';
+import * as styles from './FinFlag.styles';
 
 /** Figma Flag sizes `SIze` (typos fixed): heights 12, 16, 24, 40, 48. */
 export type FinFlagSize = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
@@ -63,16 +63,17 @@ export function FinFlag({
     };
   }, [shape, file]);
 
+  const artClass = disabled ? styles.art.disabled : styles.art.enabled;
   return (
     <span
       {...rest}
-      className={className ? `${styles.flag} ${className}` : styles.flag}
+      className={[styles.flag, styles.shape[shape][size], className].filter(Boolean).join(' ')}
       data-size={size}
       data-shape={shape}
       data-disabled={disabled || undefined}
       {...(decorative ? { 'aria-hidden': true } : { role: 'img', 'aria-label': name })}
     >
-      {loaded?.file === file && <img className={styles.art} src={loaded.src} alt="" draggable={false} />}
+      {loaded?.file === file && <img className={artClass} src={loaded.src} alt="" draggable={false} />}
     </span>
   );
 }

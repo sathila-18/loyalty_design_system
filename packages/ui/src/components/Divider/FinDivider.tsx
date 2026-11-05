@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react';
-import styles from './FinDivider.module.css';
+import * as styles from './FinDivider.styles';
 
 export type FinDividerType = 'divider' | 'section-divider';
 export type FinDividerOrientation = 'horizontal' | 'vertical';
@@ -24,7 +24,7 @@ export function FinDivider({
   return (
     <hr
       {...rest}
-      className={className ? `${styles.divider} ${className}` : styles.divider}
+      className={[styles.divider, styles.look[type][orientation], className].filter(Boolean).join(' ')}
       data-type={type}
       data-orientation={orientation}
       {...(decorative

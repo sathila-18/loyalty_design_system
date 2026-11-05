@@ -1,6 +1,6 @@
 import type { CSSProperties, HTMLAttributes } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
-import styles from './FinSpinner.module.css';
+import * as styles from './FinSpinner.styles';
 
 export type FinSpinnerStatus = 'progress' | 'success' | 'error';
 
@@ -23,7 +23,7 @@ export interface FinSpinnerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'c
  * Progress-Spinner (§7.2 rule 4 exception, decided 15 Oct 2026).
  */
 export function FinSpinner({ status = 'progress', value, max = 100, label, className, style, ...rest }: FinSpinnerProps) {
-  const root = className ? `${styles.spinner} ${className}` : styles.spinner;
+  const root = [styles.spinner, styles.status[status], className].filter(Boolean).join(' ');
 
   if (status !== 'progress') {
     return (
@@ -37,6 +37,7 @@ export function FinSpinner({ status = 'progress', value, max = 100, label, class
   const determinate = value !== undefined && Number.isFinite(value);
   const current = determinate ? Math.min(Math.max(value, 0), total) : undefined;
   const arc = current === undefined ? 25 : (current / total) * 100;
+  const ringClass = current === undefined ? styles.ring.spinning : styles.ring.still;
 
   return (
     <div
@@ -50,7 +51,7 @@ export function FinSpinner({ status = 'progress', value, max = 100, label, class
       data-spinning={current === undefined || undefined}
     >
       {/* The ring: an r=18 circle with a 4px stroke fills the 40px box, like Figma's 4px inside stroke. pathLength 100 makes the dash a percentage. */}
-      <svg className={styles.ring} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+      <svg className={ringClass} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
         <circle className={styles.track} cx="20" cy="20" r="18" pathLength={100} />
         <circle className={styles.arc} cx="20" cy="20" r="18" pathLength={100} />
       </svg>

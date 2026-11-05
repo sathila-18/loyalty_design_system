@@ -1,7 +1,7 @@
 import type { CSSProperties, HTMLAttributes } from 'react';
 import { finColor } from '@finspace-loyalty/tokens';
 import { finIcons, type FinIconName } from './finIcons';
-import styles from './FinIcon.module.css';
+import * as styles from './FinIcon.styles';
 
 type FinFgToken = Extract<keyof typeof finColor, `fg${string}`>;
 /** Every `fg-*` token, without the prefix: `'primary'`, `'secondary'`, `'whiteBoth'`… Generated from the tokens. */
@@ -35,10 +35,11 @@ export function FinIcon({ name, size = 24, color, filled = false, label, classNa
     console.warn(`FinIcon: "${name}" isn't in the finIcons registry, so the icon font doesn't include it. Add it to src/icons/finIcons.ts.`);
   }
 
+  const glyph = filled ? styles.glyph.filled : styles.glyph.outlined;
   return (
     <span
       {...rest}
-      className={className ? `${styles.icon} ${className}` : styles.icon}
+      className={[styles.icon, glyph, styles.size[size], className].filter(Boolean).join(' ')}
       style={color ? ({ ...style, '--icon-color': fgToken(color) } as CSSProperties) : style}
       data-size={size}
       data-filled={filled || undefined}

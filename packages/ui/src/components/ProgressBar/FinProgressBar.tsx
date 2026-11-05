@@ -1,5 +1,5 @@
 import type { CSSProperties, HTMLAttributes } from 'react';
-import styles from './FinProgressBar.module.css';
+import * as styles from './FinProgressBar.styles';
 
 export type FinProgressBarSize = 'large' | 'small';
 
@@ -30,7 +30,7 @@ export function FinProgressBar({ value, max = 100, size = 'large', label, classN
       aria-valuemin={0}
       aria-valuemax={total}
       aria-valuenow={current}
-      className={className ? `${styles.track} ${className}` : styles.track}
+      className={[styles.track, styles.size[size], className].filter(Boolean).join(' ')}
       style={{ ...style, '--progress': `${percent}%` } as CSSProperties}
       data-size={size}
     >

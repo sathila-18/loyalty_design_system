@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode, type Ref } from 'react';
-import styles from './FinPaginationItem.module.css';
+import * as styles from './FinPaginationItem.styles';
 
 /** A page: Figma `State` = Default / Hovered (runtime) / Selected. */
 type FinPaginationPageProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> & {
@@ -31,7 +31,7 @@ export const FinPaginationItem = forwardRef<HTMLElement, FinPaginationItemProps>
       <span
         {...rest}
         ref={ref as Ref<HTMLSpanElement>}
-        className={className ? `${styles.item} ${className}` : styles.item}
+        className={[styles.item, styles.look.dots, className].filter(Boolean).join(' ')}
         data-variant={variant}
         aria-hidden="true"
       >
@@ -40,12 +40,13 @@ export const FinPaginationItem = forwardRef<HTMLElement, FinPaginationItemProps>
     );
   }
   const { variant = 'page', children, selected = false, type = 'button', className, ...rest } = props;
+  const look = selected ? styles.look.selected : styles.look.page;
   return (
     <button
       {...rest}
       ref={ref as Ref<HTMLButtonElement>}
       type={type}
-      className={className ? `${styles.item} ${className}` : styles.item}
+      className={[styles.item, look, className].filter(Boolean).join(' ')}
       data-variant={variant}
       data-selected={selected || undefined}
       aria-current={selected ? 'page' : undefined}

@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react';
-import styles from './FinOnlineIndicator.module.css';
+import * as styles from './FinOnlineIndicator.styles';
 
 export type FinOnlineIndicatorSize = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
 
@@ -24,7 +24,7 @@ export function FinOnlineIndicator({
     <span
       {...rest}
       {...(decorative ? { 'aria-hidden': true as const } : { role: 'img', 'aria-label': label })}
-      className={className ? `${styles.indicator} ${className}` : styles.indicator}
+      className={[styles.indicator, styles.size[size], className].filter(Boolean).join(' ')}
       data-size={size}
     />
   );

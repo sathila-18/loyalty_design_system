@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react';
-import styles from './FinBadgeIndicator.module.css';
+import * as styles from './FinBadgeIndicator.styles';
 
 export type FinBadgeIndicatorSize = 'small' | 'large';
 export type FinBadgeIndicatorTone = 'error' | 'warning' | 'success';
@@ -40,7 +40,7 @@ export function FinBadgeIndicator({
     <span
       {...rest}
       {...a11y}
-      className={className ? `${styles.badge} ${className}` : styles.badge}
+      className={[styles.badge, styles.tone[tone], styles.shape[shape][size], className].filter(Boolean).join(' ')}
       data-size={size}
       data-tone={tone}
       data-shape={shape}

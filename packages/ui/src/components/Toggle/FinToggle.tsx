@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, type InputHTMLAttributes } from 'react';
-import styles from './FinToggle.module.css';
+import * as styles from './FinToggle.styles';
 
 export type FinToggleSize = 'small' | 'large';
 
@@ -30,8 +30,8 @@ export const FinToggle = forwardRef<HTMLInputElement, FinToggleProps>(function F
       data-no-focus-ring={focusRing ? undefined : ''}
     >
       <input {...rest} ref={ref} type="checkbox" role="switch" className={styles.input} />
-      <span className={styles.track} aria-hidden="true">
-        <span className={styles.handle} />
+      <span className={[styles.track, styles.size[size].track, focusRing && styles.trackFocusRing].filter(Boolean).join(' ')} aria-hidden="true">
+        <span className={`${styles.handle} ${styles.size[size].handle}`} />
       </span>
       <span className={styles.label}>{label}</span>
     </label>

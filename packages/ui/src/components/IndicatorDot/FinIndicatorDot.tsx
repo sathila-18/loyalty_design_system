@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, type ButtonHTMLAttributes } from 'react';
-import styles from './FinIndicatorDot.module.css';
+import * as styles from './FinIndicatorDot.styles';
 
 export interface FinIndicatorDotProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** Figma `Type=Selected`: the wide brand pill. Otherwise `Type=Default`: the small dot. */
@@ -18,10 +18,11 @@ export const FinIndicatorDot = forwardRef<HTMLButtonElement, FinIndicatorDotProp
   { selected = false, interactive = false, className, ...rest },
   ref,
 ) {
-  const dot = <span className={styles.dot} data-selected={selected || undefined} />;
+  const dotClass = selected ? styles.dot.selected : styles.dot.default;
+  const dot = <span className={dotClass} data-selected={selected || undefined} />;
   if (!interactive) {
     return (
-      <span className={className ? `${styles.static} ${className}` : styles.static} aria-hidden="true">
+      <span className={className ? `${styles.still} ${className}` : styles.still} aria-hidden="true">
         {dot}
       </span>
     );

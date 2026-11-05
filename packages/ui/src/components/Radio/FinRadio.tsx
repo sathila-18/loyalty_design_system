@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, type InputHTMLAttributes } from 'react';
-import styles from './FinRadio.module.css';
+import * as styles from './FinRadio.styles';
 
 export interface FinRadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size' | 'children'> {
   /** Accessible name, visually hidden (decided 15 Oct 2026; visible labels will come from the List component). */
@@ -21,7 +21,7 @@ export const FinRadio = forwardRef<HTMLInputElement, FinRadioProps>(function Fin
   return (
     <label className={className ? `${styles.radio} ${className}` : styles.radio} data-no-focus-ring={focusRing ? undefined : ''}>
       <input {...rest} ref={ref} type="radio" className={styles.input} />
-      <span className={styles.ring} aria-hidden="true">
+      <span className={focusRing ? `${styles.ring} ${styles.ringFocus}` : styles.ring} aria-hidden="true">
         <span className={styles.dot} />
       </span>
       <span className={styles.label}>{label}</span>

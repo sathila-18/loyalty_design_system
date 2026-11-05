@@ -9,7 +9,7 @@
  *   bg-*        background, from --fin-bg-*      (cross-group, as Figma: bg-fg-*, bg-border-*, bg-alpha-*)
  *   text-*      text colour, from --fin-text-*
  *   fg-*        icon colour (color), from --fin-fg-*
- *   border-* outline-* ring-* inset-ring-*      from --fin-border-*   (cross-group: border-fg-*, border-bg-*)
+ *   border-* outline-* ring-* inset-ring-*      from --fin-border-*   (cross-group: border-fg-*, border-bg-*, ring-fg-*…)
  *   fill-* stroke-* caret-*                     with the group named: stroke-fg-*, caret-fg-*, fill-bg-*
  *   p-* m-* gap-* inset-* translate-*          space names: xxs xs s m l xl 2xl … 12xl none
  *   w-* h-* size-* min-* max-*                 size numbers: 2 4 6 8 12 … 343 (the --fin-size-* tokens)
@@ -249,6 +249,100 @@
   --border-color-alpha-success: var(--fin-alpha-success);
   --border-color-alpha-brand: var(--fin-alpha-brand);
   --border-color-alpha-error: var(--fin-alpha-error);
+  --ring-color-fg-primary: var(--fin-fg-primary);
+  --ring-color-fg-secondary: var(--fin-fg-secondary);
+  --ring-color-fg-brand: var(--fin-fg-brand);
+  --ring-color-fg-placeholder: var(--fin-fg-placeholder);
+  --ring-color-fg-active: var(--fin-fg-active);
+  --ring-color-fg-disabled: var(--fin-fg-disabled);
+  --ring-color-fg-disabled-on-bg: var(--fin-fg-disabled-on-bg);
+  --ring-color-fg-inverse: var(--fin-fg-inverse);
+  --ring-color-fg-dark-both: var(--fin-fg-dark-both);
+  --ring-color-fg-white-both: var(--fin-fg-white-both);
+  --ring-color-fg-action: var(--fin-fg-action);
+  --ring-color-fg-hovered: var(--fin-fg-hovered);
+  --ring-color-fg-pressed: var(--fin-fg-pressed);
+  --ring-color-fg-success: var(--fin-fg-success);
+  --ring-color-fg-error: var(--fin-fg-error);
+  --ring-color-fg-info: var(--fin-fg-info);
+  --ring-color-fg-warning: var(--fin-fg-warning);
+  --ring-color-bg-secondary: var(--fin-bg-secondary);
+  --ring-color-bg-tertiary: var(--fin-bg-tertiary);
+  --ring-color-bg-neutral: var(--fin-bg-neutral);
+  --ring-color-bg-brand: var(--fin-bg-brand);
+  --ring-color-bg-active: var(--fin-bg-active);
+  --ring-color-bg-active-hover: var(--fin-bg-active-hover);
+  --ring-color-bg-action-primary: var(--fin-bg-action-primary);
+  --ring-color-bg-action-primary-hovered: var(--fin-bg-action-primary-hovered);
+  --ring-color-bg-action-primary-pressed: var(--fin-bg-action-primary-pressed);
+  --ring-color-bg-action-secondary: var(--fin-bg-action-secondary);
+  --ring-color-bg-action-secondary-hovered: var(--fin-bg-action-secondary-hovered);
+  --ring-color-bg-action-secondary-pressed: var(--fin-bg-action-secondary-pressed);
+  --ring-color-bg-action-inverse: var(--fin-bg-action-inverse);
+  --ring-color-bg-action-destructive: var(--fin-bg-action-destructive);
+  --ring-color-bg-action-destructive-hovered: var(--fin-bg-action-destructive-hovered);
+  --ring-color-bg-action-destructive-pressed: var(--fin-bg-action-destructive-pressed);
+  --ring-color-bg-action-destructive-secondary-hovered: var(--fin-bg-action-destructive-secondary-hovered);
+  --ring-color-bg-action-destructive-secondary-pressed: var(--fin-bg-action-destructive-secondary-pressed);
+  --ring-color-bg-disabled: var(--fin-bg-disabled);
+  --ring-color-bg-direct: var(--fin-bg-direct);
+  --ring-color-bg-success: var(--fin-bg-success);
+  --ring-color-bg-success-secondary: var(--fin-bg-success-secondary);
+  --ring-color-bg-error: var(--fin-bg-error);
+  --ring-color-bg-error-secondary: var(--fin-bg-error-secondary);
+  --ring-color-bg-warning: var(--fin-bg-warning);
+  --ring-color-bg-warning-secondary: var(--fin-bg-warning-secondary);
+  --ring-color-bg-info: var(--fin-bg-info);
+  --ring-color-bg-info-secondary: var(--fin-bg-info-secondary);
+  --ring-color-bg-icons: var(--fin-bg-icons);
+  --ring-color-bg-primary: var(--fin-bg-primary);
+  --inset-ring-color-fg-primary: var(--fin-fg-primary);
+  --inset-ring-color-fg-secondary: var(--fin-fg-secondary);
+  --inset-ring-color-fg-brand: var(--fin-fg-brand);
+  --inset-ring-color-fg-placeholder: var(--fin-fg-placeholder);
+  --inset-ring-color-fg-active: var(--fin-fg-active);
+  --inset-ring-color-fg-disabled: var(--fin-fg-disabled);
+  --inset-ring-color-fg-disabled-on-bg: var(--fin-fg-disabled-on-bg);
+  --inset-ring-color-fg-inverse: var(--fin-fg-inverse);
+  --inset-ring-color-fg-dark-both: var(--fin-fg-dark-both);
+  --inset-ring-color-fg-white-both: var(--fin-fg-white-both);
+  --inset-ring-color-fg-action: var(--fin-fg-action);
+  --inset-ring-color-fg-hovered: var(--fin-fg-hovered);
+  --inset-ring-color-fg-pressed: var(--fin-fg-pressed);
+  --inset-ring-color-fg-success: var(--fin-fg-success);
+  --inset-ring-color-fg-error: var(--fin-fg-error);
+  --inset-ring-color-fg-info: var(--fin-fg-info);
+  --inset-ring-color-fg-warning: var(--fin-fg-warning);
+  --inset-ring-color-bg-secondary: var(--fin-bg-secondary);
+  --inset-ring-color-bg-tertiary: var(--fin-bg-tertiary);
+  --inset-ring-color-bg-neutral: var(--fin-bg-neutral);
+  --inset-ring-color-bg-brand: var(--fin-bg-brand);
+  --inset-ring-color-bg-active: var(--fin-bg-active);
+  --inset-ring-color-bg-active-hover: var(--fin-bg-active-hover);
+  --inset-ring-color-bg-action-primary: var(--fin-bg-action-primary);
+  --inset-ring-color-bg-action-primary-hovered: var(--fin-bg-action-primary-hovered);
+  --inset-ring-color-bg-action-primary-pressed: var(--fin-bg-action-primary-pressed);
+  --inset-ring-color-bg-action-secondary: var(--fin-bg-action-secondary);
+  --inset-ring-color-bg-action-secondary-hovered: var(--fin-bg-action-secondary-hovered);
+  --inset-ring-color-bg-action-secondary-pressed: var(--fin-bg-action-secondary-pressed);
+  --inset-ring-color-bg-action-inverse: var(--fin-bg-action-inverse);
+  --inset-ring-color-bg-action-destructive: var(--fin-bg-action-destructive);
+  --inset-ring-color-bg-action-destructive-hovered: var(--fin-bg-action-destructive-hovered);
+  --inset-ring-color-bg-action-destructive-pressed: var(--fin-bg-action-destructive-pressed);
+  --inset-ring-color-bg-action-destructive-secondary-hovered: var(--fin-bg-action-destructive-secondary-hovered);
+  --inset-ring-color-bg-action-destructive-secondary-pressed: var(--fin-bg-action-destructive-secondary-pressed);
+  --inset-ring-color-bg-disabled: var(--fin-bg-disabled);
+  --inset-ring-color-bg-direct: var(--fin-bg-direct);
+  --inset-ring-color-bg-success: var(--fin-bg-success);
+  --inset-ring-color-bg-success-secondary: var(--fin-bg-success-secondary);
+  --inset-ring-color-bg-error: var(--fin-bg-error);
+  --inset-ring-color-bg-error-secondary: var(--fin-bg-error-secondary);
+  --inset-ring-color-bg-warning: var(--fin-bg-warning);
+  --inset-ring-color-bg-warning-secondary: var(--fin-bg-warning-secondary);
+  --inset-ring-color-bg-info: var(--fin-bg-info);
+  --inset-ring-color-bg-info-secondary: var(--fin-bg-info-secondary);
+  --inset-ring-color-bg-icons: var(--fin-bg-icons);
+  --inset-ring-color-bg-primary: var(--fin-bg-primary);
 
   /* SVG and caret */
   --fill-fg-primary: var(--fin-fg-primary);

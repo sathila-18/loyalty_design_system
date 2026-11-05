@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type HTMLAttributes } from 'react';
 import type { FinLogoBrand } from './finLogos';
-import styles from './FinLogo.module.css';
+import * as styles from './FinLogo.styles';
 
 /** Figma Logo sizes `Size`: heights 40 / 56 / 80 (`--fin-size-*`; Figma 41 / 53 / 82). */
 export type FinLogoSize = 'small' | 'medium' | 'large';
@@ -72,10 +72,13 @@ export function FinLogo({
     };
   }, [key]);
 
+  const box = showText ? styles.size[size].text : styles.size[size].mark;
+  const artClass = (version: Version) =>
+    colour !== 'auto' ? styles.artwork.fixed : version === 'white' ? styles.artwork.autoWhite : styles.artwork.autoColoured;
   return (
     <span
       {...rest}
-      className={className ? `${styles.logo} ${className}` : styles.logo}
+      className={[styles.logo, box, className].filter(Boolean).join(' ')}
       data-size={size}
       data-colour={colour}
       data-text={showText || undefined}
@@ -84,7 +87,7 @@ export function FinLogo({
       {loaded?.key === key &&
         versions.map((version, i) => {
           const src = loaded.src[files[i]!];
-          return src ? <img key={version} className={styles.art} src={src} alt="" data-version={version} draggable={false} /> : null;
+          return src ? <img key={version} className={artClass(version)} src={src} alt="" data-version={version} draggable={false} /> : null;
         })}
     </span>
   );

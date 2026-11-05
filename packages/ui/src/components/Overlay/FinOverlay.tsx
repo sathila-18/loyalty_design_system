@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react';
-import styles from './FinOverlay.module.css';
+import * as styles from './FinOverlay.styles';
 
 export type FinOverlayProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'>;
 

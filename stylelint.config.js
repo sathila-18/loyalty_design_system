@@ -24,7 +24,9 @@ export default {
       // resolves those itself). theme.css starts with `--*: initial`, which removes Tailwind's defaults.
       files: ['packages/ui/src/styles/{tailwind,theme,components}.css', 'apps/storybook/.storybook/tailwind.css'],
       rules: {
-        'at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'utility', 'custom-variant', 'variant', 'source'] }],
+        'at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'utility', 'custom-variant', 'variant', 'source', 'slot'] }],
+        // A block @custom-variant's `&` is the element the variant applies to (Tailwind syntax), not CSS nesting.
+        'nesting-selector-no-missing-scoping-root': null,
         'import-notation': 'string',
         'custom-property-pattern': [/^([a-z][a-z0-9]*)(-[a-z0-9]+)*$|^\*$/, { message: 'Custom properties are kebab-case' }],
       },

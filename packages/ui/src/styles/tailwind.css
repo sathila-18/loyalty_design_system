@@ -11,3 +11,148 @@
 
 @import "tailwindcss/utilities.css" layer(fin.utilities) source(none);
 @import "./theme.css" prefix(fin);
+
+/*
+ * What utilities can't express (CLAUDE.md "Tokens and styling" rule 9): named variants and utilities, each with the
+ * component it's for. Values are still tokens, except artwork ratios and the spinner's turn (raw until motion tokens
+ * exist, §5).
+ */
+
+/*
+ * A part inside the element that follows a hidden native input (fin:peer): FinToggle's handle, FinRadio's dot.
+ * Tailwind's peer-* reaches the input's later siblings only; these reach inside them. :where() keeps the peer's
+ * class out of the specificity, as peer-* does.
+ */
+@custom-variant inside-peer-checked (&:is(:where(.fin\:peer):checked ~ * *));
+@custom-variant inside-peer-disabled (&:is(:where(.fin\:peer):disabled ~ * *));
+
+/* A native range input's parts (FinSlider), in Chrome / Safari and Firefox. The thumb's margin is WebKit only. */
+@custom-variant range-track {
+  &::-webkit-slider-runnable-track {
+    @slot;
+  }
+
+  &::-moz-range-track {
+    @slot;
+  }
+}
+
+@custom-variant range-thumb {
+  &::-webkit-slider-thumb {
+    @slot;
+  }
+
+  &::-moz-range-thumb {
+    @slot;
+  }
+}
+
+@custom-variant webkit-range-thumb (&::-webkit-slider-thumb);
+
+/* FinSlider: the fill runs to the handle's centre, which travels from 12px to (width - 12px); --fraction (0-1) is set from TSX. */
+@utility slider-fill {
+  background: linear-gradient(
+    to right,
+    var(--fin-fg-brand) calc(var(--fin-size-12) + var(--fraction, 0) * (100% - var(--fin-size-24))),
+    var(--fin-bg-active-hover) calc(var(--fin-size-12) + var(--fraction, 0) * (100% - var(--fin-size-24)))
+  );
+}
+
+@utility slider-fill-disabled {
+  background: linear-gradient(
+    to right,
+    var(--fin-fg-disabled) calc(var(--fin-size-12) + var(--fraction, 0) * (100% - var(--fin-size-24))),
+    var(--fin-border-disabled) calc(var(--fin-size-12) + var(--fraction, 0) * (100% - var(--fin-size-24)))
+  );
+}
+
+/* FinIcon: the Material Symbols glyph (never a text font fallback), outlined or filled; sized by a Size-* token. */
+@utility icon-glyph {
+  font-family: "Material Symbols Rounded";
+  font-weight: normal;
+  letter-spacing: normal;
+  direction: ltr;
+  font-variation-settings: "FILL" 0;
+}
+
+@utility icon-glyph-filled {
+  font-family: "Material Symbols Rounded";
+  font-weight: normal;
+  letter-spacing: normal;
+  direction: ltr;
+  font-variation-settings: "FILL" 1;
+}
+
+@utility icon-* {
+  width: --value(--size-*);
+  height: --value(--size-*);
+  font-size: --value(--size-*);
+}
+
+/* FinIcon's `color` prop, set from TSX as --icon-color (a fg-* token); otherwise it inherits. */
+@utility icon-color {
+  color: var(--icon-color, currentcolor);
+}
+
+/*
+ * FinDivider's 1px line: a hairline border (there's no Size-1). --divider-color lets a parent in a state set the
+ * line's token (FinInputBase, FinListStandard); default border-default. The <hr>'s own border is cleared.
+ */
+@utility divider-line-h {
+  border: 0;
+  border-block-start: 1px solid var(--divider-color, var(--fin-border-default));
+}
+
+@utility divider-line-v {
+  border: 0;
+  border-inline-start: 1px solid var(--divider-color, var(--fin-border-default));
+}
+
+/* FinProgressBar's fill, --progress set from TSX. */
+@utility progress-fill {
+  width: var(--progress, 0%);
+}
+
+/* FinSpinner: the ring starts at 12 o'clock (a transform, as the turn animates it); the arc is --arc of 100, flat ends. */
+@utility spinner-start {
+  transform: rotate(-90deg);
+}
+
+@utility spinner-arc {
+  stroke-dasharray: var(--arc) 100;
+  stroke-linecap: butt;
+}
+
+@utility animate-spinner-turn {
+  animation: fin-spinner-turn 1s linear infinite;
+}
+
+@keyframes fin-spinner-turn {
+  from {
+    transform: rotate(-90deg);
+  }
+
+  to {
+    transform: rotate(270deg);
+  }
+}
+
+/*
+ * Artwork boxes, sized before the file loads so nothing moves: the width is the height (a Size-* token) times the
+ * artwork's ratio. FinFlag rectangles 4:3; FinLogo's mark 300 × 318 and with text 770 × 275; FinPaymentIcon 38 × 24.
+ */
+@utility flag-w-* {
+  width: calc(--value(--size-*) * 4 / 3);
+}
+
+@utility logo-mark-w-* {
+  width: calc(--value(--size-*) * 300 / 318);
+}
+
+@utility logo-text-w-* {
+  width: calc(--value(--size-*) * 770 / 275);
+}
+
+@utility payment-w-* {
+  width: calc(--value(--size-*) * 38 / 24);
+}

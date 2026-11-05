@@ -70,7 +70,7 @@ const css = `/*
  *   bg-*        background, from --fin-bg-*      (cross-group, as Figma: bg-fg-*, bg-border-*, bg-alpha-*)
  *   text-*      text colour, from --fin-text-*
  *   fg-*        icon colour (color), from --fin-fg-*
- *   border-* outline-* ring-* inset-ring-*      from --fin-border-*   (cross-group: border-fg-*, border-bg-*)
+ *   border-* outline-* ring-* inset-ring-*      from --fin-border-*   (cross-group: border-fg-*, border-bg-*, ring-fg-*…)
  *   fill-* stroke-* caret-*                     with the group named: stroke-fg-*, caret-fg-*, fill-bg-*
  *   p-* m-* gap-* inset-* translate-*          space names: xxs xs s m l xl 2xl … 12xl none
  *   w-* h-* size-* min-* max-*                 size numbers: 2 4 6 8 12 … 343 (the --fin-size-* tokens)
@@ -102,6 +102,7 @@ ${borderColourNamespaces.map((ns) => lines(ns, border, group('border'))).join('\
 ${lines('border-color', fg, group('fg'), prefixed('fg'))}
 ${lines('border-color', bg, group('bg'), prefixed('bg'))}
 ${lines('border-color', alpha, group('alpha'), prefixed('alpha'))}
+${['ring-color', 'inset-ring-color'].map((ns) => [lines(ns, fg, group('fg'), prefixed('fg')), lines(ns, bg, group('bg'), prefixed('bg'))].join('\n')).join('\n')}
 
   /* SVG and caret */
 ${['fill', 'stroke'].map((ns) => [lines(ns, fg, group('fg'), prefixed('fg')), lines(ns, bg, group('bg'), prefixed('bg')), lines(ns, border, group('border'), prefixed('border'))].join('\n')).join('\n')}

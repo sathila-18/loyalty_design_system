@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react';
-import styles from './FinCaption.module.css';
+import * as styles from './FinCaption.styles';
 
 export type FinCaptionSize = 'small' | 'medium' | 'large';
 export type FinCaptionThickness = 'heavy' | 'light';
@@ -16,7 +16,7 @@ export interface FinCaptionProps extends Omit<HTMLAttributes<HTMLSpanElement>, '
 /** A small caption (Figma Caption, List page; DESIGN.md §9). */
 export function FinCaption({ children, size = 'small', thickness = 'heavy', className, ...rest }: FinCaptionProps) {
   return (
-    <span {...rest} className={className ? `${styles.caption} ${className}` : styles.caption} data-size={size} data-thickness={thickness}>
+    <span {...rest} className={[styles.caption, styles.font[thickness][size], className].filter(Boolean).join(' ')} data-size={size} data-thickness={thickness}>
       {children}
     </span>
   );

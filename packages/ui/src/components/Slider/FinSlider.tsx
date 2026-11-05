@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useState, type ChangeEvent, type CSSProperties, type InputHTMLAttributes } from 'react';
-import styles from './FinSlider.module.css';
+import * as styles from './FinSlider.styles';
 
 export interface FinSliderProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size' | 'children' | 'value' | 'defaultValue' | 'min' | 'max' | 'step'> {
