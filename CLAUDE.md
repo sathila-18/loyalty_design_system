@@ -34,15 +34,22 @@ Instructions for Claude Code in this repo. Read them fully at the start of every
 ## Hard rules
 
 ### Tokens and styling
-- **No hardcoded values.** No hex/rgb colors and no raw numbers for spacing, radius, font size, line height or shadows in component CSS. Use the generated token variables (`DESIGN.md` §3.8). The only exceptions are artwork (logos, flags, payment icons, illustrations) and `0`.
-- **Components use semantic colors only** (`--fin-bg-*`, `--fin-text-*`, `--fin-border-*`, `--fin-fg-*`, `--fin-alpha-*`). Never palette or alias variables (`--fin-palette-*`, `--fin-color-*`).
-- **Never edit generated token files.** Change `tokens/design.tokens.json` (re-exported from Figma) and rerun the token build.
-- **CSS Modules only.** Each component has one `<Component>.module.css`. Keep it portable so the styling approach can be changed later without touching component logic:
-  - All styles live in the `.module.css` file. No style objects in TSX. The only exception is passing a dynamic value as a CSS variable (`style={{ '--fin-progress': '40%' }}`).
-  - Express variants and data states with data attributes (`data-type="primary"`, `data-size="md"`, `data-error`), read in CSS with attribute selectors.
-  - Interaction states use CSS: `:hover`, `:active`, `:focus-visible`, `:disabled` / `[aria-disabled="true"]`.
-  - No `:global` selectors, no `!important`, no deep descendant chains into other components. Don't style another component's internals; pass props instead.
-  - Global CSS is limited to the token files, the reset and the font files.
+- **No hardcoded values.** No hex/rgb colors and no raw numbers for spacing, radius, font size, line height or shadows. Use the token utilities (`DESIGN.md` §3.11), or in CSS the generated token variables (`DESIGN.md` §3.8). The only exceptions are artwork (logos, flags, payment icons, illustrations) and `0`.
+- **Components use semantic colors only** (`bg-*`, `text-*`, `border-*`, `fg-*`, `alpha-*`; in CSS `--fin-bg-*` …). Never palette or alias variables (`--fin-palette-*`, `--fin-color-*`); the Tailwind theme doesn't have them.
+- **Never edit generated token files** (including `packages/ui/src/styles/theme.css`). Change `tokens/design.tokens.json` (re-exported from Figma) and rerun the token build and `pnpm icons`.
+- **Tailwind CSS for components** (decided 5 Nov 2026; `DESIGN.md` §3.11). Components are being converted batch by batch; a component not yet converted keeps its `.module.css` and the old CSS Module rules until its batch. The rules:
+  1. **Where classes live:** each component has a `Fin<Name>.styles.ts` with whole literal class strings, one export per element or part. Never build a class name from pieces (`'fin:p-' + size`): Tailwind and the lint must see every class. No style objects in TSX; the only exception is passing a dynamic value as a CSS variable (`style={{ '--fin-progress': '40%' }}`), read by a named utility.
+  2. **Variants:** one class list per prop value, in a lookup object (`size.large`, `variant.primary`), picked in the TSX. Lists never set the same property, so nothing depends on the order of Tailwind's rules. Keep the `data-*` attributes on the element (`data-variant`, `data-size`, `data-error`) as hooks for tests, a11y exceptions and app CSS, but don't style props through them.
+  3. **States:** `enabled:hover:`, `enabled:active:`, `disabled:`, `focus-visible:`, `aria-disabled:`. A child that follows its parent's state uses a named group (`fin:group/button` on the parent, `fin:group-hover/button:` on the child).
+  4. **Tokens only:** every class has the `fin:` prefix; semantic utilities only (a colour from another group names it first: `bg-fg-active`); space names for padding, margin and gap (`p-xl`, `gap-m`), size numbers for sizes (`size-24`). No arbitrary values (`[…]`, `(--var)`), no `!`, no `-px`.
+  5. **Brand and theme** come from the tokens only, never `dark:` (it's disabled). An arbitrary variant is allowed only for a documented exception, with a comment: today only `[[data-theme=dark]_&]:` for FinButton's `inverse` tone (`DESIGN.md` §10 #74).
+  6. **Standard patterns:** Figma's inside stroke is `inset-ring` (1px) / `inset-ring-2`; the focus ring is `focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-focused`; visually hidden text is `sr-only`.
+  7. **Motion:** every animation or transition has a `motion-reduce:` counterpart.
+  8. **`className`** is appended last, for placement by the parent (margin, width, grid position). App CSS wins over ours because ours is in `@layer fin`. Don't style another component's internals; pass props instead.
+  9. **What utilities can't express** (complex `:has()`, native control parts, keyframes) goes into `packages/ui/src/styles/tailwind.css` as a named custom variant or utility, with a comment, never into per-component CSS.
+  10. **Story and page layout CSS stays CSS Modules** (`<Story>.stories.module.css`, `<Page>.module.css`), with tokens and Stylelint: their grids need values tokens can't express.
+  11. **Verification for each converted component:** `apps/storybook/scripts/visual.ts`, `main` against the branch in every brand × theme, with states for the converted component's stories; pixels and computed styles identical, and every normalisation (`--ignore-props`, `--normalize-shadows`, `--skip-hidden`) listed and explained in the batch summary. Run it in chunks with the Storybook dev server stopped.
+  - Global CSS is limited to the token files, the reset, the font files and the Tailwind setup (`tailwind.css`, `theme.css`, `components.css`).
 - **No runtime CSS-in-JS** (styled-components, Emotion, etc.).
 
 ### Next.js readiness
@@ -122,7 +129,7 @@ packages/ui/                         ← @finspace-loyalty/ui
   scripts/subset-icons.ts            ← builds src/styles/generated/ (icon font subset, not committed)
   src/components/<Name>/             ← one folder per component:
     Fin<Name>.tsx
-    Fin<Name>.module.css
+    Fin<Name>.styles.ts               ← Tailwind class lists (Fin<Name>.module.css until the component's batch)
     Fin<Name>.stories.tsx
     Fin<Name>.test.tsx
     index.ts
@@ -143,7 +150,8 @@ CLAUDE.md                            ← this file
 | Vite | Library build and Storybook |
 | Storybook (`@storybook/react-vite`) | Catalogue, with the a11y addon |
 | Vitest + Testing Library | Behaviour tests |
-| ESLint + Stylelint | Lint. Stylelint (`stylelint.config.js`) blocks raw colors, `color-mix()`, palette/alias variables and typography parts in every CSS Module |
+| Tailwind CSS 4.3 (`@tailwindcss/vite`) | Component styling, with a theme generated from the tokens (`DESIGN.md` §3.11) |
+| ESLint + Stylelint | Lint. ESLint (`eslint-plugin-better-tailwindcss`) checks every class: our theme only, the `fin:` prefix, no arbitrary values, no `dark:`, no `!`. Stylelint (`stylelint.config.js`) blocks raw colors, `color-mix()`, palette/alias variables and typography parts in every CSS Module |
 
 Commands (repo root): `pnpm storybook`, `pnpm icons` (regenerate the icon font after editing `finIcons`, and copy the flag artwork from `flag-icons`), `pnpm test` (Vitest, incl. the Stylelint rules test), `pnpm test:a11y` (every story, Light and Dark), `pnpm lint`, `pnpm lint:css`, `pnpm typecheck`, `pnpm build`, `pnpm build-storybook`. Before saying a component is done, all of them pass.
 | PostCSS (`postcss-custom-media`) | Breakpoint custom media queries |
