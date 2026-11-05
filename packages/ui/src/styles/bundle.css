@@ -1,0 +1,6 @@
+/*
+ * The all-in-one stylesheet: @finspace-loyalty/ui/index.css = tokens + fonts + reset (styles.css) + components
+ * (components.css). Built after the library, so it takes the compiled components from dist/.
+ */
+@import url("./index.css");
+@import url("../../dist/components.css");

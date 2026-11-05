@@ -1,4 +1,6 @@
 // Public exports for @finspace-loyalty/ui. Components are added here as they're built.
+// The components' Tailwind utilities, compiled into dist/components.css by the library build (DESIGN.md §3.11).
+import './styles/components.css';
 export * from './icons';
 export * from './flags';
 export * from './payment';

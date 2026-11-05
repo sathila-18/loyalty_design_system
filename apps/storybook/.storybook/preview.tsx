@@ -2,6 +2,8 @@ import type { Decorator, Preview } from '@storybook/react-vite';
 import { finBrands, finThemes, type FinBrand, type FinTheme } from '@finspace-loyalty/tokens';
 // The same stylesheet apps get (tokens, fonts, reset), from source so changes reload live.
 import '../../../packages/ui/src/styles/index.css';
+// The Tailwind utilities of the components, stories and pages (DESIGN.md §3.11).
+import './tailwind.css';
 import { colorContrastSelector } from './brandContrastExceptions';
 import styles from './preview.module.css';
 
@@ -114,7 +116,7 @@ const preview: Preview = {
       },
     },
     options: {
-      storySort: { order: ['Foundations', ['Colors', 'Typography', 'Spacing', 'Radius', 'Shadows', 'Grid', 'Breakpoints', 'Palette (reference only)'], 'Pages', 'Components', 'Internal'] },
+      storySort: { order: ['Foundations', ['Colors', 'Typography', 'Spacing', 'Radius', 'Shadows', 'Grid', 'Breakpoints', 'Tailwind utilities', 'Palette (reference only)'], 'Pages', 'Components', 'Internal'] },
     },
   },
 };

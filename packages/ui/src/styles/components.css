@@ -1,0 +1,10 @@
+/*
+ * The library's component styles: the utilities used by the components, compiled at build time into
+ * dist/components.css (with the CSS Modules not yet converted). Imported by src/index.ts so the library build
+ * picks it up. Stories and tests aren't scanned: their classes never ship.
+ */
+@import "./tailwind.css";
+
+@source "../";
+@source not "../**/*.stories.tsx";
+@source not "../**/*.test.tsx";

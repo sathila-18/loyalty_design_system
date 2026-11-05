@@ -1,0 +1,10 @@
+/*
+ * Storybook's Tailwind entry (DESIGN.md §3.11): the library's setup, scanning the components, their stories, the
+ * pages and the Foundations docs. main.ts points the library's own components.css here, so Storybook compiles
+ * the utilities once.
+ */
+@import "../../../packages/ui/src/styles/tailwind.css";
+
+@source "../../../packages/ui/src";
+@source "../src";
+@source "./";

@@ -170,3 +170,11 @@
   height: calc(var(--fin-space-12xl) * 2);
   background-color: var(--fin-alpha-error);
 }
+
+/* Tailwind utilities page: the measured elements, rendered (so they have computed values) but out of sight */
+
+.offscreen {
+  position: absolute;
+  top: 0;
+  left: -100vw;
+}

@@ -20,6 +20,16 @@ export default {
   },
   overrides: [
     {
+      // The Tailwind setup (DESIGN.md §3.11): Tailwind's at-rules, and its @import (a plain string: Tailwind
+      // resolves those itself). theme.css starts with `--*: initial`, which removes Tailwind's defaults.
+      files: ['packages/ui/src/styles/{tailwind,theme,components}.css', 'apps/storybook/.storybook/tailwind.css'],
+      rules: {
+        'at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'utility', 'custom-variant', 'variant', 'source'] }],
+        'import-notation': 'string',
+        'custom-property-pattern': [/^([a-z][a-z0-9]*)(-[a-z0-9]+)*$|^\*$/, { message: 'Custom properties are kebab-case' }],
+      },
+    },
+    {
       files: ['**/*.module.css'],
       rules: {
         'color-no-hex': [true, { message: 'No hex colors. Use a semantic color (--fin-bg-*, --fin-text-*, --fin-border-*, --fin-fg-*, --fin-alpha-*)' }],

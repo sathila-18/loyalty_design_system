@@ -1,0 +1,13 @@
+/*
+ * The Tailwind setup shared by the library build and Storybook (DESIGN.md §3.11). It scans nothing on its own:
+ * components.css (library) and Storybook's tailwind.css say which files to scan.
+ *
+ * - Prefix `fin`: every utility is fin:<name> (fin:bg-primary), so an app's own Tailwind never clashes with ours.
+ * - Layers: everything we ship sits in @layer fin (the reset in fin.base, utilities in fin.utilities). Any app style
+ *   that isn't in a layer beats ours without !important; that's how an app's className wins.
+ * - No preflight: the reset is ours (reset.css).
+ */
+@layer fin.base, fin.utilities;
+
+@import "tailwindcss/utilities.css" layer(fin.utilities) source(none);
+@import "./theme.css" prefix(fin);
