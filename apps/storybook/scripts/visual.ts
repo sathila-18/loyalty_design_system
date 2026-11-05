@@ -18,7 +18,10 @@
 import { createServer, type Server } from 'node:http';
 import { createReadStream, existsSync, mkdirSync, readFileSync, statSync, writeFileSync, appendFileSync } from 'node:fs';
 import { extname, join, resolve } from 'node:path';
-import { chromium, type Browser, type Page } from 'playwright';
+import { chromium, type Browser, type ElementHandle, type Page } from 'playwright';
+
+/** What MEASURE_INIT puts on window. */
+type Measure = { __finMeasure: (full: boolean, scope?: Element) => [string, unknown][] };
 
 const BRANDS = ['finspace', 'burgundy', 'sampath'];
 const THEMES = ['light', 'dark'];
@@ -84,33 +87,42 @@ const READY_INIT = `
  * Every element in the page (the story and anything portalled to <body>; not Storybook's own nodes), as
  * [path, hash of computed style + box, and of ::before / ::after]. With full = true, the styles themselves.
  */
-const MEASURE = `(full) => {
+const MEASURE = `(full, scope) => {
   for (const a of document.getAnimations()) { a.pause(); a.currentTime = 0; }
   const hash = (s) => { let h1 = 0xdeadbeef, h2 = 0x41c6ce57; for (let i = 0; i < s.length; i++) { const c = s.charCodeAt(i); h1 = Math.imul(h1 ^ c, 2654435761); h2 = Math.imul(h2 ^ c, 1597334677); } h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909); h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909); return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36); };
-  const style = (el, pseudo) => { const cs = getComputedStyle(el, pseudo); const o = {}; for (let i = 0; i < cs.length; i++) { const p = cs[i]; o[p] = cs.getPropertyValue(p); } return o; };
+  // Sorted: the order custom properties are listed in depends on the stylesheets' order, not on the result.
+  const style = (el, pseudo) => { const cs = getComputedStyle(el, pseudo); const o = {}; for (const p of [...cs].sort()) o[p] = cs.getPropertyValue(p); return o; };
   const SKIP = new Set(['SCRIPT', 'STYLE', 'LINK', 'META', 'NOSCRIPT', 'TEMPLATE']);
   const out = [];
-  const walk = (el, path) => {
-    if (SKIP.has(el.tagName) || el.id === 'storybook-docs' || [...el.classList].some((c) => c.startsWith('sb-'))) return;
+  // A pseudo-element counts only when it exists (content isn't none / normal); read in full only then.
+  const pseudo = (el, which) => { const c = getComputedStyle(el, which).content; return c === 'none' || c === 'normal' ? null : style(el, which); };
+  const measure = (el, path) => {
     const r = el.getBoundingClientRect();
     const own = style(el, null);
-    const before = style(el, '::before');
-    const after = style(el, '::after');
+    const before = pseudo(el, '::before');
+    const after = pseudo(el, '::after');
     const box = [r.x, r.y, r.width, r.height].map((n) => Math.round(n * 100) / 100).join(',');
-    const pseudo = (s) => (s.content === 'none' || s.content === 'normal' ? '' : JSON.stringify(s));
-    const key = JSON.stringify(own) + box + pseudo(before) + pseudo(after);
-    out.push(full ? [path, { box, own, before: pseudo(before) && before, after: pseudo(after) && after }] : [path, hash(key)]);
+    const key = JSON.stringify(own) + box + (before ? JSON.stringify(before) : '') + (after ? JSON.stringify(after) : '');
+    out.push(full ? [path, { box, own, before, after }] : [path, hash(key)]);
+  };
+  const walk = (el, path) => {
+    if (SKIP.has(el.tagName) || el.id === 'storybook-docs' || [...el.classList].some((c) => c.startsWith('sb-'))) return;
+    measure(el, path);
     [...el.children].forEach((c, i) => walk(c, path + '>' + c.tagName.toLowerCase() + ':' + i));
   };
-  [...document.body.children].forEach((c, i) => walk(c, 'body>' + c.tagName.toLowerCase() + ':' + i));
+  if (scope) {
+    // A state: the scope's subtree, plus every ancestor's own style (a parent styled with :has(:hover) changes too).
+    walk(scope, 'scope');
+    for (let a = scope.parentElement, n = 1; a && a !== document.documentElement; a = a.parentElement, n++) measure(a, 'up:' + n);
+  } else [...document.body.children].forEach((c, i) => walk(c, 'body>' + c.tagName.toLowerCase() + ':' + i));
   return out;
 }`;
 
-/** The interactive elements' paths, for --states. */
-const INTERACTIVE = `() => {
-  const sel = 'button, a[href], input, select, textarea, summary, [role=button], [role=tab], [role=menuitem], [role=option], [role=switch], [role=checkbox], [role=radio], [tabindex]:not([tabindex="-1"])';
-  return [...document.body.querySelectorAll(sel)].filter((el) => !el.closest('#storybook-docs') && el.getClientRects().length > 0).length;
-}`;
+/** Installed in every page as window.__finMeasure(full, scope?). */
+const MEASURE_INIT = `window.__finMeasure = ${MEASURE};`;
+
+/** The interactive elements, for --states. */
+const INTERACTIVE = 'button, a[href], input, select, textarea, summary, [role=button], [role=tab], [role=menuitem], [role=option], [role=switch], [role=checkbox], [role=radio], [tabindex]:not([tabindex="-1"])';
 
 // ── Snapshot ─────────────────────────────────────────────────────────────────────────────────────────────────────
 interface Entry { id: string; name: string; title: string; type: string }
@@ -126,35 +138,52 @@ async function open(page: Page, base: string, id: string, combo: string, name: s
   await page.evaluate('new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))');
 }
 
+/**
+ * Hover, press and keyboard focus on each interactive element. Each state hashes only the element's surroundings:
+ * the nearest ancestor up to three levels with at most 80 elements inside (a parent's group-hover, a sibling's peer
+ * styles), plus every ancestor's own style (:has()), without re-measuring the whole page every time.
+ */
 async function states(page: Page): Promise<Record<string, string>> {
-  const count = (await page.evaluate(`(${INTERACTIVE})()`)) as number;
   const result: Record<string, string> = {};
-  const digest = async () => {
-    const all = (await page.evaluate(`(${MEASURE})(false)`)) as [string, string][];
+  const digest = async (el: ElementHandle) => {
+    // The nearest ancestor, up to three levels, that has at most 80 elements inside (a grid of buttons isn't a scope).
+    const scope = await el.evaluateHandle((e) => {
+      let s: Element = e;
+      for (let i = 0; i < 3 && s.parentElement && s.parentElement.getElementsByTagName('*').length <= 80; i++) s = s.parentElement;
+      return s;
+    });
+    const all = (await page.evaluate(([s]) => (window as unknown as Measure).__finMeasure(false, s), [scope])) as [string, string][];
+    await scope.dispose();
     return all.map(([p, h]) => `${p}=${h}`).join('|');
   };
-  const sel = 'button, a[href], input, select, textarea, summary, [role=button], [role=tab], [role=menuitem], [role=option], [role=switch], [role=checkbox], [role=radio], [tabindex]:not([tabindex="-1"])';
-  for (let i = 0; i < count; i++) {
-    const el = page.locator(sel).filter({ visible: true }).nth(i);
-    const box = await el.boundingBox().catch(() => null);
+  const handles: ElementHandle[] = [];
+  for (const h of await page.$$(INTERACTIVE)) {
+    const inDocs = await h.evaluate((e) => !!e.closest('#storybook-docs'));
+    if (!inDocs && (await h.isVisible())) handles.push(h);
+    else await h.dispose();
+  }
+  for (const [i, el] of handles.entries()) {
+    const box = await el.boundingBox();
     if (!box) continue;
-    const x = box.x + box.width / 2;
-    const y = box.y + box.height / 2;
-    await page.mouse.move(x, y);
-    result[`hover:${i}`] = await digest();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    result[`hover:${i}`] = await digest(el);
     await page.mouse.down();
-    result[`active:${i}`] = await digest();
+    result[`active:${i}`] = await digest(el);
     // Release away from the element, so nothing is clicked and the story keeps its state.
     await page.mouse.move(0, 0);
     await page.mouse.up();
   }
   // Keyboard focus (focus-visible): Tab through the page from the top.
-  await page.mouse.move(0, 0);
   await page.evaluate('document.activeElement && document.activeElement.blur()');
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < handles.length; i++) {
     await page.keyboard.press('Tab');
-    result[`focus:${i}`] = await digest();
+    const active = (await page.evaluateHandle('document.activeElement')).asElement();
+    if (active) {
+      result[`focus:${i}`] = await digest(active);
+      await active.dispose();
+    }
   }
+  for (const h of handles) await h.dispose();
   return result;
 }
 
@@ -182,6 +211,7 @@ async function snapshot() {
       try {
         const page = await browser.newPage({ deviceScaleFactor: 1, reducedMotion: 'no-preference' });
         await page.addInitScript(READY_INIT);
+        await page.addInitScript(MEASURE_INIT);
         for (const e of batch) {
           for (const combo of COMBOS) {
             const key = `${combo}/${e.id}`;
@@ -190,7 +220,7 @@ async function snapshot() {
             try {
               await open(page, url, e.id, combo, e.name);
               await page.screenshot({ path: join(out, combo, `${e.id}.png`), fullPage: true, animations: 'disabled', caret: 'hide' });
-              const elements = (await page.evaluate(`(${MEASURE})(false)`)) as [string, string][];
+              const elements = (await page.evaluate('window.__finMeasure(false)')) as [string, string][];
               record = { key, elements: Object.fromEntries(elements) };
               if (withStates) record.states = await states(page);
             } catch (err) {
@@ -270,7 +300,7 @@ async function pixels(page: Page, a: string, b: string, diffPath: string) {
 async function explain(page: Page, base: string, key: string, paths: string[]) {
   const [combo, id] = key.split('/') as [string, string];
   await open(page, base, id, combo, '');
-  const all = (await page.evaluate(`(${MEASURE})(true)`)) as [string, Record<string, unknown>][];
+  const all = (await page.evaluate('window.__finMeasure(true)')) as [string, Record<string, unknown>][];
   return new Map(all.filter(([p]) => paths.includes(p)));
 }
 
@@ -285,8 +315,9 @@ async function compare() {
     console.log(s);
   };
   const browser = await chromium.launch({ channel: 'chrome' });
-  const page = await browser.newPage();
+  const page = await browser.newPage({ deviceScaleFactor: 1, reducedMotion: 'no-preference' });
   await page.addInitScript(READY_INIT);
+  await page.addInitScript(MEASURE_INIT);
   mkdirSync(join(b, 'diff'), { recursive: true });
   let same = 0;
   const differing: { key: string; paths: string[] }[] = [];
