@@ -49,6 +49,22 @@ describe('Tailwind class rules', () => {
     ['fin:p-0', 'unknown class'],
     ['fin:bg-primary fin:bg-secondary', 'conflict'],
     ['fin:p-m fin:p-m', 'duplicate'],
+    // Names our theme takes over or changes (audit of 6 Nov 2026 against standard Tailwind 4.3.4).
+    ['fin:leading-none', 'No leading-'],
+    ['fin:max-w-none', 'Sizes use the size numbers'],
+    ['fin:max-h-none', 'Sizes use the size numbers'],
+    ['fin:max-inline-none', 'Sizes use the size numbers'],
+    ['fin:max-block-none', 'Sizes use the size numbers'],
+    ['fin:w-xs', 'Sizes use the size numbers'],
+    ['fin:max-w-xl', 'Sizes use the size numbers'],
+    ['fin:min-w-2xl', 'Sizes use the size numbers'],
+    ['fin:basis-xs', 'Sizes use the size numbers'],
+    ['fin:inline-7xl', 'Sizes use the size numbers'],
+    ['fin:h-m', 'Sizes use the size numbers'],
+    ['fin:translate-none', 'No translate-none'],
+    ['fin:transition', 'No transitions yet'],
+    ['fin:transition-colors', 'No transitions yet'],
+    ['fin:container', 'No container'],
   ])('reports %s', async (classes, expected) => {
     const messages = await lint(classes);
     expect(messages.join('\n')).toMatch(new RegExp(expected, 'i'));

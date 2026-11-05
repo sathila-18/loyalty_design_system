@@ -66,10 +66,14 @@
   );
 }
 
-/* FinIcon: the Material Symbols glyph (never a text font fallback), outlined or filled; sized by a Size-* token. */
+/*
+ * FinIcon: the Material Symbols glyph (never a text font fallback), outlined or filled; sized by a Size-* token.
+ * line-height 1 is here, not `leading-none`: our space token `none` takes that name over (0px).
+ */
 @utility icon-glyph {
   font-family: "Material Symbols Rounded";
   font-weight: normal;
+  line-height: 1;
   letter-spacing: normal;
   direction: ltr;
   font-variation-settings: "FILL" 0;
@@ -78,6 +82,7 @@
 @utility icon-glyph-filled {
   font-family: "Material Symbols Rounded";
   font-weight: normal;
+  line-height: 1;
   letter-spacing: normal;
   direction: ltr;
   font-variation-settings: "FILL" 1;

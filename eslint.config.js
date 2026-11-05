@@ -22,6 +22,30 @@ const TAILWIND_RESTRICTIONS = [
     pattern: '(^|:)-?(p[xytrblse]?|m[xytrblse]?|gap(-[xy])?|space-[xy])-\\d+$',
     message: 'Padding, margin and gap use the space names (p-xl, gap-m), not size numbers.',
   },
+  // Names our theme takes over or changes (audit of 6 Nov 2026 against standard Tailwind 4.3.4, DESIGN.md §3.11).
+  {
+    pattern: '(^|:)leading-',
+    message:
+      'No leading-*: line height comes with the text style (font-<style>). leading-none would be 0px here: our space token "none" takes the name over.',
+  },
+  {
+    pattern: '(^|:)-?(w|h|size|min-w|max-w|min-h|max-h|basis|inline|min-inline|max-inline|block|min-block|max-block)-(none|xxs|xs|s|m|l|xl|\\d+xl)$',
+    message:
+      'Sizes use the size numbers (w-24, max-w-343), not space names. Here max-w-none would be 0px and w-xs / max-w-xl 4px / 16px (space tokens), not standard Tailwind\'s "no limit" and container widths.',
+  },
+  {
+    pattern: '(^|:)-?translate-none$',
+    message: 'No translate-none: our space token "none" turns it into translate: 0 0. Leave translate unset.',
+  },
+  {
+    // transition-none stays allowed: it's the motion-reduce: counterpart (CLAUDE.md rule 7).
+    pattern: '(^|:)transition(-(?!none$)|$)',
+    message: 'No transitions yet: motion is deferred (DESIGN.md §5), and without Tailwind\'s default duration transition-* would do nothing.',
+  },
+  {
+    pattern: '(^|:)container$',
+    message: 'No container: with our theme it is only width: 100% (standard Tailwind adds a max-width per breakpoint).',
+  },
 ];
 const TAILWIND_RULES = {
   'better-tailwindcss/no-unknown-classes': 'error',

@@ -6,7 +6,7 @@
 import type { FinIconSize } from './FinIcon';
 
 export const icon =
-  'fin:inline-block fin:flex-none fin:overflow-hidden fin:not-italic fin:leading-none fin:normal-case fin:whitespace-nowrap ' +
+  'fin:inline-block fin:flex-none fin:overflow-hidden fin:not-italic fin:normal-case fin:whitespace-nowrap ' +
   'fin:select-none fin:antialiased fin:icon-color';
 
 /* Outlined (FILL 0) by default, filled (FILL 1) for active or selected states. */
