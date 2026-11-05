@@ -3,7 +3,7 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
-import styles from './FinButtonBase.module.css';
+import * as styles from './FinButtonBase.styles';
 
 /** Figma Base-button `Type`. */
 export type FinButtonVariant = 'primary' | 'secondary' | 'tertiary';
@@ -79,12 +79,18 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
   ref,
 ) {
   const iconSize = ICON_SIZE[size];
+  // Tertiary's colours give way to contentTone, and its icon to iconTone; the other variants ignore both (§9.28).
+  const tone = variant === 'tertiary' && contentTone ? styles.contentTone[contentTone] : undefined;
+  const colours = tone ?? styles.variant[variant];
+  const iconClass = `${styles.icon} ${!tone && variant === 'tertiary' && iconTone === 'secondary' ? styles.tertiaryGreyIcon : colours.icon}`;
+  const padding = styles.size[size].padding[iconOnly ? 'only' : (iconSide ?? 'none')];
+  const buttonClass = [styles.button, styles.size[size].button, padding, colours.button, className].filter(Boolean).join(' ');
   return (
     <button
       {...rest}
       ref={ref}
       type={type}
-      className={className ? `${styles.button} ${className}` : styles.button}
+      className={buttonClass}
       data-variant={variant}
       data-size={size}
       data-icon-only={iconOnly || undefined}
@@ -93,13 +99,13 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
       data-content-tone={contentTone}
     >
       {leadingIcon && (
-        <span className={styles.icon}>
+        <span className={iconClass}>
           <FinIcon name={leadingIcon} size={iconSize} />
         </span>
       )}
       <span className={showLabel ? styles.label : styles.hiddenLabel}>{children}</span>
       {trailingIcon && (
-        <span className={styles.icon}>
+        <span className={iconClass}>
           <FinIcon name={trailingIcon} size={iconSize} />
         </span>
       )}

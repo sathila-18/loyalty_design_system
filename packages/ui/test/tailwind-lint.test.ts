@@ -55,8 +55,9 @@ describe('Tailwind class rules', () => {
   });
 
   it('checks every string in a component class file (Fin<Name>.styles.ts)', async () => {
-    const code = "export const button = 'fin:bg-[#fff]';\n";
+    const code = "export const button = 'fin:bg-[#fff]';\nexport const size = { large: { padding: 'fin:p-[3px]' } };\n";
     const [result] = await eslint.lintText(code, { filePath: join(root, 'packages/ui/src/components/Sample/FinSample.styles.ts') });
-    expect(result!.messages.map((m) => m.message).join('\n')).toMatch(/No arbitrary values/);
+    // Both: the top-level string and the one inside an object.
+    expect(result!.messages.filter((m) => /No arbitrary values/.test(m.message))).toHaveLength(2);
   });
 });

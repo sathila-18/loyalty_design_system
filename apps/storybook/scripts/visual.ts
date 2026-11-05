@@ -96,7 +96,9 @@ const MEASURE = `(full, scope) => {
   for (const a of document.getAnimations()) { a.pause(); a.currentTime = 0; }
   const hash = (s) => { let h1 = 0xdeadbeef, h2 = 0x41c6ce57; for (let i = 0; i < s.length; i++) { const c = s.charCodeAt(i); h1 = Math.imul(h1 ^ c, 2654435761); h2 = Math.imul(h2 ^ c, 1597334677); } h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909); h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909); return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36); };
   // Sorted: the order custom properties are listed in depends on the stylesheets' order, not on the result.
-  const style = (el, pseudo) => { const cs = getComputedStyle(el, pseudo); const o = {}; for (const p of [...cs].sort()) o[p] = cs.getPropertyValue(p); return o; };
+  // Tailwind's own --tw-* variables are left out: once a utility uses one, Tailwind registers it (@property) and it
+  // shows on every element, with no effect of its own; what it feeds into (box-shadow, outline…) is still compared.
+  const style = (el, pseudo) => { const cs = getComputedStyle(el, pseudo); const o = {}; for (const p of [...cs].sort()) if (!p.startsWith('--tw-')) o[p] = cs.getPropertyValue(p); return o; };
   const SKIP = new Set(['SCRIPT', 'STYLE', 'LINK', 'META', 'NOSCRIPT', 'TEMPLATE']);
   const out = [];
   // A pseudo-element counts only when it exists (content isn't none / normal); read in full only then.
@@ -375,27 +377,43 @@ async function compare() {
   const sa = args.get('static-a');
   const sb = args.get('static-b');
   if (sa && sb && differing.length) {
-    log('\nProperty differences (first 20 stories):');
+    // Re-open every differing story in both builds and count each distinct change (property, a value → b value)
+    // across all of them, with one example, so a difference is explained once, however many elements show it.
+    type Side = { box: string; own: Record<string, string>; before: Record<string, string> | null; after: Record<string, string> | null };
+    const changes = new Map<string, { count: number; stories: Set<string>; example: string }>();
+    const note = (change: string, key: string, path: string) => {
+      const c = changes.get(change) ?? { count: 0, stories: new Set<string>(), example: `${key} ${path}` };
+      c.count++;
+      c.stories.add(key);
+      changes.set(change, c);
+    };
     const servers = await Promise.all([serve(resolve(sa)), serve(resolve(sb))]);
     try {
-      for (const { key, paths } of differing.slice(0, 20)) {
-        const [ea, eb] = [await explain(page, servers[0].url, key, paths.slice(0, 50)), await explain(page, servers[1].url, key, paths.slice(0, 50))];
-        log(`  ${key}`);
-        for (const p of paths.slice(0, 50)) {
-          const x = ea.get(p) as { box: string; own: Record<string, string> } | undefined;
-          const y = eb.get(p) as { box: string; own: Record<string, string> } | undefined;
+      for (const { key, paths } of differing) {
+        const ea = await explain(page, servers[0].url, key, paths);
+        const eb = await explain(page, servers[1].url, key, paths);
+        for (const p of paths) {
+          const x = ea.get(p) as Side | undefined;
+          const y = eb.get(p) as Side | undefined;
           if (!x || !y) {
-            log(`    ${p}: only in ${x ? 'a' : 'b'}`);
+            note(`element only in ${x ? 'a' : 'b'}`, key, p);
             continue;
           }
-          const props = [...new Set([...Object.keys(x.own), ...Object.keys(y.own)])].filter((k) => x.own[k] !== y.own[k]);
-          const box = x.box !== y.box ? ` box ${x.box} → ${y.box}` : '';
-          log(`    ${p}:${box} ${props.map((k) => `${k}: ${x.own[k]} → ${y.own[k]}`).join('; ') || '(::before/::after)'}`);
+          if (x.box !== y.box) note(`box ${x.box} → ${y.box}`, key, p);
+          for (const k of new Set([...Object.keys(x.own), ...Object.keys(y.own)])) if (x.own[k] !== y.own[k]) note(`${k}: ${x.own[k] ?? '(none)'} → ${y.own[k] ?? '(none)'}`, key, p);
+          for (const which of ['before', 'after'] as const) {
+            const [u, v] = [x[which], y[which]];
+            if (JSON.stringify(u) === JSON.stringify(v)) continue;
+            if (!u || !v) note(`::${which} only in ${u ? 'a' : 'b'}`, key, p);
+            else for (const k of new Set([...Object.keys(u), ...Object.keys(v)])) if (u[k] !== v[k]) note(`::${which} ${k}: ${u[k]} → ${v[k]}`, key, p);
+          }
         }
       }
     } finally {
       for (const s of servers) s.server.close();
     }
+    log(`\nComputed-style changes (${changes.size} distinct; count = elements, across ${differing.length} story × combo):`);
+    for (const [change, c] of [...changes].sort((m, n) => n[1].count - m[1].count)) log(`  ${c.count} × ${change}   (${c.stories.size} stories; e.g. ${c.example})`);
   }
   await browser.close();
   const report = args.get('report');

@@ -68,7 +68,8 @@ export default tseslint.config(
     settings: {
       'better-tailwindcss': {
         ...TAILWIND_SETTINGS,
-        selectors: [...getDefaultSelectors(), { kind: 'variable', name: '^.*$', match: [{ type: 'strings' }] }],
+        // Strings, and strings inside objects (size.large.padding.none).
+        selectors: [...getDefaultSelectors(), { kind: 'variable', name: '^.*$', match: [{ type: 'strings' }, { type: 'objectValues' }] }],
       },
     },
   },
