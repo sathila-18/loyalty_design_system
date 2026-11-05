@@ -1,4 +1,19 @@
 # loyalty_design_system
+
+## Using the design system in an app
+
+Import it once, from the app's main stylesheet (for example `src/index.css`):
+
+```css
+@import "@finspace-loyalty/ui/index.css"; /* tokens + fonts + reset + components */
+```
+
+Then set the brand and theme on `<html>`: `<html data-brand="finspace" data-theme="light">`.
+
+The parts are also available on their own: `@finspace-loyalty/ui/styles.css` (tokens, fonts, reset) and `@finspace-loyalty/ui/components.css` (components). An app that uses Tailwind 4 may also import `@finspace-loyalty/ui/theme.css` (optional), to get the same token utilities on its own pages.
+
+**Your styles win over ours.** Everything the design system ships is in a CSS cascade layer (`@layer fin`), and any app CSS that isn't in a layer beats it, whatever its specificity. That's how a `className` you pass to a component applies without `!important`. It also means a global element rule in the app (`button { … }`, `a { … }`, `input { … }`) changes our components too, so scope those rules to your own markup (DESIGN.md §3.11, §10 #112).
+
 ## Storybook on Vercel
 
 Live at **https://loyaltydesignsystem.vercel.app** (`main`); each pushed branch gets a preview at `https://loyaltydesignsystem-git-<branch>-sathila.vercel.app` (behind Vercel login).

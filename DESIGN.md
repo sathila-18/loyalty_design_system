@@ -480,6 +480,48 @@ All generated code lives in `packages/tokens/dist/` and is **generated from `tok
 - **⚠️ A brand's exception list must be empty before that brand goes live.**
 - **Adding a brand:** add a mode to `Alias Colors` and `Alias Typography` (only the family may differ) and its primitive scales in Figma; export; add the mode to `BRAND_SLUGS` and its scales to `BRAND_SCALES` (with a prefix if any name clashes) in `packages/tokens/build.ts`; bump `EXPECTED.tokens`; self-host a new font in `packages/ui/src/styles/fonts.css` and load it in Storybook's `preview.tsx`; run the build, the comparison with `main` (every existing brand unchanged), the contrast table and `pnpm test:a11y`; update this table.
 
+### 3.11 Tailwind theme (added 5 Nov 2026; styling refactor in progress)
+
+Component styling is moving from CSS Modules to **Tailwind CSS 4.3** (decided by the team 5 Nov 2026, "Option B"). It's a styling refactor: no visual, API or behaviour change. The tokens stay the only source of values: `tokens/design.tokens.json` and the token build don't change. The component rules (which utilities, variants, states) are agreed after the FinButton pilot and then written into CLAUDE.md and here. Until a component is converted, its CSS Module still applies.
+
+**Setup (stage 1, `refactor/tailwind-setup`):**
+- `tailwindcss` and `@tailwindcss/vite` **4.3.4** (pinned), in `packages/ui` and `apps/storybook`; `eslint-plugin-better-tailwindcss` **4.10.0** at the root.
+- **Theme:** `packages/ui/src/styles/theme.css` is **generated** from the token files by `scripts/tailwind-theme.ts` (part of `pnpm icons`); never edit it by hand. It removes every Tailwind default (palette, spacing scale, radius, text sizes, shadows, breakpoints) and maps only our tokens, with `@theme inline reference`: each utility contains `var(--fin-*)` itself, so `data-brand` and `data-theme` keep switching at runtime (also on an inner element, as Storybook's side-by-side view does), and Tailwind writes no variables of its own.
+- **Prefix `fin`:** every class is `fin:<utility>` (`fin:bg-primary`), so an app's own Tailwind can't clash with ours.
+- **Layers:** everything the library ships sits in **`@layer fin`**: the reset in `fin.base`, the utilities in `fin.utilities` (above it). Tokens and fonts aren't in a layer (only variables and `@font-face`). There's no Tailwind preflight; the reset is ours.
+- **Entry files:** `src/styles/tailwind.css` (prefix, layers, theme; shared), `src/styles/components.css` (the library: scans `src/`, not stories or tests; imported by `src/index.ts`), `apps/storybook/.storybook/tailwind.css` (Storybook: also scans stories, pages and Foundations; the library's `components.css` is pointed at it, so it's compiled once).
+- `dark:` is redefined so it never matches: brand and theme come only from the tokens.
+
+**Utility names: the token name without `--fin-` and its group, after the matching Tailwind prefix.**
+
+| Token | Utility | Example |
+|---|---|---|
+| `--fin-bg-*` | `bg-*` | `fin:bg-action-primary` → `var(--fin-bg-action-primary)` |
+| `--fin-text-*` | `text-*` | `fin:text-secondary` |
+| `--fin-fg-*` (icon colour) | `fg-*` (sets `color`) | `fin:fg-action` |
+| `--fin-border-*` | `border-*`, `outline-*`, `ring-*`, `inset-ring-*` | `fin:outline-focused` |
+| a colour from another group, as Figma uses it | the group named first | `fin:bg-fg-active`, `fin:border-bg-primary`, `fin:bg-alpha-md`, `fin:stroke-fg-brand`, `fin:caret-fg-primary` |
+| `--fin-space-*` | `p-* m-* gap-* inset-* translate-*` with the space names | `fin:p-xl` (16), `fin:gap-m` (8), `fin:p-none` (0) |
+| `--fin-size-*` | `w-* h-* size-* min-* max-*` with the size numbers | `fin:size-24`, `fin:min-w-120` |
+| `--fin-radius-*` | `rounded-*` | `fin:rounded-m` |
+| `--fin-shadow-*` (§4.2) | `shadow-*` | `fin:shadow-menu` |
+| `--fin-font-<style>` | `font-<style>` (the whole `font` shorthand) | `fin:font-body-medium` |
+| breakpoints (§3.7) | `bp-md: bp-lg: bp-xl: bp-xxl:` | `fin:bp-lg:p-3xl` |
+
+Not standard Tailwind: there's no ×4px spacing scale, so `p-4` doesn't exist, and `w-24` is the 24px size token (not 96px). Zero is `none` (`p-none`).
+
+**Checks:** `packages/ui/test/tailwind-theme.test.ts` compiles every utility with the real compiler and checks it gives `var(--fin-…)` of the token its name says (a wrong mapping fails), that every semantic colour, space, size, radius, shadow and text style token has a utility, that Tailwind's defaults and the palette give nothing, and that the theme is up to date with the tokens. The Storybook page **Foundations/Tailwind utilities** compares each utility's computed value with the token's in the browser; `pnpm test:a11y` runs it in every brand × theme. `packages/ui/test/tailwind-lint.test.ts` proves the lint rules (prefix, no arbitrary values, no `dark:`, no `!`, no `-px`, space names for padding / margin / gap, unknown and conflicting classes).
+
+**Visual check** for every converted component: `apps/storybook/scripts/visual.ts` screenshots every story in every brand × theme from two Storybook builds (`main` and the branch) and compares them pixel by pixel, with a hash of every element's computed style and box (`::before` / `::after` included); `--states` also hovers, presses and keyboard-focuses each interactive element. It runs in chunks (one browser per 20 stories) with the Storybook dev server stopped, to keep memory low.
+
+**In an app:** one import in the app's main stylesheet:
+
+```css
+@import "@finspace-loyalty/ui/index.css"; /* tokens + fonts + reset + components */
+```
+
+The separate files are still there: `styles.css` (tokens, fonts, reset), `components.css` (components), and, **optionally**, `theme.css` for an app on Tailwind 4 that wants the same utilities on its own pages (`@import "tailwindcss"; @import "@finspace-loyalty/ui/theme.css";`; it removes Tailwind's defaults there too). **Any app style that isn't in a cascade layer beats ours**, whatever its specificity: that's how a `className` from the app wins without `!important`, but it also means an app's global element rules (`button { … }`, `a { … }`, `input { … }`) override the components' look (§10 #112).
+
 ---
 
 ## 4. Foundations: styles (not variables)
@@ -4178,6 +4220,12 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 110 | **Sampath's White logo: made all white in code** (4 Nov 2026). In Foundation – Loyalty › Logo, the Sampath `Style=White` source images have white text and a **blue** mark (the octagon and pot). **Decided by design 4 Nov 2026: in Dark the mark is white.** So the committed `sampath-white.png` and `sampath-mark-white.png` are Figma's files with every visible pixel made white and the transparency kept (the shape and edges are unchanged; an exception to "never recolor", §6.1, at design's request). When Figma's White variant is updated, replace them with the new export. | Logo, Sampath | ✅ Decided; ⏳ Figma to update the White variant (optional) |
 | 111 | **Figma's placeholder logo still says "Company Name"** (4 Nov 2026): the Side Menu's Logo slot and the generic `Logo sizes` set (`18074:5317`). Code shows "Fintech loyalty" (decided by design 2 Nov 2026). Also, Figma's Logo sizes heights (41 / 53 / 82 for Sampath, 40 / 54 / 80 for the generic set) have no tokens; code uses `Size-40` / `Size-56` / `Size-80` (§9.83). | Logo, Side nav | ⏳ Figma to update (optional) |
 
+#### Styling refactor: Tailwind (added 5 Nov 2026)
+
+| # | Item | Where | Status |
+|---|---|---|---|
+| 112 | **Not yet confirmed with the developers: whether the apps have global element rules (`button`, `input`, `a`…) that would override `@layer fin` styles.** Everything the library ships is in `@layer fin` (§3.11), and any app CSS outside a layer beats it whatever its specificity, so an app rule like `button { padding: 0 }` would change our buttons. If the apps have such rules, they need to be scoped, or put in a layer below `fin`. | Apps, §3.11 | ❓ Confirm with the developers |
+
 ---
 
 ## 11. Changelog
@@ -4576,3 +4624,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 4 Nov 2026 | 0.2 | The third brand (Sampath) approved by design and merged into `main`; its exceptions (§10 #81–#105, one HIGH: #103) and Burgundy's cross-brand ones (§10 #106–#109) accepted. Sampath isn't live. |
 | 4 Nov 2026 | 0.2 | **FinLogo** (§9.83, Figma Logo sizes in Foundation – Loyalty): Sampath's logo, `size` Small / Medium / Large (40 / 56 / 80), `colour` auto (Colored in Light, White in Dark, by CSS) / coloured / white, `showText`; the Sampath PNGs from Figma committed in `packages/ui/src/logos/sampath/`. The side nav, app shell and page stories show it when the Brand toolbar is Sampath; Finspace and Burgundy keep the "Fintech loyalty" placeholder. §10 #110 (the White logo made all white, at design's request), #111. |
 | 4 Nov 2026 | 0.2 | FinLogo and the Sampath logo in the side nav approved by design and merged into `main` (White logo all white, §10 #110). |
+| 5 Nov 2026 | 0.2 | **Styling refactor to Tailwind CSS, stage 1** (`refactor/tailwind-setup`, not merged; §3.11): Tailwind 4.3.4 with a theme generated from the tokens (no Tailwind defaults; `fin:` prefix; `@layer fin`, the reset now in `fin.base`), the library ships `index.css` (all-in-one), `styles.css`, `components.css` and `theme.css` (optional); ESLint class rules (`eslint-plugin-better-tailwindcss` 4.10.0); the token proof (compiled and in the browser, every brand × theme); the visual check script. No component changed. Open: §10 #112. |

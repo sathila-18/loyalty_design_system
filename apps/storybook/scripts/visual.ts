@@ -26,6 +26,11 @@ type Measure = { __finMeasure: (full: boolean, scope?: Element) => [string, unkn
 const BRANDS = ['finspace', 'burgundy', 'sampath'];
 const THEMES = ['light', 'dark'];
 const COMBOS = BRANDS.flatMap((b) => THEMES.map((t) => `${b}-${t}`));
+/**
+ * Render on the CPU: with the GPU, Chrome's anti-aliasing at rounded corners changes a few pixels from run to run
+ * (found on 5 Nov 2026: main against itself differed by up to 97 pixels on the pages).
+ */
+const STABLE_RENDERING = ['--disable-gpu', '--disable-gpu-rasterization', '--disable-partial-raster', '--force-color-profile=srgb'];
 const WIDTH = 1440;
 const HEIGHT = 900;
 
@@ -134,8 +139,27 @@ async function open(page: Page, base: string, id: string, combo: string, name: s
   await page.setViewportSize({ width, height: HEIGHT });
   await page.goto(`${base}/iframe.html?id=${id}&viewMode=story&globals=brand:${brand};theme:${theme}`);
   await page.waitForFunction('window.__finDone === true', null, { timeout: 30_000 });
+  // Lazily loaded files (FinLogo imports its image only when it renders), then every image loaded and decoded.
+  await page.waitForLoadState('networkidle');
   await page.evaluate('document.fonts.ready');
+  await page.evaluate('Promise.all([...document.images].map((i) => (i.complete ? i.decode() : new Promise((r) => { i.onload = i.onerror = r; })).catch(() => {})))');
   await page.evaluate('new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))');
+}
+
+/**
+ * Screenshots until two in a row are identical (at most 5), as Playwright's own screenshot assertions do: a
+ * scaled-down image is sometimes painted at low quality first and repainted sharper a moment later.
+ */
+async function stableScreenshot(page: Page, path: string) {
+  const shot = () => page.screenshot({ fullPage: true, animations: 'disabled', caret: 'hide' });
+  let previous = await shot();
+  for (let i = 0; i < 4; i++) {
+    await page.waitForTimeout(100);
+    const next = await shot();
+    if (next.equals(previous)) break;
+    previous = next;
+  }
+  writeFileSync(path, previous);
 }
 
 /**
@@ -207,7 +231,7 @@ async function snapshot() {
     for (let s = 0; s < stories.length; s += chunk) {
       const batch = stories.slice(s, s + chunk);
       if (batch.every((e) => COMBOS.every((c) => done.has(`${c}/${e.id}`)))) continue;
-      const browser: Browser = await chromium.launch({ channel: 'chrome' });
+      const browser: Browser = await chromium.launch({ channel: 'chrome', args: STABLE_RENDERING });
       try {
         const page = await browser.newPage({ deviceScaleFactor: 1, reducedMotion: 'no-preference' });
         await page.addInitScript(READY_INIT);
@@ -219,7 +243,7 @@ async function snapshot() {
             let record: Record<string, unknown>;
             try {
               await open(page, url, e.id, combo, e.name);
-              await page.screenshot({ path: join(out, combo, `${e.id}.png`), fullPage: true, animations: 'disabled', caret: 'hide' });
+              await stableScreenshot(page, join(out, combo, `${e.id}.png`));
               const elements = (await page.evaluate('window.__finMeasure(false)')) as [string, string][];
               record = { key, elements: Object.fromEntries(elements) };
               if (withStates) record.states = await states(page);
@@ -314,7 +338,7 @@ async function compare() {
     lines.push(s);
     console.log(s);
   };
-  const browser = await chromium.launch({ channel: 'chrome' });
+  const browser = await chromium.launch({ channel: 'chrome', args: STABLE_RENDERING });
   const page = await browser.newPage({ deviceScaleFactor: 1, reducedMotion: 'no-preference' });
   await page.addInitScript(READY_INIT);
   await page.addInitScript(MEASURE_INIT);
