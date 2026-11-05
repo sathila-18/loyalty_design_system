@@ -45,6 +45,14 @@ for (let i = 0; i < rest.length; i++) {
     i++;
   } else args.set(key, 'true');
 }
+// An unknown argument stops the run, so a typo (or flags passed as one word) can't quietly change what's compared.
+const KNOWN = ['static', 'out', 'filter', 'states', 'chunk', 'a', 'b', 'static-a', 'static-b', 'report', 'explain-max', 'ignore-props', 'normalize-shadows', 'skip-hidden'];
+for (const key of args.keys()) {
+  if (!KNOWN.includes(key)) {
+    console.error(`visual: unknown argument --${key}`);
+    process.exit(2);
+  }
+}
 const need = (key: string) => {
   const v = args.get(key);
   if (!v) {
@@ -98,7 +106,19 @@ const MEASURE = `(full, scope) => {
   // Sorted: the order custom properties are listed in depends on the stylesheets' order, not on the result.
   // Tailwind's own --tw-* variables are left out: once a utility uses one, Tailwind registers it (@property) and it
   // shows on every element, with no effect of its own; what it feeds into (box-shadow, outline…) is still compared.
-  const style = (el, pseudo) => { const cs = getComputedStyle(el, pseudo); const o = {}; for (const p of [...cs].sort()) if (!p.startsWith('--tw-')) o[p] = cs.getPropertyValue(p); return o; };
+  // Normalisations, only when asked for on the command line (see OPTIONS below).
+  const opt = window.__finOpts || {};
+  const ignore = opt.ignoreProps ? new RegExp(opt.ignoreProps) : null;
+  const shadow = (v) => { const layers = v.split(/,(?![^(]*\\))/).map((s) => s.trim()).filter((s) => s !== 'none' && !/^rgba\\(0, 0, 0, 0\\) 0px 0px 0px 0px$/.test(s) && !/^rgba\\(0, 0, 0, 0\\) 0px 0px 0px \\d+px inset$/.test(s)); return layers.join(', ') || 'none'; };
+  const style = (el, pseudo) => {
+    const cs = getComputedStyle(el, pseudo);
+    const o = {};
+    for (const p of [...cs].sort()) if (!p.startsWith('--tw-') && !(ignore && ignore.test(p))) o[p] = cs.getPropertyValue(p);
+    if (opt.normalizeShadows && o['box-shadow']) o['box-shadow'] = shadow(o['box-shadow']);
+    return o;
+  };
+  // A visually hidden element (sr-only: 1×1, clipped): nothing of it is seen, so its box and margins don't count.
+  const hidden = (el) => { const cs = getComputedStyle(el); return cs.clipPath === 'inset(50%)' && cs.width === '1px' && cs.height === '1px' && cs.position === 'absolute'; };
   const SKIP = new Set(['SCRIPT', 'STYLE', 'LINK', 'META', 'NOSCRIPT', 'TEMPLATE']);
   const out = [];
   // A pseudo-element counts only when it exists (content isn't none / normal); read in full only then.
@@ -114,6 +134,7 @@ const MEASURE = `(full, scope) => {
   };
   const walk = (el, path) => {
     if (SKIP.has(el.tagName) || el.id === 'storybook-docs' || [...el.classList].some((c) => c.startsWith('sb-'))) return;
+    if (opt.skipHidden && hidden(el)) return;
     measure(el, path);
     [...el.children].forEach((c, i) => walk(c, path + '>' + c.tagName.toLowerCase() + ':' + i));
   };
@@ -125,8 +146,22 @@ const MEASURE = `(full, scope) => {
   return out;
 }`;
 
-/** Installed in every page as window.__finMeasure(full, scope?). */
-const MEASURE_INIT = `window.__finMeasure = ${MEASURE};`;
+/**
+ * Normalisations for a refactor whose known differences can't be seen (DESIGN.md §3.11), each turned on by a flag
+ * and used the same way on both sides (snapshot and compare):
+ *   --ignore-props <regex>   leave out properties whose name matches (e.g. a component's private --button-* variables)
+ *   --normalize-shadows      drop empty box-shadow layers (transparent, or all zero), so Tailwind's layered shadow
+ *                            equals the same single shadow, and an invisible ring equals none
+ *   --skip-hidden            leave out visually hidden elements (sr-only), whose box can't be seen
+ */
+const OPTIONS = {
+  ignoreProps: args.get('ignore-props'),
+  normalizeShadows: args.has('normalize-shadows'),
+  skipHidden: args.has('skip-hidden'),
+};
+
+/** Installed in every page as window.__finMeasure(full, scope?), with the options. */
+const MEASURE_INIT = `window.__finOpts = ${JSON.stringify(OPTIONS)}; window.__finMeasure = ${MEASURE};`;
 
 /** The interactive elements, for --states. */
 const INTERACTIVE = 'button, a[href], input, select, textarea, summary, [role=button], [role=tab], [role=menuitem], [role=option], [role=switch], [role=checkbox], [role=radio], [tabindex]:not([tabindex="-1"])';
@@ -142,7 +177,8 @@ async function open(page: Page, base: string, id: string, combo: string, name: s
   await page.goto(`${base}/iframe.html?id=${id}&viewMode=story&globals=brand:${brand};theme:${theme}`);
   await page.waitForFunction('window.__finDone === true', null, { timeout: 30_000 });
   // Lazily loaded files (FinLogo imports its image only when it renders), then every image loaded and decoded.
-  await page.waitForLoadState('networkidle');
+  // Best effort: a story that keeps a request open (polling, a long timer) never goes idle.
+  await page.waitForLoadState('networkidle', { timeout: 5_000 }).catch(() => {});
   await page.evaluate('document.fonts.ready');
   await page.evaluate('Promise.all([...document.images].map((i) => (i.complete ? i.decode() : new Promise((r) => { i.onload = i.onerror = r; })).catch(() => {})))');
   await page.evaluate('new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))');
@@ -387,11 +423,22 @@ async function compare() {
       c.stories.add(key);
       changes.set(change, c);
     };
+    // --explain-max n: explain n differing stories, spread over the stories (one combo each first), not all of them.
+    const max = Number(args.get('explain-max') ?? Infinity);
+    const byStory = [...new Map(differing.map((d) => [d.key.split('/')[1], d])).values()];
+    const sample = [...byStory, ...differing.filter((d) => !byStory.includes(d))].slice(0, max);
     const servers = await Promise.all([serve(resolve(sa)), serve(resolve(sb))]);
     try {
-      for (const { key, paths } of differing) {
-        const ea = await explain(page, servers[0].url, key, paths);
-        const eb = await explain(page, servers[1].url, key, paths);
+      for (const { key, paths } of sample) {
+        let ea: Map<string, unknown>;
+        let eb: Map<string, unknown>;
+        try {
+          ea = await explain(page, servers[0].url, key, paths);
+          eb = await explain(page, servers[1].url, key, paths);
+        } catch (err) {
+          note(`couldn't re-open to explain: ${String(err).split('\n')[0]}`, key, '');
+          continue;
+        }
         for (const p of paths) {
           const x = ea.get(p) as Side | undefined;
           const y = eb.get(p) as Side | undefined;
@@ -412,7 +459,7 @@ async function compare() {
     } finally {
       for (const s of servers) s.server.close();
     }
-    log(`\nComputed-style changes (${changes.size} distinct; count = elements, across ${differing.length} story × combo):`);
+    log(`\nComputed-style changes (${changes.size} distinct; count = elements, across ${sample.length} of ${differing.length} differing story × combo):`);
     for (const [change, c] of [...changes].sort((m, n) => n[1].count - m[1].count)) log(`  ${c.count} × ${change}   (${c.stories.size} stories; e.g. ${c.example})`);
   }
   await browser.close();
