@@ -530,6 +530,12 @@ Not standard Tailwind: there's no ×4px spacing scale, so `p-4` doesn't exist, a
 
 **Visual check** for every converted component: `apps/storybook/scripts/visual.ts` screenshots every story in every brand × theme from two Storybook builds (`main` and the branch) and compares them pixel by pixel, with a hash of every element's computed style and box (`::before` / `::after` included); `--states` also hovers, presses and keyboard-focuses each interactive element. It runs in chunks (one browser per 20 stories) with the Storybook dev server stopped, to keep memory low.
 
+**What the comparison compares** (decided by design 6 Nov 2026, from stage 3b on): every real CSS property of every element (colours, sizes, spacing, fonts, borders, shadows, outlines, positions…), its box, its `::before` / `::after`, every `--fin-*` token variable, and the pixels. It leaves out only the switches written on the command line, the same on both sides:
+- `--ignore-props '^--(?!fin-)'`: **component-private variables** (`--button-bg`, `--chip-border`, `--icon-color`…). They never draw anything themselves; whatever they feed into (the background, the border, the colour) is a real property and is still compared. Tailwind's own `--tw-*` variables are always left out, for the same reason. The switch is the same for every batch, so a merged batch's branch snapshots can be the next batch's `main` baseline, as long as `main` is exactly that merged commit (otherwise `main` is shot again).
+- `--normalize-shadows`: empty `box-shadow` layers (transparent or all zero) are dropped, so Tailwind's layered shadow equals the same single shadow, and an invisible ring equals `none`.
+- `--skip-hidden`: visually hidden elements (`sr-only`, 1 × 1 and clipped) are left out; nothing of them can be seen.
+Every other difference is listed in the batch summary, with its reason.
+
 **In an app:** one import in the app's main stylesheet:
 
 ```css
