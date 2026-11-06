@@ -9,7 +9,7 @@ import { FinListStandard } from '../ListStandard';
 import { FinMenu } from '../Menu';
 import { FinSearchField } from '../SearchField';
 import { searchCountries } from './countrySearch';
-import styles from './FinCountrySelector.module.css';
+import * as styles from './FinCountrySelector.styles';
 
 export interface FinCountrySelectorProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'value'> {
   /** The chosen country (an ISO code), shown as its Small flag and Selected in the menu. */
@@ -76,7 +76,7 @@ export const FinCountrySelector = forwardRef<HTMLButtonElement, FinCountrySelect
         <>
           <FinSearchField size="small" label={searchLabel} placeholder={searchPlaceholder} value={query} onChange={(e) => setQuery(e.target.value)} />
           {/* Always there, so screen readers announce the text when the search finds nothing. */}
-          <p className={styles.empty} role="status" data-empty={countries.length === 0 || undefined}>
+          <p className={countries.length === 0 ? styles.empty.none : styles.empty.found} role="status" data-empty={countries.length === 0 || undefined}>
             {countries.length === 0 ? noResultsText : ''}
           </p>
         </>
@@ -92,7 +92,7 @@ export const FinCountrySelector = forwardRef<HTMLButtonElement, FinCountrySelect
           }}
           type={type}
           disabled={disabled}
-          className={className ? `${styles.selector} ${className}` : styles.selector}
+          className={className ? `${styles.size[size]} ${className}` : styles.size[size]}
           data-size={size}
           aria-label={`${label}, ${finFlags[country] ?? 'Unknown country'}`}
         >

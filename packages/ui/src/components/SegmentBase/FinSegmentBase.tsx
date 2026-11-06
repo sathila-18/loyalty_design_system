@@ -3,7 +3,7 @@
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
-import styles from './FinSegmentBase.module.css';
+import * as styles from './FinSegmentBase.styles';
 
 /** Code only (2 Nov 2026): `medium` is Figma's; `small` and `xsmall` are compact ones (`xsmall` for a menu row). */
 export type FinSegmentBaseSize = 'medium' | 'small' | 'xsmall';
@@ -39,22 +39,25 @@ export const FinSegmentBase = forwardRef<HTMLButtonElement, FinSegmentBaseProps>
   { children, selected = false, leadingIcon, iconOnly = false, size = 'medium', type = 'button', className, ...rest },
   ref,
 ) {
+  const onlyIcon = iconOnly && leadingIcon !== undefined;
+  const look = selected ? styles.look.selected : styles.look.unselected;
+  const sized = onlyIcon ? styles.size[size].iconOnly : styles.size[size].text;
   return (
     <button
       {...rest}
       ref={ref}
       type={type}
-      className={className ? `${styles.segment} ${className}` : styles.segment}
+      className={[styles.segment, sized, look.segment, className].filter(Boolean).join(' ')}
       data-selected={selected || undefined}
       data-size={size === 'medium' ? undefined : size}
-      data-icon-only={(iconOnly && leadingIcon !== undefined) || undefined}
+      data-icon-only={onlyIcon || undefined}
     >
       {leadingIcon && (
-        <span className={styles.icon}>
+        <span className={look.icon}>
           <FinIcon name={leadingIcon} size={size === 'xsmall' ? 16 : 20} filled={iconOnly && selected} />
         </span>
       )}
-      <span className={styles.label}>{children}</span>
+      <span className={onlyIcon ? styles.label.hidden : styles.label.shown}>{children}</span>
     </button>
   );
 });

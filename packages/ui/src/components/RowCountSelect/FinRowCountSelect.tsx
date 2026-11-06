@@ -4,7 +4,7 @@ import { forwardRef, type ButtonHTMLAttributes } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import { FinListStandard } from '../ListStandard';
 import { FinMenu } from '../Menu';
-import styles from './FinRowCountSelect.module.css';
+import * as styles from './FinRowCountSelect.styles';
 import { FIN_ROW_COUNT_OPTIONS } from './rowCountOptions';
 
 export interface FinRowCountSelectProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'value'> {

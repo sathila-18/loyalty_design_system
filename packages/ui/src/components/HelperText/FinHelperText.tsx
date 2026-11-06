@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { FinIcon, type FinFgColor } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
-import styles from './FinHelperText.module.css';
+import * as styles from './FinHelperText.styles';
 
 export type FinHelperTextTone = 'default' | 'success' | 'warning' | 'error' | 'disabled';
 
@@ -38,11 +38,12 @@ export function FinHelperText({ children, tone = 'default', showIcon = true, ico
       {...rest}
       {...(announce ? { role: 'alert' } : {})}
       className={className ? `${styles.helper} ${className}` : styles.helper}
+      data-part="helper"
       data-tone={tone}
       data-icon={showIcon || undefined}
     >
       {showIcon && <FinIcon name={icon ?? TONE[tone].icon} size={20} color={TONE[tone].color} />}
-      <span className={styles.text}>{children}</span>
+      <span className={[styles.text, styles.tone[tone], showIcon && styles.textWithIcon].filter(Boolean).join(' ')}>{children}</span>
     </div>
   );
 }

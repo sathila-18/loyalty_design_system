@@ -2,7 +2,7 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import type { FinBadgeTone } from './badgeTones';
-import styles from './FinBadgeBase.module.css';
+import * as styles from './FinBadgeBase.styles';
 
 export type FinBadgeBaseSize = 'small' | 'large';
 
@@ -34,7 +34,13 @@ export function FinBadgeBase({
 }: FinBadgeBaseProps) {
   const iconSize = size === 'large' ? 20 : 16;
   return (
-    <span {...rest} className={className ? `${styles.badge} ${className}` : styles.badge} data-size={size} data-tone={tone}>
+    <span
+      {...rest}
+      className={[styles.badge, styles.tone[tone], styles.size[size], className].filter(Boolean).join(' ')}
+      data-part="badge"
+      data-size={size}
+      data-tone={tone}
+    >
       {leadingIcon && <FinIcon name={leadingIcon} size={iconSize} />}
       <span className={styles.label}>{children}</span>
       {trailingIcon && <FinIcon name={trailingIcon} size={iconSize} />}

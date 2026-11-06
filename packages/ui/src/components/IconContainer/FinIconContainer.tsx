@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'react';
 import { FinIcon, type FinFgColor, type FinIconSize } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
-import styles from './FinIconContainer.module.css';
+import * as styles from './FinIconContainer.styles';
 
 export type FinIconContainerSize = 40 | 48 | 64;
 export type FinIconContainerTone = 'primary' | 'secondary' | 'disabled' | 'success' | 'warning' | 'error' | 'info';
@@ -43,7 +43,7 @@ export function FinIconContainer({
   return (
     <span
       {...rest}
-      className={className ? `${styles.container} ${className}` : styles.container}
+      className={[styles.container, styles.size[size], styles.tone[tone], className].filter(Boolean).join(' ')}
       data-size={size}
       data-tone={tone}
     >

@@ -26,6 +26,10 @@
 @custom-variant inside-peer-checked (&:is(:where(.fin\:peer):checked ~ * *));
 @custom-variant inside-peer-disabled (&:is(:where(.fin\:peer):disabled ~ * *));
 
+/* FinCheckboxBase's icons: the check only when checked and not indeterminate, the dash when indeterminate. */
+@custom-variant inside-peer-checked-only (&:is(:where(.fin\:peer):checked:not(:indeterminate) ~ * *));
+@custom-variant inside-peer-indeterminate (&:is(:where(.fin\:peer):indeterminate ~ * *));
+
 /* A native range input's parts (FinSlider), in Chrome / Safari and Firefox. The thumb's margin is WebKit only. */
 @custom-variant range-track {
   &::-webkit-slider-runnable-track {
@@ -139,6 +143,57 @@
 
   to {
     transform: rotate(270deg);
+  }
+}
+
+/*
+ * FinHelperText: with the icon, Figma centres the 18px line on the 20px icon (a 1px offset, half of Space-XXS); when
+ * the text wraps, the first line keeps it.
+ */
+@utility helper-text-offset {
+  padding-top: calc(var(--fin-space-xxs) / 2);
+}
+
+/* FinCheckboxBase's 18px box: the 24px frame minus Space-S (no 18 token; decided 19 Oct 2026). */
+@utility checkbox-box-size {
+  width: calc(var(--fin-size-24) - var(--fin-space-s));
+  height: calc(var(--fin-size-24) - var(--fin-space-s));
+}
+
+/*
+ * FinSideNavSubItem's tree lines (the side nav's `variant="tree"`, 2 Nov 2026): decorative, no text, no pointer events.
+ * The line sits under the section's icon centre (the header's Space-L padding + half its 20 icon), 1px border-default.
+ * Each sub item draws, from the gap above it (Space-XS), the line down to its middle and a connector curving
+ * (Radius-S) right to Space-XS before its text (Space-6XL in); every sub item but the last carries the line on below,
+ * from where its corner starts curving (a ├ with a rounded branch). Over a selected item's fill too.
+ */
+@utility sidenav-tree-lines {
+  position: relative;
+
+  &::before,
+  &::after {
+    position: absolute;
+    left: calc(var(--fin-space-l) + var(--fin-size-20) / 2 - 1px);
+    border-left: 1px solid var(--fin-border-default);
+    content: "";
+    pointer-events: none;
+  }
+
+  &::before {
+    top: calc(-1 * var(--fin-space-xs));
+    bottom: 50%;
+    width: calc(var(--fin-space-6xl) - var(--fin-space-xs) - (var(--fin-space-l) + var(--fin-size-20) / 2 - 1px));
+    border-bottom: 1px solid var(--fin-border-default);
+    border-bottom-left-radius: var(--fin-radius-s);
+  }
+
+  &::after {
+    top: calc(50% - var(--fin-radius-s));
+    bottom: 0;
+  }
+
+  &:last-child::after {
+    content: none;
   }
 }
 

@@ -2,7 +2,7 @@
 
 import { forwardRef, useEffect, useImperativeHandle, useRef, type InputHTMLAttributes } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
-import styles from './FinCheckboxBase.module.css';
+import * as styles from './FinCheckboxBase.styles';
 
 export interface FinCheckboxBaseProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type' | 'size' | 'children'> {
   /**
@@ -40,7 +40,7 @@ export const FinCheckboxBase = forwardRef<HTMLInputElement, FinCheckboxBaseProps
   return (
     <label className={className ? `${styles.checkbox} ${className}` : styles.checkbox} data-no-focus-ring={focusRing ? undefined : ''}>
       <input {...rest} ref={input} type="checkbox" className={styles.input} />
-      <span className={styles.box} aria-hidden="true">
+      <span className={focusRing ? `${styles.box} ${styles.boxFocusRing}` : styles.box} aria-hidden="true">
         <span className={styles.check}>
           <FinIcon name="check" size={16} />
         </span>

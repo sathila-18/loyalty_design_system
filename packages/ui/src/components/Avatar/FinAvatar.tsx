@@ -3,7 +3,7 @@
 import { useState, type HTMLAttributes } from 'react';
 import { FinIcon, type FinIconSize } from '../../icons/FinIcon';
 import { FinOnlineIndicator, type FinOnlineIndicatorSize } from '../OnlineIndicator';
-import styles from './FinAvatar.module.css';
+import * as styles from './FinAvatar.styles';
 
 export type FinAvatarType = 'image' | 'icon' | 'text';
 export type FinAvatarSize = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'xxxlarge';
@@ -80,7 +80,7 @@ export function FinAvatar({
     <span
       {...rest}
       {...a11y}
-      className={className ? `${styles.avatar} ${className}` : styles.avatar}
+      className={[styles.avatar, styles.size[size].avatar, styles.type[shown], className].filter(Boolean).join(' ')}
       data-size={size}
       data-type={shown}
     >
@@ -88,14 +88,14 @@ export function FinAvatar({
         <img className={styles.image} src={src} alt={name ?? ''} onError={() => setFailedSrc(src)} />
       )}
       {shown === 'text' && (
-        <span className={styles.initials} aria-hidden="true">
+        <span className={`${styles.initials} ${styles.size[size].initials}`} aria-hidden="true">
           {initials}
         </span>
       )}
       {shown === 'icon' && <FinIcon name="person" size={ICON_SIZE[size]} color="secondary" />}
       {online && (
         <FinOnlineIndicator
-          className={styles.online}
+          className={styles.size[size].online}
           size={INDICATOR_SIZE[size]}
           label={onlineLabel}
           decorative={!!label}

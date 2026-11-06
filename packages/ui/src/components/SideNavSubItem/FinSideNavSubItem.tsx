@@ -1,5 +1,5 @@
 import { forwardRef, type AnchorHTMLAttributes, type ElementType, type ReactNode } from 'react';
-import styles from './FinSideNavSubItem.module.css';
+import * as styles from './FinSideNavSubItem.styles';
 
 export interface FinSideNavSubItemProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'children'> {
   /** Figma `state=Selected`: the current page (white, `text-action`, `aria-current="page"`). Default false. */
@@ -29,7 +29,7 @@ export const FinSideNavSubItem = forwardRef<HTMLAnchorElement, FinSideNavSubItem
     <Link
       {...rest}
       ref={ref}
-      className={className ? `${styles.item} ${className}` : styles.item}
+      className={[selected ? styles.look.selected : styles.look.default, variant === 'tree' && styles.tree, className].filter(Boolean).join(' ')}
       data-selected={selected ? '' : undefined}
       data-variant={variant === 'tree' ? 'tree' : undefined}
       aria-current={selected ? 'page' : undefined}

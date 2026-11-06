@@ -48,11 +48,12 @@ export const BRAND_CONTRAST_EXCEPTIONS: BrandContrastException[] = [
     themes: ['light'],
     pair: 'text-warning on bg-primary 2.57:1 and on bg-warning_secondary 2.51:1 (§10 #87)',
     // Warning badges (FinBadgeBase), helper text and banners, and a banner's Tertiary button (contentTone warning).
-    // Matched by each component's class as well as the tone: Snackbar, IconContainer and the number badges
-    // (FinBadgeIndicator, `data-shape`) have warning tones on other token pairs, and stay checked.
+    // Matched by each component's hook (data-part, or its class until it's converted to Tailwind) as well as the
+    // tone: Snackbar, IconContainer and the number badges (FinBadgeIndicator, `data-shape`) have warning tones on
+    // other token pairs, and stay checked.
     elements: [
-      '[class*="_badge_"][data-tone="warning"]:not([data-shape])',
-      '[class*="_helper_"][data-tone="warning"]',
+      '[data-part="badge"][data-tone="warning"]:not([data-shape])',
+      '[data-part="helper"][data-tone="warning"]',
       '[class*="_banner_"][data-tone="warning"]',
       'button[data-content-tone="warning"]',
     ],
@@ -62,7 +63,7 @@ export const BRAND_CONTRAST_EXCEPTIONS: BrandContrastException[] = [
     themes: ['light', 'dark'],
     pair: 'text-white_both on bg-action-primary 2.76:1 (§10 #89), bg-brand 2.76:1 (§10 #90), bg-action-primary_hovered 3.30:1 (§10 #91)',
     // Primary buttons (FinButtonBase) and Primary badges (FinBadgeBase, on bg-brand).
-    elements: ['button[data-variant="primary"]', 'a[data-variant="primary"]', '[class*="_badge_"][data-tone="primary"]:not([data-shape])'],
+    elements: ['button[data-variant="primary"]', 'a[data-variant="primary"]', '[data-part="badge"][data-tone="primary"]:not([data-shape])'],
   },
   {
     brand: 'sampath',
@@ -70,7 +71,7 @@ export const BRAND_CONTRAST_EXCEPTIONS: BrandContrastException[] = [
     pair: 'text-info on bg-info_secondary, 4.27:1 (§10 #97; clears when info moves to Violet, §10 #81)',
     // Info banners (title, text, the Focus areas rule list) and badges, and a banner's Tertiary button.
     elements: [
-      '[class*="_badge_"][data-tone="info"]:not([data-shape])',
+      '[data-part="badge"][data-tone="info"]:not([data-shape])',
       '[class*="_banner_"][data-tone="info"]',
       'button[data-content-tone="info"]',
     ],

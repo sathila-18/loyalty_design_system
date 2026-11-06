@@ -3,7 +3,8 @@
 import { forwardRef, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode, type Ref } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
-import styles from './FinChipBase.module.css';
+import * as styles from './FinChipBase.styles';
+import type { FinChipState } from './FinChipBase.styles';
 
 /** Figma `Type`. Called `variant`, like the buttons. */
 export type FinChipVariant = 'unselected' | 'selected' | 'unselected-border';
@@ -63,20 +64,24 @@ export const FinChipBase = forwardRef<HTMLElement, FinChipBaseProps>(function Fi
   const trailing = trailingAccessory ?? (trailingIcon && <FinIcon name={trailingIcon} size={iconSize} />);
   const Root = as as 'span';
   const buttonProps = as === 'button' ? { type: 'button' as const, disabled } : {};
+  const state: FinChipState = disabled ? 'disabled' : as === 'button' ? 'button' : 'static';
+  const rootClass = [styles.chip, as === 'button' && styles.asButton, styles.size[size], styles.look[variant][state], className]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <Root
       {...buttonProps}
       {...(rest as HTMLAttributes<HTMLSpanElement>)}
       ref={ref as Ref<HTMLSpanElement>}
-      className={className ? `${styles.chip} ${className}` : styles.chip}
+      className={rootClass}
       data-variant={variant}
       data-size={size}
       data-disabled={disabled || undefined}
     >
-      {leading && <span className={styles.leading}>{leading}</span>}
+      {leading && <span className={styles.leading[variant][state]}>{leading}</span>}
       <span className={styles.label}>{children}</span>
-      {trailing && <span className={styles.trailing}>{trailing}</span>}
+      {trailing && <span className={styles.trailing[state]}>{trailing}</span>}
     </Root>
   );
 });

@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { FinBadgeIndicator } from '../BadgeIndicator';
-import styles from './FinLabel.module.css';
+import * as styles from './FinLabel.styles';
 
 export type FinLabelSize = 'medium' | 'small';
 
@@ -31,7 +31,7 @@ export function FinLabel({ children, size = 'medium', htmlFor, badge, badgeLabel
       {badge && <span className={styles.hidden}>, {badgeLabel}</span>}
     </>
   );
-  const props = { ...rest, className: className ? `${styles.label} ${className}` : styles.label, 'data-size': size };
+  const props = { ...rest, className: [styles.label, styles.size[size], className].filter(Boolean).join(' '), 'data-size': size };
   return htmlFor ? (
     <label {...props} htmlFor={htmlFor}>
       {content}
