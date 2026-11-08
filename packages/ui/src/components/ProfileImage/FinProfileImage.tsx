@@ -3,7 +3,7 @@
 import type { HTMLAttributes, MouseEventHandler } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import { FinAvatar } from '../Avatar';
-import styles from './FinProfileImage.module.css';
+import * as styles from './FinProfileImage.styles';
 
 export interface FinProfileImageProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'onClick'> {
   /** Photo URL. Without it, the default icon is shown (Figma `Type=Icon`) and the badge adds a photo. */

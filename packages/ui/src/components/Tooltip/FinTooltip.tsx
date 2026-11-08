@@ -17,7 +17,7 @@ import {
   type Ref,
 } from 'react';
 import { FinTextBox } from '../TextBox';
-import styles from './FinTooltip.module.css';
+import * as styles from './FinTooltip.styles';
 
 /** Figma `Type`: `single-line` (Single line, Caption L) or `rich` (Rich tooltip, a Text Box with a heading). */
 export type FinTooltipType = 'single-line' | 'rich';
@@ -252,7 +252,7 @@ export function FinTooltip({
         aria-hidden={describesTrigger ? undefined : true}
         popover="manual"
         hidden={!open}
-        className={className ? `${styles.tooltip} ${className}` : styles.tooltip}
+        className={className ? `${styles.type[type]} ${className}` : styles.type[type]}
         data-type={type}
         data-positioned={(open && isPositioned) || undefined}
         style={vars}

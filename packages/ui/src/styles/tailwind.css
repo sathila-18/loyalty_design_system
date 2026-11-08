@@ -198,6 +198,76 @@
 }
 
 /*
+ * FinBarWithText, FinSpinnerWithText: the middle 6 of the 12 grid columns of the container, from the grid tokens
+ * (608 in a 1240-wide content area; decided 15 Oct 2026).
+ */
+@utility w-grid-6 {
+  width: calc(
+    (100% - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns) * 6 + 5 * var(--fin-grid-gutter)
+  );
+}
+
+/*
+ * FinPageIndicator, clickable: each dot's 24px-tall hit area already holds 2px either side; negative margins keep
+ * the footprint the Figma size (dots flush with the edges, 6 tall) while the hit areas reach past it.
+ */
+@utility page-indicator-hit-margins {
+  margin: calc((var(--fin-size-6) - var(--fin-size-24)) / 2) calc(-1 * var(--fin-space-xxs));
+}
+
+/* FinProfileImage: Figma's 100 × 100 frame, the 96 avatar plus the badge sticking out by 4 (no Size-100). */
+@utility profile-image-size {
+  width: calc(var(--fin-size-96) + var(--fin-space-xs));
+  height: calc(var(--fin-size-96) + var(--fin-space-xs));
+}
+
+/*
+ * FinSideNavItem, minimized: the icon only, as tall as Full (one line of the label plus its padding), so the items
+ * don't move when the nav collapses (decided 29 Oct 2026).
+ */
+@utility sidenav-minimized-height {
+  min-block-size: calc(1lh + 2 * var(--fin-space-m));
+}
+
+/* FinTableCell's link: the underline where the font puts it. */
+@utility underline-from-font {
+  text-underline-position: from-font;
+}
+
+/* FinTableHeaderCell: a <th> keeps its row's text (not the browser's bold), and the sort button the cell's. */
+@utility font-weight-inherit {
+  font-weight: inherit;
+}
+
+@utility font-inherit {
+  font: inherit;
+}
+
+/*
+ * FinTooltip: placed by Floating UI through --tooltip-x / --tooltip-y (set from TSX); at most 343 of text plus its
+ * Space-XL sides, and never wider than the window minus Space-M each side. Rich: always that width.
+ */
+@utility tooltip-place {
+  /* Read by FinTooltip.tsx for Floating UI: 4 (Space-XS) from the trigger, Space-M from the window's edge. */
+  --tooltip-gap: var(--fin-space-xs);
+  --tooltip-edge: var(--fin-space-m);
+
+  /* One declaration, so no other utility sets inset (the popover's own inset: 0 is replaced as a whole). */
+  inset: var(--tooltip-y) auto auto var(--tooltip-x);
+}
+
+@utility tooltip-max-w {
+  max-width: min(calc(var(--fin-size-343) + 2 * var(--fin-space-xl)), calc(100vw - 2 * var(--tooltip-edge)));
+}
+
+@utility tooltip-rich-w {
+  width: calc(var(--fin-size-343) + 2 * var(--fin-space-xl));
+}
+
+/* An element with the `hidden` attribute (FinTooltip's popover sets display: flex, which would win over it). */
+@custom-variant hidden-attr (&[hidden]);
+
+/*
  * Artwork boxes, sized before the file loads so nothing moves: the width is the height (a Size-* token) times the
  * artwork's ratio. FinFlag rectangles 4:3; FinLogo's mark 300 × 318 and with text 770 × 275; FinPaymentIcon 38 × 24.
  */

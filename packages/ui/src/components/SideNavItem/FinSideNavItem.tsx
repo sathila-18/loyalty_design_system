@@ -4,7 +4,7 @@ import { Children, forwardRef, useId, type AnchorHTMLAttributes, type ElementTyp
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinSideNavIcon } from '../SideNavIcon';
-import styles from './FinSideNavItem.module.css';
+import * as styles from './FinSideNavItem.styles';
 
 /** Figma `State=Selected - BG` is `'item'` (this item is the current place); `State=Selected` is `'sub-item'`. */
 export type FinSideNavItemSelected = 'item' | 'sub-item';
@@ -50,13 +50,14 @@ export const FinSideNavItem = forwardRef<HTMLElement, FinSideNavItemProps>(funct
   const hasSubItems = Children.count(children) > 0;
   const full = type === 'full';
   const open = hasSubItems && full && expanded;
+  const headerClass = `${styles.type[type]} ${styles.selected[selected ?? 'none']}`;
 
   const content = (
     <>
       <FinSideNavIcon name={icon} selected={selected !== undefined} />
-      <span className={styles.label}>{label}</span>
+      <span className={styles.label[type]}>{label}</span>
       {hasSubItems && full && (
-        <span className={styles.chevron}>
+        <span className={selected ? styles.chevron.selected : styles.chevron.default}>
           <FinIcon name={open ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} size={20} />
         </span>
       )}
@@ -70,7 +71,7 @@ export const FinSideNavItem = forwardRef<HTMLElement, FinSideNavItemProps>(funct
           {...rest}
           ref={ref as React.Ref<HTMLButtonElement>}
           type="button"
-          className={styles.header}
+          className={headerClass}
           data-selected={selected}
           data-type={type}
           {...(full ? { 'aria-expanded': open } : {})}
@@ -82,7 +83,7 @@ export const FinSideNavItem = forwardRef<HTMLElement, FinSideNavItemProps>(funct
         <Link
           {...rest}
           ref={ref}
-          className={styles.header}
+          className={headerClass}
           data-selected={selected}
           data-type={type}
           aria-current={selected === 'item' ? 'page' : undefined}

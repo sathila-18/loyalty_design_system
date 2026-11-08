@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { FinSpinner, type FinSpinnerStatus } from '../Spinner';
 import { FinTextBox, type FinHeadingLevel } from '../TextBox';
-import styles from './FinSpinnerWithText.module.css';
+import * as styles from './FinSpinnerWithText.styles';
 
 export interface FinSpinnerWithTextProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Figma `Progress` 25/50/75% → `progress` (default), Complete → `success`, Error → `error` (decided 15 Oct 2026, §10 #37). */

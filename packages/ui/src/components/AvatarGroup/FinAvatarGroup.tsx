@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from 'react';
 import { FinAvatar } from '../Avatar';
-import styles from './FinAvatarGroup.module.css';
+import * as styles from './FinAvatarGroup.styles';
 
 export type FinAvatarGroupSize = 'xsmall' | 'medium' | 'xlarge';
 
@@ -39,10 +39,10 @@ export function FinAvatarGroup({ people, size = 'medium', label, className, ...r
       data-size={size}
     >
       {shown.map((person, i) => (
-        <FinAvatar key={i} {...person} className={styles.item} size={size} />
+        <FinAvatar key={i} {...person} className={i > 0 ? styles.overlap[size] : undefined} size={size} />
       ))}
       {more > 0 && (
-        <FinAvatar className={styles.item} type="text" size={size} initials={`+${more}`} label={`${more} more`} />
+        <FinAvatar className={shown.length > 0 ? styles.overlap[size] : undefined} type="text" size={size} initials={`+${more}`} label={`${more} more`} />
       )}
     </div>
   );

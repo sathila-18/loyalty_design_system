@@ -4,7 +4,7 @@ import { forwardRef, useEffect, useRef, useState, type HTMLAttributes } from 're
 import { FinIcon } from '../../icons/FinIcon';
 import { FinPaginationItem } from '../PaginationItem';
 import { paginationRange } from './paginationRange';
-import styles from './FinPagination.module.css';
+import * as styles from './FinPagination.styles';
 
 export interface FinPaginationProps extends Omit<HTMLAttributes<HTMLElement>, 'onChange'> {
   /** The number of pages. One page shows the page with both arrows disabled (Figma "Only one"). */

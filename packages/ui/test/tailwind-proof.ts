@@ -42,6 +42,7 @@ const DEFAULT_GROUP: Record<string, string | undefined> = {
   'max-width': 'size',
   'min-height': 'size',
   'max-height': 'size',
+  'flex-basis': 'size',
   radius: 'radius',
   shadow: 'shadow',
 };
@@ -50,7 +51,7 @@ const COLOUR_GROUPS = ['bg', 'text', 'border', 'fg', 'alpha'];
 /** The token a utility must give, from its name alone (not from the theme), so a wrong mapping is caught. */
 function expectedToken(ns: string, key: string) {
   const named = COLOUR_GROUPS.find((g) => key.startsWith(`${g}-`));
-  if (named && ns !== 'spacing' && !ns.endsWith('width') && !ns.endsWith('height') && ns !== 'size') return `--fin-${key}`;
+  if (named && ns !== 'spacing' && !ns.endsWith('width') && !ns.endsWith('height') && ns !== 'size' && ns !== 'flex-basis') return `--fin-${key}`;
   const group = DEFAULT_GROUP[ns];
   if (!group) throw new Error(`tailwind-proof: --${ns}-${key} must name its token group (e.g. ${ns}-fg-…)`);
   return `--fin-${group}-${key}`;
@@ -80,6 +81,7 @@ const NAMESPACES: Record<string, Mapping[]> = {
   'max-width': [{ utilities: ['max-w'], property: 'max-width', group: 'Size' }],
   'min-height': [{ utilities: ['min-h'], property: 'min-height', group: 'Size' }],
   'max-height': [{ utilities: ['max-h'], property: 'max-height', group: 'Size' }],
+  'flex-basis': [{ utilities: ['basis'], property: 'flex-basis', group: 'Size' }],
   radius: [{ utilities: ['rounded'], property: 'border-top-left-radius', group: 'Radius' }],
   shadow: [{ utilities: ['shadow'], property: 'box-shadow', kind: 'shadow', group: 'Shadow' }],
 };

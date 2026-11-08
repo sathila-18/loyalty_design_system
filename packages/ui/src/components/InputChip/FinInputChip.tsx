@@ -4,7 +4,7 @@ import { forwardRef, type HTMLAttributes, type KeyboardEvent, type ReactNode } f
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinChipBase, type FinChipSize } from '../ChipBase';
-import styles from './FinInputChip.module.css';
+import * as styles from './FinInputChip.styles';
 
 const ICON_SIZE = { xsmall: 16, small: 16, large: 20 } as const;
 

@@ -3,7 +3,7 @@
 import { forwardRef, useId, useImperativeHandle, useRef } from 'react';
 import { FinCheckboxBase, type FinCheckboxBaseProps } from '../CheckboxBase';
 import { FinTextBox } from '../TextBox';
-import styles from './FinCheckbox.module.css';
+import * as styles from './FinCheckbox.styles';
 
 export interface FinCheckboxProps extends Omit<FinCheckboxBaseProps, 'label' | 'aria-labelledby'> {
   /** The text (Figma's Text Box). It names the checkbox, and clicking it toggles the checkbox. */
@@ -44,7 +44,7 @@ export const FinCheckbox = forwardRef<HTMLInputElement, FinCheckboxProps>(functi
       {showTextBox && (
         // A pointer shortcut only: the checkbox is the keyboard control, and the text is already its name.
         // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-        <div className={styles.text} onClick={toggle}>
+        <div className={disabled ? styles.text.disabled : styles.text.enabled} onClick={toggle}>
           <FinTextBox id={textId} description={children} disabled={disabled} />
         </div>
       )}

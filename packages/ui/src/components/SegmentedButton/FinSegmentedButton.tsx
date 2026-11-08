@@ -4,7 +4,7 @@ import { forwardRef, useRef, useState, type HTMLAttributes, type KeyboardEvent }
 import type { FinIconName } from '../../icons/finIcons';
 import { FinTooltip } from '../Tooltip';
 import { FinSegmentBase, type FinSegmentBaseSize } from '../SegmentBase';
-import styles from './FinSegmentedButton.module.css';
+import * as styles from './FinSegmentedButton.styles';
 
 export interface FinSegmentedButtonOption {
   /** The value this segment stands for. */
@@ -122,7 +122,14 @@ export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonP
       role={inMenu ? 'group' : 'radiogroup'}
       aria-label={label}
       aria-disabled={disabled || undefined}
-      className={className ? `${styles.track} ${className}` : styles.track}
+      className={[
+        iconOnly ? styles.display.iconOnly : styles.display.fill,
+        styles.size[size],
+        disabled ? styles.fill.disabled : styles.fill.enabled,
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       data-disabled={disabled || undefined}
       data-icon-only={iconOnly || undefined}
       data-size={size === 'medium' ? undefined : size}
@@ -134,7 +141,7 @@ export const FinSegmentedButton = forwardRef<HTMLDivElement, FinSegmentedButtonP
             ref={(el) => {
               segments.current[i] = el;
             }}
-            className={styles.segment}
+            className={iconOnly ? styles.segment.iconOnly : styles.segment.fill}
             role={inMenu ? 'menuitemradio' : 'radio'}
             aria-checked={option.value === selected}
             selected={option.value === selected}

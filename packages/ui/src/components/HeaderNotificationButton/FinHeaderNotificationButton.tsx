@@ -3,7 +3,7 @@
 import { forwardRef, type ButtonHTMLAttributes } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import { FinBadgeIndicator } from '../BadgeIndicator';
-import styles from './FinHeaderNotificationButton.module.css';
+import * as styles from './FinHeaderNotificationButton.styles';
 
 export type FinHeaderNotification = 'none' | 'dot' | 'number';
 
@@ -45,7 +45,7 @@ export const FinHeaderNotificationButton = forwardRef<HTMLButtonElement, FinHead
       >
         <FinIcon name="notifications" size={20} />
         {shown !== 'none' && (
-          <span className={styles.badge} aria-hidden="true">
+          <span className={shown === 'number' ? styles.badge.number : styles.badge.dot} aria-hidden="true">
             <FinBadgeIndicator {...(shown === 'number' ? { count, max } : {})} />
           </span>
         )}

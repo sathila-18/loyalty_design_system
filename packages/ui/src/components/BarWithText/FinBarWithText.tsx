@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { FinProgressBar } from '../ProgressBar';
 import { FinTextBox, type FinHeadingLevel } from '../TextBox';
-import styles from './FinBarWithText.module.css';
+import * as styles from './FinBarWithText.styles';
 
 export interface FinBarWithTextProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Figma `Progress` (25/50/75/100%): any value from 0 to `max` (decided 15 Oct 2026, §10 #37). */

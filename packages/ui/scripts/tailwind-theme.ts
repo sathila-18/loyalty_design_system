@@ -55,7 +55,7 @@ const lines = (namespace: string, list: string[], token: (s: string) => string, 
 const group = (g: string) => (s: string) => `--fin-${g}-${s}`;
 const prefixed = (p: string) => (s: string) => `${p}-${s}`;
 
-const sizeNamespaces = ['width', 'height', 'size', 'min-width', 'max-width', 'min-height', 'max-height'];
+const sizeNamespaces = ['width', 'height', 'size', 'min-width', 'max-width', 'min-height', 'max-height', 'flex-basis'];
 // The ring utilities draw Figma's inside strokes (box-shadow: inset 0 0 0 <w> <border token>).
 const borderColourNamespaces = ['border-color', 'outline-color', 'ring-color', 'inset-ring-color'];
 
@@ -73,7 +73,7 @@ const css = `/*
  *   border-* outline-* ring-* inset-ring-*      from --fin-border-*   (cross-group: border-fg-*, border-bg-*, ring-fg-*…)
  *   fill-* stroke-* caret-*                     with the group named: stroke-fg-*, caret-fg-*, fill-bg-*
  *   p-* m-* gap-* inset-* translate-*          space names: xxs xs s m l xl 2xl … 12xl none
- *   w-* h-* size-* min-* max-*                 size numbers: 2 4 6 8 12 … 343 (the --fin-size-* tokens)
+ *   w-* h-* size-* min-* max-* basis-*         size numbers: 0 2 4 6 8 12 … 343 (the --fin-size-* tokens)
  *   rounded-*   radius: none xs s m l xl full
  *   shadow-*    resting-cards panel-sheets sticky menu sticky-start sticky-end
  *   font-*      text styles (the font shorthand): font-body-medium, font-button-large…

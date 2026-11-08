@@ -2,7 +2,7 @@
 
 import { useRef, type HTMLAttributes, type KeyboardEvent } from 'react';
 import { FinIndicatorDot } from '../IndicatorDot';
-import styles from './FinPageIndicator.module.css';
+import * as styles from './FinPageIndicator.styles';
 
 export interface FinPageIndicatorProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'onChange'> {
   /** Number of positions (Figma `Number` = 3/4/5). Any number from 1, no maximum (decided 15 Oct 2026). */
@@ -37,11 +37,11 @@ export function FinPageIndicator({
   if (total === 0) return null;
   const current = Math.min(Math.max(1, Math.round(active)), total);
   const positions = Array.from({ length: total }, (_, i) => i + 1);
-  const rootClass = className ? `${styles.indicator} ${className}` : styles.indicator;
+  const withClass = (base: string) => (className ? `${base} ${className}` : base);
 
   if (!onChange) {
     return (
-      <div {...rest} role="img" aria-label={label ?? defaultDotLabel(current, total)} className={rootClass}>
+      <div {...rest} role="img" aria-label={label ?? defaultDotLabel(current, total)} className={withClass(styles.still)}>
         {positions.map((p) => (
           <FinIndicatorDot key={p} selected={p === current} />
         ))}
@@ -68,7 +68,7 @@ export function FinPageIndicator({
       {...rest}
       role="radiogroup"
       aria-label={label ?? 'Steps'}
-      className={rootClass}
+      className={withClass(styles.clickable)}
       data-interactive
     >
       {positions.map((p) => (
