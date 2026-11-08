@@ -3,7 +3,7 @@ import { FinButton, type FinButtonIconProps } from '../Button';
 import type { FinButtonBaseProps } from '../ButtonBase';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinTextBox } from '../TextBox';
-import styles from './FinButtonDock.module.css';
+import * as styles from './FinButtonDock.styles';
 
 /** A dock button: a label button (Small; Figma's are Large, changed by design 2 Nov 2026), any button attribute (`onClick`, `disabled`, `type`…). */
 export type FinButtonDockButton = Omit<
@@ -56,8 +56,13 @@ const hasContent = (node: ReactNode) => node !== undefined && node !== null && n
  */
 export function FinButtonDock({ accessory, tertiaryButton, secondaryButton, primaryButton, sticky = false, className, ...rest }: FinButtonDockProps) {
   const hasButtons = tertiaryButton !== undefined || secondaryButton !== undefined || primaryButton !== undefined;
+  const dockClass = sticky ? styles.dock.sticky : styles.dock.still;
   return (
-    <div {...rest} className={className ? `${styles.dock} ${className}` : styles.dock} data-sticky={sticky ? '' : undefined}>
+    <div
+      {...rest}
+      className={className ? `${dockClass} ${className}` : dockClass}
+      data-sticky={sticky ? '' : undefined}
+    >
       {hasContent(accessory) && (
         <div className={styles.accessory}>
           {typeof accessory === 'string' || typeof accessory === 'number' ? <FinTextBox type="h4" description={accessory} /> : accessory}
@@ -66,8 +71,8 @@ export function FinButtonDock({ accessory, tertiaryButton, secondaryButton, prim
       {hasButtons && (
         <div className={styles.buttons}>
           {tertiaryButton && <DockButton {...tertiaryButton} variant="tertiary" />}
-          {secondaryButton && <DockButton {...secondaryButton} variant="secondary" />}
-          {primaryButton && <DockButton {...primaryButton} variant="primary" />}
+          {secondaryButton && <DockButton {...secondaryButton} variant="secondary" firstEnd />}
+          {primaryButton && <DockButton {...primaryButton} variant="primary" firstEnd={!secondaryButton} />}
         </div>
       )}
     </div>
@@ -80,13 +85,13 @@ function DockButton({
   tone = 'normal',
   width = 'hug',
   leadingIcon,
+  firstEnd = false,
   className,
   ...rest
-}: FinButtonDockToneButton & { variant: 'primary' | 'secondary' | 'tertiary' }) {
+}: FinButtonDockToneButton & { variant: 'primary' | 'secondary' | 'tertiary'; firstEnd?: boolean }) {
   // Tertiary is always as wide as its label.
   const fill = variant !== 'tertiary' && width === 'fill';
-  const classes =
-    [fill ? styles.fill : undefined, variant !== 'tertiary' ? styles.end : undefined, className].filter(Boolean).join(' ') || undefined;
+  const classes = [fill ? styles.fill : undefined, firstEnd ? styles.firstEnd : undefined, className].filter(Boolean).join(' ') || undefined;
   const props = { ...rest, size: 'small' as const, ...(classes ? { className: classes } : {}) };
   const icon: FinButtonIconProps = leadingIcon ? { icon: 'leading', iconName: leadingIcon } : {};
   if (tone === 'destructive' && variant !== 'tertiary')

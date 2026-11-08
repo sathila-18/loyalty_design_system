@@ -22,7 +22,7 @@ import {
 } from 'react';
 import { flushSync } from 'react-dom';
 import { FinDivider } from '../Divider';
-import styles from './FinMenu.module.css';
+import * as styles from './FinMenu.styles';
 
 /**
  * What the menu is for (code only; Figma shows the look):
@@ -445,6 +445,18 @@ export function FinMenu({
     );
   else body = children;
 
+  const widthKey: keyof typeof styles.width = width === 'content' ? 'content' : width === 'trigger' ? 'trigger' : 'custom';
+  const menuClass = [
+    styles.menu,
+    styles.maxHeight[maxHeight ? 'limit' : 'window'],
+    styles.width[widthKey],
+    positioned ? undefined : styles.unplaced,
+    kind === 'filter' ? styles.focusTarget : undefined,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <>
       {triggerNode}
@@ -455,9 +467,9 @@ export function FinMenu({
           {...rest}
           ref={setMenuEl}
           popover="manual"
-          className={className ? `${styles.menu} ${className}` : styles.menu}
+          className={menuClass}
           data-kind={kind}
-          data-width={width === 'content' || width === 'trigger' ? width : 'custom'}
+          data-width={widthKey}
           data-positioned={positioned || undefined}
           data-max-height={maxHeight ? '' : undefined}
           style={vars}
@@ -471,7 +483,7 @@ export function FinMenu({
         >
           <MenuKindContext.Provider value={kind}>
             {hasHeader && (
-              <div id={headerId} className={styles.header} data-menu-header data-padding={headerPadding === 'none' ? 'none' : undefined}>
+              <div id={headerId} className={headerPadding === 'none' ? styles.header.none : styles.header.default} data-menu-header data-padding={headerPadding === 'none' ? 'none' : undefined}>
                 {header}
               </div>
             )}

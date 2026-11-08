@@ -2,7 +2,7 @@ import type { HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinButton } from '../Button';
 import { FinSearchField, type FinSearchFieldProps } from '../SearchField';
-import styles from './FinTableToolbar.module.css';
+import * as styles from './FinTableToolbar.styles';
 
 export interface FinTableToolbarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** Figma `Show search` and its Search: FinSearchField, Small (40; decided 22 Oct 2026), 343 wide. Hidden without it. */

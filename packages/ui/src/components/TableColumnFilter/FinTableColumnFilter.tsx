@@ -7,7 +7,7 @@ import { FinListCheckbox, FinListCheckboxGroup } from '../ListCheckbox';
 import { FinListRadio, FinListRadioGroup } from '../ListRadio';
 import { FinMenu } from '../Menu';
 import { FinSearchField } from '../SearchField';
-import styles from './FinTableColumnFilter.module.css';
+import * as styles from './FinTableColumnFilter.styles';
 
 /** One value a column can be filtered by. */
 export interface FinTableFilterOption {
@@ -111,7 +111,7 @@ export function FinTableColumnFilter({
         <button
           {...menuProps}
           type="button"
-          className={styles.button}
+          className={active ? styles.button.active : styles.button.idle}
           data-active={active || undefined}
           aria-label={active ? `Filter ${label}, ${value.length} selected` : `Filter ${label}`}
         >

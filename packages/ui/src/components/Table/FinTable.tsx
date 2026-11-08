@@ -12,7 +12,7 @@ import { FinTableRow } from '../TableRow';
 import { FinSkeleton } from '../Skeleton';
 import { FinTableRowActions } from '../TableRowActions';
 import { FinTableToolbar, type FinTableToolbarProps } from '../TableToolbar';
-import styles from './FinTable.module.css';
+import * as styles from './FinTable.styles';
 
 export type FinTableRowId = string | number;
 
@@ -376,10 +376,16 @@ function FinTableInner<Row>(
   // The ⋮ column stays in place while the table scrolls sideways: at the end on the right, at the start on the left
   // (with the select column, which then stays too).
   const actionsAt = rowActions ? rowActionsPosition : undefined;
-  const stickyClass = actionsAt === 'start' ? styles.stickyStart : styles.stickyEnd;
-  const selectClass = actionsAt === 'start' ? styles.stickySelect : undefined;
+  // Header cells keep their own fill; body cells paint the row's (FinTable.styles.ts).
+  const stickyPlace = actionsAt === 'start' ? (selectable ? 'startAfterSelect' : 'start') : 'end';
+  const stickyHeaderClass = styles.stickyCell.header[stickyPlace];
+  const stickyClass = styles.stickyCell.body[stickyPlace];
+  const selectHeaderClass = actionsAt === 'start' ? styles.stickyCell.header.select : undefined;
+  const selectClass = actionsAt === 'start' ? styles.stickyCell.body.select : undefined;
+  const rootClass = showEmpty ? styles.root.empty : styles.root.shown;
+  const tableClass = selectable ? (actionsAt ? styles.table.selectActions : styles.table.select) : actionsAt ? styles.table.actions : styles.table.plain;
   const actionsHeader = actionsAt && (
-    <FinTableHeaderCell key="row-actions" type="grey" checkbox={false} showTitle={false} narrow className={stickyClass}>
+    <FinTableHeaderCell key="row-actions" type="grey" checkbox={false} showTitle={false} narrow className={stickyHeaderClass}>
       {rowActionsHeader}
     </FinTableHeaderCell>
   );
@@ -418,20 +424,26 @@ function FinTableInner<Row>(
   );
 
   return (
-    <div {...rest} ref={ref} className={className ? `${styles.root} ${className}` : styles.root} data-empty={showEmpty ? '' : undefined} data-variant={variant}>
+    <div
+      {...rest}
+      ref={ref}
+      className={className ? `${rootClass} ${className}` : rootClass}
+      data-empty={showEmpty ? '' : undefined}
+      data-variant={variant}
+    >
       {loading !== undefined && (
-        <span role="status" className={styles.hidden}>
+        <span role="status" className={styles.status}>
           {loading ? (loadingLabel ?? `Loading ${label.charAt(0).toLowerCase()}${label.slice(1)}`) : ''}
         </span>
       )}
       {toolbar && <FinTableToolbar {...toolbar} />}
       {showEmpty ? (
-        <div className={styles.empty}>{empty}</div>
+        <div className={styles.empty[variant]}>{empty}</div>
       ) : (
         <>
-          <div ref={setScrollEl} className={styles.scroll}>
+          <div ref={setScrollEl} className={styles.scroll[variant]}>
             <table
-              className={styles.table}
+              className={tableClass}
               aria-label={label}
               style={tableStyle}
               data-selectable={selectable ? '' : undefined}
@@ -456,7 +468,7 @@ function FinTableInner<Row>(
                   checked={pageIds.length > 0 && selectedOnPage === pageIds.length}
                   indeterminate={selectedOnPage > 0 && selectedOnPage < pageIds.length}
                   onCheckedChange={toggleAll}
-                  {...(selectClass ? { selectCellClassName: selectClass } : {})}
+                  {...(selectHeaderClass ? { selectCellClassName: selectHeaderClass } : {})}
                 >
                   {actionsAt === 'start' && actionsHeader}
                   {columns.map((column) => (
@@ -567,7 +579,6 @@ function FinTableInner<Row>(
           </div>
           {footer && !loading && (
             <FinTableFooter
-              className={styles.footer}
               totalRows={total}
               rowsPerPage={perPage}
               page={current}

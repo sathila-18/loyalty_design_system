@@ -4,7 +4,7 @@ import { FinButton, type FinButtonIconProps } from '../Button';
 import type { FinButtonDockButton } from '../ButtonDock';
 import { FinIconContainer } from '../IconContainer';
 import { FinTextBox, type FinHeadingLevel } from '../TextBox';
-import styles from './FinEmptyState.module.css';
+import * as styles from './FinEmptyState.styles';
 
 /** Figma `Size`. */
 export type FinEmptyStateSize = 'small' | 'medium';

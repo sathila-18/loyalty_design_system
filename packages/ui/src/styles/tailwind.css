@@ -374,3 +374,190 @@
 @utility payment-w-* {
   width: calc(--value(--size-*) * 38 / 24);
 }
+
+/*
+ * A parent's placement class that must beat the converted child's own value of the same property (both in @layer
+ * fin, so otherwise Tailwind's rule order would decide). Doubles the class's specificity. Used only where the parent
+ * overrides a property the child sets (stage 3e): FinTableToolbar's search width over FinSearchField's full width,
+ * FinButtonDock's `fill` over FinButtonBase's flex-none.
+ */
+@custom-variant placement {
+  && {
+    @slot;
+  }
+}
+
+/*
+ * FinTable (DESIGN.md §9). The select column (a 24 checkbox, Space-XL either side) and the ⋮ column (a 32 button,
+ * Space-XL either side), for the <col> widths, the sticky start offset and the table's minimum width. The minimum is
+ * the columns' (--fin-table-min-width, set from TSX) plus those two columns when shown.
+ */
+@utility table-grid {
+  --table-narrow-column: calc(var(--fin-size-24) + 2 * var(--fin-space-xl));
+  --table-actions-column: calc(var(--fin-size-32) + 2 * var(--fin-space-xl));
+}
+
+@utility table-min-w {
+  min-width: calc(var(--fin-table-min-width) + var(--table-select, var(--fin-size-0)) + var(--table-actions, var(--fin-size-0)));
+}
+
+@utility table-select-column {
+  --table-select: var(--table-narrow-column);
+}
+
+@utility table-actions-column {
+  --table-actions: var(--table-actions-column);
+}
+
+@utility table-narrow-w {
+  width: var(--table-narrow-column);
+}
+
+@utility table-actions-w {
+  width: var(--table-actions-column);
+}
+
+/* A fixed-width column: --fin-table-column-width set from TSX. */
+@utility table-column-w {
+  width: var(--fin-table-column-width);
+}
+
+/* The ⋮ column fixed at the start, after the select column. */
+@utility table-sticky-after-select {
+  left: var(--table-narrow-column);
+}
+
+/*
+ * A body cell fixed while the table scrolls sideways: the row's fill (--fin-table-row-bg, set by FinTableRow;
+ * bg-primary otherwise), half a pixel short at the top and bottom so the table's own 1px row line shows through.
+ */
+@utility table-sticky-fill {
+  background:
+    linear-gradient(var(--fin-table-row-bg, var(--fin-bg-primary)), var(--fin-table-row-bg, var(--fin-bg-primary)))
+    center / 100% calc(100% - 1px) no-repeat;
+}
+
+/*
+ * The fixed column's Shadow/Sticky, only while content passes under it (the scroll area, marked
+ * fin:group/table-scroll, gets data-hidden-start / data-hidden-end from FinTable.tsx as it scrolls). Table cells can't
+ * cast a shadow in a collapsed-border table, so an empty layer the cell's size does, clipped to that side.
+ */
+@utility table-sticky-shadow-end {
+  :where(.fin\:group\/table-scroll)[data-hidden-start][data-hidden-end] &::before {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    inset: 0;
+    box-shadow: var(--fin-shadow-sticky-end);
+    clip-path: inset(0 0 0 calc(-1 * var(--fin-space-3xl)));
+  }
+}
+
+@utility table-sticky-shadow-start {
+  :where(.fin\:group\/table-scroll)[data-hidden-start] &::before {
+    position: absolute;
+    z-index: -1;
+    content: "";
+    inset: 0;
+    box-shadow: var(--fin-shadow-sticky-start);
+    clip-path: inset(0 calc(-1 * var(--fin-space-3xl)) 0 0);
+  }
+}
+
+/*
+ * FinTableRow: the line under the row (none under the last) and the fill, both also kept in variables
+ * (--fin-table-row-line, --fin-table-row-bg) for the fixed cells. One utility per state, picked in TSX.
+ */
+@utility table-row-line {
+  --fin-table-row-line: var(--fin-border-default);
+
+  border-bottom: 1px solid var(--fin-table-row-line);
+
+  &:last-child {
+    --fin-table-row-line: transparent;
+
+    border-bottom: 0;
+  }
+}
+
+@utility table-row-hover {
+  &:hover {
+    --fin-table-row-bg: var(--fin-bg-secondary);
+
+    background-color: var(--fin-table-row-bg);
+  }
+}
+
+@utility table-row-selected {
+  --fin-table-row-bg: var(--fin-bg-active);
+
+  background-color: var(--fin-table-row-bg);
+}
+
+@utility table-row-selected-hover {
+  --fin-table-row-bg: var(--fin-bg-active);
+
+  background-color: var(--fin-table-row-bg);
+
+  &:hover {
+    --fin-table-row-bg: var(--fin-bg-active-hover);
+  }
+}
+
+/*
+ * FinTableRowActions: while its menu is open, bg-action-secondary with fg-action, unless hovered or pressed (those
+ * states win, as before).
+ */
+@custom-variant menu-open-idle (&[aria-expanded="true"]:not(:hover, :active));
+
+/* FinButtonDock `width="fill"`: equal shares of the width left after the Tertiary button. */
+@utility dock-fill {
+  flex: 1 1 0;
+}
+
+/*
+ * FinMenu: placed by Floating UI through --menu-x / --menu-y (set from TSX), in one inset declaration; Space-XS from
+ * the trigger and Space-M from the window's edge (--menu-gap / --menu-edge, read by FinMenu.tsx). Its height never
+ * passes the room left in the window (--menu-available-height) or a fixed limit (--menu-max-height); its width fits
+ * the content but not narrower than the trigger, is the trigger's, or a given length (--menu-width).
+ */
+@utility menu-place {
+  --menu-gap: var(--fin-space-xs);
+  --menu-edge: var(--fin-space-m);
+
+  inset: var(--menu-y) auto auto var(--menu-x);
+}
+
+@utility menu-max-h {
+  max-height: var(--menu-available-height);
+}
+
+@utility menu-max-h-limit {
+  max-height: min(var(--menu-max-height), var(--menu-available-height));
+}
+
+@utility menu-min-w-trigger {
+  min-width: var(--menu-trigger-width);
+}
+
+@utility menu-w-trigger {
+  width: var(--menu-trigger-width);
+}
+
+@utility menu-w-custom {
+  width: var(--menu-width);
+}
+
+/*
+ * FinEmptyState: one column of the window's layout grid (--fin-empty-state-column), and the content 4 columns wide,
+ * never wider than the container.
+ */
+@utility empty-state-column {
+  --fin-empty-state-column: calc(
+    (100vw - 2 * var(--fin-grid-margin) - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns)
+  );
+}
+
+@utility empty-state-w {
+  width: min(100%, 4 * var(--fin-empty-state-column) + 3 * var(--fin-grid-gutter));
+}

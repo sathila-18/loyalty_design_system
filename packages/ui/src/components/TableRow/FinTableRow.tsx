@@ -2,7 +2,7 @@
 
 import { forwardRef, type HTMLAttributes, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react';
 import { FinTableCell } from '../TableCell';
-import styles from './FinTableRow.module.css';
+import * as styles from './FinTableRow.styles';
 
 /** Clicks on these do their own job (checkbox, link, action button…), so they don't also trigger `onRowClick`. */
 const INTERACTIVE = 'a, button, input, select, textarea, label, [role="button"], [role="link"], [tabindex]';
@@ -71,11 +71,14 @@ export const FinTableRow = forwardRef<HTMLTableRowElement, FinTableRowProps>(fun
     if (event.key === 'Enter' && event.target === event.currentTarget) onRowClick();
   };
 
+  const fill = selected ? (hover ? 'selectedHover' : 'selected') : hover ? 'hover' : 'none';
+  const rowClass = styles.row[onRowClick ? 'clickable' : 'still'][fill];
+
   return (
     <tr
       {...rest}
       ref={ref}
-      className={className ? `${styles.row} ${className}` : styles.row}
+      className={className ? `${rowClass} ${className}` : rowClass}
       data-selected={selected ? '' : undefined}
       data-clickable={onRowClick ? '' : undefined}
       data-hover={hover ? '' : undefined}

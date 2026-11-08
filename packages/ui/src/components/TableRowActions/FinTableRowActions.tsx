@@ -5,7 +5,7 @@ import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinListStandard } from '../ListStandard';
 import { FinMenu, FinMenuDivider, type FinMenuPlacement } from '../Menu';
-import styles from './FinTableRowActions.module.css';
+import * as styles from './FinTableRowActions.styles';
 
 /** One action in a row's "more actions" menu. */
 export interface FinTableRowActionItem {

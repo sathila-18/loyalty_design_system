@@ -3,7 +3,7 @@
 import { forwardRef, useState, type HTMLAttributes } from 'react';
 import { FinPagination, type FinPaginationProps } from '../Pagination';
 import { FinRowCountSelect } from '../RowCountSelect';
-import styles from './FinTableFooter.module.css';
+import * as styles from './FinTableFooter.styles';
 
 /** What the summary text describes: the rows shown (from 1; 0 when there are none), the total and the page. */
 export interface FinTableFooterSummary {

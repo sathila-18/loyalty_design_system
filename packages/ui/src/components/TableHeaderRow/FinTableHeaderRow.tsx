@@ -2,7 +2,7 @@
 
 import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { FinTableHeaderCell } from '../TableHeaderCell';
-import styles from './FinTableHeaderRow.module.css';
+import * as styles from './FinTableHeaderRow.styles';
 
 export interface FinTableHeaderRowProps extends Omit<HTMLAttributes<HTMLTableRowElement>, 'children'> {
   /** Figma `Select Cell`: the first cell, Grey, with only the "select all" checkbox. Default on, as in Figma. */

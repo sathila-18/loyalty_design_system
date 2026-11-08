@@ -4,7 +4,7 @@ import type { HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinButton, type FinButtonContentTone } from '../Button';
-import styles from './FinNotificationBanner.module.css';
+import * as styles from './FinNotificationBanner.styles';
 
 /** Figma `Type`. */
 export type FinNotificationBannerTone = 'info' | 'success' | 'error' | 'warning' | 'neutral';
@@ -70,13 +70,14 @@ export function FinNotificationBanner({
 }: FinNotificationBannerProps) {
   const neutral = tone === 'neutral';
   const buttons = BUTTON_TONE[tone];
+  const classes = styles.tone[tone];
 
   return (
-    <div {...rest} className={className ? `${styles.banner} ${className}` : styles.banner} data-tone={tone}>
-      {showIcon && <FinIcon name={neutral ? icon : ICONS[tone]} size={20} color={neutral ? 'secondary' : tone} className={styles.icon} />}
+    <div {...rest} className={className ? `${classes.banner} ${className}` : classes.banner} data-tone={tone}>
+      {showIcon && <FinIcon name={neutral ? icon : ICONS[tone]} size={20} color={neutral ? 'secondary' : tone} />}
       <div className={styles.text}>
-        {title != null && <p className={styles.title}>{title}</p>}
-        {children != null && <p className={styles.description}>{children}</p>}
+        {title != null && <p className={classes.title}>{title}</p>}
+        {children != null && <p className={classes.description}>{children}</p>}
         {action && (
           <FinButton variant="tertiary" size="small" contentTone={buttons.action} className={styles.action} onClick={action.onClick}>
             {action.label}
