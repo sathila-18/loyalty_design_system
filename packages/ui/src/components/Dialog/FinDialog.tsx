@@ -96,7 +96,7 @@ export function FinDialog({
           )}
         </div>
         {hasBody && (
-          <div ref={bodyRef} className={styles.body} data-last={hasButtons ? undefined : ''} {...(scrollable ? { role: 'region', 'aria-labelledby': titleId, tabIndex: 0 } : {})} onScroll={update}>
+          <div ref={bodyRef} className={styles.body} data-part="body" data-last={hasButtons ? undefined : ''} {...(scrollable ? { role: 'region', 'aria-labelledby': titleId, tabIndex: 0 } : {})} onScroll={update}>
             {typeof children === 'string' || typeof children === 'number' ? <FinTextBox type="h2" description={children} /> : children}
           </div>
         )}

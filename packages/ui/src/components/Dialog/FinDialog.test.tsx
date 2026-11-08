@@ -103,7 +103,7 @@ describe('FinDialog', () => {
         Long text
       </FinDialog>,
     );
-    const body = screen.getByText('Long text').closest('[class*="body"]') as HTMLElement;
+    const body = screen.getByText('Long text').closest('[data-part="body"]') as HTMLElement;
     expect(body).not.toHaveAttribute('tabindex');
     Object.defineProperty(body, 'scrollHeight', { configurable: true, value: 900 });
     Object.defineProperty(body, 'clientHeight', { configurable: true, value: 600 });

@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import { FinLabel, type FinLabelSize } from '../Label';
-import styles from './FinTextBox.module.css';
+import * as styles from './FinTextBox.styles';
 
 export type FinTextBoxType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 export type FinTextBoxAlign = 'left' | 'center' | 'right';
@@ -69,8 +69,10 @@ export function FinTextBox({
   ...rest
 }: FinTextBoxProps) {
   const Heading = `h${headingLevel ?? Number(type.slice(1))}` as 'h1';
+  const colour = disabled ? 'disabled' : tone === 'inverse' ? 'inverse' : 'default';
+  const truncate = truncateHeading === 2 ? 'two' : truncateHeading ? 'one' : 'none';
   return (
-    <div {...rest} className={className ? `${styles.textBox} ${className}` : styles.textBox} data-type={type} data-align={align} data-disabled={disabled || undefined} data-tone={tone === 'inverse' ? 'inverse' : undefined} data-truncate-heading={truncateHeading === 2 ? '2' : truncateHeading ? '' : undefined}>
+    <div {...rest} className={className ? `${styles.textBox[align]} ${className}` : styles.textBox[align]} data-type={type} data-align={align} data-disabled={disabled || undefined} data-tone={tone === 'inverse' ? 'inverse' : undefined} data-truncate-heading={truncateHeading === 2 ? '2' : truncateHeading ? '' : undefined}>
       {label !== undefined &&
         (labelBadge ? (
           <FinLabel size={labelSize} badge badgeLabel={labelBadgeLabel}>
@@ -80,9 +82,15 @@ export function FinTextBox({
           <FinLabel size={labelSize}>{label}</FinLabel>
         ))}
       {(heading !== undefined || description !== undefined) && (
-        <div className={styles.content}>
-          {heading !== undefined && <Heading className={styles.heading}>{heading}</Heading>}
-          {description !== undefined && <p className={styles.description}>{description}</p>}
+        <div className={styles.content[type]}>
+          {heading !== undefined && (
+            <Heading className={`${styles.heading.type[type]} ${styles.heading.colour[colour]} ${styles.heading.truncate[truncate]}`}>
+              {heading}
+            </Heading>
+          )}
+          {description !== undefined && (
+            <p className={`${styles.description.type[type]} ${styles.description.colour[colour]}`}>{description}</p>
+          )}
         </div>
       )}
     </div>

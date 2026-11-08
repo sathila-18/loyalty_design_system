@@ -5,7 +5,7 @@ import { FinIcon } from '../../icons/FinIcon';
 import { FinCheckboxBase } from '../CheckboxBase';
 import { FinLabel } from '../Label';
 import { FinTableColumnFilter, type FinTableColumnFilterProps } from '../TableColumnFilter';
-import styles from './FinTableHeaderCell.module.css';
+import * as styles from './FinTableHeaderCell.styles';
 
 export type FinTableHeaderCellType = 'white' | 'grey';
 
@@ -89,9 +89,9 @@ export const FinTableHeaderCell = forwardRef<HTMLTableCellElement, FinTableHeade
       data-type={type}
       data-narrow={narrow ? '' : undefined}
       aria-sort={sort === 'ascending' || sort === 'descending' ? sort : undefined}
-      className={className ? `${styles.cell} ${className}` : styles.cell}
+      className={className ? `${styles.cell[type]} ${className}` : styles.cell[type]}
     >
-      <div className={styles.content}>
+      <div className={narrow ? styles.content.narrow : styles.content.default}>
         {checkbox && (
           <FinCheckboxBase
             label={checkboxLabel}
@@ -104,17 +104,17 @@ export const FinTableHeaderCell = forwardRef<HTMLTableCellElement, FinTableHeade
         {sortable ? (
           // The title and its sort icon are one button; the icon is fg-secondary, purple once sorted.
           <button type="button" className={styles.sort} data-sorted={sort !== 'none' || undefined} onClick={() => onSortChange?.(NEXT_SORT[sort])}>
-            <span className={styles.slot} data-hidden={showTitle ? undefined : ''}>
+            <span className={showTitle ? styles.slot.shown : styles.slot.hidden} data-hidden={showTitle ? undefined : ''}>
               {title}
             </span>
-            <span className={styles.sortIcon}>
+            <span className={sort === 'none' ? styles.sortIcon.unsorted : styles.sortIcon.sorted}>
               <FinIcon name={SORT_ICON[sort]} size={20} />
             </span>
           </button>
         ) : (
           children !== undefined &&
           children !== null && (
-            <span className={styles.slot} data-hidden={showTitle ? undefined : ''}>
+            <span className={showTitle ? styles.slot.shown : styles.slot.hidden} data-hidden={showTitle ? undefined : ''}>
               {title}
             </span>
           )

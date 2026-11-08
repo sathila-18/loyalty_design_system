@@ -6,7 +6,7 @@ import { FinBadge } from '../Badge';
 import { FinButton } from '../Button';
 import type { FinBadgeTone } from '../BadgeBase';
 import { FinCheckboxBase } from '../CheckboxBase';
-import styles from './FinTableCell.module.css';
+import * as styles from './FinTableCell.styles';
 
 export type FinTableCellType = 'default' | 'badge' | 'link';
 
@@ -108,7 +108,7 @@ export const FinTableCell = forwardRef<HTMLTableCellElement, FinTableCellProps>(
       data-type={type}
       data-narrow={narrow ? '' : undefined}
       className={className ? `${styles.cell} ${className}` : styles.cell}>
-      <div className={styles.inner}>
+      <div className={narrow ? styles.inner.narrow : styles.inner.default}>
         {leadingAccessories && (
           <span className={styles.leading}>
             {leading ?? (
