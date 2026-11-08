@@ -94,8 +94,9 @@
 }
 
 /*
- * Not on a Grey header cell: its fill is a utility in @layer fin (FinTableHeaderCell, converted in stage 3c), which this
- * unlayered rule would otherwise beat. Goes when FinTable is converted (stage 3e).
+ * TEMPORARY (DESIGN.md §10 #114): not on a Grey header cell. Its fill is a utility in @layer fin (FinTableHeaderCell,
+ * converted in stage 3c), which this unlayered rule would otherwise beat. Remove the :not() when FinTable is converted
+ * in stage 3e.
  */
 th:is(.stickyEnd, .stickyStart, .stickySelect):not([data-type="grey"]) {
   background-color: var(--fin-bg-primary);
