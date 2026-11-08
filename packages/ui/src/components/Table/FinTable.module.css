@@ -93,7 +93,11 @@
   z-index: 1;
 }
 
-th:is(.stickyEnd, .stickyStart, .stickySelect) {
+/*
+ * Not on a Grey header cell: its fill is a utility in @layer fin (FinTableHeaderCell, converted in stage 3c), which this
+ * unlayered rule would otherwise beat. Goes when FinTable is converted (stage 3e).
+ */
+th:is(.stickyEnd, .stickyStart, .stickySelect):not([data-type="grey"]) {
   background-color: var(--fin-bg-primary);
 }
 
