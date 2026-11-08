@@ -6,7 +6,7 @@ import { FinButton } from '../Button';
 import { FinIconContainer, type FinIconContainerTone } from '../IconContainer';
 import { FinProgressBar } from '../ProgressBar';
 import { FinTextBox, type FinHeadingLevel } from '../TextBox';
-import styles from './FinFileUpload.module.css';
+import * as styles from './FinFileUpload.styles';
 import { formatFileSize } from './fileSize';
 
 /** Figma `Size`. */
@@ -195,7 +195,14 @@ export function FinFileUpload({
       {...rest}
       role="group"
       aria-labelledby={textId}
-      className={className ? `${styles.upload} ${className}` : styles.upload}
+      className={[
+        styles.size[size],
+        styles.border[disabled ? 'disabled' : dragging ? 'dragging' : state],
+        dragging ? styles.fill.dragging : styles.fill.resting,
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       data-size={size}
       data-state={state}
       data-dragging={dragging || undefined}
@@ -223,7 +230,7 @@ export function FinFileUpload({
         <>
           {icon}
           {bar}
-          <div className={styles.status} aria-live="polite">
+          <div className={styles.status.large} aria-live="polite">
             {text}
           </div>
           {button}
@@ -233,7 +240,7 @@ export function FinFileUpload({
           <div className={styles.row}>
             <div className={styles.leading}>
               {icon}
-              <div className={styles.status} aria-live="polite">
+              <div className={styles.status.small} aria-live="polite">
                 {text}
               </div>
             </div>

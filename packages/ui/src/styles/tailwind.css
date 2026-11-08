@@ -268,6 +268,94 @@
 @custom-variant hidden-attr (&[hidden]);
 
 /*
+ * The text fields' states (FinInputBase and every field on it, FinTextArea; DESIGN.md §9.58, §9.78). The parts are
+ * marked with named groups / a peer, as inside-peer-* does: fin:group/field-root (the whole field, with data-error /
+ * data-disabled / data-filled), fin:group/field-box (the box), fin:group/field-content (the row inside it),
+ * fin:group/field-accessory (a leading / trailing slot) and fin:peer/field-value (the input or textarea). :where()
+ * keeps the markers out of the specificity.
+ *
+ * Focused: the input (or a `control`) has focus, not a button in an accessory slot (the password eye); a button
+ * `control` (FinSelectField) only while its menu is open or it has keyboard focus (it sets data-quiet until the
+ * keyboard is used on it). Filled: data-filled, or the value isn't the placeholder. Complete: filled, not focused, no
+ * error, not disabled. Hovered (on the box): only an empty field that isn't focused.
+ */
+@custom-variant field-focused (&:is(:where(.fin\:group\/field-box):has(:where(.fin\:group\/field-content) > :not(:where(.fin\:group\/field-accessory), button):focus-within, :where(.fin\:group\/field-content) > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"])) *));
+@custom-variant field-filled (&:is(:where(.fin\:group\/field-root):is([data-filled], :has(:where(.fin\:peer\/field-value):not(:placeholder-shown))) *));
+@custom-variant field-complete (&:is(:where(.fin\:group\/field-root):is([data-filled], :has(:where(.fin\:peer\/field-value):not(:placeholder-shown))):not([data-error], [data-disabled], :has(:where(.fin\:group\/field-content) > :not(:where(.fin\:group\/field-accessory), button):focus-within, :where(.fin\:group\/field-content) > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"]))) *));
+@custom-variant field-hover (&:is(:where(.fin\:group\/field-root):not([data-disabled], [data-filled], :has(:where(.fin\:peer\/field-value):not(:placeholder-shown))) *):hover:not(:has(:where(.fin\:group\/field-content) > :not(:where(.fin\:group\/field-accessory), button):focus-within, :where(.fin\:group\/field-content) > button:is(:focus-visible:not([data-quiet]), [aria-expanded="true"]))));
+
+/* FinDateField's mask: hidden while the placeholder shows (empty and not focused); it follows the input. */
+@custom-variant field-mask-idle (&:is(:where(.fin\:peer\/field-value):placeholder-shown:not(:focus) ~ *));
+
+/* A search input (FinSearchField) uses its own clear button, not the browser's. */
+@utility search-plain {
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration {
+    appearance: none;
+  }
+}
+
+/*
+ * The field's border, ring and halo: fieldsets laid over the box (each cut by the label's notch). Ring and halo sit
+ * outside the 1px border: the ring 2px over it, the halo 2px beyond (hairline widths, as the focus rings elsewhere).
+ * The padding puts the notch Space-XL in from the edge, minus or plus the border.
+ */
+@utility field-outline-box {
+  inset: 0;
+  padding: 0 calc(var(--fin-space-xl) - 1px);
+  border-radius: var(--fin-radius-m);
+}
+
+@utility field-ring-box {
+  inset: -1px;
+  padding: 0 calc(var(--fin-space-xl) - 1px);
+  border-radius: calc(var(--fin-radius-m) + 1px);
+}
+
+@utility field-halo-box {
+  inset: -3px;
+  padding: 0 calc(var(--fin-space-xl) + 1px);
+  border-radius: calc(var(--fin-radius-m) + 3px);
+}
+
+/* The field's label on the top border: Space-XL in, never wider than the box, centred on the line. */
+@utility field-label-place {
+  max-width: calc(100% - 2 * var(--fin-space-xl));
+  transform: translateY(-50%);
+}
+
+/* FinInputBase (mobile number): the divider takes the border's colour (FinDivider reads --divider-color). */
+@utility divider-color-default {
+  --divider-color: var(--fin-border-default);
+}
+
+@utility divider-color-strong {
+  --divider-color: var(--fin-border-strong);
+}
+
+@utility divider-color-error {
+  --divider-color: var(--fin-border-error);
+}
+
+@utility divider-color-disabled {
+  --divider-color: var(--fin-border-disabled);
+}
+
+/* FinTextArea: `rows` lines tall, growing to `maxRows`, then it scrolls (--text-area-rows / -max-rows set from TSX). */
+@utility textarea-rows {
+  min-height: calc(var(--text-area-rows) * 1lh);
+  max-height: calc(var(--text-area-max-rows) * 1lh);
+}
+
+/* FinSelectField's trigger: open (its menu) or keyboard-focused (not data-quiet); its placeholder hides then. */
+@custom-variant select-open (&:is(:where(.fin\:group\/trigger):is(:focus-visible:not([data-quiet]), [aria-expanded="true"]) *));
+
+/* FinFileUpload: Figma's stroke is inside the box, so the 1px border comes out of the Space-XL padding. */
+@utility upload-padding {
+  padding: calc(var(--fin-space-xl) - 1px);
+}
+
+/*
  * Artwork boxes, sized before the file loads so nothing moves: the width is the height (a Size-* token) times the
  * artwork's ratio. FinFlag rectangles 4:3; FinLogo's mark 300 × 318 and with text 770 × 275; FinPaymentIcon 38 × 24.
  */

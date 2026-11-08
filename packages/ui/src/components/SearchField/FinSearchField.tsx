@@ -3,7 +3,7 @@
 import { forwardRef, useRef, useState, type ChangeEvent, type KeyboardEvent } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import { FinInputBase, type FinInputBaseProps } from '../InputBase';
-import styles from './FinSearchField.module.css';
+import * as styles from './FinSearchField.styles';
 
 export interface FinSearchFieldProps
   extends Omit<

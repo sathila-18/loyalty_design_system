@@ -4,7 +4,7 @@ import { forwardRef, useRef, useState, type ChangeEvent, type FocusEvent } from 
 import { FinIcon } from '../../icons/FinIcon';
 import { FinInputBase, type FinInputBaseProps } from '../InputBase';
 import { formatDate, maskDate, parseDate } from './dates';
-import styles from './FinDateField.module.css';
+import * as styles from './FinDateField.styles';
 
 export interface FinDateFieldProps
   extends Omit<

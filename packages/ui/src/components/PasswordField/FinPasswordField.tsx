@@ -3,7 +3,7 @@
 import { forwardRef, useState } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import { FinInputBase, type FinInputBaseProps } from '../InputBase';
-import styles from './FinPasswordField.module.css';
+import * as styles from './FinPasswordField.styles';
 
 export interface FinPasswordFieldProps
   extends Omit<FinInputBaseProps, 'variant' | 'prefix' | 'suffix' | 'leading' | 'trailing' | 'control' | 'filled' | 'country' | 'onCountryChange' | 'showDialCodes' | 'type' | 'showLabel'> {

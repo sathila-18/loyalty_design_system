@@ -6,7 +6,7 @@ import { FinIcon } from '../../icons/FinIcon';
 import { FinCountrySelector } from '../CountrySelector';
 import { FinDivider } from '../Divider';
 import { FinHelperText } from '../HelperText';
-import styles from './FinInputBase.module.css';
+import * as styles from './FinInputBase.styles';
 
 /**
  * Figma `Type` (code `variant`, so `type` stays the input's own, as FinButton): Default, Payment (the same box; the
@@ -113,7 +113,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
     mask ? (
       <span className={styles.masked}>
         {input}
-        <span className={styles.mask} aria-hidden="true">
+        <span className={`${styles.mask} ${styles.text[size]}`} aria-hidden="true">
           <span className={styles.maskTyped}>{typed}</span>
           {mask.slice(typed.length)}
         </span>
@@ -124,7 +124,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
   // The notch in the border: the label's text, invisible, so the gap is exactly as wide as the label.
   const notch = showLabel ? (
     <legend className={styles.notch}>
-      <span>{label}</span>
+      <span className={styles.notchText}>{label}</span>
     </legend>
   ) : null;
 
@@ -154,15 +154,15 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
             <FinDivider orientation="vertical" decorative className={styles.divider} />
           </>
         )}
-        <div className={styles.content}>
+        <div className={`${styles.contentVariant[variant]} ${styles.contentSize[size]}`}>
           {leading && <span className={styles.accessory}>{leading}</span>}
-          {prefix && <span className={styles.affix}>{prefix}</span>}
+          {prefix && <span className={`${styles.affix} ${styles.text[size]}`}>{prefix}</span>}
           {(typeof control === 'function' ? control(fieldEl) : control) ?? masked(
             <input
               {...rest}
               ref={ref}
               id={id}
-              className={styles.input}
+              className={`${showLabel ? styles.input.labelShown : styles.input.labelHidden} ${styles.text[size]}`}
               data-label-hidden={showLabel ? undefined : ''}
               disabled={disabled}
               // The label and its notch show once the input has a value (`:placeholder-shown` is false), so there's
@@ -172,7 +172,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
               aria-describedby={[rest['aria-describedby'], hasHelper ? helperId : undefined].filter(Boolean).join(' ') || undefined}
             />,
           )}
-          {suffix && <span className={styles.affix}>{suffix}</span>}
+          {suffix && <span className={`${styles.affix} ${styles.text[size]}`}>{suffix}</span>}
           {trailingContent && <span className={styles.accessory}>{trailingContent}</span>}
         </div>
         <fieldset className={styles.outline} aria-hidden="true">

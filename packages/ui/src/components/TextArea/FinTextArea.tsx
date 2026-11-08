@@ -2,7 +2,7 @@
 
 import { forwardRef, useCallback, useId, useLayoutEffect, useRef, type CSSProperties, type ReactNode, type TextareaHTMLAttributes } from 'react';
 import { FinHelperText } from '../HelperText';
-import styles from './FinTextArea.module.css';
+import * as styles from './FinTextArea.styles';
 
 export interface FinTextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'children' | 'rows'> {
   /** The field's name (Figma Label). Always the text area's label; shown on the border when focused or filled. */
@@ -75,7 +75,7 @@ export const FinTextArea = forwardRef<HTMLTextAreaElement, FinTextAreaProps>(fun
   // The notch in the border: the label's text, invisible, so the gap is exactly as wide as the label.
   const notch = showLabel ? (
     <legend className={styles.notch}>
-      <span>{label}</span>
+      <span className={styles.notchText}>{label}</span>
     </legend>
   ) : null;
 
@@ -94,7 +94,7 @@ export const FinTextArea = forwardRef<HTMLTextAreaElement, FinTextAreaProps>(fun
             ref={setRef}
             id={id}
             rows={rows}
-            className={styles.textarea}
+            className={showLabel ? styles.textarea.labelShown : styles.textarea.labelHidden}
             data-label-hidden={showLabel ? undefined : ''}
             disabled={disabled}
             // The label and its notch show once there's text (`:placeholder-shown` is false), so there's always a

@@ -6,7 +6,7 @@ import { FinInputBase, type FinInputBaseSize } from '../InputBase';
 import { FinListStandard } from '../ListStandard';
 import { FinMenu } from '../Menu';
 import { FinSearchField } from '../SearchField';
-import styles from './FinSelectField.module.css';
+import * as styles from './FinSelectField.styles';
 
 /** One choice in the menu. */
 export interface FinSelectFieldOption {
@@ -139,7 +139,7 @@ export const FinSelectField = forwardRef<HTMLButtonElement, FinSelectFieldProps>
                     <>
                       <FinSearchField size="small" label={searchLabel} placeholder={searchPlaceholder} value={query} onChange={(e) => setQuery(e.target.value)} />
                       {/* Always there, so screen readers announce the text when the search finds nothing. */}
-                      <p className={styles.empty} role="status" data-empty={shown.length === 0 || undefined}>
+                      <p className={shown.length === 0 ? styles.empty.none : styles.empty.found} role="status" data-empty={shown.length === 0 || undefined}>
                         {shown.length === 0 ? noResultsText : ''}
                       </p>
                     </>
@@ -159,7 +159,7 @@ export const FinSelectField = forwardRef<HTMLButtonElement, FinSelectFieldProps>
                 id={id}
                 form={form}
                 disabled={isDisabled}
-                className={styles.trigger}
+                className={styles.trigger[size]}
                 data-size={size}
                 data-quiet={quiet || undefined}
                 onPointerDown={(event) => {
@@ -179,7 +179,7 @@ export const FinSelectField = forwardRef<HTMLButtonElement, FinSelectFieldProps>
                 aria-labelledby={`${id}-label ${id}-value`}
                 aria-describedby={[rest['aria-describedby'], hasHelper ? `${id}-helper` : undefined].filter(Boolean).join(' ') || undefined}
               >
-                <span id={`${id}-value`} className={styles.value} data-placeholder={selected ? undefined : ''}>
+                <span id={`${id}-value`} className={selected ? styles.value.selected : styles.value.placeholder} data-placeholder={selected ? undefined : ''}>
                   {selected ? selected.label : placeholder}
                 </span>
               </button>
