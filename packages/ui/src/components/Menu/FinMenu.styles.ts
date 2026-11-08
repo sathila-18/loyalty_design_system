@@ -33,9 +33,9 @@ export const list = 'fin:flex fin:flex-col fin:m-none fin:p-none fin:list-none';
 export const separator = 'fin:block';
 
 /* Code first (22 Oct 2026): content kept at the top (a search field), a line below. Code only (2 Nov 2026): a list row brings its own padding. */
-const headerBase = 'fin:flex-none fin:border-b fin:border-subtle';
+const headerBase = 'fin:flex-none fin:border-b fin:border-b-subtle';
 
 export const header = { default: `${headerBase} fin:p-l`, none: `${headerBase} fin:p-none` };
 
 /* Code first (22 Oct 2026): buttons kept at the bottom, a line above, right aligned. */
-export const footer = 'fin:flex fin:flex-none fin:gap-m fin:justify-end fin:p-xl fin:border-t fin:border-subtle';
+export const footer = 'fin:flex fin:flex-none fin:gap-m fin:justify-end fin:p-xl fin:border-t fin:border-t-subtle';
