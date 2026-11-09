@@ -4,7 +4,7 @@ import type { HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 import { FinButton } from '../Button';
 import { FinHeaderNotificationButton, type FinHeaderNotificationButtonProps } from '../HeaderNotificationButton';
 import { FinTextBox, type FinHeadingLevel } from '../TextBox';
-import styles from './FinHeader.module.css';
+import * as styles from './FinHeader.styles';
 
 export interface FinHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
   /** The page title (the Title Text Box). One line; a longer title ends in "…". */

@@ -17,7 +17,7 @@ export const buttons = 'fin:flex fin:gap-xl fin:items-center';
 export const firstEnd = 'fin:ms-auto';
 
 /*
- * `width="fill"`: equal shares of the width left after the Tertiary button (dock-fill in tailwind.css). It replaces
+ * `width="fill"`: equal shares of the width left after the Tertiary button (flex-share in tailwind.css). It replaces
  * FinButtonBase's flex-none, so `placement:` lets it win (both in @layer fin), as the dock's CSS Module did before.
  */
-export const fill = 'fin:placement:dock-fill fin:min-w-0';
+export const fill = 'fin:placement:flex-share fin:min-w-0';

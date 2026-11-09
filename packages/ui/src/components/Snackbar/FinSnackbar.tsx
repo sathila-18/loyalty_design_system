@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type HTMLAttributes, type MouseEventHandle
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import { FinButton } from '../Button';
-import styles from './FinSnackbar.module.css';
+import * as styles from './FinSnackbar.styles';
 
 /** Figma `State`. */
 export type FinSnackbarTone = 'neutral' | 'success' | 'warning' | 'error';
@@ -87,11 +87,13 @@ export function FinSnackbar({
 
   const neutral = tone === 'neutral';
   const hasTrailing = action !== undefined || onClose !== undefined;
+  const snackbarClass = styles.snackbar[lines][tone];
+  const leadClass = hasTrailing ? styles.lead[lines].trailing : styles.lead[lines].alone;
 
   return (
     <div
       {...rest}
-      className={className ? `${styles.snackbar} ${className}` : styles.snackbar}
+      className={className ? `${snackbarClass} ${className}` : snackbarClass}
       data-tone={tone}
       data-lines={lines}
       data-trailing={hasTrailing ? '' : undefined}
@@ -113,12 +115,12 @@ export function FinSnackbar({
         onBlur?.(e);
       }}
     >
-      <div className={styles.lead}>
-        {showIcon && <FinIcon name={neutral ? icon : ICONS[tone]} color={neutral ? 'inverse' : tone} className={styles.icon} />}
+      <div className={leadClass}>
+        {showIcon && <FinIcon name={neutral ? icon : ICONS[tone]} color={neutral ? 'inverse' : tone} />}
         <p className={styles.message}>{children}</p>
       </div>
       {hasTrailing && (
-        <div className={styles.trailing}>
+        <div className={styles.trailing[lines]}>
           {action && (
             <FinButton variant="tertiary" size="small" contentTone={neutral ? 'inverse' : 'primary'} onClick={action.onClick}>
               {action.label}

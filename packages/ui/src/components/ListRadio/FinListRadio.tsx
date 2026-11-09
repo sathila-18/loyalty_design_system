@@ -6,7 +6,7 @@ import { FinPaymentIcon, type FinPaymentMethod } from '../../payment';
 import type { FinListItemSize } from '../ListItem';
 import { ListStandardRow } from '../ListStandard/FinListStandard';
 import { FinRadio } from '../Radio';
-import styles from './FinListRadio.module.css';
+import * as styles from './FinListRadio.styles';
 
 /** Figma `Type`: what sits beside the title (Default: nothing). */
 export type FinListRadioType = 'default' | 'country' | 'payment';

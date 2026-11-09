@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, type HTMLAttributes, type ReactNode } from 'react';
-import styles from './FinSnackbar.module.css';
+import * as styles from './FinSnackbar.styles';
 
 export interface FinSnackbarRegionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** The FinSnackbars to show. The last one is the newest and shows on top. */

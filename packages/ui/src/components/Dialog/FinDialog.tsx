@@ -6,7 +6,7 @@ import type { FinButtonDockToneButton } from '../ButtonDock';
 import { FinOverlay } from '../Overlay';
 import { FinTextBox, type FinHeadingLevel } from '../TextBox';
 import { useBodyScroll, useModalDialog } from './useModalDialog';
-import styles from './FinDialog.module.css';
+import * as styles from './FinDialog.styles';
 
 /** A dialog button: a Medium label button, any button attribute (`onClick`, `disabled`, `type`…); `tone: 'destructive'` for remove and delete. */
 export type FinDialogButton = FinButtonDockToneButton;
@@ -81,7 +81,7 @@ export function FinDialog({
     >
       <FinOverlay onClick={closeOnOverlayClick ? onClose : undefined} />
       <div ref={panelRef} className={styles.panel} tabIndex={-1}>
-        <div className={styles.header} data-last={hasBody || hasButtons ? undefined : ''}>
+        <div className={hasBody || hasButtons ? styles.header.more : styles.header.last} data-last={hasBody || hasButtons ? undefined : ''}>
           <div id={titleId} className={styles.title}>
             {typeof title === 'string' || typeof title === 'number' ? (
               <FinTextBox type="h4" heading={title} headingLevel={headingLevel} />
@@ -96,7 +96,7 @@ export function FinDialog({
           )}
         </div>
         {hasBody && (
-          <div ref={bodyRef} className={styles.body} data-part="body" data-last={hasButtons ? undefined : ''} {...(scrollable ? { role: 'region', 'aria-labelledby': titleId, tabIndex: 0 } : {})} onScroll={update}>
+          <div ref={bodyRef} className={hasButtons ? styles.body.more : styles.body.last} data-part="body" data-last={hasButtons ? undefined : ''} {...(scrollable ? { role: 'region', 'aria-labelledby': titleId, tabIndex: 0 } : {})} onScroll={update}>
             {typeof children === 'string' || typeof children === 'number' ? <FinTextBox type="h2" description={children} /> : children}
           </div>
         )}

@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react';
-import styles from './FinStatCard.module.css';
+import * as styles from './FinStatCard.styles';
 
 export interface FinStatCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** What the number is ("Total points"): Label/Medium, one line, "…" when narrow. */

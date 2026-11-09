@@ -1,6 +1,6 @@
 import { FinAvatar } from '../Avatar';
 import { FinListItem, type FinListItemProps } from '../ListItem';
-import styles from './FinListItemFilled.module.css';
+import * as styles from './FinListItemFilled.styles';
 
 export type FinListItemFilledProps = Omit<FinListItemProps, 'divider'>;
 

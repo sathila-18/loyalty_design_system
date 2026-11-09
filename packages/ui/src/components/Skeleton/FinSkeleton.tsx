@@ -1,5 +1,5 @@
 import type { CSSProperties, HTMLAttributes } from 'react';
-import styles from './FinSkeleton.module.css';
+import * as styles from './FinSkeleton.styles';
 
 /** The placeholder's shape: a line of text, a block, or a circle (an avatar, an icon). */
 export type FinSkeletonShape = 'text' | 'rect' | 'circle';
@@ -29,7 +29,7 @@ export function FinSkeleton({ shape = 'text', width, height, className, style, .
     <span
       {...rest}
       aria-hidden="true"
-      className={className ? `${styles.skeleton} ${className}` : styles.skeleton}
+      className={className ? `${styles.skeleton[shape]} ${className}` : styles.skeleton[shape]}
       data-shape={shape}
       style={{ ...sizes, ...style }}
     />

@@ -4,7 +4,7 @@ import type { FinIconName } from '../../icons/finIcons';
 import { FinDivider } from '../Divider';
 import { FinIconContainer } from '../IconContainer';
 import { FinLabel } from '../Label';
-import styles from './FinListItem.module.css';
+import * as styles from './FinListItem.styles';
 
 export type FinListItemSize = 'large' | 'small';
 
@@ -60,20 +60,31 @@ export function FinListItem({
   className,
   ...rest
 }: FinListItemProps) {
-  const body = typeof children === 'string' || typeof children === 'number' ? <p className={styles.description}>{children}</p> : children;
+  const body =
+    typeof children === 'string' || typeof children === 'number' ? <p className={styles.description[size]}>{children}</p> : children;
   const hasBody = showBody && children !== undefined && children !== null;
+  const itemClass = divider ? styles.item.divider : styles.item.none;
+  const layout = hasBody ? 'body' : 'title';
 
   return (
-    <Root {...rest} className={className ? `${styles.item} ${className}` : styles.item} data-size={size} data-body={hasBody ? '' : undefined} data-divider={divider ? undefined : 'none'}>
-      <div className={styles.content}>
-        <div className={styles.leadingContent}>
+    <Root
+      {...rest}
+      className={className ? `${itemClass} ${className}` : itemClass}
+      data-size={size}
+      data-body={hasBody ? '' : undefined}
+      data-divider={divider ? undefined : 'none'}
+    >
+      <div className={styles.content[layout]}>
+        <div className={styles.leadingContent[layout]}>
           {leadingAccessory && (
-            <div className={styles.leading}>{leading ?? <FinIconContainer name="person" size={40} tone="info" />}</div>
+            <div className={styles.leading} data-part="leading">
+              {leading ?? <FinIconContainer name="person" size={40} tone="info" />}
+            </div>
           )}
           <div className={styles.text}>
             {topLabel && <FinLabel size="small">{topLabel}</FinLabel>}
             <div className={styles.titleRow}>
-              <span className={styles.title}>{title}</span>
+              <span className={styles.title[size]}>{title}</span>
               {extraIcon && <FinIcon name={extraIcon} size={20} color="secondary" />}
             </div>
             {hasBody && <div className={styles.body}>{body}</div>}

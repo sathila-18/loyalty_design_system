@@ -514,8 +514,11 @@
  */
 @custom-variant menu-open-idle (&[aria-expanded="true"]:not(:hover, :active));
 
-/* FinButtonDock `width="fill"`: equal shares of the width left after the Tertiary button. */
-@utility dock-fill {
+/*
+ * A flex item taking an equal share of the free space (flex: 1 1 0): FinButtonDock `width="fill"`, FinHeader,
+ * FinDialog, FinSideSheet, FinStepper.
+ */
+@utility flex-share {
   flex: 1 1 0;
 }
 
@@ -564,4 +567,239 @@
 
 @utility empty-state-w {
   width: min(100%, 4 * var(--fin-empty-state-column) + 3 * var(--fin-grid-gutter));
+}
+
+/* FinSkeleton: `width` / `height` from TSX (--skeleton-width / --skeleton-height), else the shape's default. */
+@utility skeleton-w {
+  width: var(--skeleton-width, 100%);
+}
+
+@utility skeleton-w-circle {
+  width: var(--skeleton-width, var(--fin-size-24));
+}
+
+@utility skeleton-h {
+  height: var(--skeleton-height, var(--fin-size-12));
+}
+
+@utility skeleton-h-rect {
+  height: var(--skeleton-height, var(--fin-size-24));
+}
+
+/* FinSkeleton's pulse: full to 60% opacity and back, 1.6 s (raw until motion tokens exist, §5). */
+@utility animate-skeleton-pulse {
+  animation: fin-skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes fin-skeleton-pulse {
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* FinHeader's bottom line: Space-XS wide (Figma binds the width to it), bg-secondary. */
+@utility header-line {
+  border-bottom: var(--fin-space-xs) solid var(--fin-bg-secondary);
+}
+
+/* FinAppShell's "Skip to content": clipped away until it has focus. */
+@utility skip-hidden {
+  clip-path: inset(50%);
+
+  &:focus {
+    clip-path: none;
+  }
+}
+
+/*
+ * FinStepper: each column Space-10XL wide; in a fill stepper the steps but the last grow from that, and the box and
+ * label stay in the first Space-10XL of the step (--step-content-width). The line to the next step: 2px, through the
+ * box's middle, from this box's right edge to the next box's left edge.
+ */
+@utility stepper-step-w {
+  width: var(--fin-space-10xl);
+}
+
+@utility stepper-step-min-w {
+  min-width: var(--fin-space-10xl);
+}
+
+@utility stepper-fill-step {
+  --step-content-width: var(--fin-space-10xl);
+}
+
+@utility stepper-content-w {
+  width: var(--step-content-width, 100%);
+}
+
+@utility stepper-line {
+  &::after {
+    position: absolute;
+    top: calc(var(--fin-size-36) / 2 - 1px);
+    left: calc(var(--step-content-width, 100%) / 2 + var(--fin-size-36) / 2);
+    width: calc(2 * var(--fin-space-10xl) - var(--fin-size-36));
+    height: 2px;
+    content: "";
+  }
+}
+
+@utility stepper-line-fill {
+  &::after {
+    position: absolute;
+    top: calc(var(--fin-size-36) / 2 - 1px);
+    left: calc(var(--step-content-width, 100%) / 2 + var(--fin-size-36) / 2);
+    width: calc(100% - var(--fin-size-36));
+    height: 2px;
+    content: "";
+  }
+}
+
+/*
+ * FinSnackbar: slides in from Space-M above and fades in, 200 ms (raw until motion tokens exist, §5). The distance is
+ * set by the utility (--snackbar-shift) and read by the keyframes on the element, so the keyframes (always written
+ * out) hold no token themselves.
+ */
+@utility animate-snackbar-in {
+  --snackbar-shift: calc(-1 * var(--fin-space-m));
+
+  animation: fin-snackbar-in 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+@keyframes fin-snackbar-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--snackbar-shift));
+  }
+}
+
+/*
+ * FinSnackbarRegion: one column of the window's layout grid (--fin-snackbar-column); the grid margin from the top and
+ * right; 3 columns wide but at least Size-343.
+ */
+@utility snackbar-region-column {
+  --fin-snackbar-column: calc(
+    (100vw - 2 * var(--fin-grid-margin) - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns)
+  );
+}
+
+@utility snackbar-region-place {
+  inset: var(--fin-grid-margin) var(--fin-grid-margin) auto auto;
+}
+
+@utility snackbar-region-w {
+  width: max(var(--fin-size-343), calc(3 * var(--fin-snackbar-column) + 2 * var(--fin-grid-gutter)));
+}
+
+/* FinDialog, FinSideSheet: the native <dialog> fills the window (the browser limits its size otherwise). */
+@utility modal-fill {
+  max-width: none;
+  max-height: none;
+}
+
+/*
+ * FinDialog's panel: N columns of the window's layout grid (--fin-dialog-columns: 8, 6 from bp-lg, 4 from bp-xxl) and
+ * the gutters between them, centred; at most the window less the grid margin above and below.
+ */
+@utility dialog-columns {
+  --fin-dialog-columns: 8;
+  --fin-dialog-column: calc(
+    (100% - 2 * var(--fin-grid-margin) - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns)
+  );
+}
+
+@utility dialog-columns-6 {
+  --fin-dialog-columns: 6;
+}
+
+@utility dialog-columns-4 {
+  --fin-dialog-columns: 4;
+}
+
+@utility dialog-w {
+  width: calc(var(--fin-dialog-columns) * var(--fin-dialog-column) + (var(--fin-dialog-columns) - 1) * var(--fin-grid-gutter));
+}
+
+@utility dialog-max-h {
+  max-height: calc(100% - 2 * var(--fin-grid-margin));
+}
+
+/*
+ * FinSideSheet's panel: the last N columns of the window's layout grid plus the right margin (--fin-side-sheet-columns:
+ * 7, 6 from bp-lg, 5 from bp-xl, 4 from bp-xxl).
+ */
+@utility side-sheet-columns {
+  --fin-side-sheet-columns: 7;
+  --fin-side-sheet-column: calc(
+    (100% - 2 * var(--fin-grid-margin) - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns)
+  );
+}
+
+@utility side-sheet-columns-6 {
+  --fin-side-sheet-columns: 6;
+}
+
+@utility side-sheet-columns-5 {
+  --fin-side-sheet-columns: 5;
+}
+
+@utility side-sheet-columns-4 {
+  --fin-side-sheet-columns: 4;
+}
+
+@utility side-sheet-w {
+  width: calc(
+    var(--fin-side-sheet-columns) * var(--fin-side-sheet-column) + (var(--fin-side-sheet-columns) - 1) * var(--fin-grid-gutter) +
+      var(--fin-grid-margin)
+  );
+}
+
+/*
+ * FinListItem: the last of several items shown together (not a single one) gets the bottom padding, and its divider
+ * (a child, marked by the item's fin:group/list-item) is hidden. FinListItemFilled: a card right after another card
+ * (marked fin:group/list-filled) sits Space-L below it.
+ */
+@custom-variant last-of-many (&:last-child:not(:first-child));
+@custom-variant list-item-last (&:is(:where(.fin\:group\/list-item):last-child:not(:first-child) > *));
+@custom-variant after-list-filled (&:is(:where(.fin\:group\/list-filled) + *));
+
+/*
+ * FinListStandard, FinSideNav: a link or button that covers its whole row (an empty layer over the row), so the row is
+ * one target; the focus ring goes on that layer, inside the row.
+ */
+@utility cover-action {
+  &::after {
+    position: absolute;
+    content: "";
+    inset: 0;
+  }
+
+  &:focus-visible {
+    outline: 0;
+  }
+
+  &:focus-visible::after {
+    outline: 2px solid var(--fin-border-focused);
+    outline-offset: -2px;
+  }
+}
+
+/*
+ * FinSideNav: 5 × Size-48 plus Space-XL either side (Expanded) or one Size-48 (Minimized); the width animates, 200 ms
+ * (raw until motion tokens exist, §5), and doesn't when motion is reduced (motion-reduce:motion-off: no transition at
+ * all, as before; Tailwind's transition-none only clears the property).
+ */
+@utility sidenav-w-full {
+  width: calc(var(--fin-size-48) * 5 + 2 * var(--fin-space-xl));
+}
+
+@utility sidenav-w-minimized {
+  width: calc(var(--fin-size-48) + 2 * var(--fin-space-xl));
+}
+
+@utility sidenav-motion {
+  transition: width 200ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+@utility motion-off {
+  transition: none;
 }

@@ -2,7 +2,7 @@
 
 import type { HTMLAttributes } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
-import styles from './FinStepper.module.css';
+import * as styles from './FinStepper.styles';
 
 /** A step's state: done (before the current step), current, or upcoming. */
 export type FinStepState = 'done' | 'current' | 'upcoming';
@@ -56,23 +56,26 @@ export function FinStepper({
       {...rest}
       aria-label={label}
       data-width={width}
-      className={className ? `${styles.stepper} ${className}` : styles.stepper}
+      className={className ? `${styles.stepper[width]} ${className}` : styles.stepper[width]}
     >
       {steps.map((step, index) => {
         const state = stateOf(index, current, doneSteps);
+        const last = index === steps.length - 1;
+        const stepClass =
+          width === 'fill' ? (last ? styles.step.fillLast : `${styles.step.fillGrow} ${styles.line.fill[state]}`) : last ? styles.step.hug : `${styles.step.hug} ${styles.line.hug[state]}`;
         const marker = (
           <>
-            <span className={styles.box} aria-hidden="true">
+            <span className={styles.box[state]} aria-hidden="true">
               {state === 'done' ? <FinIcon name="check" size={20} color="success" /> : index + 1}
             </span>
-            <span className={styles.label}>
+            <span className={styles.label[state]}>
               {step}
               {state !== 'current' && <span className={styles.hidden}>{`, ${stateLabels[state]}`}</span>}
             </span>
           </>
         );
         return (
-          <li key={`${index}-${step}`} className={styles.step} data-state={state} {...(state === 'current' ? { 'aria-current': 'step' as const } : {})}>
+          <li key={`${index}-${step}`} className={stepClass} data-state={state} {...(state === 'current' ? { 'aria-current': 'step' as const } : {})}>
             {state === 'done' && onStepClick ? (
               <button type="button" className={styles.button} onClick={() => onStepClick(index)}>
                 {marker}

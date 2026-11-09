@@ -33,6 +33,6 @@ describe('FinListStandardFilled', () => {
 
   it('shows no leading accessory unless one is set (no default avatar)', () => {
     const { container } = render(<FinListStandardFilled href="#" title="Plain" />);
-    expect(container.querySelector('[class*=leading_]')).toBeNull();
+    expect(container.querySelector('[data-part="leading"]')).toBeNull();
   });
 });

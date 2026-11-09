@@ -9,7 +9,7 @@ import { FinAvatar, type FinAvatarProps } from '../Avatar';
 import { FinCaption } from '../Caption';
 import { FinListItem, type FinListItemProps } from '../ListItem';
 import { FinListItemFilled } from '../ListItemFilled';
-import styles from './FinListStandard.module.css';
+import * as styles from './FinListStandard.styles';
 
 /** Figma `Leading accessory`. */
 export type FinListStandardLeading = 'none' | 'icon' | 'flag' | 'payment' | 'avatar';
@@ -120,21 +120,37 @@ export function ListStandardRow({
   if (leadingNode === undefined && leadingAccessory === 'avatar') leadingNode = <FinAvatar size="medium" {...avatar} />;
 
   const describedBy = description !== undefined && description !== null ? descriptionId : undefined;
+  const size = rest.size ?? 'large';
+  const kind = filled ? 'filled' : 'plain';
+  const titleClass = disabled ? styles.title.disabled : tone === 'destructive' ? styles.title.destructive : styles.title.default;
+  const actionClass = `${titleClass} ${disabled ? styles.action[kind].disabled : styles.action[kind].enabled}`;
+  // A disabled card shows its Disabled edge, not the Selected one.
+  const fill: styles.FinListRowFill =
+    filled && disabled ? 'none' : selected ? (interactive ? 'selectedHover' : 'selected') : interactive ? 'hover' : 'none';
+  const rowClass = [
+    styles.row[kind][fill],
+    disabled ? styles.disabledRow[kind] : undefined,
+    behavior === 'option' ? styles.option : undefined,
+    labelFor !== undefined ? styles.control : undefined,
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
   let titleNode: ReactNode = (
-    <span id={titleId} className={styles.title}>
+    <span id={titleId} className={titleClass}>
       {title}
     </span>
   );
   if (labelFor !== undefined)
     titleNode = (
-      <label id={titleId} htmlFor={labelFor} className={`${styles.title} ${styles.action}`}>
+      <label id={titleId} htmlFor={labelFor} className={actionClass}>
         {title}
       </label>
     );
   if (behavior === 'link')
     titleNode = (
       <Link
-        className={`${styles.title} ${styles.action}`}
+        className={actionClass}
         {...(disabled ? { 'aria-disabled': true } : { href, onClick })}
         aria-current={selected ? 'page' : undefined}
         aria-describedby={describedBy}
@@ -148,7 +164,7 @@ export function ListStandardRow({
         type="button"
         role="menuitem"
         tabIndex={-1}
-        className={`${styles.title} ${styles.action}`}
+        className={actionClass}
         disabled={disabled}
         onClick={onClick}
         aria-describedby={describedBy}
@@ -158,7 +174,7 @@ export function ListStandardRow({
     );
   if (behavior === 'button')
     titleNode = (
-      <button type="button" className={`${styles.title} ${styles.action}`} disabled={disabled} onClick={onClick} aria-describedby={describedBy}>
+      <button type="button" className={actionClass} disabled={disabled} onClick={onClick} aria-describedby={describedBy}>
         {title}
       </button>
     );
@@ -168,7 +184,7 @@ export function ListStandardRow({
   return (
     <Base
       {...rest}
-      className={className ? `${styles.row} ${className}` : styles.row}
+      className={rowClass}
       data-selected={selected ? '' : undefined}
       data-disabled={disabled ? '' : undefined}
       data-tone={tone === 'destructive' ? tone : undefined}
@@ -188,7 +204,7 @@ export function ListStandardRow({
         <span className={styles.trailing}>
           {trailing}
           {caption !== undefined && (
-            <FinCaption size="small" thickness="heavy" className={styles.caption}>
+            <FinCaption size="small" thickness="heavy" {...(disabled ? { className: styles.disabledCaption } : {})}>
               {caption}
             </FinCaption>
           )}
@@ -197,7 +213,7 @@ export function ListStandardRow({
       }
     >
       {describedBy && (
-        <p id={descriptionId} className={styles.description}>
+        <p id={descriptionId} className={disabled ? styles.description[size].disabled : styles.description[size].enabled}>
           {description}
         </p>
       )}

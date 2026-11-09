@@ -4,7 +4,7 @@ import { finBreakpoint } from '@finspace-loyalty/tokens/breakpoints';
 import { useEffect, useId, useRef, useState, type HTMLAttributes, type MouseEvent, type ReactNode } from 'react';
 import { FinHeader, type FinHeaderProps } from '../Header';
 import { FinSideNav, type FinSideNavProps, type FinSideNavType } from '../SideNav';
-import styles from './FinAppShell.module.css';
+import * as styles from './FinAppShell.styles';
 
 export interface FinAppShellProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /** The side nav (FinSideNav's props). Its collapse is the shell's: below 1280 it's minimized, from 1280 expanded. */
@@ -62,7 +62,7 @@ export function FinAppShell({ sideNav, header, children, onSideNavTypeChange, sk
 
   return (
     <div {...rest} className={className ? `${styles.shell} ${className}` : styles.shell}>
-      <a href={`#${mainId}`} className={styles.skip} onClick={skip}>
+      <a href={`#${mainId}`} className={styles.skip} data-part="skip" onClick={skip}>
         {skipLabel}
       </a>
       <FinSideNav {...sideNav} type={navType} onTypeChange={changeNavType} />

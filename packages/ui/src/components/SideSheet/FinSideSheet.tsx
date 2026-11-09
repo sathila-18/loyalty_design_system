@@ -7,7 +7,7 @@ import { useBodyScroll, useModalDialog } from '../Dialog/useModalDialog';
 import { FinDivider } from '../Divider';
 import { FinOverlay } from '../Overlay';
 import { FinTextBox, type FinHeadingLevel } from '../TextBox';
-import styles from './FinSideSheet.module.css';
+import * as styles from './FinSideSheet.styles';
 
 export interface FinSideSheetProps extends Omit<DialogHTMLAttributes<HTMLDialogElement>, 'title' | 'children' | 'onClose' | 'open'> {
   /** Whether the sheet is open. The sheet opens as a modal dialog over the page; the page behind doesn't scroll. */

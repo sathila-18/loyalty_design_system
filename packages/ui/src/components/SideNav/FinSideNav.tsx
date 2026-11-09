@@ -13,7 +13,7 @@ import { FinMenu, FinMenuDivider } from '../Menu';
 import { FinSegmentedButton } from '../SegmentedButton';
 import { FinSideNavItem, type FinSideNavItemSelected } from '../SideNavItem';
 import { FinSideNavSubItem } from '../SideNavSubItem';
-import styles from './FinSideNav.module.css';
+import * as styles from './FinSideNav.styles';
 
 /** Figma `Type`: Expanded (272: logo, labels, the user's name) or Minimized (80: icons and the avatar only). */
 export type FinSideNavType = 'expanded' | 'minimized';
@@ -273,9 +273,9 @@ export function FinSideNav({
     : {};
 
   return (
-    <nav {...rest} ref={setNavEl} aria-label={ariaLabel} className={className ? `${styles.nav} ${className}` : styles.nav} data-type={type}>
+    <nav {...rest} ref={setNavEl} aria-label={ariaLabel} className={className ? `${styles.nav[type]} ${className}` : styles.nav[type]} data-type={type}>
       <div className={styles.top}>
-        <div className={styles.header}>
+        <div className={styles.header[type]}>
           {expanded && logo && <div className={styles.logo}>{logo}</div>}
           <FinButton
             variant="tertiary"
@@ -293,7 +293,7 @@ export function FinSideNav({
             const selected = selectedOf(section);
             const itemType = expanded ? 'full' : 'minimized';
             return (
-              <li key={section.label} className={styles.menuItem}>
+              <li key={section.label} className={styles.menuItem[type]}>
                 {section.pages && section.pages.length > 0 ? (
                   <FinSideNavItem
                     icon={section.icon}
@@ -343,7 +343,7 @@ export function FinSideNav({
               label="Account"
               trigger={(menuProps) => (
                 <FinListItem
-                  className={styles.profile}
+                  className={menuProps['aria-expanded'] ? styles.profile.open : styles.profile.interactive}
                   size="small"
                   divider={false}
                   data-interactive=""
@@ -386,7 +386,7 @@ export function FinSideNav({
             </div>
           ) : expanded ? (
             <FinListItem
-              className={styles.profile}
+              className={profileAction ? styles.profile.interactive : styles.profile.still}
               size="small"
               divider={false}
               data-interactive={profileAction ? '' : undefined}

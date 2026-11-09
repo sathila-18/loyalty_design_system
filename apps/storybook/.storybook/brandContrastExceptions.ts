@@ -40,7 +40,7 @@ export const BRAND_CONTRAST_EXCEPTIONS: BrandContrastException[] = [
       // The current step (FinStepper).
       'li[data-state="current"]',
       // The app shell's "Skip to content" link (FinAppShell); it has no data attribute of its own.
-      'a[class*="_skip_"]',
+      'a[data-part="skip"]',
     ],
   },
   {

@@ -7,7 +7,7 @@ import { FinCheckboxBase } from '../CheckboxBase';
 import type { FinListItemSize } from '../ListItem';
 import type { FinListRadioItemSide, FinListRadioType } from '../ListRadio';
 import { ListStandardRow } from '../ListStandard/FinListStandard';
-import styles from './FinListCheckbox.module.css';
+import * as styles from './FinListCheckbox.styles';
 
 /** As the radio list's `Type`: what sits beside the title. */
 export type FinListCheckboxType = FinListRadioType;
