@@ -9,7 +9,7 @@
 // 4. Commits "Release vX.Y.Z" (only those four files) and creates the annotated tag vX.Y.Z.
 // It never pushes: after review and approval, push main and the tag (the tag starts the GitHub release workflow).
 // --dry-run: steps 1 and 2 only; prints the new version and the changelog entry, changes nothing.
-import { execFileSync, spawnSync } from 'node:child_process';
+import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -36,6 +36,10 @@ const run = (label, cmd, args, opts = {}) => {
 };
 
 if (!['patch', 'minor', 'major'].includes(bump)) fail('usage: pnpm release patch|minor|major [--dry-run]');
+
+// Keep the Mac awake while this runs: a sleep in the middle stopped a release once (9 Nov 2026), as the time limits
+// count wall-clock time. caffeinate -w ends by itself when this process ends, however it ends. macOS only.
+if (process.platform === 'darwin') spawn('caffeinate', ['-i', '-s', '-w', String(process.pid)], { stdio: 'ignore', detached: true }).unref();
 
 // ── 1. Checks ──────────────────────────────────────────────────────────────────────────────────────────────────
 if (git('branch', '--show-current') !== 'main') fail('not on main');
