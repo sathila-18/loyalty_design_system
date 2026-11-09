@@ -63,14 +63,11 @@ pnpm add ./finspace-loyalty-ui-0.1.0.tgz
 
 ### 2.1 Import CSS
 
-Add these four imports **once**, at the very top of your app entry point. Order matters.
+Add this one import **once**, at the very top of your app entry point. `index.css` contains everything: the design tokens for every brand and theme (with the shadows and grid helpers), the fonts (Inter and the Material Symbols icon font), the reset and all component styles.
 
 ```ts
 // src/main.tsx
-import '@finspace-loyalty/tokens/tokens.css';   // design token CSS variables
-import '@finspace-loyalty/tokens/styles.css';   // shadows, grid helpers
-import '@finspace-loyalty/ui/index.css';        // reset + Inter font
-import '@finspace-loyalty/ui/components.css';   // pre-compiled component styles
+import '@finspace-loyalty/ui/index.css'; // tokens, fonts, reset and components
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -82,6 +79,25 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>
 );
 ```
+
+The same import in other setups:
+
+```css
+/* Your app's main stylesheet */
+@import "@finspace-loyalty/ui/index.css";
+```
+
+```tsx
+// Next.js App Router: app/layout.tsx
+import '@finspace-loyalty/ui/index.css';
+```
+
+```tsx
+// Next.js Pages Router: pages/_app.tsx
+import '@finspace-loyalty/ui/index.css';
+```
+
+> **One import only.** Importing `tokens.css`, `styles.css` or `components.css` as well loads the same styles twice. If the tokens and ui packages are at different versions, the two copies can conflict (for example, old and new brand colours). The separate files are only for special cases, such as using the tokens without the components.
 
 > **No Tailwind setup needed.** Component styles are pre-compiled. You do not need to install or configure Tailwind CSS in the consumer project.
 
@@ -99,7 +115,7 @@ Or set them from JavaScript (useful for a theme toggle):
 ```ts
 // Set once at app startup, or on toggle
 document.documentElement.setAttribute('data-theme', 'light'); // 'light' | 'dark'
-document.documentElement.setAttribute('data-brand', 'finspace'); // 'finspace' | 'burgundy'
+document.documentElement.setAttribute('data-brand', 'finspace'); // 'finspace' | 'burgundy' | 'sampath'
 ```
 
 ### 2.3 Peer dependencies
@@ -929,7 +945,7 @@ consumer-project/
 
 | Problem | Cause | Fix |
 |---|---|---|
-| Components render but have no styles | CSS not imported | Add the four imports to `main.tsx` in the correct order |
+| Components render but have no styles | CSS not imported | Add `import '@finspace-loyalty/ui/index.css'` once, at the top of your entry point (`main.tsx`) |
 | Colors look wrong | `data-theme` not set | Add `data-theme="light"` to `<html>` |
 | `dist/` not found after install | Library not built | Run `pnpm --filter @finspace-loyalty/ui build` in the design system repo |
 | TypeScript errors on props | Stale types | Rebuild the library; `dist/index.d.ts` is generated at build time |

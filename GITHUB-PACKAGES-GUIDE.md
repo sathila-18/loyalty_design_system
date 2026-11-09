@@ -139,14 +139,11 @@ Update the version number in the URLs in `package.json` and re-run `pnpm install
 
 ### 2.3 Import CSS in the root layout
 
-Add these four imports **once** at the top of `app/layout.tsx`. Order matters.
+Add this one import **once** at the top of `app/layout.tsx`. `index.css` contains everything: the design tokens for every brand and theme (with the shadows and grid helpers), the fonts (Inter and the Material Symbols icon font), the reset and all component styles.
 
 ```tsx
 // app/layout.tsx
-import '@finspace-loyalty/tokens/tokens.css';   // design token CSS variables
-import '@finspace-loyalty/tokens/styles.css';   // shadows, grid helpers
-import '@finspace-loyalty/ui/index.css';        // reset + Inter font
-import '@finspace-loyalty/ui/components.css';   // pre-compiled component styles
+import '@finspace-loyalty/ui/index.css'; // tokens, fonts, reset and components
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -156,6 +153,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   );
 }
 ```
+
+> **One import only.** Importing `tokens.css`, `styles.css` or `components.css` as well loads the same styles twice. If the tokens and ui packages are at different versions, the two copies can conflict (for example, old and new brand colours). The separate files are only for special cases, such as using the tokens without the components.
 
 > **No Tailwind setup needed.** Component styles are pre-compiled. Do not install or configure Tailwind CSS in the Next.js project.
 
@@ -204,7 +203,7 @@ export function DeleteButton({ onDelete }: { onDelete: () => void }) {
 |---|---|---|
 | `finspace` (default) | Indigo `#625bff` | Inter |
 | `burgundy` | Burgundy `#660033` | Inter |
-| `sampath` | Orange `#f97316` | Hanken Grotesk |
+| `sampath` | Orange `#f47921` | Hanken Grotesk |
 
 ---
 
@@ -243,10 +242,7 @@ export function ThemeToggle() {
 
 ```tsx
 // pages/_app.tsx
-import '@finspace-loyalty/tokens/tokens.css';
-import '@finspace-loyalty/tokens/styles.css';
-import '@finspace-loyalty/ui/index.css';
-import '@finspace-loyalty/ui/components.css';
+import '@finspace-loyalty/ui/index.css'; // tokens, fonts, reset and components
 import type { AppProps } from 'next/app';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -268,6 +264,8 @@ export default function Document() {
 }
 ```
 
+> **One import only.** Importing `tokens.css`, `styles.css` or `components.css` as well loads the same styles twice. If the tokens and ui packages are at different versions, the two copies can conflict (for example, old and new brand colours). The separate files are only for special cases, such as using the tokens without the components.
+
 ---
 
 ## Troubleshooting
@@ -276,7 +274,7 @@ export default function Document() {
 |---|---|
 | `404` on install URL | Release not created yet — push a `v*` tag |
 | Actions fail on release creation | Enable read+write permissions in repo Settings → Actions → General |
-| Components render but have no styles | Add the four CSS imports to `layout.tsx` in order |
+| Components render but have no styles | Add `import '@finspace-loyalty/ui/index.css'` once, at the top of `layout.tsx` (or `pages/_app.tsx`) |
 | Colors wrong / no theme | Add `data-theme="light"` to `<html>` in `layout.tsx` |
 | Icons not showing | Ensure `@finspace-loyalty/ui/index.css` is imported |
 | TypeScript errors on props | Rebuild the library — `dist/index.d.ts` is generated at build time |
