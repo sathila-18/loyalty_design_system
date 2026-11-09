@@ -1,8 +1,16 @@
 {
   "name": "@finspace-loyalty/ui",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sathila-18/loyalty_design_system.git",
+    "directory": "packages/ui"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
   "sideEffects": [
     "**/*.css"
   ],
