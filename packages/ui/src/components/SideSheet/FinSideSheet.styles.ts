@@ -25,7 +25,7 @@ export const panel =
 export const header = 'fin:flex fin:flex-none fin:gap-xs fin:items-start fin:pt-4xl fin:px-3xl fin:pb-none';
 
 /* Figma `Title` slot: fills the row. */
-export const title = 'fin:grid fin:flex-share fin:grid-cols-1 fin:items-center fin:min-w-0 fin:min-h-48';
+export const title = 'fin:grid fin:flex-share fin:grid-track-fill fin:items-center fin:min-w-0 fin:min-h-48';
 
 /* Space-3XL above the line, over FinDivider's own margin: `placement:` (both in @layer fin). FinDivider is already flex-none. */
 export const divider = 'fin:placement:mt-3xl';

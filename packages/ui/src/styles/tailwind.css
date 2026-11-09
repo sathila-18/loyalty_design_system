@@ -690,6 +690,14 @@
   width: max(var(--fin-size-343), calc(3 * var(--fin-snackbar-column) + 2 * var(--fin-grid-gutter)));
 }
 
+/*
+ * FinSideSheet's title slot: one grid track that can shrink below its content (written as minmax(0, 1fr), not
+ * Tailwind's grid-cols-1, repeat(1, …), so the computed value is the same as before).
+ */
+@utility grid-track-fill {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 /* FinDialog, FinSideSheet: the native <dialog> fills the window (the browser limits its size otherwise). */
 @utility modal-fill {
   max-width: none;
