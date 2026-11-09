@@ -77,3 +77,37 @@ describe('Tailwind class rules', () => {
     expect(result!.messages.filter((m) => /No arbitrary values/.test(m.message))).toHaveLength(2);
   });
 });
+
+// fin/no-outline-none-with-ring (found in stage 3e-2, 9 Nov 2026): outline-none sets --tw-outline-style: none, which
+// an outline width reads for its style, so on the same element the focus ring disappears.
+describe('outline-none with a focus ring', () => {
+  async function outlineMessages(code: string, file = 'packages/ui/src/components/Sample/FinSample.styles.ts') {
+    const [result] = await eslint.lintText(code, { filePath: join(root, file) });
+    return result!.messages.filter((m) => m.ruleId === 'fin/no-outline-none-with-ring');
+  }
+
+  it.each([
+    ['in one string', "export const main = 'fin:focus:outline-none fin:focus-visible:outline-2 fin:focus-visible:outline-focused';\n"],
+    ['with a plain outline-none', "export const main = 'fin:outline-none fin:focus-visible:outline-2';\n"],
+    ['across a + chain', "export const main = 'fin:focus:outline-none ' +\n  'fin:focus-visible:outline-2';\n"],
+    ['through a const in a template', "const base = 'fin:focus:outline-none';\nexport const main = `${base} fin:focus-visible:outline-2`;\n"],
+    ['with a has- ring on the same element', "export const row = 'fin:outline-none fin:has-focus-visible:outline-2';\n"],
+  ])('reports the pair %s', async (_name, code) => {
+    expect(await outlineMessages(code)).toHaveLength(1);
+  });
+
+  it('reports it in a JSX className', async () => {
+    const code = 'export const Sample = () => <div className="fin:focus:outline-none fin:focus-visible:outline-2" />;\n';
+    expect(await outlineMessages(code, 'packages/ui/src/components/Sample/FinSample.tsx')).toHaveLength(1);
+  });
+
+  it.each([
+    ['the fix: no outline only without keyboard focus', "export const main = 'fin:focus:not-focus-visible:outline-none fin:focus-visible:outline-2';\n"],
+    ['outline-none alone', "export const input = 'fin:outline-none';\n"],
+    ['a ring on a child (group variant)', "export const button = 'fin:focus-visible:outline-none';\nexport const box = 'fin:group-focus-visible/step:outline-2';\n"],
+    ['a ring on a pseudo-element', "export const input = 'fin:focus-visible:outline-none fin:range-thumb:outline-2';\n"],
+    ['only an outline offset and colour', "export const main = 'fin:outline-none fin:focus-visible:outline-offset-2 fin:focus-visible:outline-focused';\n"],
+  ])('passes %s', async (_name, code) => {
+    expect(await outlineMessages(code)).toEqual([]);
+  });
+});

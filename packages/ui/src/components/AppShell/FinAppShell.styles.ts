@@ -13,10 +13,11 @@ export const panel =
 
 /*
  * The content area is a tab stop (it scrolls on its own, so keyboard users must reach it to scroll it). Its ring shows
- * only with the keyboard, inside the panel.
+ * only with the keyboard, inside the panel; no outline with other focus. Not `focus:outline-none`: it sets
+ * --tw-outline-style to none, which the ring's outline-2 reads, so the ring would vanish (the lint bans the pair).
  */
 export const main =
-  'fin:flex fin:flex-auto fin:flex-col fin:min-h-0 fin:p-3xl fin:overflow-auto fin:focus:outline-none ' +
+  'fin:flex fin:flex-auto fin:flex-col fin:min-h-0 fin:p-3xl fin:overflow-auto fin:focus:not-focus-visible:outline-none ' +
   'fin:focus-visible:outline-2 fin:focus-visible:-outline-offset-2 fin:focus-visible:outline-focused';
 
 /*

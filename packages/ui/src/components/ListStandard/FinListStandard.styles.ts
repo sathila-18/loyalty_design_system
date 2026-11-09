@@ -38,9 +38,12 @@ export const disabledRow = {
   filled: 'fin:divider-color-disabled fin:placement:inset-ring-disabled',
 };
 
-/* An option (in a list box or select menu) takes focus itself (the menu moves it with the arrow keys): the ring. */
+/*
+ * An option (in a list box or select menu) takes focus itself (the menu moves it with the arrow keys): the ring with
+ * the keyboard, no outline otherwise. Not `focus:outline-none` (it would hide the ring; see FinAppShell's main).
+ */
 export const option =
-  'fin:focus:outline-none fin:focus-visible:outline-2 fin:focus-visible:-outline-offset-2 fin:focus-visible:outline-focused';
+  'fin:focus:not-focus-visible:outline-none fin:focus-visible:outline-2 fin:focus-visible:-outline-offset-2 fin:focus-visible:outline-focused';
 
 /* A control row (labelFor): the control has focus, so the row draws the ring (the control's own is off). */
 export const control =
