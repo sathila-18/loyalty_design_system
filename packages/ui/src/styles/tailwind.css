@@ -438,12 +438,16 @@
 }
 
 /*
- * The fixed column's Shadow/Sticky, only while content passes under it (the scroll area, marked
- * fin:group/table-scroll, gets data-hidden-start / data-hidden-end from FinTable.tsx as it scrolls). Table cells can't
- * cast a shadow in a collapsed-border table, so an empty layer the cell's size does, clipped to that side.
+ * The fixed column's Shadow/Sticky, only while content passes under it: the scroll area, marked
+ * fin:group/table-scroll, gets data-hidden-start / data-hidden-end from FinTable.tsx as it scrolls, read by the
+ * table-scrolled / table-scrolled-both variants. Table cells can't cast a shadow in a collapsed-border table, so an
+ * empty layer the cell's size does, clipped to that side.
  */
+@custom-variant table-scrolled (&:is(:where(.fin\:group\/table-scroll)[data-hidden-start] *));
+@custom-variant table-scrolled-both (&:is(:where(.fin\:group\/table-scroll)[data-hidden-start][data-hidden-end] *));
+
 @utility table-sticky-shadow-end {
-  :where(.fin\:group\/table-scroll)[data-hidden-start][data-hidden-end] &::before {
+  &::before {
     position: absolute;
     z-index: -1;
     content: "";
@@ -454,7 +458,7 @@
 }
 
 @utility table-sticky-shadow-start {
-  :where(.fin\:group\/table-scroll)[data-hidden-start] &::before {
+  &::before {
     position: absolute;
     z-index: -1;
     content: "";

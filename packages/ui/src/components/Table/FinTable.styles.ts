@@ -74,9 +74,9 @@ export const fixedColumn = 'fin:table-column-w';
 const sticky = 'fin:sticky fin:z-1';
 
 const stickyHeader = {
-  end: `${sticky} fin:right-none fin:table-sticky-shadow-end`,
-  start: `${sticky} fin:left-none fin:table-sticky-shadow-start`,
-  startAfterSelect: `${sticky} fin:table-sticky-after-select fin:table-sticky-shadow-start`,
+  end: `${sticky} fin:right-none fin:table-scrolled-both:table-sticky-shadow-end`,
+  start: `${sticky} fin:left-none fin:table-scrolled:table-sticky-shadow-start`,
+  startAfterSelect: `${sticky} fin:table-sticky-after-select fin:table-scrolled:table-sticky-shadow-start`,
   select: `${sticky} fin:left-none`,
 };
 

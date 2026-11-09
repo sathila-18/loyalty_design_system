@@ -73,7 +73,7 @@ export function FinNotificationBanner({
   const classes = styles.tone[tone];
 
   return (
-    <div {...rest} className={className ? `${classes.banner} ${className}` : classes.banner} data-tone={tone}>
+    <div {...rest} className={className ? `${classes.banner} ${className}` : classes.banner} data-part="banner" data-tone={tone}>
       {showIcon && <FinIcon name={neutral ? icon : ICONS[tone]} size={20} color={neutral ? 'secondary' : tone} />}
       <div className={styles.text}>
         {title != null && <p className={classes.title}>{title}</p>}

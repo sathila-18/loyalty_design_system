@@ -54,7 +54,7 @@ export const BRAND_CONTRAST_EXCEPTIONS: BrandContrastException[] = [
     elements: [
       '[data-part="badge"][data-tone="warning"]:not([data-shape])',
       '[data-part="helper"][data-tone="warning"]',
-      '[class*="_banner_"][data-tone="warning"]',
+      '[data-part="banner"][data-tone="warning"]',
       'button[data-content-tone="warning"]',
     ],
   },
@@ -72,7 +72,7 @@ export const BRAND_CONTRAST_EXCEPTIONS: BrandContrastException[] = [
     // Info banners (title, text, the Focus areas rule list) and badges, and a banner's Tertiary button.
     elements: [
       '[data-part="badge"][data-tone="info"]:not([data-shape])',
-      '[class*="_banner_"][data-tone="info"]',
+      '[data-part="banner"][data-tone="info"]',
       'button[data-content-tone="info"]',
     ],
   },
