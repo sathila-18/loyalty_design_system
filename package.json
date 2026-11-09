@@ -10,7 +10,7 @@
     "dev": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui icons && pnpm --filter @finspace-loyalty/storybook storybook",
     "start": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui icons && pnpm --filter @finspace-loyalty/storybook storybook",
     "build": "pnpm -r --if-present build",
-    "release": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui build && pnpm --filter @finspace-loyalty/tokens publish --no-git-checks && pnpm --filter @finspace-loyalty/ui publish --no-git-checks",
+    "release": "node scripts/release.mjs",
     "storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui icons && pnpm --filter @finspace-loyalty/storybook storybook",
     "build-storybook": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui icons && pnpm --filter @finspace-loyalty/storybook build-storybook",
     "typecheck": "pnpm -r --if-present typecheck",

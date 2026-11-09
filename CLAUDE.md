@@ -139,6 +139,9 @@ packages/ui/                         ← @finspace-loyalty/ui
     index.ts
 apps/storybook/                      ← Storybook (theme + brand toolbar, Foundations pages)
   src/pages/<area>/                  ← Pages: real screens from Figma (see "Pages"), never in the library
+  scripts/visual/                    ← visual comparison tools (README there; CLAUDE.md rule 11)
+scripts/release.mjs                  ← `pnpm release` (see "Releasing")
+CHANGELOG.md                         ← what each released version holds
 DESIGN.md                            ← the spec
 CLAUDE.md                            ← this file
 ```
@@ -166,6 +169,21 @@ Commands (repo root): `pnpm storybook`, `pnpm icons` (regenerate the icon font a
 - Use one short-lived branch per component (`feat/<component>`). **Merge into `main` and push only after the designer approves it, and only if every check passes** (`lint`, `lint:css`, `typecheck`, `test`, `test:a11y`, `build`, `build-storybook`); stop on the first failure. Then delete the branch (locally and on GitHub) and update the `DESIGN.md` §11 status note.
 - Storybook is deployed on Vercel (`vercel.json`, README "Storybook on Vercel"): `main` deploys to production at **https://loyaltydesignsystem.vercel.app**, and every pushed branch gets a preview link. **After building a component, push its branch to GitHub** (`git push -u origin feat/<component>`, never to `main`), so Vercel builds a preview, and give the designer the preview link with the summary. The branch's link is **`https://loyaltydesignsystem-git-<branch>-sathila.vercel.app`** (the branch name in lower case, `/` and other symbols as `-`; e.g. `feat/tier-management` → `https://loyaltydesignsystem-git-feat-tier-management-sathila.vercel.app`). Previews sit behind Vercel's login (Deployment Protection), so the designer opens them signed in; before sharing, check the link exists (a redirect to the Vercel login, not a 404; the build can take a few minutes after the push). Pushing the branch is not merging: `main` still waits for the designer's approval.
 - Write commit messages in the present tense, naming the component (for example `Add FinIcon and icon registry`).
+
+## Releasing
+
+The two packages are delivered to the developers as GitHub Releases (`.github/workflows/publish.yml` builds them and attaches the two `.tgz` files when a `v*` tag is pushed). `CHANGELOG.md` says what each version holds.
+
+- **Release after every change the designer approves and merges** that reaches the developers: a new component, a fix, a token change, docs the developers use (USAGE.md, NEXTJS-USAGE.md…). Each merge gets its own version and tag.
+- **Both packages always share one version.**
+- **Which version:** `patch` for a fix; `minor` for a new component, prop, option, token or brand; `major` for a breaking change. While on 0.x, a breaking change can go in a `minor`, but it **must** be listed under **Breaking** in the changelog, saying what developers need to change.
+- **Steps, after the merge:**
+  1. Add the change's line(s) under `## Unreleased` in `CHANGELOG.md` (Added / Changed / Fixed / Breaking / Known issues), commit and push it with the merge.
+  2. Stop the Storybook dev server, then run `pnpm release patch|minor|major` (`--dry-run` first to check without changing anything). It checks `main` is clean and up to date, runs lint, lint:css, typecheck, test, build, build-storybook and a11y in every brand × theme, bumps both packages, turns `Unreleased` into the version's section, adds a line to `DESIGN.md` §11, commits `Release vX.Y.Z` and creates the tag. **It never pushes.** Restart Storybook after.
+  3. **Show the designer** the version, the changelog entry and the check results, and wait.
+  4. **When the designer approves:** `git push origin main && git push origin vX.Y.Z`. The tag starts the release workflow: watch it (`gh run watch`) and confirm the release page has both `.tgz` files.
+- **Never push a release tag without the designer's approval.** If a check fails, stop and show the failure; don't release around it. One exception to telling apart: an a11y step that stops with "Failed to connect to the browser session" and "no tests" ran nothing (a browser start-up timeout when the Mac is busy, seen 9 Nov 2026); run `pnpm release …` again and say so in the summary.
+- Before pushing, a release can be undone with `git tag -d vX.Y.Z && git reset --hard HEAD~1`. After pushing, never move or delete a released tag; release a new version instead.
 
 ## Figma files
 
