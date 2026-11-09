@@ -2,8 +2,8 @@
 // Release: `pnpm release patch|minor|major [--dry-run]` (CLAUDE.md "Releasing").
 // 1. Checks: on main, nothing uncommitted, exactly origin/main (fetched), both packages at the same version, the new
 //    tag doesn't exist (here or on GitHub), CHANGELOG.md has entries under "## Unreleased", Storybook dev server off.
-// 2. Generates the token files and icon font, then runs lint, lint:css, typecheck, test, build, build-storybook, and the
-//    a11y check one brand × theme at a time.
+// 2. Generates the token files and icon font, then runs lint, lint:css, typecheck, test, build, build-storybook, the
+//    a11y check one brand × theme at a time, and the Next.js check (the packed packages in a real Next.js app).
 // 3. Bumps packages/tokens and packages/ui to the same new version; CHANGELOG.md "## Unreleased" becomes
 //    "## vX.Y.Z — date" (with a fresh empty Unreleased above); adds a "Released vX.Y.Z" line to DESIGN.md §11.
 // 4. Commits "Release vX.Y.Z" (only those four files) and creates the annotated tag vX.Y.Z.
@@ -79,6 +79,8 @@ run('build', 'pnpm', ['build']);
 run('build-storybook', 'pnpm', ['build-storybook']);
 for (const project of A11Y)
   run(`a11y ${project}`, './node_modules/.bin/vitest', ['run', '--project', `a11y-${project}`], { cwd: join(root, 'apps/storybook'), minutes: 10 });
+// The packed packages in a real Next.js App Router app (scripts/nextjs-check.mjs).
+run('nextjs-check', 'node', ['scripts/nextjs-check.mjs'], { minutes: 16 });
 
 if (dryRun) {
   console.log(`\n✓ dry run: every check passed; ${tag} would be released. Nothing was changed.`);

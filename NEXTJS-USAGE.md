@@ -21,14 +21,15 @@ Requirements: **React 19** and **Next.js with the App Router**. A short note on 
 
 ## 2. Install
 
-Both packages are attached to each GitHub Release. Install **both, always at the same version**:
+Both packages are attached to each GitHub Release (use **v0.1.1 or later**). Install **both, in one command, always at the same version**:
 
 ```bash
-pnpm add https://github.com/sathila-18/loyalty_design_system/releases/download/v0.1.0/finspace-loyalty-tokens-0.1.0.tgz
-pnpm add https://github.com/sathila-18/loyalty_design_system/releases/download/v0.1.0/finspace-loyalty-ui-0.1.0.tgz
+pnpm add \
+  https://github.com/sathila-18/loyalty_design_system/releases/download/v0.1.1/finspace-loyalty-tokens-0.1.1.tgz \
+  https://github.com/sathila-18/loyalty_design_system/releases/download/v0.1.1/finspace-loyalty-ui-0.1.1.tgz
 ```
 
-> **Known issue (v0.1.0): installing `ui` fails with pnpm.** The `ui` package asks for `@finspace-loyalty/tokens@0.1.0` from the npm registry, where it isn't published, so `pnpm add` of the `ui` file stops with a 404, even after installing the tokens file. npm works if both files are installed **in one command**: `npm install <tokens url> <ui url>`. This needs a fix in the library.
+`ui` needs `tokens` at the same version (a peer dependency): installed together, nothing is fetched from the npm registry. Installing `ui` alone fails with a 404 (pnpm then looks for `tokens` on the npm registry, where it isn't published). npm works the same way: `npm install <tokens url> <ui url>`.
 
 **To upgrade:** change the version in **both** URLs in `package.json`, then run `pnpm install`. Never mix versions, for example `tokens 0.2.0` with `ui 0.1.0`.
 
@@ -106,18 +107,21 @@ If the user's choice must be remembered across visits, store it (in a cookie, so
 
 ## 5. Server and Client Components
 
-> **Known issue (v0.1.0): import the library only in Client Components.** The build strips the library's `'use client'` markers, so importing anything from `@finspace-loyalty/ui` in a Server Component fails `next build` ("createContext is not a function"), even for simple components. Until a fixed release, use the components only inside your own files that start with `'use client'`, as in the example below, and render those from your Server Components.
-
-- Next.js doesn't allow passing **functions** (like `onClick` or `onChange`) from a Server Component to a Client Component. When you attach handlers, put that part in your own Client Component:
+- **Import any component directly in a Server Component** (v0.1.1 or later). The interactive ones (fields, menus, dialogs, tables…) are marked `'use client'` inside the library, file by file; purely presentational ones (badge, icon…) have no marker and render on the server.
+- Next.js doesn't allow passing **functions** (like `onClick`, `onChange` or `getRowId`) or **components** (like `linkAs={Link}`) from a Server Component to a Client Component. When you need those, put that part in your own Client Component:
 
 ```tsx
 // app/members/page.tsx (Server Component)
+import { FinSelectField, FinTextField } from '@finspace-loyalty/ui';
 import { MembersActions } from './MembersActions';
 
 export default function MembersPage() {
   return (
     <main>
-      {/* Library components go inside your own Client Components (known issue above) */}
+      {/* Props that are plain data: directly in the Server Component */}
+      <FinTextField label="Member name" />
+      <FinSelectField label="Tier" options={[{ value: 'gold', label: 'Gold' }]} />
+      {/* Handlers: in your own Client Component */}
       <MembersActions />
     </main>
   );
@@ -145,7 +149,7 @@ export function MembersActions() {
 
 ## 6. Links and routing
 
-The library doesn't import a router. Link-like components (`FinSideNav`, `FinListStandard`, `FinTable` columns) take the link component through their `linkAs` prop, so they work with `next/link`:
+The library doesn't import a router. Link-like components (`FinSideNav`, `FinListStandard`, `FinTable` columns) take the link component through their `linkAs` prop, so they work with `next/link`. A component can't be passed from a Server Component, so set `linkAs` in a Client Component:
 
 ```tsx
 'use client';
@@ -259,6 +263,9 @@ The components meet WCAG 2.2 AA: keyboard support, visible focus rings and prope
 | Font doesn't change with the brand | `data-brand` must be on `<html>`, not on an inner element |
 | Icons show as text | The stylesheet isn't imported, or the icon name isn't in the registry |
 | A component looks different from Storybook | Check for global element rules in your app (§9) |
-| Error about passing functions to Client Components | Move the part with handlers into a `'use client'` component (§5) |
+| Error about passing functions to Client Components | Move the part with handlers (or `linkAs`) into a `'use client'` component (§5) |
+| "createContext is not a function" in a Server Component | You're on v0.1.0: upgrade both packages to v0.1.1 or later (§2) |
+| Hydration warnings mentioning attributes like `bis_skin_checked`, `cz-shortcut-listen` or `data-new-gr-c-s-check-loaded` | A browser extension adds them to the page before React loads, not the library: test in an incognito window (extensions off) |
+| On a narrow window (below 1280), the side nav shows expanded for a moment, then collapses | Expected for now: the server can't know the window width, so it renders the nav expanded and it collapses once the page loads (`FinAppShell`, and `FinSideNav` without `type` or `defaultType`). A `FinSideNav` on its own can start in a set state with `defaultType` |
 | Styles look duplicated in dev tools | Remove extra imports; use only `index.css` (§3) |
 | `404` when installing | Check the version in both URLs matches an existing release |

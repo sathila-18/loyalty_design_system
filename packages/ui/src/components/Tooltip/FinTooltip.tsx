@@ -3,6 +3,7 @@
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/react-dom';
 import {
   cloneElement,
+  use,
   useCallback,
   useEffect,
   useId,
@@ -84,6 +85,17 @@ function cssPx(element: Element, property: string) {
 function setRef<T>(ref: Ref<T> | undefined, value: T) {
   if (typeof ref === 'function') ref(value);
   else if (ref) (ref as { current: T }).current = value;
+}
+
+/*
+ * A trigger rendered by a Server Component can reach this Client Component as a lazy reference (React 19, in
+ * development), not an element: it has no props to read or clone. This gives its payload, which `use` unwraps into
+ * the element (Radix's Slot does the same).
+ */
+const REACT_LAZY = Symbol.for('react.lazy');
+function lazyPayload(node: ReactElement<Record<string, unknown>>) {
+  const lazy = node as unknown as { $$typeof?: symbol; _payload?: PromiseLike<ReactElement<Record<string, unknown>>> };
+  return lazy?.$$typeof === REACT_LAZY && typeof lazy._payload?.then === 'function' ? lazy._payload : null;
 }
 
 /** Focus from the keyboard (not a click): only then does focus open it. */
@@ -191,7 +203,9 @@ export function FinTooltip({
     return () => document.removeEventListener('keydown', onKeyDown, true);
   }, [open, setOpen, clear]);
 
-  const own = children.props as {
+  const payload = lazyPayload(children);
+  const child = payload ? use(payload) : children;
+  const own = child.props as {
     ref?: Ref<HTMLElement>;
     'aria-describedby'?: string;
     onPointerEnter?: (event: PointerEvent<HTMLElement>) => void;
@@ -201,7 +215,7 @@ export function FinTooltip({
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
   };
 
-  const trigger = cloneElement(children, {
+  const trigger = cloneElement(child, {
     ref: (node: HTMLElement | null) => {
       setTriggerEl(node);
       setRef(own.ref, node);

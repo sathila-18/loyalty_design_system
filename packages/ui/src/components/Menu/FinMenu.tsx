@@ -4,6 +4,7 @@ import { autoUpdate, flip, offset, shift, size, useFloating } from '@floating-ui
 import {
   cloneElement,
   createContext,
+  use,
   useCallback,
   useContext,
   useEffect,
@@ -118,6 +119,17 @@ function cssPx(element: Element, property: string) {
 function setRef<T>(ref: Ref<T> | undefined, value: T) {
   if (typeof ref === 'function') ref(value);
   else if (ref) (ref as { current: T }).current = value;
+}
+
+/*
+ * A trigger element rendered by a Server Component can reach this Client Component as a lazy reference (React 19, in
+ * development), not an element: it has no props to read or clone. This gives its payload, which `use` unwraps into
+ * the element (Radix's Slot does the same; FinTooltip too).
+ */
+const REACT_LAZY = Symbol.for('react.lazy');
+function lazyPayload(node: ReactElement<Record<string, unknown>>) {
+  const lazy = node as unknown as { $$typeof?: symbol; _payload?: PromiseLike<ReactElement<Record<string, unknown>>> };
+  return lazy?.$$typeof === REACT_LAZY && typeof lazy._payload?.then === 'function' ? lazy._payload : null;
 }
 
 /**
@@ -383,12 +395,14 @@ export function FinMenu({
   let triggerNode: ReactNode;
   if (typeof trigger === 'function') triggerNode = trigger(triggerProps);
   else {
-    const own = trigger.props as {
+    const payload = lazyPayload(trigger);
+    const element = payload ? use(payload) : trigger;
+    const own = element.props as {
       ref?: Ref<HTMLElement>;
       onClick?: (event: MouseEvent<HTMLElement>) => void;
       onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
     };
-    triggerNode = cloneElement(trigger, {
+    triggerNode = cloneElement(element, {
       ...triggerProps,
       ref: (node: HTMLElement | null) => {
         triggerProps.ref(node);

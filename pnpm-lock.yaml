@@ -280,11 +280,10 @@ importers:
         version: 5.5.5
 
   packages/ui:
-    dependencies:
+    devDependencies:
       '@finspace-loyalty/tokens':
         specifier: workspace:*
         version: link:../tokens
-    devDependencies:
       '@floating-ui/react-dom':
         specifier: 2.1.9
         version: 2.1.9(react-dom@19.3.0(react@19.3.0))(react@19.3.0)

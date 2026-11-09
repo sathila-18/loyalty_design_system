@@ -41,10 +41,12 @@
     "dial-codes": "node scripts/dial-codes.ts"
   },
   "peerDependencies": {
+    "@finspace-loyalty/tokens": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@finspace-loyalty/tokens": "workspace:*",
     "@floating-ui/react-dom": "2.1.9",
     "@fontsource/hanken-grotesk": "5.3.0",
     "@fontsource/inter": "5.3.0",
@@ -74,8 +76,5 @@
     "vite": "8.3.4",
     "vitest": "5.0.2",
     "wawoff2": "2.0.1"
-  },
-  "dependencies": {
-    "@finspace-loyalty/tokens": "workspace:*"
   }
 }

@@ -60,6 +60,9 @@ Instructions for Claude Code in this repo. Read them fully at the start of every
 The app is React today and may move to Next.js. Components must work in both:
 - Add `'use client'` at the top of any component that uses state, effects, refs or event handlers. Purely presentational components don't get it.
 - Never touch `window`, `document` or `localStorage` at import time or during render. Only inside effects or event handlers.
+- Render the same on the server and the client: no `Date.now()`, `Math.random()`, locale formatting or time-zone-dependent dates during render; IDs only from `useId`.
+- A component that reads or clones an element it's given (a trigger, `children`) must accept a lazy one: from a Server Component it can arrive as a lazy reference (unwrap it with `use`, as FinTooltip and FinMenu do).
+- The library build keeps one file per source file, so each `'use client'` survives; `pnpm nextjs-check` (part of `pnpm release`) proves the packed library works in a Next.js App Router app.
 - Don't import a router. Link-like components take an `as` prop (or a link component through a provider), so they work with React Router now and `next/link` later.
 - Theme and brand are set with `data-theme` and `data-brand` attributes on `<html>`, never by injecting styles with JavaScript.
 
@@ -140,7 +143,9 @@ packages/ui/                         ← @finspace-loyalty/ui
 apps/storybook/                      ← Storybook (theme + brand toolbar, Foundations pages)
   src/pages/<area>/                  ← Pages: real screens from Figma (see "Pages"), never in the library
   scripts/visual/                    ← visual comparison tools (README there; CLAUDE.md rule 11)
+apps/nextjs-check/                   ← Next.js App Router app for `pnpm nextjs-check` (not in the workspace; installs the .tgz files)
 scripts/release.mjs                  ← `pnpm release` (see "Releasing")
+scripts/nextjs-check.mjs             ← `pnpm nextjs-check`: the packed packages in a real Next.js app
 CHANGELOG.md                         ← what each released version holds
 DESIGN.md                            ← the spec
 CLAUDE.md                            ← this file
@@ -179,7 +184,7 @@ The two packages are delivered to the developers as GitHub Releases (`.github/wo
 - **Which version:** `patch` for a fix; `minor` for a new component, prop, option, token or brand; `major` for a breaking change. While on 0.x, a breaking change can go in a `minor`, but it **must** be listed under **Breaking** in the changelog, saying what developers need to change.
 - **Steps, after the merge:**
   1. Add the change's line(s) under `## Unreleased` in `CHANGELOG.md` (Added / Changed / Fixed / Breaking / Known issues), commit and push it with the merge.
-  2. Stop the Storybook dev server, then run `pnpm release patch|minor|major` (`--dry-run` first to check without changing anything). It checks `main` is clean and up to date, runs lint, lint:css, typecheck, test, build, build-storybook and a11y in every brand × theme, bumps both packages, turns `Unreleased` into the version's section, adds a line to `DESIGN.md` §11, commits `Release vX.Y.Z` and creates the tag. **It never pushes.** Restart Storybook after.
+  2. Stop the Storybook dev server, then run `pnpm release patch|minor|major` (`--dry-run` first to check without changing anything). It checks `main` is clean and up to date, runs lint, lint:css, typecheck, test, build, build-storybook, a11y in every brand × theme and the Next.js check (`pnpm nextjs-check`: the packed packages installed in `apps/nextjs-check`, a Next.js App Router app outside the workspace; `next build`, then the page in Chrome from `next start` and `next dev` with no errors, warnings or hydration mismatches), bumps both packages, turns `Unreleased` into the version's section, adds a line to `DESIGN.md` §11, commits `Release vX.Y.Z` and creates the tag. **It never pushes.** Restart Storybook after.
   3. **Show the designer** the version, the changelog entry and the check results, and wait.
   4. **When the designer approves:** `git push origin main && git push origin vX.Y.Z`. The tag starts the release workflow: watch it (`gh run watch`) and confirm the release page has both `.tgz` files.
 - **Never push a release tag without the designer's approval.** If a check fails, stop and show the failure; don't release around it. One exception to telling apart: an a11y step that stops with "Failed to connect to the browser session" and "no tests" ran nothing (a browser start-up timeout when the Mac is busy, seen 9 Nov 2026); run `pnpm release …` again and say so in the summary.

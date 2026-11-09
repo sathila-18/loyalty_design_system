@@ -1,6 +1,8 @@
 packages:
   - packages/*
   - apps/*
+  # Installs the packed .tgz files like a real app (scripts/nextjs-check.mjs), so it's not a workspace member.
+  - '!apps/nextjs-check'
 minimumReleaseAgeExclude:
   - '@typescript-eslint/eslint-plugin@8.71.2'
   - '@typescript-eslint/parser@8.71.2'
