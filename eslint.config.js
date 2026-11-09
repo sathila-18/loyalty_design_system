@@ -161,7 +161,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/*.config.{js,ts}', '**/scripts/**/*.ts', 'packages/tokens/build.ts'],
+    files: ['**/*.config.{js,ts}', '**/scripts/**/*.{ts,mjs}', 'packages/tokens/build.ts'],
     languageOptions: { globals: globals.node },
   },
 );
