@@ -9,14 +9,22 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 ### Added
 
 ### Changed
+
+### Fixed
+
+### Breaking
+
+### Known issues
+
+## v0.1.1 — 2026-11-09
+
+### Changed
 - `@finspace-loyalty/tokens` is now a **peer dependency** of `@finspace-loyalty/ui` (it was a regular dependency): install both release files in one command, at the same version (NEXTJS-USAGE.md §2). The library no longer carries its own copy of the tokens' code.
 
 ### Fixed
 - Next.js: the components keep their `'use client'` markers in the built package (one file per component), so any component can be imported directly in a Server Component. With v0.1.0, `next build` failed with "createContext is not a function".
 - Installing `@finspace-loyalty/ui` from the release files no longer looks for `@finspace-loyalty/tokens` on the npm registry (it failed with a 404 with pnpm).
 - `FinTooltip` and `FinMenu` work when their trigger element is rendered by a Server Component (in development it failed with "Cannot read properties of undefined").
-
-### Breaking
 
 ### Known issues
 - On a window narrower than 1280, `FinAppShell` (and `FinSideNav` without `type` or `defaultType`) renders the side nav expanded on the server and collapses it once the page loads: the server can't know the window width. No hydration error, but the nav visibly collapses on first load on small screens.
