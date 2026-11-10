@@ -811,3 +811,22 @@
 @utility motion-off {
   transition: none;
 }
+
+/*
+ * FinSignInLayout (§9.84). The scrim behind the image text: a gradient up from the bottom, alpha-md (the same in both
+ * themes) to transparent; Figma's `Rectangle 3` is a raw gradient. The form column: 4 of the 12 grid columns with
+ * their 3 gutters (§4.3), measured on the layout (a size container, cqw), never under Size-343 (decided 10 Nov 2026).
+ */
+@utility sign-in-scrim {
+  background: linear-gradient(to top, var(--fin-alpha-md), transparent);
+}
+
+@utility sign-in-form-width {
+  width: max(
+    var(--fin-size-343),
+    calc(
+      (100cqw - 2 * var(--fin-grid-margin) - (var(--fin-grid-columns) - 1) * var(--fin-grid-gutter)) / var(--fin-grid-columns) * 4 +
+        3 * var(--fin-grid-gutter)
+    )
+  );
+}

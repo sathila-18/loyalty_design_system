@@ -1,0 +1,23 @@
+/* Layout for the FinSignInLayout stories only (not part of the component): a sample form, as Figma's login screen. */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-4xl);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+}
+
+.image {
+  display: block;
+}

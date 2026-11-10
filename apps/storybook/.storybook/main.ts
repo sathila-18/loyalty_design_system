@@ -6,6 +6,8 @@ const config: StorybookConfig = {
   framework: '@storybook/react-vite',
   stories: ['../src/**/*.stories.tsx', '../../../packages/ui/src/**/*.stories.tsx'],
   addons: ['@storybook/addon-docs', '@storybook/addon-a11y', '@storybook/addon-vitest'],
+  // The login app's artwork, for the FinSignInLayout stories (the library ships none).
+  staticDirs: [{ from: '../../login/public/sign-in', to: '/sign-in' }],
   core: { disableTelemetry: true },
   // Pages import '@finspace-loyalty/ui' like an app; take it from source (as the component stories do), so pages
   // get the components' CSS and every change reloads live, without building the library first.

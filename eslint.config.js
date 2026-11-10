@@ -12,8 +12,16 @@ import { getDefaultSelectors } from 'eslint-plugin-better-tailwindcss/defaults';
  * (packages/ui/src/styles/tailwind.css), so a class that isn't one of our tokens is unknown. The restrictions add
  * what Tailwind itself would still allow. Tests aren't linted for classes (they pass made-up ones like "extra").
  */
-const TAILWIND_RESTRICTIONS = [
-  { pattern: '^(?!fin:)', message: 'Every class needs the fin: prefix (fin:bg-primary).' },
+const PREFIX_RESTRICTION = { pattern: '^(?!fin:)', message: 'Every class needs the fin: prefix (fin:bg-primary).' };
+/*
+ * Apps (apps/login) compile their own Tailwind, unprefixed, with the library's theme (NEXTJS-USAGE.md "Using Tailwind
+ * in your app"). A fin: class there would only work if the library happened to ship it, so it's banned.
+ */
+const APP_PREFIX_RESTRICTION = {
+  pattern: '^fin:',
+  message: 'No fin: prefix in an app: fin: classes are the library\'s. Use the unprefixed utility (bg-primary), from the app\'s own Tailwind.',
+};
+const SHARED_RESTRICTIONS = [
   { pattern: '(\\]|\\))(\\/[\\w.]+)?$', message: 'No arbitrary values ([…] or (--var)). Use a token utility; for a value set from TSX, use a named utility.' },
   { pattern: '(^|:)dark:', message: 'No dark: variant. Brand and theme come from the tokens (data-theme, data-brand).' },
   { pattern: '(^|:)!|!$', message: 'No !important (the ! modifier).' },
@@ -109,20 +117,22 @@ const noOutlineNoneWithRing = {
 };
 const finPlugin = { rules: { 'no-outline-none-with-ring': noOutlineNoneWithRing } };
 
-const TAILWIND_RULES = {
+const tailwindRules = (restrict) => ({
   'better-tailwindcss/no-unknown-classes': 'error',
   'better-tailwindcss/no-conflicting-classes': 'error',
   'better-tailwindcss/no-duplicate-classes': 'error',
   'better-tailwindcss/no-unnecessary-whitespace': 'error',
-  'better-tailwindcss/no-restricted-classes': ['error', { restrict: TAILWIND_RESTRICTIONS }],
+  'better-tailwindcss/no-restricted-classes': ['error', { restrict }],
   'fin/no-outline-none-with-ring': 'error',
-};
+});
+const TAILWIND_RULES = tailwindRules([PREFIX_RESTRICTION, ...SHARED_RESTRICTIONS]);
+const APP_TAILWIND_RULES = tailwindRules([APP_PREFIX_RESTRICTION, ...SHARED_RESTRICTIONS]);
 const TAILWIND_FILES = ['packages/ui/src/**/*.{ts,tsx}', 'apps/storybook/src/**/*.{ts,tsx}', 'apps/storybook/.storybook/**/*.{ts,tsx}'];
 // Tailwind is installed in the packages, not at the root: resolve it (and the entry point) from packages/ui.
 const TAILWIND_SETTINGS = { cwd: 'packages/ui', entryPoint: 'src/styles/tailwind.css' };
 
 export default tseslint.config(
-  { ignores: ['**/dist/**', '**/storybook-static/**', '**/node_modules/**'] },
+  { ignores: ['**/dist/**', '**/storybook-static/**', '**/node_modules/**', '**/.next/**', '**/next-env.d.ts'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
@@ -159,6 +169,25 @@ export default tseslint.config(
         selectors: [...getDefaultSelectors(), { kind: 'variable', name: '^.*$', match: [{ type: 'strings' }, { type: 'objectValues' }] }],
       },
     },
+  },
+  {
+    // apps/login: the same class rules, against the app's own Tailwind entry (unprefixed, the library's theme).
+    files: ['apps/login/**/*.{ts,tsx}'],
+    ignores: ['**/*.test.{ts,tsx}'],
+    plugins: { 'better-tailwindcss': betterTailwindcss, fin: finPlugin },
+    settings: { 'better-tailwindcss': { cwd: 'apps/login', entryPoint: 'app/globals.css' } },
+    rules: APP_TAILWIND_RULES,
+  },
+  {
+    // Next.js app router files export metadata, route config and so on next to the component; Fast Refresh there is
+    // Next's own, not the Vite plugin this rule is for.
+    files: ['apps/login/app/**/*.{ts,tsx}'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
+  {
+    // apps/login reads its brand and theme from the environment (lib/brand.ts), on the server.
+    files: ['apps/login/lib/**/*.ts', 'apps/login/next.config.ts'],
+    languageOptions: { globals: globals.node },
   },
   {
     files: ['**/*.config.{js,ts}', '**/scripts/**/*.{ts,mjs}', 'packages/tokens/build.ts'],

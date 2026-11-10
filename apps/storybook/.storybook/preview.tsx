@@ -113,6 +113,8 @@ const preview: Preview = {
         desktop1440: { name: '1440 × 900', styles: { width: '1440px', height: '900px' }, type: 'desktop' },
         desktop1280: { name: '1280 × 800', styles: { width: '1280px', height: '800px' }, type: 'desktop' },
         desktop1024: { name: '1024 × 768 (side nav minimized)', styles: { width: '1024px', height: '768px' }, type: 'desktop' },
+        // Below 1024: only for screens that change there (FinSignInLayout hides its image panel); admin pages stop at 1024.
+        narrow768: { name: '768 × 1024 (narrow)', styles: { width: '768px', height: '1024px' }, type: 'tablet' },
       },
     },
     options: {

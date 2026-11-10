@@ -1,0 +1,17 @@
+/*
+ * The app's one stylesheet (NEXTJS-USAGE.md "Using Tailwind in your app").
+ *
+ * 1. Layer order first: the library's layer (fin) under the app's utilities, whichever file the browser sees first.
+ *    So an app class always beats a library style without !important (and unlayered app CSS beats both).
+ * 2. The library: tokens, fonts, reset and the pre-compiled components (all fin:-prefixed, in @layer fin).
+ * 3. Tailwind's utilities only: no preflight (the library's reset is the reset) and no Tailwind default theme.
+ *    source("..") scans this app only, never node_modules or the library.
+ * 4. The library's theme, unprefixed: utilities named after our tokens (bg-primary, p-xl, rounded-l, font-body-medium,
+ *    bp-md:…), each reading var(--fin-*), so they follow data-brand and data-theme. It's a reference theme: it adds no
+ *    variables, so the tokens are loaded once (by index.css). It also turns dark: off.
+ */
+@layer fin, utilities;
+
+@import "@finspace-loyalty/ui/index.css";
+@import "tailwindcss/utilities.css" layer(utilities) source("..");
+@import "@finspace-loyalty/ui/theme.css";

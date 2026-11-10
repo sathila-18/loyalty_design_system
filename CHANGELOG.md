@@ -7,6 +7,8 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 ## Unreleased
 
 ### Added
+- **`FinSignInLayout`**: the page shell for sign-in screens. The image panel on the left (your artwork, an optional title and description) and the form column on the right; below 1024 only the form, centred. Storybook: Components/Layout/Sign in layout.
+- NEXTJS-USAGE.md §8 "Using Tailwind in your app": set up Tailwind 4 with the library's `theme.css`, so your own classes use our tokens and follow the brand and theme.
 
 ### Changed
 

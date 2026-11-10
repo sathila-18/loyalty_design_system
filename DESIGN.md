@@ -490,7 +490,7 @@ Component styling moved from CSS Modules to **Tailwind CSS 4.3** (decided by the
 - States as variants inside each list (`enabled:hover:`, `enabled:active:`, `disabled:`, `focus-visible:`, `aria-disabled:`); a child follows its parent's state through a named group (`group/button`, `group-hover/button:`).
 - Inside stroke `inset-ring` / `inset-ring-2`; focus ring `focus-visible:outline-2 -outline-offset-1 outline-focused`; visually hidden text `sr-only`.
 - An arbitrary variant only for a documented exception (today `[[data-theme=dark]_&]:`, §10 #74). What utilities can't express goes into `tailwind.css` as a named variant or utility.
-- Story and page layout CSS stays CSS Modules.
+- Story and Storybook page layout CSS stays CSS Modules. **Real apps (`apps/login`) use Tailwind** (decided 10 Nov 2026): their own Tailwind, unprefixed, with `theme.css`, under the same class rules except `fin:` is banned there (NEXTJS-USAGE.md "Using Tailwind in your app").
 - A parent's `className` that replaces a value the child sets itself uses **`placement:`** (doubles its specificity; both are in `@layer fin`), never Tailwind's rule order (added in stage 3e).
 - **Focus rings:** never `outline-none` with a `focus-visible:outline-*` width on one element (the ring disappears: `outline-none` sets `--tw-outline-style: none`); use `focus:not-focus-visible:outline-none`. The lint rule `fin/no-outline-none-with-ring` and a test of every component class list enforce it (added in stage 3e-2).
 
@@ -904,6 +904,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 81 | — (**code first**; drawn on each Add reward screen, `367:19964`, `402:33879`) | Stepper | — | `FinStepper` | Icon `check` · `steps`, `current`, `onStepClick` · the steps of a multi-step form · **public** (§9.77) | — | ✅ |
 | 82 | — (**code first**; the Add reward screens draw an Input field-standard with `calendar_today`, `367:19964`) | Input field | — | `FinDateField` | FinInputBase, Icon `calendar_today` (added to the registry) · DD/MM/YYYY typed or picked; `value` / `onChange` as YYYY-MM-DD, `min`, `max` · the browser's date picker for now · **public** (§9.79) | — | ✅ |
 | 83 | — (**code first**; the Reports screens draw it each time, `435:90575`, `440:94624`) | Card | — | `FinStatCard` | — · `label`, `value` · a summary number on `bg-active` · **public** (§9.81) | — | ✅ |
+| 84 | — (**code first**; the Login Option 02 screens draw it each time, `135:4939`, `435:90303`) | Layout | — | `FinSignInLayout` | — · `image` (artwork slot), `imageTitle`, `imageDescription`, `children` (the form column) · two halves from 1024, only the form below · **public** (§9.84) · Figma to add it (§10 #116) | — | ✅ |
 
 ### 8.5 Assets (exported, not built as components)
 
@@ -4101,6 +4102,30 @@ FinSideNav doesn't change: it keeps its `logo` slot (§9.57) and the app passes 
 
 **Built (4 Nov 2026).** Storybook: Components/Logo (Playground; Sizes (Figma): every size, With and Without text, Colored on a Light panel, White on a Dark one). Checked in Chrome on the Programme configuration page: Sampath Light the Colored logo 112 × 40, Sampath Dark the White one 112 × 40 (the files load); Finspace and Burgundy the placeholder, its icon in the brand colour.
 
+### 9.84 FinSignInLayout — public
+
+**Figma:** none: the screens file's **Login Option 02** section (`150:6161`, five 1920 × 1080 frames) draws it each time (read 10 Nov 2026). Code first, measured from the Login frame (`135:4939`) and the Forgot password frame (`435:90303`); Figma to add it as a component (§10 #116). Name decided by design 10 Nov 2026.
+
+**Layout (decided by design 10 Nov 2026):**
+
+| Figma | Code |
+|---|---|
+| Image panel 933 × 1024, inset 28 from the top, left and bottom | The left half of the layout, inset **`Space-3XL` (24)** (the grid margin, §4.3) from the top, left and bottom; it stretches with the page |
+| Panel corner, drawn ≈ 24 (the frame's variable is `Radius 8px` from another library) | **`Radius-XL` (24)**, clipped |
+| The artwork, cropped to fill | The `image` slot, `object-cover` on whatever the app passes |
+| `Rectangle 3`: a raw dark gradient over the panel's lower half | `sign-in-scrim` (tailwind.css): `alpha-md` (the same in both themes) up to transparent, over the lower half; only with text |
+| `Text Block - Dark` (another library): 36 Bold −0.6 heading, 16 description, white, 499 wide, 48 from the left and about 45 from the bottom | Heading **Display Medium-H2**, description **Body Large**, both **`text-white-both`** (white in both themes), gap **`Space-M` (8)**; padding **`Space-7XL` (48)** all round, so 48 from the panel's left, bottom and right; it wraps at the panel's width less the padding (2 lines at 1920, Figma 4; decided 10 Nov 2026) |
+| Form column 555 wide, centred in the right half | `sign-in-form-width` (tailwind.css): **4 of the 12 grid columns** with their 3 gutters, measured on the layout (a size container), **never under `Size-343`**: 608 at 1920, 448 at 1440, 395 at 1280, 343 at 1024 (decided 10 Nov 2026, option a); centred in the right half, padding `Space-3XL` above and below, `Space-XL` either side |
+| Background white | `bg-primary` (dark in Dark) |
+
+**Below 1024 (`bp-md`):** no image panel; the form column is centred, `w-full` up to **`Size-343`**, with a `Space-XL` (16) gutter (decided 10 Nov 2026). If the form is taller than the window, the page scrolls.
+
+**API:** `image: ReactNode` (the artwork: an `<img>` or next/image with `fill`; decorative, `alt=""`; the library ships no artwork, each app brings its own), `imageTitle?: ReactNode`, `imageDescription?: ReactNode` (the text block and scrim show only with one of them), `children` (the form column). Other attributes go to the root `div`; `className` is appended last.
+
+**Accessibility:** the form column is the `main` landmark; the panel is an `aside` (complementary). The text over the artwork is real text (`p`, not a heading: the page's `h1` is the form's); the scrim is `aria-hidden`. Contrast: white text over artwork can't be checked by axe; the scrim (`alpha-md`) darkens the lower half so it stays readable on the login artwork. Presentational, no `'use client'`: a Server Component can render it.
+
+**Built (10 Nov 2026).** Storybook: Components/Layout/Sign in layout (Playground: the trophy with title and description, as `135:4939`; Image only: the detective, as `435:90303`; Long text; At 1024; Narrow, at the new 768 viewport option). The artwork is the login app's (`apps/login/public/sign-in`, served to Storybook by `staticDirs`), exported from Figma as the screens crop it (2×). Checked in Chrome at 1920 against Figma: panel 936 × 1032 at (24, 24) (Figma 933 × 1024 at 28), radius 24, form 608 centred at x 1440 (Figma 555 centred at 1440); 1440, 1024 and 768 as above; Light and Dark; a11y in every brand × theme.
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -4257,6 +4282,7 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | # | Item | Where | Status |
 |---|---|---|---|
 | 115 | **Confirm with the team whether the npm packages are meant to be public before any `v*` tag**, since they include all brands (Sampath). A teammate's commit of 9 Nov 2026 (`c740790`) set both packages up for publishing: `private` removed, version 0.1.0, `publishConfig` with public access on the npm registry, a `release` script, and a GitHub workflow that runs on `v*` tags (builds and packs both packages and attaches them to a GitHub Release). Both packages carry every brand's tokens (`data-brand="sampath"` included), and `@finspace-loyalty/ui`'s `dist` the Sampath logo artwork (built from `src/logos/sampath/`), and Sampath isn't live (§3.10). Decide before the first tag or `pnpm release`. | `packages/*/package.json`, `.github/workflows/publish.yml`, root `release` script | ❓ Confirm with the team |
+| 116 | **Sign-in layout, to add to Figma** (10 Nov 2026): `FinSignInLayout` (§8 #84, §9.84) is code first; the Login Option 02 screens draw it each time. Add it as a component (or a layout template) with the decided values: inset `Space-3XL` (24, the screens 28), `Radius-XL`, the scrim and text block from Foundation – Loyalty (`text-white_both`, Display Medium-H2, Body Large, padding `Space-7XL`; the screens use `Text Block - Dark` and `Font Size/36`, `Radius 8px`, `Spacing 0px` from another library, and a raw gradient), and the form column as 4 grid columns (the screens 555). Also on these screens: a stray line (`Vector 241`) at the top of Reset password (`150:5950`). | Login screens | 🔧 Fix in Figma |
 
 ---
 
@@ -4667,3 +4693,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 9 Nov 2026 | 0.2 | **Styling refactor to Tailwind CSS complete** (§3.11). Every component is styled with Tailwind utilities in `Fin<Name>.styles.ts` (everything in `@layer fin`, the `fin:` prefix, tokens only); no component CSS Module is left; story and page layout CSS stays CSS Modules (rule 10). Stages 1 (setup), 2 (FinButtonBase pilot), 3a–3e (atoms, molecules, organisms), each verified against `main` in every brand × theme and approved by design. The rules are in CLAUDE.md "Tokens and styling" (now with rule 12, focus rings, and rule 13, `placement:`) and §3.11. Still open from the migration: §10 #112 (apps' global element rules against `@layer fin`, to confirm with the developers) and §10 #113 (the Storybook 10.6.5 upgrade, now a separate follow-up). Converting the Storybook page CSS remains optional (low priority). |
 | 9 Nov 2026 | 0.2 | **Next.js compatibility** (`fix/nextjs-compat`, awaiting design's review): the ui build keeps one file per source file (`preserveModules`), so each component keeps its `'use client'` (62 files; presentational ones have none) and a Server Component can import the library; Floating UI's bundled files go to `dist/vendor/`. `@finspace-loyalty/tokens` is now a peer dependency of ui (it was a dependency, which made pnpm look for it on the npm registry); ui imports it instead of carrying a copy. FinTooltip and FinMenu unwrap a lazy trigger element (a Server Component's child, React 19 in development). New: `apps/nextjs-check` (a Next.js App Router app outside the workspace) and `pnpm nextjs-check` (packs both packages, installs the .tgz files in one command, `next build`, then the page from `next start` and `next dev` in Chrome: no console errors or warnings, no hydration mismatches, the brand and theme on `<html>`, a client button and a server-rendered select field both work); part of `pnpm release`. Hydration audit: no render-time `Date.now()` / `Math.random()` / locale formatting / window access, IDs from `useId`, dates in UTC; one known issue, the side nav renders expanded on the server and collapses after loading below 1280 (CHANGELOG.md). |
 | 9 Nov 2026 | 0.2 | **Released v0.1.1** (both packages; what's in it: CHANGELOG.md). |
+| 10 Nov 2026 | 0.2 | **FinSignInLayout** (§9.84, §8 #84; `feat/login-nextjs`, awaiting design's review): the sign-in page shell, code first from the Login Option 02 screens; public. **apps/login**: the login screens as a real Next.js App Router app in the workspace, styled with its own Tailwind (unprefixed, the library's `theme.css`; CLAUDE.md rule 10 changed: CSS Modules only for Storybook layout), the library's class lint rules applied to it (`fin:` banned there), NEXTJS-USAGE.md "Using Tailwind in your app". Storybook: a 768 viewport option and `staticDirs` for the login artwork. §10 #116. |
