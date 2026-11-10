@@ -151,7 +151,7 @@ export function MembersActions() {
 
 ## 6. Links and routing
 
-The library doesn't import a router. Link-like components (`FinSideNav`, `FinListStandard`, `FinTable` columns, and `FinButton` with `href`) take the link component through their `linkAs` prop, so they work with `next/link`. A component can't be passed from a Server Component, so set `linkAs` in a Client Component:
+The library doesn't import a router. Link-like components (`FinSideNav`, `FinListStandard`, `FinTable` columns) take the link component through their `linkAs` prop, so they work with `next/link`. A component can't be passed from a Server Component, so set `linkAs` in a Client Component:
 
 ```tsx
 'use client';
@@ -160,17 +160,6 @@ import Link from 'next/link';
 import { FinSideNav } from '@finspace-loyalty/ui';
 
 <FinSideNav linkAs={Link} currentHref="/members" sections={[{ icon: 'person', label: 'Members', href: '/members' }]} />
-```
-
-A button that navigates should be a link: give `FinButton` an `href` (and `linkAs={Link}` for client-side navigation). It keeps the button's look; a Tertiary link has no side padding, so it lines up with fields and text:
-
-```tsx
-'use client';
-
-import Link from 'next/link';
-import { FinButton } from '@finspace-loyalty/ui';
-
-<FinButton variant="tertiary" size="xsmall" href="/forgot-password" linkAs={Link}>Forgot password</FinButton>
 ```
 
 ---

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { finIcons, type FinIconName } from '../../icons/finIcons';
 import type { FinButtonSize, FinButtonVariant } from '../ButtonBase';
-import { FinTextField } from '../TextField';
 import {
   FinButton,
   type FinButtonIcon,
@@ -9,6 +9,9 @@ import {
   type FinButtonTone,
   type FinButtonToneProps,
 } from './FinButton';
+import { FinCheckbox } from '../Checkbox';
+import { FinPasswordField } from '../PasswordField';
+import { FinTextField } from '../TextField';
 import styles from './FinButton.stories.module.css';
 
 const TONES: FinButtonTone[] = ['normal', 'white', 'destructive'];
@@ -179,43 +182,64 @@ export const GreyIcon: Story = {
   ),
 };
 
-/**
- * `href` (code only, added 10 Nov 2026): a real link (`<a>`, or `linkAs` for next/link's `Link`) with the button's
- * look, for navigation. Every Tone × Type at Medium, with each Icon option. Links can't be disabled. A Tertiary link
- * has no side padding; the others keep theirs.
+/*
+ * Code only (`hanging`, 10 Nov 2026; DESIGN.md §4.5): hanging alignment for Tertiary buttons under form content. The
+ * button keeps its padding and moves to the start by exactly its start padding, so the label lines up with the fields'
+ * edge and the hover background and focus ring hang past it. The play function checks that, with keyboard focus.
  */
-export const Links: Story = {
+export const Hanging: Story = {
+  name: 'Hanging (under fields)',
   render: () => (
-    <div className={styles.table}>
-      <span className={styles.heading}>Medium, as links</span>
-      {ICONS.map((icon) => (
-        <span key={icon}>{ICON_NAMES[icon]}</span>
-      ))}
-      <span />
-      {LOOKS.map((look) => [
-        <span key={`${look.name}-name`} className={styles.rowLabel}>
-          {look.name}
-        </span>,
-        ...ICONS.map((icon) => (
-          <FinButton key={`${look.name}-${icon}`} {...toneProps(look.tone, look.variant)} {...iconProps(icon, 'person')} size="medium" href="#">
-            {icon === 'only-icon' ? `${look.name}, person` : 'Text here'}
-          </FinButton>
-        )),
-        <span key={`${look.name}-end`} />,
-      ])}
+    <div className={styles.hangingColumn} data-testid="column">
+      <FinTextField label="User name/ email" placeholder="User name/ email" />
+      <FinPasswordField label="Password" placeholder="Password" />
+      <div className={styles.hangingRow}>
+        <FinButton variant="tertiary" size="xsmall" hanging>
+          Forgot password
+        </FinButton>
+        <FinCheckbox>Remember me</FinCheckbox>
+      </div>
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: 'Forgot password' });
+    const column = canvas.getByTestId('column').getBoundingClientRect();
+    const label = button.firstElementChild!.getBoundingClientRect();
+    // The label on the fields' edge; the button itself hangs past it by its padding (Space-XL, 16).
+    await expect(Math.abs(label.left - column.left)).toBeLessThan(0.5);
+    await expect(Math.round(column.left - button.getBoundingClientRect().left)).toBe(16);
+    // Keyboard focus shows the 2px ring, and no parent clips the button.
+    await userEvent.click(canvasElement.ownerDocument.body);
+    while (button.ownerDocument.activeElement !== button) await userEvent.tab();
+    const ring = getComputedStyle(button);
+    await expect(ring.outlineStyle).toBe('solid');
+    await expect(ring.outlineWidth).toBe('2px');
+    for (let parent = button.parentElement; parent; parent = parent.parentElement) {
+      const { overflowX, overflowY } = getComputedStyle(parent);
+      if (overflowX === 'visible' && overflowY === 'visible') continue;
+      const box = parent.getBoundingClientRect();
+      const own = button.getBoundingClientRect();
+      await expect(own.left >= box.left && own.right <= box.right && own.top >= box.top && own.bottom <= box.bottom).toBe(true);
+    }
+  },
 };
 
-/** A Tertiary link under a field, as the login screen's "Forgot password": its text starts at the field's left edge. */
-export const LinkBesideAField: Story = {
-  name: 'Link beside a field',
+/** `hanging` at every Size and Icon option: the label (or the leading icon) on the field's edge each time. */
+export const HangingSizes: Story = {
+  name: 'Hanging (every size)',
   render: () => (
-    <div className={styles.linkColumn}>
-      <FinTextField label="Password" placeholder="Password" />
-      <FinButton variant="tertiary" size="xsmall" href="#forgot-password">
-        Forgot password
-      </FinButton>
+    <div className={styles.hangingSizes}>
+      {SIZES.map((size) => (
+        <div key={size} className={styles.hangingColumn}>
+          <FinTextField label={SIZE_NAMES[size]} placeholder="Field" />
+          {ICONS.map((icon) => (
+            <FinButton key={icon} variant="tertiary" size={size} hanging {...(icon === 'none' ? {} : { icon, iconName: 'arrow_back' as const })}>
+              {ICON_NAMES[icon]}
+            </FinButton>
+          ))}
+        </div>
+      ))}
     </div>
   ),
 };

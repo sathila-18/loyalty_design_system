@@ -1,9 +1,7 @@
 export {
   FinButton,
-  type FinButtonButtonProps,
   type FinButtonIcon,
   type FinButtonIconProps,
-  type FinButtonLinkProps,
   type FinButtonProps,
   type FinButtonTone,
   type FinButtonToneProps,

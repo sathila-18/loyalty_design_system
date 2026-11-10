@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, type AnchorHTMLAttributes, type ButtonHTMLAttributes, type ElementType, type ReactNode, type Ref } from 'react';
+import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
 import * as styles from './FinButtonBase.styles';
@@ -16,8 +16,7 @@ export type FinButtonSize = 'large' | 'medium' | 'small' | 'xsmall';
 /** Tertiary's code-only label and icon colours (`contentTone`): the `text-*` / `fg-*` token names. */
 export type FinButtonContentTone = 'inverse' | 'primary' | 'secondary' | 'info' | 'success' | 'error' | 'warning';
 
-/** The base's own props, shared by the button and the link. */
-export interface FinButtonBaseOwnProps {
+export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** The label (Figma `Button label`). Stays on one line. */
   children: ReactNode;
   /** Figma `Type`. Called `variant` so it doesn't clash with the native `type` (decided 19 Oct 2026). */
@@ -52,36 +51,23 @@ export interface FinButtonBaseOwnProps {
    * press. Set through FinButton `contentTone`.
    */
   contentTone?: FinButtonContentTone;
-}
-
-/** A native `<button>` (the default). */
-export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>, FinButtonBaseOwnProps {
-  href?: never;
-  linkAs?: never;
-}
-
-/**
- * Code only (added 10 Nov 2026): a real link with the same look, for navigation ("Forgot password", "Back"). Links
- * can't be disabled, and have no `type`. A Tertiary link has no side padding, so its text lines up with the content
- * around it (fields, text); the other variants keep theirs, as their background or stroke needs it.
- */
-export interface FinButtonBaseLinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'children' | 'href' | 'type'>, FinButtonBaseOwnProps {
-  /** The address. With it, the button renders as a link (`<a>`, or `linkAs`). */
-  href: string;
-  /** The link component, for a router (next/link's `Link`, React Router's `Link`). Default `a`. */
-  linkAs?: ElementType;
-  disabled?: never;
-  type?: never;
+  /**
+   * Code only (added 10 Nov 2026): hanging alignment (DESIGN.md §4.5). The button keeps its padding and moves towards
+   * the start by exactly its start padding (the same spacing token, as a negative margin), so the label (or the
+   * leading icon) lines up with the content edge; the hover background and focus ring hang past it. For Tertiary
+   * buttons under form content (fields, text). Default false: no margin.
+   */
+  hanging?: boolean;
 }
 
 const ICON_SIZE = { large: 24, medium: 24, small: 20, xsmall: 20 } as const;
 
 /**
  * The base every button is built from (Figma Base-button; DESIGN.md §7.2, §9). A native `<button>`, `type="button"`
- * unless set; with `href`, a link with the same look (`<a>`, or `linkAs`). Figma `State` and `Focused` are runtime states (§7.3).
+ * unless set. Figma `State` and `Focused` are runtime states (§7.3).
  * **Internal:** not exported from the package; use FinButton. Bases are internal unless DESIGN.md says otherwise.
  */
-export const FinButtonBase = forwardRef<HTMLButtonElement | HTMLAnchorElement, FinButtonBaseProps | FinButtonBaseLinkProps>(function FinButtonBase(
+export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(function FinButtonBase(
   {
     children,
     variant = 'primary',
@@ -93,31 +79,35 @@ export const FinButtonBase = forwardRef<HTMLButtonElement | HTMLAnchorElement, F
     iconSide,
     iconTone = 'action',
     contentTone,
+    hanging = false,
+    type = 'button',
     className,
     ...rest
   },
   ref,
 ) {
-  const isLink = rest.href !== undefined;
   const iconSize = ICON_SIZE[size];
   // Tertiary's colours give way to contentTone, and its icon to iconTone; the other variants ignore both (§9.28).
   const tone = variant === 'tertiary' && contentTone ? styles.contentTone[contentTone] : undefined;
   const colours = tone ?? styles.variant[variant];
   const iconClass = `${styles.icon} ${!tone && variant === 'tertiary' && iconTone === 'secondary' ? styles.tertiaryGreyIcon : colours.icon}`;
-  // A Tertiary link has no side padding (its text lines up with the content around it); icon-only stays square.
-  const padding =
-    isLink && variant === 'tertiary' && !iconOnly ? styles.flushPadding[size] : styles.size[size].padding[iconOnly ? 'only' : (iconSide ?? 'none')];
-  const buttonClass = [styles.button, isLink && styles.link, styles.size[size].button, padding, colours.button, className].filter(Boolean).join(' ');
-  const data = {
-    'data-variant': variant,
-    'data-size': size,
-    'data-icon-only': iconOnly || undefined,
-    'data-icon-side': iconSide,
-    'data-icon-tone': iconTone === 'secondary' ? 'secondary' : undefined,
-    'data-content-tone': contentTone,
-  };
-  const content = (
-    <>
+  const sides = iconOnly ? 'only' : (iconSide ?? 'none');
+  const padding = styles.size[size].padding[sides];
+  const buttonClass = [styles.button, styles.size[size].button, padding, hanging && styles.hanging[size][sides], colours.button, className].filter(Boolean).join(' ');
+  return (
+    <button
+      {...rest}
+      ref={ref}
+      type={type}
+      className={buttonClass}
+      data-variant={variant}
+      data-size={size}
+      data-icon-only={iconOnly || undefined}
+      data-icon-side={iconSide}
+      data-icon-tone={iconTone === 'secondary' ? 'secondary' : undefined}
+      data-content-tone={contentTone}
+      data-hanging={hanging || undefined}
+    >
       {leadingIcon && (
         <span className={iconClass}>
           <FinIcon name={leadingIcon} size={iconSize} />
@@ -129,21 +119,6 @@ export const FinButtonBase = forwardRef<HTMLButtonElement | HTMLAnchorElement, F
           <FinIcon name={trailingIcon} size={iconSize} />
         </span>
       )}
-    </>
-  );
-
-  if (isLink) {
-    const { linkAs: Link = 'a', ...anchor } = rest as Omit<FinButtonBaseLinkProps, keyof FinButtonBaseOwnProps | 'className'>;
-    return (
-      <Link {...anchor} ref={ref} className={buttonClass} {...data} data-link="">
-        {content}
-      </Link>
-    );
-  }
-  const { type = 'button', ...button } = rest as Omit<FinButtonBaseProps, keyof FinButtonBaseOwnProps | 'className'>;
-  return (
-    <button {...button} ref={ref as Ref<HTMLButtonElement>} type={type} className={buttonClass} {...data}>
-      {content}
     </button>
   );
 });

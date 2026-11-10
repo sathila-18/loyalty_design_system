@@ -7,12 +7,12 @@ import { useLoginPlatform } from './platform';
 type Errors = { identifier?: string; password?: string };
 
 /*
- * Figma `135:4939`: User name/ email and Password 16 apart, then Forgot password (Tertiary, XSmall) and Remember me
+ * Figma `135:4939`: User name/ email and Password 16 apart, then Forgot password (Tertiary, XSmall, hanging) and Remember me
  * on one row, 16 below; the Login button (Medium, the fields' height, full width) 32 below. Errors and the signed-in message are code
  * first (the screens show none).
  */
 export function LoginForm() {
-  const { Link, href, auth } = useLoginPlatform();
+  const { navigate, auth } = useLoginPlatform();
   const identifierRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [identifier, setIdentifier] = useState('');
@@ -67,8 +67,11 @@ export function LoginForm() {
           helperText={errors.password}
         />
         <div className="flex items-center justify-between gap-l">
-          {/* A real link (FinButton href + the platform's link); a Tertiary link has no side padding, so it lines up with the fields. */}
-          <FinButton variant="tertiary" size="xsmall" href={href('forgot-password')} linkAs={Link}>
+          {/*
+           * Hanging (DESIGN.md §4.5): the label on the fields' edge. A button that navigates for now; a real link once
+           * FinButton's link option is back (feat/button-link, DESIGN.md §10 #117).
+           */}
+          <FinButton variant="tertiary" size="xsmall" hanging onClick={() => navigate('forgot-password')}>
             Forgot password
           </FinButton>
           <FinCheckbox checked={remember} onChange={(event) => setRemember(event.target.checked)}>

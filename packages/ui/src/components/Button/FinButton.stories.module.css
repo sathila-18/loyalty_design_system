@@ -42,15 +42,28 @@
   background-color: var(--fin-bg-brand);
 }
 
-/* Link beside a field: a column the width of a field, the link at its start. */
-.linkColumn {
+.hangingColumn {
   display: flex;
   flex-direction: column;
-  gap: var(--fin-space-xl);
   align-items: flex-start;
+  gap: var(--fin-space-xl);
   width: var(--fin-size-343);
 }
 
-.linkColumn > :first-child {
+.hangingColumn > :not(button) {
   align-self: stretch;
+}
+
+.hangingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fin-space-l);
+}
+
+.hangingSizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-7xl);
+  padding-inline-start: var(--fin-space-3xl);
 }
