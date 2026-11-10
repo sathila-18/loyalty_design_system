@@ -16,6 +16,16 @@ pnpm build-login  # production build
 
 The app uses the workspace packages (`workspace:*`), so it always runs against the current library. To test the packed release files like a developer's app would, use `pnpm nextjs-check` instead.
 
+## Mock sign-in (until the real API)
+
+Every fake call is in **`lib/auth.ts`**, each with a `TODO(developers)` where the real API goes; nothing else in the app talks to a backend. To review every state:
+
+| Screen | To see | Do |
+|---|---|---|
+| Login | Field errors | Press Login with empty fields |
+| Login | Wrong credentials | Any user name, password **`wrong`** |
+| Login | Signed in | Any user name and any other password |
+
 ## Brand and theme
 
 Set once per deployment, on `<html>` (`lib/brand.ts`):
@@ -37,6 +47,8 @@ Set once per deployment, on `<html>` (`lib/brand.ts`):
 | `components/SignInPage.tsx` | Every screen's shell: `FinSignInLayout` with the app's artwork |
 | `public/sign-in/` | The artwork, exported from Figma as the screens crop it (2×); also shown in Storybook |
 | `lib/brand.ts` | The brand and theme for this deployment |
+| `lib/auth.ts` | **The mock API** (every fake call) |
+| `vercel.json` | The Vercel project's build (the project's Root Directory is `apps/login`) |
 
 ## Notes
 
