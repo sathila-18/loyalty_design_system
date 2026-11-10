@@ -1,9 +1,8 @@
 'use client';
 
 import { FinButton, FinCheckbox, FinNotificationBanner, FinPasswordField, FinTextField } from '@finspace-loyalty/ui';
-import Link from 'next/link';
 import { useRef, useState, type FormEvent } from 'react';
-import { signIn } from '@/lib/auth';
+import { useLoginPlatform } from './platform';
 
 type Errors = { identifier?: string; password?: string };
 
@@ -13,6 +12,7 @@ type Errors = { identifier?: string; password?: string };
  * first (the screens show none).
  */
 export function LoginForm() {
+  const { Link, href, auth } = useLoginPlatform();
   const identifierRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [identifier, setIdentifier] = useState('');
@@ -31,7 +31,7 @@ export function LoginForm() {
     if (next.password) return passwordRef.current?.focus();
 
     setStatus('submitting');
-    const result = await signIn({ identifier: identifier.trim(), password, remember });
+    const result = await auth.signIn({ identifier: identifier.trim(), password, remember });
     setStatus(result.ok ? 'signed-in' : 'invalid');
   }
 
@@ -67,8 +67,8 @@ export function LoginForm() {
           helperText={errors.password}
         />
         <div className="flex items-center justify-between gap-l">
-          {/* A real link (FinButton href + next/link); a Tertiary link has no side padding, so it lines up with the fields. */}
-          <FinButton variant="tertiary" size="xsmall" href="/forgot-password" linkAs={Link}>
+          {/* A real link (FinButton href + the platform's link); a Tertiary link has no side padding, so it lines up with the fields. */}
+          <FinButton variant="tertiary" size="xsmall" href={href('forgot-password')} linkAs={Link}>
             Forgot password
           </FinButton>
           <FinCheckbox checked={remember} onChange={(event) => setRemember(event.target.checked)}>

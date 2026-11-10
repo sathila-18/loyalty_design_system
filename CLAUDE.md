@@ -108,6 +108,19 @@ Real screens from the Figma screens file (`9eRxGGC7YQ6TPzi5PHYCgw`, page **Admin
 - **Light and Dark:** every page is checked in both themes and passes the a11y checks in both.
 - **The real shell:** use the real layout components (side nav, header, grid) for the page shell, never a recreated version. If a shell component is missing, say so.
 - **One screen at a time:** plan, wait for the go-ahead, build one page, show it in Storybook, and wait before the next.
+- **Exception, Pages/Login:** its screens aren't in the Storybook folder: they're `apps/login/screens/`, shared with the login app (see "Login work"). The story files and the Storybook `LoginPlatform` are in `apps/storybook/src/pages/login/`.
+
+## Login work (speed rule, 10 Nov 2026)
+
+For login work (`apps/login`, its shared screens in `apps/login/screens/`, and Pages/Login in Storybook), run only:
+`pnpm lint`, `pnpm typecheck`, `pnpm build-login` (next build), `pnpm build-storybook`, and the a11y check for the login
+stories (`pnpm exec vitest run src/pages/login` in `apps/storybook`). No full-catalogue visual comparisons, full a11y
+runs or long background runs. **Ask the designer before anything that takes more than a few minutes.**
+
+The login screens are one copy of the UI: `apps/login/screens/` (React, the library and Tailwind only, never `next/*`;
+ESLint enforces it), used by the Next.js routes (`apps/login/app/`, which add next/link, next/image, the router and
+metadata through `LoginPlatform`) and by Storybook's Pages/Login (plain links and the mock auth, through the same
+`LoginPlatform`).
 
 ## When to stop and ask
 

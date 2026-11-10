@@ -1,5 +1,5 @@
 // The brand and theme for this deployment (NEXTJS-USAGE.md §4: one site per bank, set once on <html>).
-// Set FIN_BRAND / FIN_THEME in the environment (Vercel project settings, or .env.local); the defaults match Figma.
+// Set FIN_BRAND / FIN_THEME in the environment (.env.local, or the shell); the defaults match Figma.
 const BRANDS = ['finspace', 'burgundy', 'sampath'] as const;
 const THEMES = ['light', 'dark'] as const;
 export type Brand = (typeof BRANDS)[number];

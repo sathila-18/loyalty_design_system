@@ -22,7 +22,7 @@ export default {
     {
       // The Tailwind setup (DESIGN.md §3.11): Tailwind's at-rules, and its @import (a plain string: Tailwind
       // resolves those itself). theme.css starts with `--*: initial`, which removes Tailwind's defaults.
-      files: ['packages/ui/src/styles/{tailwind,theme,components}.css', 'apps/storybook/.storybook/tailwind.css', 'apps/login/app/globals.css'],
+      files: ['packages/ui/src/styles/{tailwind,theme,components}.css', 'apps/storybook/.storybook/tailwind.css', 'apps/login/app/globals.css', 'apps/login/screens/screens.css'],
       rules: {
         'at-rule-no-unknown': [true, { ignoreAtRules: ['theme', 'utility', 'custom-variant', 'variant', 'source', 'slot'] }],
         // A block @custom-variant's `&` is the element the variant applies to (Tailwind syntax), not CSS nesting.

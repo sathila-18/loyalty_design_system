@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { BRAND, THEME } from '@/lib/brand';
+import { NextLoginPlatform } from './NextLoginPlatform';
 
 export const metadata: Metadata = {
   title: { default: 'Sign in', template: '%s · Customer engagement management portal' },
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" data-brand={BRAND} data-theme={THEME}>
-      <body>{children}</body>
+      <body>
+        <NextLoginPlatform brand={BRAND}>{children}</NextLoginPlatform>
+      </body>
     </html>
   );
 }

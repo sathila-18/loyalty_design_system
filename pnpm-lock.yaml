@@ -245,6 +245,9 @@ importers:
 
   apps/storybook:
     dependencies:
+      '@finspace-loyalty/login':
+        specifier: workspace:*
+        version: link:../login
       '@finspace-loyalty/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
