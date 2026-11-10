@@ -7,8 +7,6 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 ## Unreleased
 
 ### Added
-- **`FinSignInLayout`**: the page shell for sign-in screens. The image panel on the left (your artwork, an optional title and description) and the form column on the right; below 1024 only the form, centred. Storybook: Components/Layout/Sign in layout.
-- **`FinButton` `hanging`**: hanging alignment for Tertiary buttons under form content. The button keeps its padding and moves to the start by exactly that padding, so its label lines up with the fields' edge (the hover background and focus ring hang past it). Default off: existing buttons are unchanged. Storybook: Components/Buttons/Button, Hanging.
 
 ### Changed
 
@@ -17,6 +15,12 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 ### Breaking
 
 ### Known issues
+
+## v0.2.0 — 2026-11-10
+
+### Added
+- **`FinSignInLayout`**: the page shell for sign-in screens. The image panel on the left (your artwork, an optional title and description) and the form column on the right; below 1024 only the form, centred. Storybook: Components/Layout/Sign in layout.
+- **`FinButton` `hanging`**: hanging alignment for Tertiary buttons under form content. The button keeps its padding and moves to the start by exactly that padding, so its label lines up with the fields' edge (the hover background and focus ring hang past it). Default off: existing buttons are unchanged. Storybook: Components/Buttons/Button, Hanging.
 
 ## v0.1.1 — 2026-11-09
 
