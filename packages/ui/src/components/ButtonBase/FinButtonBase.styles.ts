@@ -42,6 +42,17 @@ export const size: Record<FinButtonSize, { button: string; padding: Padding }> =
   },
 };
 
+/*
+ * Hanging alignment (code-only `hanging`, 10 Nov 2026; DESIGN.md §4.5): a negative start margin of exactly the start
+ * padding above, the same token, so the label (or leading icon) sits on the content edge.
+ */
+export const hanging: Record<FinButtonSize, Padding> = {
+  large: { none: 'fin:-ms-3xl', leading: 'fin:-ms-xl', trailing: 'fin:-ms-3xl', only: 'fin:-ms-xl' },
+  medium: { none: 'fin:-ms-3xl', leading: 'fin:-ms-xl', trailing: 'fin:-ms-3xl', only: 'fin:-ms-l' },
+  small: { none: 'fin:-ms-xl', leading: 'fin:-ms-l', trailing: 'fin:-ms-xl', only: 'fin:-ms-m' },
+  xsmall: { none: 'fin:-ms-xl', leading: 'fin:-ms-l', trailing: 'fin:-ms-xl', only: 'fin:-ms-s' },
+};
+
 /* Secondary (outlined) and Tertiary (text only) share every colour except the border. */
 const secondaryIcon =
   'fin:group-enabled/button:group-hover/button:fg-hovered fin:group-enabled/button:group-active/button:fg-pressed fin:group-disabled/button:fg-disabled';

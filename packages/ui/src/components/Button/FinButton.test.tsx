@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
+import * as baseStyles from '../ButtonBase/FinButtonBase.styles';
 import { FinButton } from './FinButton';
 
 const icons = (root: Element) => [...root.querySelectorAll('[translate="no"]')] as HTMLElement[];
@@ -140,5 +141,32 @@ describe('FinButton', () => {
     );
     expect(screen.getByRole('button', { name: 'Undo' })).toHaveAttribute('data-content-tone', 'inverse');
     expect(screen.getByRole('button', { name: 'Retry' })).not.toHaveAttribute('data-content-tone');
+  });
+
+  it('has no hanging margin by default (existing buttons are unchanged)', () => {
+    render(<FinButton variant="tertiary" size="xsmall">Forgot password</FinButton>);
+    const button = screen.getByRole('button', { name: 'Forgot password' });
+    expect(button).not.toHaveAttribute('data-hanging');
+    expect(button.className).not.toMatch(/-ms-/);
+  });
+
+  it('hangs by its start padding with hanging (label on the content edge)', () => {
+    render(
+      <FinButton variant="tertiary" size="xsmall" hanging>
+        Forgot password
+      </FinButton>,
+    );
+    const button = screen.getByRole('button', { name: 'Forgot password' });
+    expect(button).toHaveAttribute('data-hanging');
+    expect(button.className.split(' ')).toEqual(expect.arrayContaining(['fin:px-xl', 'fin:-ms-xl']));
+  });
+
+  it('uses the start padding token as the hanging margin at every size and icon option', () => {
+    for (const [size, { padding }] of Object.entries(baseStyles.size)) {
+      for (const side of ['none', 'leading', 'trailing', 'only'] as const) {
+        const start = padding[side].match(/fin:(?:ps|px|p)-(\w+)/)![1];
+        expect(baseStyles.hanging[size as keyof typeof baseStyles.size][side], `${size} ${side}`).toBe(`fin:-ms-${start}`);
+      }
+    }
   });
 });

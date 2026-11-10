@@ -51,6 +51,13 @@ export interface FinButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButton
    * press. Set through FinButton `contentTone`.
    */
   contentTone?: FinButtonContentTone;
+  /**
+   * Code only (added 10 Nov 2026): hanging alignment (DESIGN.md §4.5). The button keeps its padding and moves towards
+   * the start by exactly its start padding (the same spacing token, as a negative margin), so the label (or the
+   * leading icon) lines up with the content edge; the hover background and focus ring hang past it. For Tertiary
+   * buttons under form content (fields, text). Default false: no margin.
+   */
+  hanging?: boolean;
 }
 
 const ICON_SIZE = { large: 24, medium: 24, small: 20, xsmall: 20 } as const;
@@ -72,6 +79,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
     iconSide,
     iconTone = 'action',
     contentTone,
+    hanging = false,
     type = 'button',
     className,
     ...rest
@@ -83,8 +91,9 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
   const tone = variant === 'tertiary' && contentTone ? styles.contentTone[contentTone] : undefined;
   const colours = tone ?? styles.variant[variant];
   const iconClass = `${styles.icon} ${!tone && variant === 'tertiary' && iconTone === 'secondary' ? styles.tertiaryGreyIcon : colours.icon}`;
-  const padding = styles.size[size].padding[iconOnly ? 'only' : (iconSide ?? 'none')];
-  const buttonClass = [styles.button, styles.size[size].button, padding, colours.button, className].filter(Boolean).join(' ');
+  const sides = iconOnly ? 'only' : (iconSide ?? 'none');
+  const padding = styles.size[size].padding[sides];
+  const buttonClass = [styles.button, styles.size[size].button, padding, hanging && styles.hanging[size][sides], colours.button, className].filter(Boolean).join(' ');
   return (
     <button
       {...rest}
@@ -97,6 +106,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
       data-icon-side={iconSide}
       data-icon-tone={iconTone === 'secondary' ? 'secondary' : undefined}
       data-content-tone={contentTone}
+      data-hanging={hanging || undefined}
     >
       {leadingIcon && (
         <span className={iconClass}>
