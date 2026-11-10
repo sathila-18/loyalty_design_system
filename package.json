@@ -20,7 +20,9 @@
     "lint": "eslint .",
     "lint:css": "stylelint \"**/*.css\" --allow-empty-input",
     "icons": "pnpm --filter @finspace-loyalty/ui icons",
-    "payment-icons": "pnpm --filter @finspace-loyalty/ui payment-icons"
+    "payment-icons": "pnpm --filter @finspace-loyalty/ui payment-icons",
+    "login": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui build && pnpm --filter @finspace-loyalty/login dev",
+    "build-login": "pnpm --filter @finspace-loyalty/tokens build && pnpm --filter @finspace-loyalty/ui build && pnpm --filter @finspace-loyalty/login build"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

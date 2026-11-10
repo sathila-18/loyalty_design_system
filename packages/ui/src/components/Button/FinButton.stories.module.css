@@ -41,3 +41,16 @@
   border-radius: var(--fin-radius-m);
   background-color: var(--fin-bg-brand);
 }
+
+/* Link beside a field: a column the width of a field, the link at its start. */
+.linkColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xl);
+  align-items: flex-start;
+  width: var(--fin-size-343);
+}
+
+.linkColumn > :first-child {
+  align-self: stretch;
+}

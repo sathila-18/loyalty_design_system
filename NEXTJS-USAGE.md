@@ -53,6 +53,8 @@ import '@finspace-loyalty/ui/index.css';
 - the reset
 - all the component styles
 
+**Using Tailwind for your own pages?** Import `index.css` from your `globals.css` instead (§8, "Using Tailwind in your app").
+
 **Don't also import** `tokens.css`, `styles.css` or `components.css`. That loads the same styles twice, and if the two packages are ever at different versions, the copies conflict (for example, old and new brand colours at once).
 
 ---
@@ -149,7 +151,7 @@ export function MembersActions() {
 
 ## 6. Links and routing
 
-The library doesn't import a router. Link-like components (`FinSideNav`, `FinListStandard`, `FinTable` columns) take the link component through their `linkAs` prop, so they work with `next/link`. A component can't be passed from a Server Component, so set `linkAs` in a Client Component:
+The library doesn't import a router. Link-like components (`FinSideNav`, `FinListStandard`, `FinTable` columns, and `FinButton` with `href`) take the link component through their `linkAs` prop, so they work with `next/link`. A component can't be passed from a Server Component, so set `linkAs` in a Client Component:
 
 ```tsx
 'use client';
@@ -158,6 +160,17 @@ import Link from 'next/link';
 import { FinSideNav } from '@finspace-loyalty/ui';
 
 <FinSideNav linkAs={Link} currentHref="/members" sections={[{ icon: 'person', label: 'Members', href: '/members' }]} />
+```
+
+A button that navigates should be a link: give `FinButton` an `href` (and `linkAs={Link}` for client-side navigation). It keeps the button's look; a Tertiary link has no side padding, so it lines up with fields and text:
+
+```tsx
+'use client';
+
+import Link from 'next/link';
+import { FinButton } from '@finspace-loyalty/ui';
+
+<FinButton variant="tertiary" size="xsmall" href="/forgot-password" linkAs={Link}>Forgot password</FinButton>
 ```
 
 ---
@@ -202,7 +215,50 @@ For your own layout and page styles, use the **semantic** token variables. They 
 
 **Breakpoints:** if your app uses PostCSS custom media, the tokens package ships breakpoint definitions (`@finspace-loyalty/tokens/breakpoints.css`). They're also available as TypeScript values (`@finspace-loyalty/tokens/breakpoints`).
 
-**Tailwind (optional):** if your app uses Tailwind 4 for its own pages, the library also offers a theme file (`@finspace-loyalty/ui/theme.css`) that maps the tokens to Tailwind utilities. Its scale is our tokens, not Tailwind's defaults (for example `p-xl`, not `p-4`). See DESIGN.md §3.11 before using it.
+### Using Tailwind in your app
+
+You don't need Tailwind to use the components. If your app uses Tailwind for its own pages, set it up like this so your classes use our tokens and switch with the brand and theme. `apps/login` in the design system repo is a working example.
+
+**1. Install Tailwind 4.3.4** (the version the library uses):
+
+```bash
+pnpm add -D tailwindcss@4.3.4 @tailwindcss/postcss@4.3.4 postcss
+```
+
+```js
+// postcss.config.mjs
+export default { plugins: { '@tailwindcss/postcss': {} } };
+```
+
+**2. One stylesheet**, imported once in `app/layout.tsx` (`import './globals.css'`) **instead of** importing `index.css` there:
+
+```css
+/* app/globals.css */
+@layer fin, utilities;                                             /* the library's styles under yours */
+
+@import "@finspace-loyalty/ui/index.css";                          /* tokens, fonts, reset, components */
+@import "tailwindcss/utilities.css" layer(utilities) source("..");  /* your utilities: no preflight, no default theme */
+@import "@finspace-loyalty/ui/theme.css";                          /* our tokens as utility names */
+```
+
+- **Don't use `@import "tailwindcss"`.** It adds Tailwind's preflight, which would replace our reset, and its default theme (`p-4`, `text-red-500`…), which isn't our design.
+- **The tokens load once.** `theme.css` only names utilities. Each one reads a token variable from `index.css` (`bg-primary` → `var(--fin-bg-primary)`), so it follows `data-brand` and `data-theme` with no extra CSS.
+- **No clash with the library.** The components' classes are pre-compiled with a `fin:` prefix in `@layer fin`. Your classes have no prefix, so nothing overlaps. The `@layer` line puts yours on top, so a `className` you pass to a component wins without `!important`.
+
+**3. Use the token names.** `theme.css` replaces Tailwind's scale with ours:
+
+| You want | Write | Not |
+|---|---|---|
+| A colour | `bg-primary`, `text-secondary`, `border-subtle`, `fg-brand` (icon colour) | `bg-white`, `text-gray-600` |
+| Spacing | `p-xl`, `gap-m`, `mt-3xl` (space names) | `p-4`, `gap-2` |
+| A size | `w-343`, `size-24` (size tokens, in px) | `w-96` |
+| Radius, shadow, text | `rounded-l`, `shadow-menu`, `font-body-medium` | `rounded-lg`, `text-sm` |
+| A breakpoint | `bp-md:` (1024), `bp-lg:` (1280), `bp-xl:` (1440), `bp-xxl:` (1920) | `md:`, `lg:` |
+
+- **No `dark:`.** It's turned off. Dark comes from `data-theme="dark"` on `<html>`, through the tokens.
+- **No arbitrary values** (`p-[13px]`, `bg-[#fff]`) and no `!`. If a value isn't a token, ask the design team.
+- **Don't write `fin:` classes.** They're the library's, and only the ones it uses exist.
+- Some standard names mean something else here, for example `leading-none` and `max-w-none` would be 0px. The design system's ESLint setup (`eslint-plugin-better-tailwindcss` with the rules in its `eslint.config.js`) catches these, along with unknown classes. DESIGN.md §3.11 has the full list.
 
 ---
 
@@ -267,5 +323,5 @@ The components meet WCAG 2.2 AA: keyboard support, visible focus rings and prope
 | "createContext is not a function" in a Server Component | You're on v0.1.0: upgrade both packages to v0.1.1 or later (§2) |
 | Hydration warnings mentioning attributes like `bis_skin_checked`, `cz-shortcut-listen` or `data-new-gr-c-s-check-loaded` | A browser extension adds them to the page before React loads, not the library: test in an incognito window (extensions off) |
 | On a narrow window (below 1280), the side nav shows expanded for a moment, then collapses | Expected for now: the server can't know the window width, so it renders the nav expanded and it collapses once the page loads (`FinAppShell`, and `FinSideNav` without `type` or `defaultType`). A `FinSideNav` on its own can start in a set state with `defaultType` |
-| Styles look duplicated in dev tools | Remove extra imports; use only `index.css` (§3) |
+| Styles look duplicated in dev tools | Remove extra imports; use only `index.css` (§3), or only your `globals.css` if you use Tailwind (§8) |
 | `404` when installing | Check the version in both URLs matches an existing release |

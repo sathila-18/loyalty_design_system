@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { finIcons, type FinIconName } from '../../icons/finIcons';
 import type { FinButtonSize, FinButtonVariant } from '../ButtonBase';
+import { FinTextField } from '../TextField';
 import {
   FinButton,
   type FinButtonIcon,
@@ -173,6 +174,47 @@ export const GreyIcon: Story = {
       </FinButton>
       <FinButton variant="tertiary" iconTone="secondary" size="medium" icon="only-icon" iconName="close" disabled>
         Close (disabled)
+      </FinButton>
+    </div>
+  ),
+};
+
+/**
+ * `href` (code only, added 10 Nov 2026): a real link (`<a>`, or `linkAs` for next/link's `Link`) with the button's
+ * look, for navigation. Every Tone × Type at Medium, with each Icon option. Links can't be disabled. A Tertiary link
+ * has no side padding; the others keep theirs.
+ */
+export const Links: Story = {
+  render: () => (
+    <div className={styles.table}>
+      <span className={styles.heading}>Medium, as links</span>
+      {ICONS.map((icon) => (
+        <span key={icon}>{ICON_NAMES[icon]}</span>
+      ))}
+      <span />
+      {LOOKS.map((look) => [
+        <span key={`${look.name}-name`} className={styles.rowLabel}>
+          {look.name}
+        </span>,
+        ...ICONS.map((icon) => (
+          <FinButton key={`${look.name}-${icon}`} {...toneProps(look.tone, look.variant)} {...iconProps(icon, 'person')} size="medium" href="#">
+            {icon === 'only-icon' ? `${look.name}, person` : 'Text here'}
+          </FinButton>
+        )),
+        <span key={`${look.name}-end`} />,
+      ])}
+    </div>
+  ),
+};
+
+/** A Tertiary link under a field, as the login screen's "Forgot password": its text starts at the field's left edge. */
+export const LinkBesideAField: Story = {
+  name: 'Link beside a field',
+  render: () => (
+    <div className={styles.linkColumn}>
+      <FinTextField label="Password" placeholder="Password" />
+      <FinButton variant="tertiary" size="xsmall" href="#forgot-password">
+        Forgot password
       </FinButton>
     </div>
   ),
