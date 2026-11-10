@@ -53,4 +53,5 @@ Set once per deployment, on `<html>` (`lib/brand.ts`):
 ## Notes
 
 - `tsconfig.json` excludes `.next/dev`: Next 16 writes route types for `next dev` and `next build` to two folders, and type-checking both fails with "Duplicate identifier 'LayoutProps'" when you build after running dev.
+- **Rebuilt the library while `next dev` was running?** The dev server can keep failing with "Can't resolve '@finspace-loyalty/tokens'" or "no valid target file" for `index.css`, because Turbopack's cache remembers the moment `dist` was empty. Stop it, delete `apps/login/.next/dev`, and run `pnpm login` again.
 - `app/icon.svg` is a neutral placeholder until design provides a favicon.
