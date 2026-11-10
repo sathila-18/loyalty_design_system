@@ -8,6 +8,7 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 - **`FinSignInLayout`**: the page shell for sign-in screens. The image panel on the left (your artwork, an optional title and description) and the form column on the right; below 1024 only the form, centred. Storybook: Components/Layout/Sign in layout.
+- **`FinButton` link option:** `href` renders a real link (`<a>`) with the button's look, and `linkAs` passes your router's link component (next/link's `Link`). A Tertiary link has no side padding, so its text lines up with fields and text. Links can't be disabled. Buttons without `href` are unchanged.
 - NEXTJS-USAGE.md §8 "Using Tailwind in your app": set up Tailwind 4 with the library's `theme.css`, so your own classes use our tokens and follow the brand and theme.
 
 ### Changed

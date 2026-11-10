@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import { createRef, forwardRef, type AnchorHTMLAttributes } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { FinButton } from './FinButton';
 
@@ -140,5 +140,93 @@ describe('FinButton', () => {
     );
     expect(screen.getByRole('button', { name: 'Undo' })).toHaveAttribute('data-content-tone', 'inverse');
     expect(screen.getByRole('button', { name: 'Retry' })).not.toHaveAttribute('data-content-tone');
+  });
+});
+
+describe('FinButton as a link (href)', () => {
+  it('renders a real link with the href, not a button, and no type or disabled', () => {
+    render(<FinButton variant="tertiary" href="/forgot-password">Forgot password</FinButton>);
+    const link = screen.getByRole('link', { name: 'Forgot password' });
+    expect(link.tagName).toBe('A');
+    expect(link).toHaveAttribute('href', '/forgot-password');
+    expect(link).not.toHaveAttribute('type');
+    expect(link).not.toHaveAttribute('disabled');
+    expect(link).toHaveAttribute('data-link', '');
+    expect(screen.queryByRole('button')).toBeNull();
+  });
+
+  it('keeps the variant and size hooks and the same classes as the button, except the link reset', () => {
+    const { rerender } = render(<FinButton variant="secondary" size="small">Open</FinButton>);
+    const buttonClasses = screen.getByRole('button').className.split(' ');
+    rerender(<FinButton variant="secondary" size="small" href="/open">Open</FinButton>);
+    const link = screen.getByRole('link');
+    expect(link).toHaveAttribute('data-variant', 'secondary');
+    expect(link).toHaveAttribute('data-size', 'small');
+    const linkClasses = link.className.split(' ');
+    expect(linkClasses.filter((c) => !buttonClasses.includes(c))).toEqual(['fin:no-underline']);
+  });
+
+  it('drops the side padding on a Tertiary link only (its text lines up with the content around it)', () => {
+    render(
+      <>
+        <FinButton variant="tertiary" size="xsmall" href="/a">Tertiary</FinButton>
+        <FinButton variant="primary" size="xsmall" href="/b">Primary</FinButton>
+        <FinButton variant="tertiary" size="xsmall">Tertiary button</FinButton>
+        <FinButton variant="tertiary" size="xsmall" href="/c" icon="only-icon" iconName="close">Close</FinButton>
+      </>,
+    );
+    expect(screen.getByRole('link', { name: 'Tertiary' }).className).toContain('fin:px-none');
+    expect(screen.getByRole('link', { name: 'Primary' }).className).toContain('fin:px-xl');
+    expect(screen.getByRole('button', { name: 'Tertiary button' }).className).toContain('fin:px-xl');
+    expect(screen.getByRole('link', { name: 'Close' }).className).toContain('fin:p-s');
+  });
+
+  it('is reached with Tab, shows focus, and follows with Enter (not Space, as links do)', async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn((event: { preventDefault: () => void }) => event.preventDefault());
+    render(<FinButton href="/next" onClick={onClick}>Next</FinButton>);
+    await user.tab();
+    const link = screen.getByRole('link', { name: 'Next' });
+    expect(link).toHaveFocus();
+    await user.keyboard(' ');
+    expect(onClick).not.toHaveBeenCalled();
+    await user.keyboard('{Enter}');
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders through linkAs (a router link), passing href, the classes and the ref', () => {
+    const RouterLink = forwardRef<HTMLAnchorElement, AnchorHTMLAttributes<HTMLAnchorElement>>(function RouterLink({ children, ...props }, ref) {
+      return (
+        <a {...props} ref={ref} data-router="">
+          {children}
+        </a>
+      );
+    });
+    const ref = createRef<HTMLAnchorElement>();
+    render(<FinButton variant="tertiary" href="/forgot-password" linkAs={RouterLink} ref={ref}>Forgot password</FinButton>);
+    const link = screen.getByRole('link', { name: 'Forgot password' });
+    expect(link).toHaveAttribute('data-router', '');
+    expect(link).toHaveAttribute('href', '/forgot-password');
+    expect(link.className).toContain('fin:no-underline');
+    expect(ref.current).toBe(link);
+  });
+
+  it('shows icons and hides the label for an icon-only link, which is still named', () => {
+    render(<FinButton variant="tertiary" href="/" icon="only-icon" iconName="close">Close</FinButton>);
+    expect(screen.getByRole('link', { name: 'Close' })).toBeInTheDocument();
+  });
+
+  it('rejects disabled and type on a link (types only)', () => {
+    // @ts-expect-error a link can't be disabled
+    const disabledLink = <FinButton href="/" disabled>Nope</FinButton>;
+    // @ts-expect-error a link has no button type
+    const typedLink = <FinButton href="/" type="submit">Nope</FinButton>;
+    expect([disabledLink, typedLink]).toHaveLength(2);
+  });
+
+  it('stays a button without href', () => {
+    render(<FinButton>Save</FinButton>);
+    expect(screen.getByRole('button', { name: 'Save' })).toHaveAttribute('type', 'button');
+    expect(screen.queryByRole('link')).toBeNull();
   });
 });

@@ -1,7 +1,7 @@
 'use client';
 
 import { FinButton, FinCheckbox, FinNotificationBanner, FinPasswordField, FinTextField } from '@finspace-loyalty/ui';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useRef, useState, type FormEvent } from 'react';
 import { signIn } from '@/lib/auth';
 
@@ -9,11 +9,10 @@ type Errors = { identifier?: string; password?: string };
 
 /*
  * Figma `135:4939`: User name/ email and Password 16 apart, then Forgot password (Tertiary, XSmall) and Remember me
- * on one row, 16 below; the Login button (Large, full width) 32 below. Errors and the signed-in message are code
+ * on one row, 16 below; the Login button (Medium, the fields' height, full width) 32 below. Errors and the signed-in message are code
  * first (the screens show none).
  */
 export function LoginForm() {
-  const router = useRouter();
   const identifierRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const [identifier, setIdentifier] = useState('');
@@ -68,8 +67,8 @@ export function LoginForm() {
           helperText={errors.password}
         />
         <div className="flex items-center justify-between gap-l">
-          {/* A button that navigates: FinButton has no link mode yet (reported). */}
-          <FinButton variant="tertiary" size="xsmall" onClick={() => router.push('/forgot-password')}>
+          {/* A real link (FinButton href + next/link); a Tertiary link has no side padding, so it lines up with the fields. */}
+          <FinButton variant="tertiary" size="xsmall" href="/forgot-password" linkAs={Link}>
             Forgot password
           </FinButton>
           <FinCheckbox checked={remember} onChange={(event) => setRemember(event.target.checked)}>
@@ -77,7 +76,8 @@ export function LoginForm() {
           </FinCheckbox>
         </div>
       </div>
-      <FinButton type="submit" size="large" className="w-full" disabled={status === 'submitting'} aria-busy={status === 'submitting'}>
+      {/* Medium (48), the fields' height (decided 10 Nov 2026; Figma's Button-Primary is 56). */}
+      <FinButton type="submit" size="medium" className="w-full" disabled={status === 'submitting'} aria-busy={status === 'submitting'}>
         {status === 'submitting' ? 'Logging in…' : 'Login'}
       </FinButton>
     </form>
