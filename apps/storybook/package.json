@@ -10,6 +10,7 @@
     "test:a11y": "vitest run"
   },
   "dependencies": {
+    "@finspace-loyalty/login": "workspace:*",
     "@finspace-loyalty/tokens": "workspace:*",
     "@finspace-loyalty/ui": "workspace:*",
     "react": "19.3.0",

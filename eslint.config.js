@@ -179,6 +179,21 @@ export default tseslint.config(
     rules: APP_TAILWIND_RULES,
   },
   {
+    // The shared login screens (CLAUDE.md "Login work") also run in Storybook: no Next.js, and no app-only aliases.
+    files: ['apps/login/screens/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            { group: ['next', 'next/*'], message: 'The shared screens run in Storybook too: get links, images and navigation from useLoginPlatform().' },
+            { group: ['@/*'], message: 'Use relative imports in the shared screens: Storybook compiles them without the app\'s @/ alias.' },
+          ],
+        },
+      ],
+    },
+  },
+  {
     // Next.js app router files export metadata, route config and so on next to the component; Fast Refresh there is
     // Next's own, not the Vite plugin this rule is for.
     files: ['apps/login/app/**/*.{ts,tsx}'],

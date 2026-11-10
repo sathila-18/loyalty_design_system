@@ -923,7 +923,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 
 ### 8.6 Pages (Storybook; added 22 Oct 2026)
 
-Real screens from the Figma screens file `9eRxGGC7YQ6TPzi5PHYCgw`, page **Admin UIs** (`6:122`), built as Storybook pages in `apps/storybook/src/pages/<area>/` (folder approved 22 Oct 2026; never in the library; rules in CLAUDE.md "Pages"). Titles `Pages/<Area>/<Page>`, the areas following the side nav. The login options and the Nav Bar section (it only shows the nav collapsing) are out of scope. Widths: §4.4. **Order: one page at a time, Programme Configuration first.**
+Real screens from the Figma screens file `9eRxGGC7YQ6TPzi5PHYCgw`, page **Admin UIs** (`6:122`), built as Storybook pages in `apps/storybook/src/pages/<area>/` (folder approved 22 Oct 2026; never in the library; rules in CLAUDE.md "Pages"). Titles `Pages/<Area>/<Page>`, the areas following the side nav. The Nav Bar section (it only shows the nav collapsing) is out of scope. **Login Option 02** is built as Pages/Login (10 Nov 2026), from the same screen components as the Next.js login app (`apps/login/screens/`, CLAUDE.md "Login work"); Login Option 01 is out of scope. Widths: §4.4. **Order: one page at a time, Programme Configuration first.**
 
 Components the screens use (status from §8): Side Menu ✅, Main header ✅ (with Header notification ✅), the table parts and FinTable ✅, Search ✅, Text field ✅, Toggle ✅ (Figma still calls some instances `Switch`), Radio ✅, Checkbox ✅, Text Box ✅, Overlay ✅, Button ✅ (Figma still has some `Button-Primary`, an older component); **not built:** **Table Header** (the toolbar above a table, `3313:18577`, newer than this inventory), Side sheet (🔴 §10 #25), Dialog box, Snackbar, Button dock, Input field-select, Notification banner; plus an unidentified "1 2 3 4" step indicator in the Reward catalog form. Each page's own list is checked in detail when it's planned.
 
@@ -941,6 +941,7 @@ Components the screens use (status from §8): Side Menu ✅, Main header ✅ (wi
 | User Management | System Users (`188:13373`) | `428:53386`, `428:55936`, `428:58428`, `428:60618`, `428:62500`, `428:64429` | List; edit in a side sheet; remove | ⬜ |
 | User Management | Role Management (`196:18060`) | `428:66319`, `428:68571`, `434:74848`, `428:73285`, `434:74877`, `434:77457`, `434:77486`, `434:79954`, `434:81065`, `434:82196` | List; add and edit a role (permission toggles, button dock); remove | ⬜ |
 | System Audit | System Audit (`208:41600`) | `434:83306`, `435:86927`, `435:85266` | Audit log; details side sheet; filters | ⬜ |
+| Login | **Login Option 02** (`150:6161`) | `135:4939` login, `435:90303` forgot password, `435:90402` reset link sent, `150:5950` reset password, `435:90550` password reset | Pages/Login, the screens shared with `apps/login` (§9.84 FinSignInLayout): Login (default, empty-field errors, wrong password, submitting, success); the Login button Medium (48, the fields' height; Figma 56), Forgot password a Tertiary link flush with the fields (§9.28). The other four screens next | 🟨 Login built; the rest planned |
 | Dashboard | — | none in Figma | — | ⬜ No design yet |
 
 Status: ⬜ not started · 🟨 planned or in progress · ✅ built and approved.

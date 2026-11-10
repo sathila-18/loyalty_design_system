@@ -1,0 +1,10 @@
+/*
+ * The login screens' Tailwind (CLAUDE.md rule 10, NEXTJS-USAGE.md "Using Tailwind in your app"): unprefixed utilities
+ * named after our tokens, from the library's theme. Compiled by apps/login (app/globals.css imports this file) and by
+ * Storybook (the Pages/Login stories import it), so both get the same classes. It scans this folder only; the app adds
+ * its own folders with @source. The layer line keeps these utilities above the library's (fin), whichever loads first.
+ */
+@layer fin, utilities;
+
+@import "tailwindcss/utilities.css" layer(utilities) source(".");
+@import "@finspace-loyalty/ui/theme.css";
