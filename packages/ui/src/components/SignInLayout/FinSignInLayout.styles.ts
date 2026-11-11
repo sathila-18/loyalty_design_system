@@ -18,8 +18,11 @@ export const image = 'fin:absolute fin:inset-none fin:*:size-full fin:*:object-c
 /* Figma `Rectangle 3`: a gradient up from the bottom, behind the text, so it reads on any artwork (raw in Figma). */
 export const scrim = 'fin:absolute fin:inset-x-none fin:bottom-none fin:h-1/2 fin:sign-in-scrim';
 
-/* Figma `Text Block - Dark` (another library): 48 (Space-7XL) from the panel's left, bottom and right edges, gap 8. */
-export const text = 'fin:relative fin:flex fin:flex-col fin:gap-m fin:p-7xl';
+/*
+ * Figma `Text Block - Dark` (another library, 499 wide): 48 (Space-7XL) from the panel's left and bottom, gap 8. The
+ * text is at most Size-500 wide, left-aligned; on a narrower panel (1024) it wraps 48 from the right edge.
+ */
+export const text = 'fin:relative fin:flex fin:flex-col fin:gap-m fin:p-7xl fin:*:max-w-500';
 
 export const title = 'fin:font-display-medium-h2 fin:text-white-both';
 
