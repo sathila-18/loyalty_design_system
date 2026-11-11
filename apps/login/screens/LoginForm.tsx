@@ -7,7 +7,7 @@ import { useLoginPlatform } from './platform';
 type Errors = { identifier?: string; password?: string };
 
 /*
- * Figma `135:4939`: User name/ email and Password 16 apart, then Forgot password (Tertiary, XSmall, hanging) and Remember me
+ * Figma `135:4939`: User name/ email and Password 16 apart, then Forgot password (the text link button, XSmall, hanging; Figma Tertiary) and Remember me
  * on one row, 16 below; the Login button (Medium, the fields' height, full width) 32 below. Errors and the signed-in message are code
  * first (the screens show none).
  */
@@ -68,10 +68,11 @@ export function LoginForm() {
         />
         <div className="flex items-center justify-between gap-l">
           {/*
-           * Hanging (DESIGN.md §4.5): the label on the fields' edge. A button that navigates for now; a real link once
-           * FinButton's link option is back (feat/button-link, DESIGN.md §10 #117).
+           * The text link button (variant="link", 11 Nov 2026), hanging (DESIGN.md §4.5): the label on the fields' edge. A
+           * button that navigates for now; a real link once FinButton's link option is back (feat/button-link, DESIGN.md
+           * §10 #117).
            */}
-          <FinButton variant="tertiary" size="xsmall" hanging onClick={() => navigate('forgot-password')}>
+          <FinButton variant="link" size="xsmall" hanging onClick={() => navigate('forgot-password')}>
             Forgot password
           </FinButton>
           <FinCheckbox checked={remember} onChange={(event) => setRemember(event.target.checked)}>

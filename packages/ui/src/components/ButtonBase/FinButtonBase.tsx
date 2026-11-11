@@ -10,8 +10,10 @@ export type FinButtonVariant = 'primary' | 'secondary' | 'tertiary';
 /**
  * The base's variants: Figma `Type`, plus the colors of the other two button bases (decided 19 Oct 2026):
  * `white` for FinWhiteButton (Figma white-button), `destructive` / `destructive-secondary` for FinDestructiveButton.
+ * `link` is code first (11 Nov 2026, no Figma component yet): the text link button, Tertiary's colours with an
+ * underline on hover.
  */
-export type FinButtonBaseVariant = FinButtonVariant | 'white' | 'destructive' | 'destructive-secondary';
+export type FinButtonBaseVariant = FinButtonVariant | 'link' | 'white' | 'destructive' | 'destructive-secondary';
 export type FinButtonSize = 'large' | 'medium' | 'small' | 'xsmall';
 /** Tertiary's code-only label and icon colours (`contentTone`): the `text-*` / `fg-*` token names. */
 export type FinButtonContentTone = 'inverse' | 'primary' | 'secondary' | 'info' | 'success' | 'error' | 'warning';
@@ -113,7 +115,7 @@ export const FinButtonBase = forwardRef<HTMLButtonElement, FinButtonBaseProps>(f
           <FinIcon name={leadingIcon} size={iconSize} />
         </span>
       )}
-      <span className={showLabel ? styles.label : styles.hiddenLabel}>{children}</span>
+      <span className={showLabel ? (variant === 'link' ? styles.linkLabel : styles.label) : styles.hiddenLabel}>{children}</span>
       {trailingIcon && (
         <span className={iconClass}>
           <FinIcon name={trailingIcon} size={iconSize} />
