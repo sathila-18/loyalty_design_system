@@ -876,7 +876,7 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 53 | `Input field-standard` | Input field | `52:2629` | `FinTextField` | **Input field-base**, Payment Icons (FinPaymentIcon), Country selector · Type (code `variant`): Default/Mobile number/Payment · State (runtime) · Trailing icon (code `trailingIcon`) · Error · Small size (code only) · dial code from the country, card brand from the number · **public** (§9.59) | ⚠️ (§10 #58 (5)–(6)) | ✅ |
 | 54 | `Input field-password` | Input field | `60:7165` | `FinPasswordField` | **Input field-base** · State (runtime) · Show password (code `showPassword` / `defaultShowPassword`, the eye button) · Error · Small size (code only) · **public** (§9.60) | ⚠️ (§10 #58 (1), (3), (4)) | ✅ |
 | 55 | `Input field-select` | Input field | `537:2736` | `FinSelectField` | **Input field-base** | ⚠️ (after #52) | ✅ §9.72 |
-| 56 | `Input field-Multi select` | Input field | `922:6170` | `FinMultiSelectField` | **Input field-base**, Chips-base | ⚠️ (after #52) | ⬜ |
+| 56 | `Input field-Multi select` | Input field | `922:6170` | `FinMultiSelectField` | **Input field-base**, Chips-base (FinInputChip), FinMenu · `state` runtime · options with checkboxes, the chosen ones as chips on one row ("+N" for the rest) · **public** (§9.85) | ⚠️ (after #52) | ✅ §9.85 |
 | 57 | `Search` | Search | `440:5164` | `FinSearchField` | **Input field-base** (Show Label off) · State: Enabled/Focus/Typing/Complete (runtime; hover from the base) · `search` icon, clear button (`cancel`, filled) · Small size (code only) · Sticky removed in Figma 21 Oct 2026 · **public** (§9.61) | ✅ | ✅ |
 | 58 | `File uploads` | Input field | `775:4280` | `FinFileUpload` | 40px bg, 48px bg, Text Box, Progress bar, all-button · Size: Large/Small · State: Enabled/Uploading/Complete/Error (updated by design 28 Oct 2026) · one file · **public** (§9.80) | ✅ | ✅ |
 | 59 | `List-base` | List | `77:10185` | `FinListItem` | **Base.** 40px bg, Label, Text Box, Divider · `Size` · leading / trailing accessory slots (preferred instances per scenario), top label, title + extra icon (swappable `20px`), body slot, divider · no states (§7.2) · **internal** (§9.49) | ⚠️ (Small title bound to H6 variables at 14/21 → Label/Medium) | ✅ |
@@ -2329,7 +2329,7 @@ Figma binds Label/Large's font family to `Title XL/Font family` (same Inter); co
 |---|---|---|---|
 | Meaning | An action: date ranges, selections; may open a menu or picker | A filter, on / off; several can be on | A chosen value in a multi-select field |
 | Element | `<button>` | `<button aria-pressed>` | `<span>` + a `<button>` ✕ |
-| Base look | `unselected-border`; `selected` while `expanded` | `unselected` / `selected` | `unselected` |
+| Base look | `unselected-border`; `selected` while `expanded` | `unselected` / `selected` | `unselected-border` (as Figma's Input field-Multi select; was `unselected` until 11 Nov 2026) |
 | Own props | `dropdown` (shows `keyboard_arrow_down`, sets `aria-haspopup`), `expanded` (`aria-expanded`) | `selected` / `defaultSelected` + `onSelectedChange` | `onRemove`, `removeLabel` (default "Remove {value}") |
 | Keyboard | Tab; Enter / Space run it | Tab; Enter / Space toggle | Tab to the ✕; Enter / Space / Delete / Backspace remove |
 | `ref` | the button | the button | the ✕ button (so a field can move focus after a removal) |
@@ -3485,6 +3485,7 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 | `Type` = Normal | the only look |
 | `conten` slot | `children` |
 | — (code only) | `kind` (default `action`; `action`, `filter`, `navigation`, `select`), `trigger` (an element, or a function taking the trigger props), `open` / `defaultOpen` / `onOpenChange`, `label` (default: named by the trigger), `width` (`content` / `trigger` / a length), `maxHeight`, `placement`, `footer`, `header`, `anchor`; `FinMenuDivider` |
+| — (code only, 11 Nov 2026) | `multiple` (`kind="select"` only, for FinMultiSelectField §9.85): the listbox is `aria-multiselectable` and choosing an option (click, Enter, Space) doesn't close the menu; Escape, Tab or a click outside does |
 
 **Tokens used:** `--fin-bg-primary`, `--fin-text-primary`, 1px `--fin-border-subtle`, `--fin-radius-m`, `--fin-shadow-menu`; gap from the trigger `--fin-space-xs`, from the window edge `--fin-space-m` (read by Floating UI from the CSS); footer padding `--fin-space-xl`, gap `--fin-space-m`, 1px `--fin-border-subtle` above. Rows, dividers and buttons bring their own.
 
@@ -4136,6 +4137,49 @@ FinSideNav doesn't change: it keeps its `logo` slot (§9.57) and the app passes 
 
 **Built (10 Nov 2026).** Storybook: Components/Layout/Sign in layout (Playground: the trophy with title and description, as `135:4939`; Image only: the detective, as `435:90303`; Long text; At 1024; Narrow, at the new 768 viewport option). The artwork is the login app's (`apps/login/public/sign-in`, served to Storybook by `staticDirs`), exported from Figma as the screens crop it (2×). Checked in Chrome at 1920 against Figma: panel 936 × 1032 at (24, 24) (Figma 933 × 1024 at 28), radius 24, form 608 centred at x 1440 (Figma 555 centred at 1440); 1440, 1024 and 768 as above; Light and Dark; a11y in every brand × theme.
 
+### 9.85 FinMultiSelectField (Input field-Multi select) — public
+
+**Figma:** component library, page **Input field**, component set `Input field-Multi select` `922:6170` (read 11 Nov 2026): `state` = Enabled / Hovered / Focused / Typing / Complete (lowercase `state`, §10 #21). Each variant is an Input field-base, 343 × 74: the 48 box with `keyboard_arrow_down`, the helper text 8 below. Enabled: the placeholder; Hovered: `bg-secondary`; Focused: the label on the border, the ring, a caret; Typing: the label, ring and typed text with a caret; Complete: the label, `border-strong` and **one chip**: Chips-base XSmall **Unselected-border** (`bg-primary`, `border-default`, Shadow/Resting_cards, padding `Space-XS` / `Space-M`, `Radius-S`, Label/Small `text-primary`) with a 16px person icon and a 16px ✕. No Disabled or Error variants, no open menu, no more than one chip.
+
+**Decided by design 11 Nov 2026:** (1) **A button, not typed into**, as FinSelectField (§9.72): Figma's Typing text and caret aren't used; `searchable` puts a search field in the menu. (2) **The chips are FinInputChip** XSmall, **label and ✕ only** (Figma's person icon is the slot's default content); FinInputChip now uses Chips-base's existing `unselected-border` look (§9.32), so it matches Figma; no new variant. (3) **One row**: the chips that fit, then a static **"+N"** chip (the same look, no ✕) for the rest; when even one doesn't fit, it ends in "…". (4) The menu has **checkbox rows** and stays open while you tick (FinMenu `multiple`, §9.64).
+
+**Figma → code:**
+
+| Figma | Code |
+|---|---|
+| `state` | runtime, from FinInputBase as FinSelectField: Hovered (empty), Focused (keyboard focus or menu open; quiet after a mouse-opened menu closes), Complete (anything chosen); `disabled`, `error` (base) |
+| Label, placeholder, helper text (base) | `label` (required), `placeholder`, `helperText` |
+| The chip (Complete) | one FinInputChip XSmall per chosen option; its ✕ removes it and focus goes back to the field |
+| Trailing slot `keyboard_arrow_down` | fixed; `keyboard_arrow_up` while open |
+| — (values) | `options: { value, label, disabled? }[]` (required), `value: string[]` (controlled) / `defaultValue`, `onChange(values)` (in the order chosen) |
+| — (code only) | `size: 'large' \| 'small'`, `name` (one hidden input per value), `searchable`, `searchLabel`, `searchPlaceholder`, `noResultsText`, `ref` and other button attributes |
+
+**Layout:** the chips row sits in the value's 24 line (the 26 chips stand 1 into the padding, as Figma), so the box stays **48** (Small 40) with any number chosen; chips 8 (`Space-M`) apart. How many fit is measured on a hidden, inert copy of every chip and the "+N" (a ResizeObserver remeasures when the field resizes); the first render shows them all. The button fills the rest of the row and its `::after` covers the box, so a click anywhere (a chip's label too) opens the menu; the chips row lets clicks through except on the ✕ (`multi-select-chips` in tailwind.css).
+
+**Tokens used:** the base's (§9.58), the chips' (§9.31) and the menu's (§9.64); its own: the gap `--fin-space-m`, the value line `--fin-size-24`, the placeholder Body/Large (Small: Body/Medium) `text-placeholder`.
+
+**API:**
+
+```tsx
+import { FinMultiSelectField } from '@finspace-loyalty/ui';
+
+<FinMultiSelectField
+  label="Provider"
+  placeholder="Provider"
+  name="provider"
+  options={providers.map((p) => ({ value: p.id, label: p.name }))}
+  value={chosen}
+  onChange={setChosen}
+  helperText="Leave it empty for the bank's own rewards"
+/>
+```
+
+`'use client'`. Exports `FinMultiSelectField`, `FinMultiSelectFieldProps`, `FinMultiSelectFieldOption`.
+
+**Accessibility:** a native `<button>` (`aria-haspopup="listbox"`, `aria-expanded`) named by the label and every chosen option, or the placeholder ("Provider SLT Mobitel, Dialog"); hidden chips past "+N" are still in the name ("+N" itself is `aria-hidden`). The helper text by `aria-describedby`. Enter, Space, ↓ or ↑ open the menu (a `listbox`, `aria-multiselectable`, named by the label); ↑ ↓ Home End and letters move; Enter, Space or a click ticks or unticks (`aria-selected`) and the menu stays open; Escape and Tab close it. The rows' checkboxes only show the state (inert, hidden from screen readers). Each chip's ✕ is a button "Remove {label}" (Tab, Enter / Space / Delete / Backspace).
+
+**Built (11 Nov 2026).** Storybook (Components/Input field/Multi select field): Playground, States (Figma), Menu open, Many chosen (343 and 686 wide), With search, Sizes, In a form. Checked in Chrome against Figma: 343 × 74 with or without chips (box 48), the chip 26 tall, padding 4 / 8, radius 8, `border-default` with the shadow; "+N" inside the box at every width; a long first chip ends in "…"; the menu as wide as the field, checkboxes ticked; no focus ring after a mouse click, the ring with the arrow keys. Light and Dark.
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -4295,6 +4339,7 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 116 | **Sign-in layout, to add to Figma** (10 Nov 2026): `FinSignInLayout` (§8 #84, §9.84) is code first; the Login Option 02 screens draw it each time. Add it as a component (or a layout template) with the decided values: inset `Space-3XL` (24, the screens 28), `Radius-XL`, the scrim and text block from Foundation – Loyalty (`text-white_both`, Display Medium-H2, Body Large, padding `Space-7XL`; the screens use `Text Block - Dark` and `Font Size/36`, `Radius 8px`, `Spacing 0px` from another library, and a raw gradient), and the form column as 4 grid columns (the screens 555). Also on these screens: a stray line (`Vector 241`) at the top of Reset password (`150:5950`). | Login screens | 🔧 Fix in Figma |
 | 117 | **"Forgot password" (and "Back" later) navigate with a button, not a link** (10 Nov 2026): the FinButton link option (`href`, `linkAs`) is set aside on `feat/button-link` (not in v0.2.0), so the login screens use `FinButton` with `onClick` → the platform's `navigate` (next/router in `apps/login`, the matching story in Storybook). A button that navigates isn't announced as a link and can't be opened in a new tab. **To do:** switch them to real links (`href`, `linkAs={Link}`, keeping `hanging`) when `feat/button-link` is restored. |
 | 118 | **Text link button, to add to Figma** (11 Nov 2026): FinButton `variant="link"` (§9.28) is code first, like shadcn's link variant: all-button's sizes and padding, `text-action` with no background, the label underlined on hover in the same colour, `text-pressed` when pressed, `text-disabled` when disabled; leading or trailing icon, no icon-only; Normal tone only. Add it to all-button as `Type` = Link (or as its own component). The Login screen's "Forgot password" uses it (Figma shows Tertiary). | Buttons, Login screens | 🔧 Fix in Figma |
+| 119 | **Input field-Multi select, to update in Figma** (11 Nov 2026; built §9.85): (1) the **Typing** variant shows text typed into the field, but the field is a button with the search in the menu (as Input field-select): show the search in an open-menu frame instead; (2) the chip's leading **person icon** is the slot's default: hide it (code shows the label and ✕ only); (3) add **several chips** with the "+N" overflow chip, the **open menu** with checkbox rows, and Disabled / Error. | Input field | 🔧 Fix in Figma |
 
 ---
 
@@ -4714,3 +4759,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 11 Nov 2026 | 0.2 | **FinButton `variant="link"`: the text link button** (approved by design and merged into `main`, 11 Nov 2026; §9.28; code first, like shadcn's link variant; §10 #118): `text-action`, underlined on hover, `text-pressed` when pressed; the button's sizes and padding; Normal tone, no icon-only. Login's "Forgot password" uses it. |
 | 11 Nov 2026 | 0.2 | **Released v0.3.0** (both packages; what's in it: CHANGELOG.md). |
 | 11 Nov 2026 | 0.3 | **Programme configuration** (Pages, §8.6): the table's Max conversion (pts) column removed (§10 #70 resolved); the add / edit side sheet gains an **Onboarding** section (FinListToggleFilled Small: "Activation flow required", "Enable or disable the onboarding requirement for this customer segment"; text from Figma `312:15899`), off by default; saved with the configuration (`onboarding`). Points expiry is in **days**, as Figma: the column "Expiry (days)" (was "Expiry (mo)"), the field's suffix "Days", the sample data in days (decided 11 Nov 2026). The other Figma text differences on this sheet (Status "Loyalty programme") stay as built. |
+| 11 Nov 2026 | 0.3 | **`FinMultiSelectField` built** (§8 #56, §9.85), public under Components/Input field/Multi select field: a button that opens a FinMenu of checkbox rows (FinMenu gains `multiple`, §9.64) and shows the chosen options as FinInputChip XSmall on one row with a "+N" chip; box 48 as Figma. **FinInputChip** now uses Chips-base's `unselected-border` look (as Figma's multi-select chip). §10 #119 for Figma. |

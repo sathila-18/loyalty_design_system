@@ -1,0 +1,28 @@
+/* Layout for the FinMultiSelectField stories only (not part of the component). Fields 343 wide, as Figma. */
+
+.column {
+  width: var(--fin-size-343);
+}
+
+.wide {
+  width: calc(var(--fin-size-343) * 2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, var(--fin-size-343));
+  gap: var(--fin-space-6xl) var(--fin-space-3xl);
+}
+
+/* The form rule: stacked fields 24 apart. */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  width: var(--fin-size-343);
+}
+
+/* Room below the field for the menu. */
+.stage {
+  min-height: calc(var(--fin-size-120) * 5);
+}

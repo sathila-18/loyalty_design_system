@@ -27,7 +27,8 @@ export interface FinInputChipProps extends Omit<HTMLAttributes<HTMLSpanElement>,
 
 /**
  * A chosen value in a multi-select field, with a ✕ to remove it (DESIGN.md §9; one of the three chip types decided
- * 19 Oct 2026). FinChipBase with the Unselected look; only the ✕ is a button (no hover or pressed design: cursor
+ * 19 Oct 2026). FinChipBase with the Unselected-border look (as Figma's Input field-Multi select, 11 Nov 2026; was
+ * Unselected); only the ✕ is a button (no hover or pressed design: cursor
  * only, decided 19 Oct 2026). `ref` goes to the ✕ button, so the field can move focus after a removal;
  * `className` and other attributes go to the chip.
  */
@@ -46,7 +47,7 @@ export const FinInputChip = forwardRef<HTMLButtonElement, FinInputChipProps>(fun
     <FinChipBase
       {...rest}
       size={size}
-      variant="unselected"
+      variant="unselected-border"
       disabled={disabled}
       trailingAccessory={
         <button
