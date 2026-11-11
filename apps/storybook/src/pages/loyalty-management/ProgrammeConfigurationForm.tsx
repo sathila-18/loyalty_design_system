@@ -8,7 +8,8 @@ import styles from './ProgrammeConfiguration.module.css';
 export interface ProgrammeConfigValues {
   segment: string;
   loyalty: boolean;
-  expiryMonths: number;
+  onboarding: boolean;
+  expiryDays: number;
   cashConversion: boolean;
   pointsPerUnit: number;
   unitValue: number;
@@ -36,7 +37,7 @@ const above0 = (text: string, pattern: RegExp) => pattern.test(text.trim()) && N
 
 const ERRORS: Record<Field, string> = {
   segment: 'Choose a segment',
-  expiry: 'Enter a whole number of months above 0',
+  expiry: 'Enter a whole number of days above 0',
   points: 'Enter a whole number of points above 0',
   value: 'Enter an amount above 0',
   minimum: 'Enter a whole number of points above 0',
@@ -47,7 +48,8 @@ function initialValues(config?: ProgrammeConfig) {
   return {
     segment: config?.segment ?? null,
     active: config?.loyalty ?? true,
-    expiry: config ? String(config.expiryMonths) : '',
+    onboarding: config?.onboarding ?? false,
+    expiry: config ? String(config.expiryDays) : '',
     cash: config?.cashConversion ?? false,
     points: config ? String(config.pointsPerUnit) : '',
     value: config ? (config.unitValue ?? 1).toFixed(2) : '',
@@ -66,6 +68,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
   const initial = initialValues(config);
   const [segment, setSegment] = useState<string | null>(initial.segment);
   const [active, setActive] = useState(initial.active);
+  const [onboarding, setOnboarding] = useState(initial.onboarding);
   const [expiry, setExpiry] = useState(initial.expiry);
   const [cash, setCash] = useState(initial.cash);
   const [points, setPoints] = useState(initial.points);
@@ -76,13 +79,14 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
   const refs = useRef<Partial<Record<Field, HTMLElement | null>>>({});
   const formId = useId();
 
-  const current = { segment, active, expiry, cash, points, value, minimum };
+  const current = { segment, active, onboarding, expiry, cash, points, value, minimum };
   const changed = (Object.keys(initial) as (keyof typeof initial)[]).some((key) => current[key] !== initial[key]);
   const options = config && !segments.includes(config.segment) ? [config.segment, ...segments] : segments;
 
   const reset = () => {
     setSegment(initial.segment);
     setActive(initial.active);
+    setOnboarding(initial.onboarding);
     setExpiry(initial.expiry);
     setCash(initial.cash);
     setPoints(initial.points);
@@ -116,7 +120,8 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
     const saved = onSave({
       segment: segment!,
       loyalty: active,
-      expiryMonths: Number(expiry),
+      onboarding,
+      expiryDays: Number(expiry),
       cashConversion: cash,
       pointsPerUnit: Number(points),
       unitValue: Number(value),
@@ -180,6 +185,18 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
           <FinListToggleFilled size="small" title="Active" description="Members in this segment earn and use points" checked={active} onCheckedChange={setActive} />
         </fieldset>
 
+        {/* Figma `312:15899` (added 11 Nov 2026): off by default, as Figma shows it. */}
+        <fieldset className={styles.section}>
+          <legend className={styles.legend}>Onboarding</legend>
+          <FinListToggleFilled
+            size="small"
+            title="Activation flow required"
+            description="Enable or disable the onboarding requirement for this customer segment"
+            checked={onboarding}
+            onCheckedChange={setOnboarding}
+          />
+        </fieldset>
+
         <fieldset className={styles.section}>
           <legend className={styles.legend}>Points</legend>
           <FinTextField size="small"
@@ -188,7 +205,7 @@ export function ProgrammeConfigurationForm({ open, onClose, config, segments, on
             }}
             label="Points expiry"
             placeholder="Points expiry"
-            suffix="Months"
+            suffix="Days"
             inputMode="numeric"
             value={expiry}
             onChange={(e) => {

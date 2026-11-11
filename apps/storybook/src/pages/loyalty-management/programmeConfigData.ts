@@ -4,23 +4,23 @@ import type { ProgrammeConfig } from './ProgrammeConfiguration';
 
 /** Figma's three rows (`312:15165`). */
 export const FIGMA_CONFIGS: ProgrammeConfig[] = [
-  { id: 1, segment: 'Staff', loyalty: true, expiryMonths: 36, cashConversion: true, pointsPerUnit: 80, minConversion: 100, maxConversion: 20000 },
-  { id: 2, segment: 'VIP', loyalty: true, expiryMonths: 24, cashConversion: true, pointsPerUnit: 90, minConversion: 100, maxConversion: 15000 },
-  { id: 3, segment: 'Regular', loyalty: true, expiryMonths: 24, cashConversion: true, pointsPerUnit: 100, minConversion: 200, maxConversion: 10000 },
+  { id: 1, segment: 'Staff', loyalty: true, expiryDays: 1095, cashConversion: true, pointsPerUnit: 80, minConversion: 100, onboarding: false },
+  { id: 2, segment: 'VIP', loyalty: true, expiryDays: 730, cashConversion: true, pointsPerUnit: 90, minConversion: 100, onboarding: true },
+  { id: 3, segment: 'Regular', loyalty: true, expiryDays: 730, cashConversion: true, pointsPerUnit: 100, minConversion: 200, onboarding: true },
 ];
 
 /** More segments than one page holds, with edge cases: long names, switched-off rules, large numbers. */
 export const MANY_CONFIGS: ProgrammeConfig[] = [
   ...FIGMA_CONFIGS,
-  { id: 4, segment: 'Corporate', loyalty: true, expiryMonths: 12, cashConversion: false, pointsPerUnit: 120, minConversion: 500, maxConversion: 50000 },
-  { id: 5, segment: 'Senior citizens', loyalty: true, expiryMonths: 48, cashConversion: true, pointsPerUnit: 75, minConversion: 100, maxConversion: 10000 },
-  { id: 6, segment: 'Students', loyalty: true, expiryMonths: 12, cashConversion: false, pointsPerUnit: 150, minConversion: 50, maxConversion: 2500 },
-  { id: 7, segment: 'Premier banking customers (Colombo and Kandy branches)', loyalty: true, expiryMonths: 60, cashConversion: true, pointsPerUnit: 60, minConversion: 1000, maxConversion: 1250000 },
-  { id: 8, segment: 'Dormant accounts', loyalty: false, expiryMonths: 6, cashConversion: false, pointsPerUnit: 200, minConversion: 0, maxConversion: 0 },
-  { id: 9, segment: 'Credit card holders', loyalty: true, expiryMonths: 24, cashConversion: true, pointsPerUnit: 100, minConversion: 250, maxConversion: 30000 },
-  { id: 10, segment: 'New joiners', loyalty: true, expiryMonths: 12, cashConversion: false, pointsPerUnit: 110, minConversion: 100, maxConversion: 5000 },
-  { id: 11, segment: 'SME', loyalty: true, expiryMonths: 24, cashConversion: true, pointsPerUnit: 95, minConversion: 500, maxConversion: 75000 },
-  { id: 12, segment: 'Pensioners', loyalty: false, expiryMonths: 36, cashConversion: true, pointsPerUnit: 85, minConversion: 100, maxConversion: 8000 },
+  { id: 4, segment: 'Corporate', loyalty: true, expiryDays: 365, cashConversion: false, pointsPerUnit: 120, minConversion: 500, onboarding: true },
+  { id: 5, segment: 'Senior citizens', loyalty: true, expiryDays: 1460, cashConversion: true, pointsPerUnit: 75, minConversion: 100, onboarding: false },
+  { id: 6, segment: 'Students', loyalty: true, expiryDays: 365, cashConversion: false, pointsPerUnit: 150, minConversion: 50, onboarding: true },
+  { id: 7, segment: 'Premier banking customers (Colombo and Kandy branches)', loyalty: true, expiryDays: 1825, cashConversion: true, pointsPerUnit: 60, minConversion: 1000, onboarding: true },
+  { id: 8, segment: 'Dormant accounts', loyalty: false, expiryDays: 180, cashConversion: false, pointsPerUnit: 200, minConversion: 0, onboarding: false },
+  { id: 9, segment: 'Credit card holders', loyalty: true, expiryDays: 730, cashConversion: true, pointsPerUnit: 100, minConversion: 250, onboarding: true },
+  { id: 10, segment: 'New joiners', loyalty: true, expiryDays: 365, cashConversion: false, pointsPerUnit: 110, minConversion: 100, onboarding: true },
+  { id: 11, segment: 'SME', loyalty: true, expiryDays: 730, cashConversion: true, pointsPerUnit: 95, minConversion: 500, onboarding: false },
+  { id: 12, segment: 'Pensioners', loyalty: false, expiryDays: 1095, cashConversion: true, pointsPerUnit: 85, minConversion: 100, onboarding: false },
 ];
 
 /** More segments, so the table can have up to 60 rows (six pages of 10). */
@@ -82,11 +82,11 @@ export const ALL_CONFIGS: ProgrammeConfig[] = [
     id: MANY_CONFIGS.length + i + 1,
     segment,
     loyalty: i % 7 !== 3,
-    expiryMonths: [6, 12, 24, 36, 48, 60][i % 6]!,
+    expiryDays: [180, 365, 730, 1095, 1460, 1825][i % 6]!,
     cashConversion: i % 3 !== 1,
     pointsPerUnit: 60 + ((i * 5) % 150),
     minConversion: [50, 100, 200, 250, 500, 1000][i % 6]!,
-    maxConversion: [2500, 5000, 10000, 20000, 50000, 250000][(i + 2) % 6]!,
+    onboarding: i % 4 === 1,
   })),
 ];
 
