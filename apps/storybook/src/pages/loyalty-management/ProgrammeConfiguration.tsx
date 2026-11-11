@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { FinAppShell, FinDialog, FinEmptyState, FinTable, type FinTableColumn, type FinTableFilters } from '@finspace-loyalty/ui';
 import { useBackOnline, useFlakyCall, usePageLoad, usePageNotices, type PageApi } from '../common/pageApi';
-import { NOT_AVAILABLE } from '../common/format';
 import { ConnectionError, LoadError, PageNotices } from '../common/PageStates';
 import { PAGE_TABLE_VARIANT, usePageSideNav } from '../pageShell';
 import styles from '../common/PageStates.module.css';
@@ -13,16 +12,16 @@ export interface ProgrammeConfig {
   id: number;
   segment: string;
   loyalty: boolean;
-  /** Points expire after this many months. */
-  expiryMonths: number;
+  /** Points expire after this many days (Figma `312:15899`; was months until 11 Nov 2026). */
+  expiryDays: number;
   cashConversion: boolean;
   /** Points worth `unitValue` in cash ("80 pts = 1.00"). */
   pointsPerUnit: number;
   /** The cash those points are worth (LKR). Default 1.00. */
   unitValue?: number;
   minConversion: number;
-  /** Not in the add form (Figma `312:15899`), so a new configuration has none: shown as "N/A". */
-  maxConversion?: number;
+  /** Onboarding: new members of this segment go through the activation flow (Figma `312:15899`, added 11 Nov 2026). */
+  onboarding: boolean;
 }
 
 export interface ProgrammeConfigurationProps {
@@ -44,7 +43,7 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
   { key: 'no', header: 'No.', width: 80, value: (c) => String(c.id).padStart(2, '0') },
   { key: 'segment', header: 'Segment', minWidth: 176, filter: {} },
   { key: 'loyalty', header: 'Loyalty', type: 'badge', value: (c) => onOff(c.loyalty), badgeTone: (c) => (c.loyalty ? 'success' : 'neutral') },
-  { key: 'expiry', header: 'Expiry (mo)', value: (c) => number(c.expiryMonths) },
+  { key: 'expiry', header: 'Expiry (days)', value: (c) => number(c.expiryDays) },
   {
     key: 'cash',
     header: 'Cash conversion',
@@ -60,7 +59,6 @@ const columns: FinTableColumn<ProgrammeConfig>[] = [
     href: (c) => `#loyalty/programme/${c.id}/conversion`,
   },
   { key: 'min', header: 'Min conversion (pts)', width: 200, value: (c) => number(c.minConversion) },
-  { key: 'max', header: 'Max conversion (pts)', width: 200, value: (c) => (c.maxConversion === undefined ? NOT_AVAILABLE : number(c.maxConversion)) },
 ];
 
 /**
