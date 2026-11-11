@@ -830,3 +830,15 @@
     )
   );
 }
+
+/*
+ * FinMultiSelectField (§9.85): the chips row lies over the field's button, so a click on a chip's label (or between
+ * chips) goes through to the button and opens the menu; only the chips' ✕ buttons take clicks.
+ */
+@utility multi-select-chips {
+  pointer-events: none;
+
+  & button {
+    pointer-events: auto;
+  }
+}

@@ -87,6 +87,11 @@ export interface FinMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
   maxHeight?: string;
   /** Default `bottom-start`; it flips when there isn't room. */
   placement?: FinMenuPlacement;
+  /**
+   * Code only (11 Nov 2026, for FinMultiSelectField): `kind="select"` only. Several options can be chosen: the list is
+   * `aria-multiselectable` and choosing one (click, Enter, Space) doesn't close the menu. Default `false`.
+   */
+  multiple?: boolean;
 }
 
 const MenuKindContext = createContext<FinMenuKind>('action');
@@ -153,6 +158,7 @@ export function FinMenu({
   width = 'content',
   maxHeight,
   placement = 'bottom-start',
+  multiple = false,
   className,
   ...rest
 }: FinMenuProps) {
@@ -360,7 +366,7 @@ export function FinMenu({
     const target = event.target as HTMLElement;
     if (kind === 'action' && target.closest('[role="menuitem"]:not(:disabled)')) close(true);
     if (kind === 'navigation' && target.closest('a[href]')) close(false);
-    if (kind === 'select' && target.closest('[role="option"]:not([aria-disabled="true"])')) close(true);
+    if (kind === 'select' && !multiple && target.closest('[role="option"]:not([aria-disabled="true"])')) close(true);
   };
 
   // Focus left both the menu and its trigger (Tab out of a filter or navigation menu): close.
@@ -447,7 +453,15 @@ export function FinMenu({
     );
   else if (kind === 'select')
     body = (
-      <ul role="listbox" id={menuId} {...name} className={`${styles.list} ${styles.focusTarget}`} tabIndex={-1} data-menu-focus>
+      <ul
+        role="listbox"
+        id={menuId}
+        {...name}
+        aria-multiselectable={multiple || undefined}
+        className={`${styles.list} ${styles.focusTarget}`}
+        tabIndex={-1}
+        data-menu-focus
+      >
         {children}
       </ul>
     );

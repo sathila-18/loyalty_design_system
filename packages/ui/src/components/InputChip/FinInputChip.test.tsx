@@ -9,7 +9,7 @@ describe('FinInputChip', () => {
     const { container } = render(<FinInputChip onRemove={() => {}}>Gold</FinInputChip>);
     const chip = container.firstElementChild!;
     expect(chip.tagName).toBe('SPAN');
-    expect(chip).toHaveAttribute('data-variant', 'unselected');
+    expect(chip).toHaveAttribute('data-variant', 'unselected-border');
     expect(chip).toHaveTextContent('Gold');
     expect(screen.getAllByRole('button')).toHaveLength(1);
     expect(screen.getByRole('button', { name: 'Remove Gold' })).toHaveAttribute('type', 'button');

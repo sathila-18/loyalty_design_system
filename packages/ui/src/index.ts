@@ -59,6 +59,7 @@ export * from './components/TextField';
 export * from './components/PasswordField';
 export * from './components/SearchField';
 export * from './components/SelectField';
+export * from './components/MultiSelectField';
 export * from './components/HeaderNotificationButton';
 export * from './components/Header';
 export * from './components/Menu';
