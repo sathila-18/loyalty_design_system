@@ -87,6 +87,15 @@ export const variant: Record<FinButtonBaseVariant, { button: string; icon: strin
       'fin:enabled:active:bg-action-secondary-pressed fin:enabled:active:text-pressed fin:disabled:text-disabled',
     icon: `fin:fg-action ${secondaryIcon}`,
   },
+  /*
+   * Link (code first, 11 Nov 2026; no Figma component yet): the text link button, as shadcn's link variant. Tertiary's
+   * text-action with no background; hover only underlines the label (linkLabel), in the same colour; pressed is
+   * text-pressed. The button's padding and sizes are kept, so `hanging` lines the label up with the content edge.
+   */
+  link: {
+    button: 'fin:bg-transparent fin:text-action fin:enabled:active:text-pressed fin:disabled:text-disabled',
+    icon: 'fin:fg-action fin:group-enabled/button:group-active/button:fg-pressed fin:group-disabled/button:fg-disabled',
+  },
   white: {
     button:
       'fin:bg-action-inverse fin:text-dark-both fin:inset-ring fin:inset-ring-subtle ' +
@@ -139,5 +148,10 @@ export const contentTone: Record<FinButtonContentTone, { button: string; icon: s
 
 export const icon = 'fin:inline-flex fin:flex-none';
 export const label = 'fin:min-w-0';
+/*
+ * Link's label: underlined on hover (not the icons), in the text's colour, where the font puts the underline
+ * (underline-from-font, as FinTableCell's link). Pressed keeps it while the pointer is over the button.
+ */
+export const linkLabel = 'fin:min-w-0 fin:underline-from-font fin:group-enabled/button:group-hover/button:underline';
 /* Figma Show Label off: read by screen readers, not shown. */
 export const hiddenLabel = 'fin:sr-only';

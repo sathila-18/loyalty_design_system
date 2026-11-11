@@ -43,14 +43,25 @@ export type FinButtonIconProps =
   | { icon?: 'none'; iconName?: never }
   | { icon: Exclude<FinButtonIcon, 'none'>; iconName: FinIconName };
 
+/**
+ * Code first (11 Nov 2026; no Figma component yet): the text link button, `variant="link"`, as shadcn's link variant.
+ * Tertiary's `text-action`, underlined on hover, `text-pressed` when pressed; the same sizes and padding as the other
+ * buttons. Normal tone only, and no icon-only (a link needs its text). Still a `<button>`: for navigation that should
+ * be a real link, see DESIGN.md §10 #117.
+ */
+export type FinButtonLinkProps = { tone?: 'normal'; variant: 'link'; iconTone?: never; contentTone?: never } & (
+  | { icon?: 'none'; iconName?: never }
+  | { icon: 'leading' | 'trailing'; iconName: FinIconName }
+);
+
 export type FinButtonProps = Omit<
   FinButtonBaseProps,
   'variant' | 'leadingIcon' | 'trailingIcon' | 'showLabel' | 'iconOnly' | 'iconSide' | 'iconTone' | 'contentTone'
 > &
-  FinButtonToneProps &
-  FinButtonIconProps;
+  ((FinButtonToneProps & FinButtonIconProps) | FinButtonLinkProps);
 
-function baseVariant(tone: FinButtonTone, variant: FinButtonVariant): FinButtonBaseVariant {
+function baseVariant(tone: FinButtonTone, variant: FinButtonVariant | 'link'): FinButtonBaseVariant {
+  if (variant === 'link') return 'link';
   if (tone === 'white') return 'white';
   if (tone === 'destructive') return variant === 'secondary' ? 'destructive-secondary' : 'destructive';
   return variant;

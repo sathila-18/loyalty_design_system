@@ -6,6 +6,7 @@ import {
   FinButton,
   type FinButtonIcon,
   type FinButtonIconProps,
+  type FinButtonLinkProps,
   type FinButtonTone,
   type FinButtonToneProps,
 } from './FinButton';
@@ -15,7 +16,7 @@ import { FinTextField } from '../TextField';
 import styles from './FinButton.stories.module.css';
 
 const TONES: FinButtonTone[] = ['normal', 'white', 'destructive'];
-const VARIANTS: FinButtonVariant[] = ['primary', 'secondary', 'tertiary'];
+const VARIANTS: (FinButtonVariant | 'link')[] = ['primary', 'secondary', 'tertiary', 'link'];
 const SIZES: FinButtonSize[] = ['large', 'medium', 'small', 'xsmall'];
 const ICONS: FinButtonIcon[] = ['none', 'leading', 'trailing', 'only-icon'];
 const SIZE_NAMES: Record<FinButtonSize, string> = { large: 'Large', medium: 'Medium', small: 'Small', xsmall: 'XSmall' };
@@ -41,10 +42,21 @@ const toneProps = (tone: FinButtonTone, variant: FinButtonVariant): FinButtonTon
 const iconProps = (icon: FinButtonIcon, iconName: FinIconName): FinButtonIconProps =>
   icon === 'none' ? {} : { icon, iconName };
 
+/** The Playground's look: Link (code first) is Normal tone only and has no icon-only, so Only icon shows Trailing. */
+const lookProps = (
+  tone: FinButtonTone,
+  variant: FinButtonVariant | 'link',
+  icon: FinButtonIcon,
+  iconName: FinIconName,
+): (FinButtonToneProps & FinButtonIconProps) | FinButtonLinkProps => {
+  if (variant !== 'link' || tone !== 'normal') return { ...toneProps(tone, variant === 'link' ? 'tertiary' : variant), ...iconProps(icon, iconName) };
+  return icon === 'none' ? { variant } : { variant, icon: icon === 'only-icon' ? 'trailing' : icon, iconName };
+};
+
 interface Args {
   children: string;
   tone: FinButtonTone;
-  variant: FinButtonVariant;
+  variant: FinButtonVariant | 'link';
   size: FinButtonSize;
   icon: FinButtonIcon;
   iconName: FinIconName;
@@ -68,7 +80,8 @@ const meta: Meta<Args> = {
     variant: {
       control: 'inline-radio',
       options: VARIANTS,
-      description: 'Figma `Type`. White has one look; Destructive has Primary and Secondary.',
+      description:
+        'Figma `Type`. White has one look; Destructive has Primary and Secondary. Link is code first (Normal tone only, no icon-only).',
       if: { arg: 'tone', neq: 'white' },
     },
     size: { control: 'inline-radio', options: SIZES },
@@ -77,7 +90,7 @@ const meta: Meta<Args> = {
     disabled: { control: 'boolean', description: 'Figma `State=Disabled`' },
   },
   render: ({ children, tone, variant, size, icon, iconName, disabled }) => (
-    <FinButton {...toneProps(tone, variant)} {...iconProps(icon, iconName)} size={size} disabled={disabled}>
+    <FinButton {...lookProps(tone, variant, icon, iconName)} size={size} disabled={disabled}>
       {children}
     </FinButton>
   ),
@@ -222,6 +235,48 @@ export const Hanging: Story = {
       const own = button.getBoundingClientRect();
       await expect(own.left >= box.left && own.right <= box.right && own.top >= box.top && own.bottom <= box.bottom).toBe(true);
     }
+  },
+};
+
+/**
+ * The text link button, `variant="link"` (code first, 11 Nov 2026; no Figma component yet; like shadcn's link
+ * variant). Tertiary's `text-action`, no background; hover underlines the label in the same colour, pressed is
+ * `text-pressed`. The same sizes and padding as the other buttons; Normal tone only, no icon-only. The play function
+ * checks the resting look (no underline, no background); the hover underline is real CSS `:hover`, which the test
+ * runner's synthetic hover can't trigger (checked in Chrome, 11 Nov 2026).
+ */
+export const Link: Story = {
+  name: 'Link (text link button)',
+  render: () => (
+    <div className={styles.sizes}>
+      {SIZES.map((size) => (
+        <div key={size} className={styles.row}>
+          <FinButton variant="link" size={size}>
+            {SIZE_NAMES[size]}
+          </FinButton>
+          <FinButton variant="link" size={size} icon="leading" iconName="arrow_back">
+            Leading icon
+          </FinButton>
+          <FinButton variant="link" size={size} icon="trailing" iconName="chevron_right">
+            Trailing icon
+          </FinButton>
+          <FinButton variant="link" size={size} disabled>
+            Disabled
+          </FinButton>
+          <FinButton variant="tertiary" size={size}>
+            Tertiary, to compare
+          </FinButton>
+        </div>
+      ))}
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: 'Large' });
+    const label = button.firstElementChild!;
+    await expect(getComputedStyle(label).textDecorationLine).toBe('none');
+    await expect(getComputedStyle(button).backgroundColor).toBe('rgba(0, 0, 0, 0)');
+    await expect(button.tagName).toBe('BUTTON');
   },
 };
 

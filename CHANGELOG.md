@@ -8,7 +8,12 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
+- Token `Size-500` (`--fin-size-500`; Tailwind `size-500`, `w-500`, `max-w-500` …), from the new Foundation – Loyalty export (646 variables).
+- `FinButton` `variant="link"`: the text link button (like shadcn's link variant). `text-action` with no background, the label underlined on hover in the same colour, `text-pressed` when pressed; the same sizes and padding as the other buttons (use `hanging` to line it up with content). Normal tone only, with a leading or trailing icon or none (no icon-only). New type `FinButtonLinkProps`.
+
 ### Changed
+
+- `FinSignInLayout`: the title and description over the artwork are now at most 500 wide (`Size-500`, as Figma's 499 text block), left-aligned, instead of the panel's full width. On a narrower panel (1024) they still wrap at the panel.
 
 ### Fixed
 

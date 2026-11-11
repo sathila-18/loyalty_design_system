@@ -26,9 +26,9 @@ export const BRAND_CONTRAST_EXCEPTIONS: BrandContrastException[] = [
     themes: ['light'],
     pair: 'text-action on bg-primary, 2.76:1 (§10 #83)',
     elements: [
-      // Secondary and Tertiary buttons (FinButtonBase), without a content tone.
-      'button:is([data-variant="secondary"], [data-variant="tertiary"]):not([data-content-tone])',
-      'a:is([data-variant="secondary"], [data-variant="tertiary"]):not([data-content-tone])',
+      // Secondary, Tertiary and Link buttons (FinButtonBase), without a content tone.
+      'button:is([data-variant="secondary"], [data-variant="tertiary"], [data-variant="link"]):not([data-content-tone])',
+      'a:is([data-variant="secondary"], [data-variant="tertiary"], [data-variant="link"]):not([data-content-tone])',
       // Table link cells (FinTableCell `link`).
       'td[data-type="link"] a',
       // The side nav's current page (on bg-primary): a section without pages (FinSideNavItem), or a page

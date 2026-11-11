@@ -20,7 +20,7 @@ const withLoginPlatform: Decorator = (Story, { globals, parameters }) => {
 
 /**
  * Figma Login Option 02, Login (`135:4939`): FinSignInLayout with the trophy artwork; the logo, "Get started now!",
- * user name/ email and password, Forgot password (Tertiary, hanging: the label on the fields' edge), Remember me, Login (Medium,
+ * user name/ email and password, Forgot password (the text link button, hanging: the label on the fields' edge), Remember me, Login (Medium,
  * the fields' height). Mock auth: any user name, password `wrong` fails, anything else signs in. Use the viewport menu
  * for 1440, 1280, 1024 and 768 (no image).
  */

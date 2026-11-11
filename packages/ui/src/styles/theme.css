@@ -525,6 +525,7 @@
   --width-96: var(--fin-size-96);
   --width-120: var(--fin-size-120);
   --width-343: var(--fin-size-343);
+  --width-500: var(--fin-size-500);
   --height-0: var(--fin-size-0);
   --height-2: var(--fin-size-2);
   --height-4: var(--fin-size-4);
@@ -544,6 +545,7 @@
   --height-96: var(--fin-size-96);
   --height-120: var(--fin-size-120);
   --height-343: var(--fin-size-343);
+  --height-500: var(--fin-size-500);
   --size-0: var(--fin-size-0);
   --size-2: var(--fin-size-2);
   --size-4: var(--fin-size-4);
@@ -563,6 +565,7 @@
   --size-96: var(--fin-size-96);
   --size-120: var(--fin-size-120);
   --size-343: var(--fin-size-343);
+  --size-500: var(--fin-size-500);
   --min-width-0: var(--fin-size-0);
   --min-width-2: var(--fin-size-2);
   --min-width-4: var(--fin-size-4);
@@ -582,6 +585,7 @@
   --min-width-96: var(--fin-size-96);
   --min-width-120: var(--fin-size-120);
   --min-width-343: var(--fin-size-343);
+  --min-width-500: var(--fin-size-500);
   --max-width-0: var(--fin-size-0);
   --max-width-2: var(--fin-size-2);
   --max-width-4: var(--fin-size-4);
@@ -601,6 +605,7 @@
   --max-width-96: var(--fin-size-96);
   --max-width-120: var(--fin-size-120);
   --max-width-343: var(--fin-size-343);
+  --max-width-500: var(--fin-size-500);
   --min-height-0: var(--fin-size-0);
   --min-height-2: var(--fin-size-2);
   --min-height-4: var(--fin-size-4);
@@ -620,6 +625,7 @@
   --min-height-96: var(--fin-size-96);
   --min-height-120: var(--fin-size-120);
   --min-height-343: var(--fin-size-343);
+  --min-height-500: var(--fin-size-500);
   --max-height-0: var(--fin-size-0);
   --max-height-2: var(--fin-size-2);
   --max-height-4: var(--fin-size-4);
@@ -639,6 +645,7 @@
   --max-height-96: var(--fin-size-96);
   --max-height-120: var(--fin-size-120);
   --max-height-343: var(--fin-size-343);
+  --max-height-500: var(--fin-size-500);
   --flex-basis-0: var(--fin-size-0);
   --flex-basis-2: var(--fin-size-2);
   --flex-basis-4: var(--fin-size-4);
@@ -658,6 +665,7 @@
   --flex-basis-96: var(--fin-size-96);
   --flex-basis-120: var(--fin-size-120);
   --flex-basis-343: var(--fin-size-343);
+  --flex-basis-500: var(--fin-size-500);
 
   /* Radius */
   --radius-full: var(--fin-radius-full);

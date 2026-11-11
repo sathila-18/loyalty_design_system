@@ -108,9 +108,34 @@ describe('FinButton', () => {
         <FinButton icon="leading">x</FinButton>
         {/* @ts-expect-error no icon name without an icon */}
         <FinButton iconName="check">x</FinButton>
+        {/* @ts-expect-error a link needs its text: no icon-only */}
+        <FinButton variant="link" icon="only-icon" iconName="close">x</FinButton>
+        {/* @ts-expect-error Link is Normal tone only */}
+        <FinButton tone="white" variant="link">x</FinButton>
+        {/* @ts-expect-error iconTone is Tertiary only */}
+        <FinButton variant="link" iconTone="secondary">x</FinButton>
       </>
     );
     expect(invalid).toBeTruthy();
+  });
+
+  it('renders the text link button (variant="link") as a button with the link look and an underlined label on hover', () => {
+    render(
+      <FinButton variant="link" size="xsmall" icon="trailing" iconName="chevron_right" hanging>
+        Forgot password
+      </FinButton>,
+    );
+    const button = screen.getByRole('button', { name: /Forgot password/ });
+    expect(button.tagName).toBe('BUTTON');
+    expect(button).toHaveAttribute('type', 'button');
+    expect(button).toHaveAttribute('data-variant', 'link');
+    expect(button).toHaveAttribute('data-hanging');
+    expect(button.className).toBe(
+      [baseStyles.button, baseStyles.size.xsmall.button, baseStyles.size.xsmall.padding.trailing, baseStyles.hanging.xsmall.trailing, baseStyles.variant.link.button].join(' '),
+    );
+    const label = [...button.children].find((c) => c.textContent === 'Forgot password')!;
+    expect(label.className).toBe(baseStyles.linkLabel);
+    for (const icon of icons(button)) expect(icon.parentElement!.className).toContain(baseStyles.variant.link.icon);
   });
 
   it('marks a grey Tertiary icon with iconTone', () => {

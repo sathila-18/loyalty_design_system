@@ -687,6 +687,17 @@
           "mode": {}
         }
       },
+      "Size-500": {
+        "$type": "dimension",
+        "$value": {
+          "value": 500,
+          "unit": "px"
+        },
+        "$description": "",
+        "$extensions": {
+          "mode": {}
+        }
+      },
       "Size-1024": {
         "$type": "dimension",
         "$value": {
@@ -6680,7 +6691,7 @@
         "Color collection",
         "Alias Spacing & Radius"
       ],
-      "createdAt": "2026-11-04T11:24:48.631Z"
+      "createdAt": "2026-11-11T06:10:02.831Z"
     }
   }
 }
