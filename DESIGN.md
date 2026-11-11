@@ -4712,3 +4712,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 10 Nov 2026 | 0.2 | **Released v0.2.0** (both packages; what's in it: CHANGELOG.md). |
 | 11 Nov 2026 | 0.2 | **Token `Size-500`** (new Foundation – Loyalty export, 646 variables; `EXPECTED.tokens` 646) and **FinSignInLayout** (approved by design and merged into `main`, 11 Nov 2026): the image text at most `Size-500` wide (Figma 499), left-aligned, instead of the panel's width (§9.84). |
 | 11 Nov 2026 | 0.2 | **FinButton `variant="link"`: the text link button** (approved by design and merged into `main`, 11 Nov 2026; §9.28; code first, like shadcn's link variant; §10 #118): `text-action`, underlined on hover, `text-pressed` when pressed; the button's sizes and padding; Normal tone, no icon-only. Login's "Forgot password" uses it. |
+| 11 Nov 2026 | 0.2 | **Released v0.3.0** (both packages; what's in it: CHANGELOG.md). |
