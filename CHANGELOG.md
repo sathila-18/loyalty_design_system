@@ -8,18 +8,24 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
-- `FinMultiSelectField` (Figma Input field-Multi select): a field that opens a menu of options with checkboxes and shows each chosen one as a chip with a ✕; on one row, the chips that fit and "+N" for the rest. `value: string[]` / `defaultValue`, `onChange(values)`, `name`, `searchable`, `size`, `error`, `disabled`, like `FinSelectField`.
-- `FinMenu` `multiple` (with `kind="select"`): several options can be chosen and the menu stays open after each.
-
 ### Changed
-
-- `FinInputChip` uses the Unselected-border look (`border-default` with the Resting cards shadow), as Figma's multi-select chip; it was the lighter Unselected look.
 
 ### Fixed
 
 ### Breaking
 
 ### Known issues
+
+## v0.4.0 — 2026-11-11
+
+### Added
+
+- `FinMultiSelectField` (Figma Input field-Multi select): a field that opens a menu of options with checkboxes and shows each chosen one as a chip with a ✕; on one row, the chips that fit and "+N" for the rest. `value: string[]` / `defaultValue`, `onChange(values)`, `name`, `searchable`, `size`, `error`, `disabled`, like `FinSelectField`.
+- `FinMenu` `multiple` (with `kind="select"`): several options can be chosen and the menu stays open after each.
+
+### Changed
+
+- `FinInputChip` uses the Unselected-border look (`border-default` with the Resting cards shadow), as Figma's multi-select chip; it was the lighter Unselected look.
 
 ## v0.3.0 — 2026-11-11
 
