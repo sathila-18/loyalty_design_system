@@ -86,6 +86,22 @@ export const EMPTY: RewardDetails = {
   push: false,
 };
 
+/** The fake row whose Edit opens with "Rules - segments & tiers" and added rules (story "Edit reward, rules"). */
+export const RULES_REWARD = 'Tech Shop reward';
+
+/** Its eligibility, as Figma `402:33879` (whose two "VIP, Platinum" rows are one here: a rule can't be added twice). */
+const RULES_ELIGIBILITY: Partial<RewardDetails> = {
+  eligibility: 'rules',
+  rules: [
+    { id: 1, segment: 'Staff', tier: 'Silver' },
+    { id: 2, segment: 'Staff', tier: 'Gold' },
+    { id: 3, segment: 'VIP', tier: 'Gold' },
+    { id: 4, segment: 'VIP', tier: 'Platinum' },
+    { id: 5, segment: 'Regular', tier: 'Platinum' },
+  ],
+  badge: 'Budget builder',
+};
+
 /**
  * Edit for a reward the form didn't make (the stories' fake rows): the list's values (name, partner, user limit) and
  * plausible fake ones for the rest.
@@ -93,6 +109,7 @@ export const EMPTY: RewardDetails = {
 export function rewardDetailsFrom(reward: Reward): RewardDetails {
   return {
     ...EMPTY,
+    ...(reward.name === RULES_REWARD ? RULES_ELIGIBILITY : {}),
     name: reward.name,
     event: EVENTS[reward.id % EVENTS.length]!,
     providers: reward.partner ? [reward.partner] : [],
