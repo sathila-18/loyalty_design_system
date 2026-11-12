@@ -3,6 +3,7 @@ import { fn, userEvent, within } from 'storybook/test';
 import { PAGE_KNOWN_CONTRAST_ISSUES, withPageTheme } from '../pageShell';
 import { RewardCatalog, type RewardCatalogProps } from './RewardCatalog';
 import { ALL_REWARDS, FIGMA_REWARDS } from './rewardCatalogData';
+import { RULES_REWARD } from './rewardDetails';
 
 const body = (canvasElement: HTMLElement) => within(canvasElement.ownerDocument.body);
 
@@ -188,5 +189,19 @@ export const EditRewardNoPartner: Story = {
   name: 'Edit reward, no partner or limit',
   play: async ({ canvasElement }) => {
     await openRowAction(canvasElement, 'Cash back', 'Edit');
+  },
+};
+
+/**
+ * Edit on step 3, Eligibility, with "Rules - segments & tiers" chosen (Figma `402:33879`): the added rules in the table
+ * under "Added rules" (Remove in each row's ⋮ menu), Segment / Tier / Add rule above it, and Badge after completion.
+ */
+export const EditRewardRules: Story = {
+  name: 'Edit reward, rules',
+  play: async ({ canvasElement }) => {
+    await openRowAction(canvasElement, RULES_REWARD, 'Edit');
+    const sheet = within(await body(canvasElement).findByRole('dialog', { name: 'Edit reward' }));
+    await userEvent.click(sheet.getByRole('button', { name: /Eligibility/ }));
+    await sheet.findByRole('table', { name: 'Added rules' });
   },
 };

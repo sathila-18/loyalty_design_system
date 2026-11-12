@@ -9,7 +9,6 @@ import {
   FinListRadioFilled,
   FinListRadioGroup,
   FinListToggleFilled,
-  FinNotificationBanner,
   FinMultiSelectField,
   FinSelectField,
   FinSideSheet,
@@ -426,7 +425,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                       </p>
                       <FinListRadioGroup label="Type" value={v.type} onValueChange={(next) => set('type', next as RewardType, 'amount')} size="small">
                         <FinListRadioFilled value="discount" title="Discount" />
-                        <FinListRadioFilled value="cashback" title="Cash back" description="Points are earned" />
+                        <FinListRadioFilled value="cashback" title="Cash back (Points are earned)" />
                       </FinListRadioGroup>
                     </div>
                     <div className={styles.panel}>
@@ -561,13 +560,13 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                   <legend className={styles.legend}>Who can claim this reward</legend>
                   <div className={styles.panel}>
                     <p className={styles.panelTitle} aria-hidden="true">
-                      Type
+                      All eligible segments
                     </p>
-                    <FinListRadioGroup label="Type" value={v.eligibility} onValueChange={(next) => set('eligibility', next as Eligibility)} size="small">
-                      <FinListRadioFilled value="all" title="All customers" description="All tiers and segments" />
+                    <FinListRadioGroup label="All eligible segments" value={v.eligibility} onValueChange={(next) => set('eligibility', next as Eligibility)} size="small">
+                      <FinListRadioFilled value="all" title="All customers (All tiers & segments)" />
                       <FinListRadioFilled value="tiers" title="Tier only" />
                       <FinListRadioFilled value="segments" title="Segment only" />
-                      <FinListRadioFilled value="rules" title="Rules" description="Segments and tiers" />
+                      <FinListRadioFilled value="rules" title="Rules - segments & tiers" />
                     </FinListRadioGroup>
                   </div>
                 </fieldset>
@@ -625,49 +624,53 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                 )}
 
                 {v.eligibility === 'rules' && (
-                  <fieldset className={styles.section}>
-                    <legend className={styles.legend}>Create a rule</legend>
-                    <div className={styles.group}>
-                      <FinNotificationBanner tone="warning">
-                        Each list also offers all segments or all tiers.
-                      </FinNotificationBanner>
-                      <div className={styles.row}>
-                        <FinSelectField size="small"
-                          ref={ref('ruleSegment')}
-                          label="Segment"
-                          placeholder="Segment"
-                          options={[ALL_SEGMENTS, ...SEGMENTS].map((o) => ({ value: o, label: o }))}
-                          value={ruleSegment}
-                          onChange={(next) => {
-                            setRuleSegment(next);
-                            setRuleDuplicate(false);
-                            setErrors((current) => ({ ...current, ruleSegment: false }));
-                          }}
-                          {...helper('ruleSegment')}
-                        />
-                        <FinSelectField size="small"
-                          ref={ref('ruleTier')}
-                          label="Tier"
-                          placeholder="Tier"
-                          options={[ALL_TIERS, ...TIERS].map((o) => ({ value: o, label: o }))}
-                          value={ruleTier}
-                          onChange={(next) => {
-                            setRuleTier(next);
-                            setRuleDuplicate(false);
-                            setErrors((current) => ({ ...current, ruleTier: false }));
-                          }}
-                          {...(ruleDuplicate ? { error: true, helperText: 'This rule is already added' } : helper('ruleTier'))}
-                        />
+                  <>
+                    <fieldset className={styles.section}>
+                      <legend className={styles.legend}>Create a rule</legend>
+                      <div className={styles.group}>
+                        <div className={styles.row}>
+                          <FinSelectField size="small"
+                            ref={ref('ruleSegment')}
+                            label="Segment"
+                            placeholder="Segment"
+                            options={[ALL_SEGMENTS, ...SEGMENTS].map((o) => ({ value: o, label: o }))}
+                            value={ruleSegment}
+                            onChange={(next) => {
+                              setRuleSegment(next);
+                              setRuleDuplicate(false);
+                              setErrors((current) => ({ ...current, ruleSegment: false }));
+                            }}
+                            {...helper('ruleSegment')}
+                          />
+                          <FinSelectField size="small"
+                            ref={ref('ruleTier')}
+                            label="Tier"
+                            placeholder="Tier"
+                            options={[ALL_TIERS, ...TIERS].map((o) => ({ value: o, label: o }))}
+                            value={ruleTier}
+                            onChange={(next) => {
+                              setRuleTier(next);
+                              setRuleDuplicate(false);
+                              setErrors((current) => ({ ...current, ruleTier: false }));
+                            }}
+                            {...(ruleDuplicate ? { error: true, helperText: 'This rule is already added' } : helper('ruleTier'))}
+                          />
+                        </div>
+                        <FinButton ref={ref('rules')} variant="secondary" size="medium" icon="leading" iconName="add" onClick={addRule} {...(errors.rules ? { 'aria-describedby': rulesErrorId } : {})}>
+                          Add rule
+                        </FinButton>
+                        {errors.rules && (
+                          <FinHelperText id={rulesErrorId} tone="error">
+                            {ERRORS.rules}
+                          </FinHelperText>
+                        )}
                       </div>
-                      <FinButton ref={ref('rules')} variant="secondary" size="medium" icon="leading" iconName="add" onClick={addRule} {...(errors.rules ? { 'aria-describedby': rulesErrorId } : {})}>
-                        Add rule
-                      </FinButton>
-                      {errors.rules && (
-                        <FinHelperText id={rulesErrorId} tone="error">
-                          {ERRORS.rules}
-                        </FinHelperText>
-                      )}
-                      {v.rules.length > 0 && (
+                    </fieldset>
+                    {v.rules.length > 0 && (
+                      <div className={styles.section}>
+                        <p className={styles.legend} aria-hidden="true">
+                          Added rules
+                        </p>
                         <FinTable
                           label="Added rules"
                           columns={ruleColumns}
@@ -686,21 +689,18 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                             },
                           ]}
                         />
-                      )}
-                    </div>
-                  </fieldset>
+                      </div>
+                    )}
+                  </>
                 )}
 
-                <fieldset className={styles.section}>
-                  <legend className={styles.legend}>Badge</legend>
-                  <FinSelectField size="small"
-                    label="Badge after completion (optional)"
-                    placeholder="Badge after completion (optional)"
-                    options={BADGES.map((o) => ({ value: o, label: o }))}
-                    value={v.badge}
-                    onChange={(next) => set('badge', next)}
-                  />
-                </fieldset>
+                <FinSelectField size="small"
+                  label="Badge after completion"
+                  placeholder="Badge after completion"
+                  options={BADGES.map((o) => ({ value: o, label: o }))}
+                  value={v.badge}
+                  onChange={(next) => set('badge', next)}
+                />
               </>
             )}
 
