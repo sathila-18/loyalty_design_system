@@ -45,18 +45,18 @@ function historyFor(c: Omit<Customer, 'history'>, n: number): Activity[] {
   return out;
 }
 
-/** Figma's ten (`435:90575`): name, tier, earned, redeemed, converted, expired, last activity. */
-const FIGMA: [string, Tier, number, number, number, number, string][] = [
-  ['Fatima Khan', 'Gold', 12400, 4500, 2000, 0, '2026-09-28'],
-  ['Marcus Chen', 'Platinum', 18250, 6800, 1500, 0, '2026-10-12'],
-  ['Sofia Patel', 'Silver', 9800, 3200, 1100, 0, '2026-11-05'],
-  ['Noah Brooks', 'Bronze', 4150, 1800, 0, 0, '2026-11-18'],
-  ['Ava Moretti', 'Gold', 14700, 5400, 2300, 0, '2026-12-02'],
-  ['Ethan Kim', 'Platinum', 22100, 8900, 3200, 0, '2026-12-15'],
-  ['Liam Nguyen', 'Silver', 11300, 4100, 1400, 0, '2026-12-22'],
-  ['Emma Davis', 'Bronze', 3900, 1200, 0, 0, '2027-01-05'],
-  ['Olivia Brown', 'Gold', 16500, 6200, 2100, 0, '2027-01-12'],
-  ['Mason Lee', 'Platinum', 25800, 10400, 4000, 0, '2027-01-28'],
+/** Figma's ten (`435:90575`): name, tier, segment, earned, redeemed, converted, expired, last activity. */
+const FIGMA: [string, Tier, Segment, number, number, number, number, string][] = [
+  ['Fatima Khan', 'Gold', 'Regular', 12400, 4500, 2000, 0, '2026-09-28'],
+  ['Marcus Chen', 'Platinum', 'Staff', 18250, 6800, 1500, 0, '2026-10-12'],
+  ['Sofia Patel', 'Silver', 'Staff', 9800, 3200, 1100, 0, '2026-11-05'],
+  ['Noah Brooks', 'Bronze', 'VIP', 4150, 1800, 0, 0, '2026-11-18'],
+  ['Ava Moretti', 'Gold', 'Regular', 14700, 5400, 2300, 0, '2026-12-02'],
+  ['Ethan Kim', 'Platinum', 'Staff', 22100, 8900, 3200, 0, '2026-12-15'],
+  ['Liam Nguyen', 'Silver', 'Regular', 11300, 4100, 1400, 0, '2026-12-22'],
+  ['Emma Davis', 'Bronze', 'Regular', 3900, 1200, 0, 0, '2027-01-05'],
+  ['Olivia Brown', 'Gold', 'VIP', 16500, 6200, 2100, 0, '2027-01-12'],
+  ['Mason Lee', 'Platinum', 'VIP', 25800, 10400, 4000, 0, '2027-01-28'],
 ];
 
 const MORE = [
@@ -80,13 +80,14 @@ const TIER_LIST: Tier[] = ['Bronze', 'Silver', 'Gold', 'Platinum'];
 const SEGMENT_LIST: Segment[] = ['Regular', 'VIP', 'Staff'];
 
 export const ALL_CUSTOMERS: Customer[] = [
-  ...FIGMA.map(([name, tier, earned, redeemed, converted, expired, lastActivity], i) => ({ name, tier, earned, redeemed, converted, expired, lastActivity, i })),
+  ...FIGMA.map(([name, tier, segment, earned, redeemed, converted, expired, lastActivity], i) => ({ name, tier, segment, earned, redeemed, converted, expired, lastActivity, i })),
   ...MORE.map((name, j) => {
     const i = FIGMA.length + j;
     const earned = j === 4 ? 0 : 2500 + ((j * 3571) % 30000);
     return {
       name,
       tier: TIER_LIST[j % 4]!,
+      segment: SEGMENT_LIST[i % 3]!,
       earned,
       redeemed: Math.round(earned * 0.3),
       converted: j % 3 === 0 ? 0 : Math.round(earned * 0.1),
@@ -96,7 +97,7 @@ export const ALL_CUSTOMERS: Customer[] = [
     };
   }),
 ].map(({ i, ...c }): Customer => {
-  const base = { id: i + 1, segment: SEGMENT_LIST[i % 3]!, ...c, ...(c.earned > 0 ? { nextExpiry: { points: 200 + ((i * 113) % 1500), date: '2026-10-31' } } : {}) };
+  const base = { id: i + 1, ...c, ...(c.earned > 0 ? { nextExpiry: { points: 200 + ((i * 113) % 1500), date: '2026-10-31' } } : {}) };
   const history: Activity[] =
     i === 0
       ? FATIMA.map(([type, description, points, balance, lifetime], k) => ({ id: k + 1, date: daysBefore(c.lastActivity, k * 11), type, description, points, balance, lifetime }))
