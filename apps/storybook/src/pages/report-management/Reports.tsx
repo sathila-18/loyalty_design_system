@@ -38,6 +38,8 @@ const customerColumns: FinTableColumn<Customer>[] = [
   { key: 'name', header: 'Customer', minWidth: 200 },
   // The screen's "Tier: All" chip, as the column's filter (decided 28 Oct 2026, as the other pages).
   { key: 'tier', header: 'Tier', width: 144, filter: { options: TIERS.map((t) => ({ value: t, label: t })) } },
+  // Added 12 Nov 2026 (Figma `435:90575`); no filter, as the screen's Segment chip was removed (decided 28 Oct 2026).
+  { key: 'segment', header: 'Segments', width: 144 },
   { key: 'earned', header: 'Earned', width: 128, value: (c) => number(c.earned) },
   { key: 'redeemed', header: 'Redeemed', width: 128, value: (c) => number(c.redeemed) },
   { key: 'converted', header: 'Converted', width: 128, value: (c) => number(c.converted) },
