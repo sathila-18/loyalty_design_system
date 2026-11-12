@@ -119,7 +119,7 @@ function stepErrors(step: number, v: RewardDetails): Partial<Record<Field, boole
         end: !v.lifetime && (!v.end || (!!v.start && v.end < v.start)),
       };
     case 1: {
-      // Reward value moved here from step 1, after Qualifying transaction (Figma `388:33159`, 11 Nov 2026).
+      // Figma `388:33159` (12 Nov 2026): Qualifying transaction, Reward value (moved here from step 1), Give the reward.
       const amountOk = (v.type === 'cashback' && v.valueType === 'fixed' ? above0(v.amount, WHOLE) : v.valueType === 'fixed' ? above0(v.amount, AMOUNT) : percent(v.amount));
       return {
         minTransaction: !above0(v.minTransaction, AMOUNT),
@@ -415,27 +415,6 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                       onChange={(e) => set('minTransaction', e.target.value, 'minTransaction')}
                       {...helper('minTransaction')}
                     />
-                    <div className={styles.panel}>
-                      <p className={styles.panelTitle} aria-hidden="true">
-                        Give the reward
-                      </p>
-                      <FinListRadioGroup label="Give the reward" value={v.giveOn} onValueChange={(next) => set('giveOn', next as GiveOn, 'count')} size="small">
-                        <FinListRadioFilled value="every" title="On every qualifying event" />
-                        <FinListRadioFilled value="nth" title="On the nth qualifying event" />
-                      </FinListRadioGroup>
-                    </div>
-                    {v.giveOn === 'nth' && (
-                      <FinTextField size="small"
-                        ref={ref('count')}
-                        label="Count of event"
-                        placeholder="Count of event"
-                        suffix="th qualifying event"
-                        inputMode="numeric"
-                        value={v.count}
-                        onChange={(e) => set('count', e.target.value, 'count')}
-                        {...helper('count')}
-                      />
-                    )}
                   </div>
                 </fieldset>
                 <fieldset className={styles.section}>
@@ -478,11 +457,34 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                         inputMode="decimal"
                         value={v.maxCapacity}
                         onChange={(e) => set('maxCapacity', e.target.value, 'maxCapacity')}
-                        {...helper('maxCapacity', 'The most one claim can give')}
+                        {...helper('maxCapacity')}
                       />
                     )}
                   </div>
                 </fieldset>
+                <div className={styles.group}>
+                  <div className={styles.panel}>
+                    <p className={styles.panelTitle} aria-hidden="true">
+                      Give the reward
+                    </p>
+                    <FinListRadioGroup label="Give the reward" value={v.giveOn} onValueChange={(next) => set('giveOn', next as GiveOn, 'count')} size="small">
+                      <FinListRadioFilled value="every" title="On every qualifying event" />
+                      <FinListRadioFilled value="nth" title="Count of the nth qualifying event" />
+                    </FinListRadioGroup>
+                  </div>
+                  {v.giveOn === 'nth' && (
+                    <FinTextField size="small"
+                      ref={ref('count')}
+                      label="Count of event"
+                      placeholder="Count of event"
+                      suffix="th qualifying event"
+                      inputMode="numeric"
+                      value={v.count}
+                      onChange={(e) => set('count', e.target.value, 'count')}
+                      {...helper('count')}
+                    />
+                  )}
+                </div>
                 <fieldset className={styles.section}>
                   <legend className={styles.legend}>Cost to the customer</legend>
                   <div className={styles.group}>
@@ -490,7 +492,6 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                       ref={ref('pointsCost')}
                       label="Points cost"
                       placeholder="Points cost"
-                      suffix="Points"
                       inputMode="numeric"
                       value={v.pointsCost}
                       onChange={(e) => set('pointsCost', e.target.value, 'pointsCost')}
@@ -499,7 +500,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                     <FinListToggleFilled
                       size="small"
                       title="Customer must enter a promo code"
-                      description="Customers enter a promo code to claim the reward"
+                      description="Switch this toggle to require customers to enter a promo code to claim a reward."
                       checked={v.promo}
                       onCheckedChange={(on) => set('promo', on, 'promoCode')}
                     />
@@ -532,6 +533,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                         ref={ref('claimsPerCustomer')}
                         label="Maximum claims per customer"
                         placeholder="Maximum claims per customer"
+                        suffix="Customer"
                         inputMode="numeric"
                         value={v.claimsPerCustomer}
                         onChange={(e) => set('claimsPerCustomer', e.target.value, 'claimsPerCustomer')}
