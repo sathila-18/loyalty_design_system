@@ -707,9 +707,9 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
             {step === 3 && (
               <>
                 <fieldset className={styles.section}>
-                  <legend className={styles.legend}>Offer text, shown in the reward catalogue</legend>
+                  <legend className={styles.legend}>Offer text - Shown at reward catalogue</legend>
                   <div className={styles.group}>
-                    <FinTextField size="small" ref={ref('headline')} label="Headline" placeholder="Headline" value={v.headline} onChange={(e) => set('headline', e.target.value, 'headline')} {...helper('headline')} />
+                    <FinTextField size="small" ref={ref('headline')} label="Headline (En)" placeholder="Headline (En)" value={v.headline} onChange={(e) => set('headline', e.target.value, 'headline')} {...helper('headline')} />
                     <FinTextArea
                       ref={ref('description')}
                       label="Description"
@@ -720,16 +720,13 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                     />
                   </div>
                 </fieldset>
-                <fieldset className={styles.section}>
-                  <legend className={styles.legend}>Notifications</legend>
-                  <FinListToggleFilled
-                    size="small"
-                    title="Push notification"
-                    description="When a customer earns the reward"
-                    checked={v.push}
-                    onCheckedChange={(on) => set('push', on)}
-                  />
-                </fieldset>
+                <FinListToggleFilled
+                  size="small"
+                  title="Push notification"
+                  description="When customer earns a cash back"
+                  checked={v.push}
+                  onCheckedChange={(on) => set('push', on)}
+                />
               </>
             )}
           </div>
