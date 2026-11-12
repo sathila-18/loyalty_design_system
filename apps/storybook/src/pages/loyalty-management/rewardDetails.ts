@@ -27,7 +27,8 @@ export interface Rule {
 export interface RewardDetails {
   name: string;
   event: string | null;
-  provider: string | null;
+  /** The providers (Figma `367:19964`: a multi-select since 11 Nov 2026; was one, optional). */
+  providers: string[];
   lifetime: boolean;
   start: string | null;
   end: string | null;
@@ -58,7 +59,7 @@ export interface RewardDetails {
 export const EMPTY: RewardDetails = {
   name: '',
   event: null,
-  provider: null,
+  providers: [],
   lifetime: false,
   start: null,
   end: null,
@@ -94,7 +95,7 @@ export function rewardDetailsFrom(reward: Reward): RewardDetails {
     ...EMPTY,
     name: reward.name,
     event: EVENTS[reward.id % EVENTS.length]!,
-    provider: reward.partner ?? null,
+    providers: reward.partner ? [reward.partner] : [],
     start: '2026-08-01',
     end: '2027-07-31',
     amount: '50.00',
