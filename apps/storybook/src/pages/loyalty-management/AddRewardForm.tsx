@@ -10,6 +10,7 @@ import {
   FinListRadioGroup,
   FinListToggleFilled,
   FinNotificationBanner,
+  FinMultiSelectField,
   FinSelectField,
   FinSideSheet,
   FinStepper,
@@ -45,7 +46,7 @@ import styles from './RewardCatalog.module.css';
 /** What the form saves: the page adds the row, or updates it when editing. */
 export interface AddRewardValues {
   name: string;
-  /** The provider: the list's Partner; none for the bank's own rewards ("N/A"). */
+  /** The providers, joined ("SLT Mobitel, Dialog"): the list's Partner. */
   partner?: string;
   /** Max total uses of the campaign: the list's User limit (assumed, DESIGN.md §8.6); none means no limit. */
   userLimit?: number;
@@ -69,6 +70,7 @@ export interface AddRewardFormProps {
 type Field =
   | 'name'
   | 'event'
+  | 'providers'
   | 'start'
   | 'end'
   | 'amount'
@@ -108,20 +110,21 @@ function amountField(type: RewardType, valueType: ValueType) {
 /** The fields each step checks, in the order they're shown; `true` marks a wrong one. */
 function stepErrors(step: number, v: RewardDetails): Partial<Record<Field, boolean>> {
   switch (step) {
-    case 0: {
-      const amountOk = (v.type === 'cashback' && v.valueType === 'fixed' ? above0(v.amount, WHOLE) : v.valueType === 'fixed' ? above0(v.amount, AMOUNT) : percent(v.amount));
+    case 0:
       return {
         name: !v.name.trim(),
         event: !v.event,
+        providers: v.providers.length === 0,
         start: !v.start,
         end: !v.lifetime && (!v.end || (!!v.start && v.end < v.start)),
-        amount: !amountOk,
-        maxCapacity: v.valueType === 'percentage' && v.maxCapacity.trim() !== '' && !above0(v.maxCapacity, v.type === 'cashback' ? WHOLE : AMOUNT),
       };
-    }
-    case 1:
+    case 1: {
+      // Reward value moved here from step 1, after Qualifying transaction (Figma `388:33159`, 11 Nov 2026).
+      const amountOk = (v.type === 'cashback' && v.valueType === 'fixed' ? above0(v.amount, WHOLE) : v.valueType === 'fixed' ? above0(v.amount, AMOUNT) : percent(v.amount));
       return {
         minTransaction: !above0(v.minTransaction, AMOUNT),
+        amount: !amountOk,
+        maxCapacity: v.valueType === 'percentage' && v.maxCapacity.trim() !== '' && !above0(v.maxCapacity, v.type === 'cashback' ? WHOLE : AMOUNT),
         count: v.giveOn === 'nth' && !above0(v.count, WHOLE),
         pointsCost: !above0(v.pointsCost, WHOLE),
         promoCode: v.promo && !v.promoCode.trim(),
@@ -129,6 +132,7 @@ function stepErrors(step: number, v: RewardDetails): Partial<Record<Field, boole
         claimsPerCustomer: !above0(v.claimsPerCustomer, WHOLE),
         maxUses: v.maxUses.trim() !== '' && !above0(v.maxUses, WHOLE),
       };
+    }
     case 2:
       return {
         tiers: v.eligibility === 'tiers' && v.tiers.length === 0,
@@ -143,6 +147,7 @@ function stepErrors(step: number, v: RewardDetails): Partial<Record<Field, boole
 const ERRORS: Partial<Record<Field, string>> = {
   name: 'Enter a reward name',
   event: 'Choose an event',
+  providers: 'Choose at least one provider',
   start: 'Choose a start date',
   end: 'Choose an end date on or after the start date',
   maxCapacity: 'Enter an amount above 0, or leave it empty',
@@ -197,7 +202,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
 
   const changed = (Object.keys(initial) as (keyof RewardDetails)[]).some((key) => JSON.stringify(v[key]) !== JSON.stringify(initial[key]));
   // A partner from the list that isn't one of the options (the stories' fake rows) is offered too.
-  const providers = initial.provider && !PROVIDERS.includes(initial.provider) ? [initial.provider, ...PROVIDERS] : PROVIDERS;
+  const providers = [...initial.providers.filter((p) => !PROVIDERS.includes(p)), ...PROVIDERS];
   const amount = amountField(v.type, v.valueType);
 
   // A new step: focus it, so screen readers hear it and the body starts at the top.
@@ -245,7 +250,7 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
     setSaveFailed(false);
     const saved = onSave({
       name: v.name.trim(),
-      ...(v.provider ? { partner: v.provider } : {}),
+      ...(v.providers.length > 0 ? { partner: v.providers.join(', ') } : {}),
       ...(v.maxUses.trim() ? { userLimit: Number(v.maxUses) } : {}),
       ...(status ? { status } : {}),
       details: { ...v, name: v.name.trim() },
@@ -360,18 +365,20 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                 <fieldset className={styles.section}>
                   <legend className={styles.legend}>Availability</legend>
                   <div className={styles.group}>
-                    <FinSelectField size="small"
-                      label="Provider (optional)"
-                      placeholder="Provider (optional)"
+                    <FinMultiSelectField
+                      size="small"
+                      ref={ref('providers')}
+                      label="Provider"
+                      placeholder="Provider"
                       options={providers.map((o) => ({ value: o, label: o }))}
-                      value={v.provider}
-                      onChange={(next) => set('provider', next)}
-                      helperText="Leave it empty for the bank's own rewards"
+                      value={v.providers}
+                      onChange={(next) => set('providers', next, 'providers')}
+                      {...helper('providers')}
                     />
                     <FinListToggleFilled
                       size="small"
                       title="Run for lifetime"
-                      description="The reward has no end date"
+                      description="Switch this toggle to run this reward for lifetime"
                       checked={v.lifetime}
                       onCheckedChange={(on) => set('lifetime', on, 'end')}
                     />
@@ -388,6 +395,47 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                         />
                       )}
                     </div>
+                  </div>
+                </fieldset>
+              </>
+            )}
+
+            {step === 1 && (
+              <>
+                <fieldset className={styles.section}>
+                  <legend className={styles.legend}>Qualifying transaction</legend>
+                  <div className={styles.group}>
+                    <FinTextField size="small"
+                      ref={ref('minTransaction')}
+                      label="Minimum transaction value"
+                      placeholder="Minimum transaction value"
+                      suffix="LKR"
+                      inputMode="decimal"
+                      value={v.minTransaction}
+                      onChange={(e) => set('minTransaction', e.target.value, 'minTransaction')}
+                      {...helper('minTransaction')}
+                    />
+                    <div className={styles.panel}>
+                      <p className={styles.panelTitle} aria-hidden="true">
+                        Give the reward
+                      </p>
+                      <FinListRadioGroup label="Give the reward" value={v.giveOn} onValueChange={(next) => set('giveOn', next as GiveOn, 'count')} size="small">
+                        <FinListRadioFilled value="every" title="On every qualifying event" />
+                        <FinListRadioFilled value="nth" title="On the nth qualifying event" />
+                      </FinListRadioGroup>
+                    </div>
+                    {v.giveOn === 'nth' && (
+                      <FinTextField size="small"
+                        ref={ref('count')}
+                        label="Count of event"
+                        placeholder="Count of event"
+                        suffix="th qualifying event"
+                        inputMode="numeric"
+                        value={v.count}
+                        onChange={(e) => set('count', e.target.value, 'count')}
+                        {...helper('count')}
+                      />
+                    )}
                   </div>
                 </fieldset>
                 <fieldset className={styles.section}>
@@ -431,47 +479,6 @@ export function AddRewardForm({ open, reward, onClose, onSave, offline = false }
                         value={v.maxCapacity}
                         onChange={(e) => set('maxCapacity', e.target.value, 'maxCapacity')}
                         {...helper('maxCapacity', 'The most one claim can give')}
-                      />
-                    )}
-                  </div>
-                </fieldset>
-              </>
-            )}
-
-            {step === 1 && (
-              <>
-                <fieldset className={styles.section}>
-                  <legend className={styles.legend}>Qualifying transaction</legend>
-                  <div className={styles.group}>
-                    <FinTextField size="small"
-                      ref={ref('minTransaction')}
-                      label="Minimum transaction value"
-                      placeholder="Minimum transaction value"
-                      suffix="LKR"
-                      inputMode="decimal"
-                      value={v.minTransaction}
-                      onChange={(e) => set('minTransaction', e.target.value, 'minTransaction')}
-                      {...helper('minTransaction')}
-                    />
-                    <div className={styles.panel}>
-                      <p className={styles.panelTitle} aria-hidden="true">
-                        Give the reward
-                      </p>
-                      <FinListRadioGroup label="Give the reward" value={v.giveOn} onValueChange={(next) => set('giveOn', next as GiveOn, 'count')} size="small">
-                        <FinListRadioFilled value="every" title="On every qualifying event" />
-                        <FinListRadioFilled value="nth" title="On the nth qualifying event" />
-                      </FinListRadioGroup>
-                    </div>
-                    {v.giveOn === 'nth' && (
-                      <FinTextField size="small"
-                        ref={ref('count')}
-                        label="Count of event"
-                        placeholder="Count of event"
-                        suffix="th qualifying event"
-                        inputMode="numeric"
-                        value={v.count}
-                        onChange={(e) => set('count', e.target.value, 'count')}
-                        {...helper('count')}
                       />
                     )}
                   </div>

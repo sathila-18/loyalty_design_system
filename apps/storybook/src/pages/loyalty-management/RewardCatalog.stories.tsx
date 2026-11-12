@@ -183,7 +183,7 @@ export const EditReward: Story = {
   },
 };
 
-/** A reward with no partner and no limit: Provider and Max total uses start empty (both optional). */
+/** A reward with no partner and no limit: Provider starts empty (required, as Figma: Save asks for one); Max total uses is optional. */
 export const EditRewardNoPartner: Story = {
   name: 'Edit reward, no partner or limit',
   play: async ({ canvasElement }) => {
