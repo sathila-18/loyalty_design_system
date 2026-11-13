@@ -26,6 +26,11 @@ describe('public API', () => {
     for (const name of ['FinAssistChip', 'FinFilterChip', 'FinInputChip']) expect(ui).toHaveProperty(name);
   });
 
+  it('exports FinCalendar, FinDatePicker and FinDateRangePicker, but not their shared field', () => {
+    for (const name of ['FinCalendar', 'FinDatePicker', 'FinDateRangePicker']) expect(ui).toHaveProperty(name);
+    expect(ui).not.toHaveProperty('DatePickerField');
+  });
+
   it('exports FinAppShell', () => {
     expect(ui).toHaveProperty('FinAppShell');
   });

@@ -1,0 +1,27 @@
+/* Layout for the FinCalendar stories only (not part of the component): each calendar on a card, as in a picker. */
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--fin-space-3xl);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-m);
+}
+
+.card {
+  display: inline-flex;
+  border: 1px solid var(--fin-border-subtle);
+  border-radius: var(--fin-radius-m);
+  background: var(--fin-bg-primary);
+}
+
+.readout {
+  margin: 0;
+  color: var(--fin-text-secondary);
+  font: var(--fin-font-body-small);
+}

@@ -62,8 +62,14 @@ export const BRAND_CONTRAST_EXCEPTIONS: BrandContrastException[] = [
     brand: 'sampath',
     themes: ['light', 'dark'],
     pair: 'text-white_both on bg-action-primary 2.76:1 (§10 #89), bg-brand 2.76:1 (§10 #90), bg-action-primary_hovered 3.30:1 (§10 #91)',
-    // Primary buttons (FinButtonBase) and Primary badges (FinBadgeBase, on bg-brand).
-    elements: ['button[data-variant="primary"]', 'a[data-variant="primary"]', '[data-part="badge"][data-tone="primary"]:not([data-shape])'],
+    // Primary buttons (FinButtonBase), Primary badges (FinBadgeBase, on bg-brand) and a calendar's chosen day
+    // (FinCalendar: the Primary button's colours, added 13 Nov 2026).
+    elements: [
+      'button[data-variant="primary"]',
+      'a[data-variant="primary"]',
+      '[data-part="badge"][data-tone="primary"]:not([data-shape])',
+      'button[data-date][data-selected]',
+    ],
   },
   {
     brand: 'sampath',

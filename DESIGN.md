@@ -910,6 +910,8 @@ Inventory from the component file scan of 13 Oct 2026. Levels and scope confirme
 | 82 | — (**code first**; the Add reward screens draw an Input field-standard with `calendar_today`, `367:19964`) | Input field | — | `FinDateField` | FinInputBase, Icon `calendar_today` (added to the registry) · DD/MM/YYYY typed or picked; `value` / `onChange` as YYYY-MM-DD, `min`, `max` · the browser's date picker for now · **public** (§9.79) | — | ✅ |
 | 83 | — (**code first**; the Reports screens draw it each time, `435:90575`, `440:94624`) | Card | — | `FinStatCard` | — · `label`, `value` · a summary number on `bg-active` · **public** (§9.81) | — | ✅ |
 | 84 | — (**code first**; the Login Option 02 screens draw it each time, `135:4939`, `435:90303`) | Layout | — | `FinSignInLayout` | — · `image` (artwork slot), `imageTitle`, `imageDescription`, `children` (the form column) · two halves from 1024, only the form below · **public** (§9.84) · Figma to add it (§10 #116) | — | ✅ |
+| 85 | — (**code first**; no Figma component: shadcn's calendar in our tokens, asked for by design 13 Nov 2026) | Date picker | — | `FinCalendar` | FinButton (Tertiary, icon only), Icons `chevron_left` / `chevron_right` · `mode` single / range, `numberOfMonths` 1 / 2, `min`, `max`, `isDateDisabled`, `today` · weeks from Monday · **public** (§9.86) | — | ✅ |
+| 86 | — (**code first**; shadcn's date picker and range date picker, 13 Nov 2026) | Date picker | — | `FinDatePicker`, `FinDateRangePicker` | FinInputBase (select look), FinMenu `filter`, FinCalendar, Icon `calendar_today` · YYYY-MM-DD / `{ from, to }`; the range opens two months · **public** (§9.87) | — | ✅ |
 
 ### 8.5 Assets (exported, not built as components)
 
@@ -4180,6 +4182,94 @@ import { FinMultiSelectField } from '@finspace-loyalty/ui';
 
 **Built (11 Nov 2026).** Storybook (Components/Input field/Multi select field): Playground, States (Figma), Menu open, Many chosen (343 and 686 wide), With search, Sizes, In a form. Checked in Chrome against Figma: 343 × 74 with or without chips (box 48), the chip 26 tall, padding 4 / 8, radius 8, `border-default` with the shadow; "+N" inside the box at every width; a long first chip ends in "…"; the menu as wide as the field, checkboxes ticked; no focus ring after a mouse click, the ring with the arrow keys. Light and Dark.
 
+### 9.86 FinCalendar — public
+
+**Figma:** none. Code first (13 Nov 2026): design asked for shadcn's calendar (shadcn.io/ui/date-picker) in this system's styles; nothing in the component library or screens draws one. To add to Figma (§10 #120).
+
+**Decided by design 13 Nov 2026:** (1) **Weeks start on Monday** (shadcn: Sunday). (2) A range shows **two months side by side**, as shadcn. (3) Our tokens throughout (below), not shadcn's look.
+
+**Code → shadcn:**
+
+| shadcn | Code |
+|---|---|
+| `mode="single"` / `"range"` | `mode: 'single' \| 'range'` (default single) |
+| `selected`, `onSelect` | `value` / `defaultValue` / `onChange`: YYYY-MM-DD (single), `{ from, to }` (range; `to` null after the first pick) |
+| `numberOfMonths` | `numberOfMonths: 1 \| 2` |
+| `disabled` (matchers), `fromDate` / `toDate` | `isDateDisabled(date)`, `min`, `max` (YYYY-MM-DD) |
+| `defaultMonth`, `onMonthChange` | `defaultMonth` (YYYY-MM), `onMonthChange` |
+| `today` | `today` (default: the viewer's, worked out after the first render, for Next.js) |
+| — (code only) | `previousLabel` / `nextLabel` ("Previous month" / "Next month") |
+
+**Layout and tokens:** padding `Space-L`; two months `Space-2XL` apart. Header 40 high: the month title (**Title/Small**, `text-primary`) centred over it, the previous button at the start of the first month's header and the next at the end of the last's (FinButton Tertiary Small, icon only, `iconTone="secondary"`). Weekday labels Mo…Su (**Label/Small**, `text-secondary`), 40 × 40. Day buttons **40 × 40**, **Radius-S**, **Body/Medium**; six weeks always (the height never changes):
+
+| Day | Look |
+|---|---|
+| A day of the month | `text-primary`; hover `bg-secondary`, pressed `bg-tertiary` |
+| Another month's day (one month only; two months leave them empty) | `text-tertiary` |
+| Chosen, or a range's start and end | the Primary button's colours: `bg-action-primary`, `text-white-both`; hover / pressed `bg-action-primary-hovered` / `-pressed` |
+| Between a range's start and end (and previewed while hovering, after the start) | the cell's band `bg-active`, rounded Radius-S at the range's ends; hover `bg-active-hover` |
+| Today (not chosen) | a 1px `border-strong` stroke inside (`inset-ring`) |
+| Disabled (`min`, `max`, `isDateDisabled`) | `text-disabled`, default cursor; can't be chosen |
+| Focus | the default ring, 2px `border-focused`, 2px out (§10 #6) |
+
+No animation (§5).
+
+**Behaviour:** a range's first pick is the start, the second the end (an earlier day swaps them), a third starts again. The previous / next buttons are disabled past `min` / `max`'s months. Dates are ISO strings, all maths in UTC, names in English and fixed: the same on the server and the client.
+
+**API:**
+
+```tsx
+import { FinCalendar } from '@finspace-loyalty/ui';
+
+<FinCalendar value={date} onChange={setDate} min="2026-08-01" />
+<FinCalendar mode="range" numberOfMonths={2} value={range} onChange={setRange} />
+```
+
+`'use client'`. Exports `FinCalendar`, `FinCalendarProps`, `FinCalendarSingleProps`, `FinCalendarRangeProps`, `FinDateRange`.
+
+**Accessibility:** each month is a `grid` named by its title (`aria-live="polite"`, so a new month is announced); weekday headers are `columnheader`s with the full day name (`abbr`); each day is a button named in full ("Saturday, 1 August 2026"), today `aria-current="date"`, chosen days (a whole range included) `aria-selected` on the cell, disabled days `aria-disabled` (still reachable, as WAI-ARIA's pattern). One day is in the tab order (roving focus). Keys (WAI-ARIA date picker dialog): ← → a day, ↑ ↓ a week, Home / End the week's start / end, Page Up / Page Down a month (Shift: a year), changing month at the edges; Enter or Space chooses.
+
+**Contrast:** in Sampath (Light and Dark) the chosen day is white on Orange-500, 2.76:1: the Primary buttons' accepted exception (§10 #89), so the chosen day is added to that exception's elements in `brandContrastExceptions.ts`.
+
+**Built (13 Nov 2026).** Storybook (Components/Date picker/Calendar): Playground, Single, Range, Disabled dates (the stories' today is fixed, 12/08/2026). Checked in Light and Dark, all three brands; a11y passes in every brand × theme.
+
+### 9.87 FinDatePicker and FinDateRangePicker — public
+
+**Figma:** none. Code first (13 Nov 2026): shadcn's date picker and range date picker (shadcn.io/ui/date-picker) in this system's look. To add to Figma (§10 #120).
+
+**Decided by design 13 Nov 2026:** (1) **Our field style** for the trigger (the select field's look, with a label), not shadcn's outline button; **a filter-chip trigger may follow** (for table filters, e.g. Reports' Duration). (2) The range opens **two months**. (3) FinDateField keeps the browser's picker **until this is approved**; then it opens FinCalendar (shadcn's "date picker with input").
+
+**Code → shadcn:**
+
+| shadcn | Code |
+|---|---|
+| Popover + Button trigger ("Pick a date") | the field: FinInputBase `variant="select"` with a `<button>`, Icon `calendar_today` (20 when Small); placeholder "Pick a date" / "Pick a date range" |
+| PopoverContent | FinMenu `kind="filter"` (a non-modal dialog named by the label; its border, radius, Shadow/Menu, §9.64), holding FinCalendar; **as wide as the calendar** (`width="fit-content"`, not the field's width, so the padding is even: Space-L on both sides; design review 13 Nov 2026) |
+| `format(date, "PPP")` | DD/MM/YYYY, as FinDateField; a range "DD/MM/YYYY – DD/MM/YYYY" (en dash) |
+| `selected` / `onSelect` | FinDatePicker: `value` (YYYY-MM-DD or null) / `defaultValue` / `onChange(date)`. FinDateRangePicker: `value` (`{ from, to }` or null) / `defaultValue` / `onChange({ from, to })` |
+| — (field, as FinSelectField) | `label` (required), `placeholder`, `helperText`, `error`, `disabled`, `size: 'large' \| 'small'` |
+| — (calendar) | `min`, `max`, `isDateDisabled`, `today` |
+| — (forms) | `name` (FinDatePicker); `fromName`, `toName` (FinDateRangePicker): hidden inputs with YYYY-MM-DD |
+
+**Behaviour:** the field's states come from FinInputBase as FinSelectField's: Focused while open or keyboard-focused (quiet after a mouse-opened calendar closes), Complete once chosen, Disabled, Error. Click, Enter, Space or ↓ opens the calendar on the chosen day (or today) with focus on it; choosing a date closes it and focus returns to the field. The range picker calls `onChange` only once the range is whole, then closes; closed after only a start (Escape, a click outside), it goes back to the range it had. **FinMenu change (13 Nov 2026):** content can mark where focus goes with `data-menu-focus`, now also when a filter menu is opened with the keyboard (it was the first focusable element), so the calendar's day takes focus rather than the previous-month button.
+
+**Tokens used:** the base's (§9.58), the menu's (§9.64), FinCalendar's (§9.86); its own: the value line `--fin-size-24`, the value Body/Large (Small: Body/Medium), the placeholder `text-placeholder`.
+
+**API:**
+
+```tsx
+import { FinDatePicker, FinDateRangePicker } from '@finspace-loyalty/ui';
+
+<FinDatePicker label="Start date" value={start} onChange={setStart} min="2026-08-01" name="start" />
+<FinDateRangePicker label="Campaign dates" value={range} onChange={setRange} fromName="from" toName="to" />
+```
+
+`'use client'`. Exports `FinDatePicker`, `FinDatePickerProps`, `FinDateRangePicker`, `FinDateRangePickerProps`. The shared field (`DatePickerField`) is internal.
+
+**Accessibility:** a native `<button>` (`aria-haspopup="dialog"`, `aria-expanded`) named by the label and the date or the placeholder ("Start date 01/08/2026"); the helper text by `aria-describedby`; the dialog is named by the label; Escape or a click outside closes it, focus back on the field. The calendar's own (§9.86).
+
+**Built (13 Nov 2026).** Storybook (Components/Date picker/Date picker): Playground, States, Open, Range, Range open, Range states. Checked in Light and Dark, all three brands; a11y passes in every brand × theme.
+
 ## 10. Known issues and open decisions
 
 | # | Item | Where | Status |
@@ -4340,6 +4430,7 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 117 | **"Forgot password" (and "Back" later) navigate with a button, not a link** (10 Nov 2026): the FinButton link option (`href`, `linkAs`) is set aside on `feat/button-link` (not in v0.2.0), so the login screens use `FinButton` with `onClick` → the platform's `navigate` (next/router in `apps/login`, the matching story in Storybook). A button that navigates isn't announced as a link and can't be opened in a new tab. **To do:** switch them to real links (`href`, `linkAs={Link}`, keeping `hanging`) when `feat/button-link` is restored. |
 | 118 | **Text link button, to add to Figma** (11 Nov 2026): FinButton `variant="link"` (§9.28) is code first, like shadcn's link variant: all-button's sizes and padding, `text-action` with no background, the label underlined on hover in the same colour, `text-pressed` when pressed, `text-disabled` when disabled; leading or trailing icon, no icon-only; Normal tone only. Add it to all-button as `Type` = Link (or as its own component). The Login screen's "Forgot password" uses it (Figma shows Tertiary). | Buttons, Login screens | 🔧 Fix in Figma |
 | 119 | **Input field-Multi select, to update in Figma** (11 Nov 2026; built §9.85): (1) the **Typing** variant shows text typed into the field, but the field is a button with the search in the menu (as Input field-select): show the search in an open-menu frame instead; (2) the chip's leading **person icon** is the slot's default: hide it (code shows the label and ✕ only); (3) add **several chips** with the "+N" overflow chip, the **open menu** with checkbox rows, and Disabled / Error. | Input field | 🔧 Fix in Figma |
+| 120 | **Calendar and date pickers, to add to Figma** (13 Nov 2026; built §9.86, §9.87): code first, from shadcn's date picker in our tokens. Design to draw the calendar (single, range over two months; day looks: default, another month's, chosen, in range, today, disabled) and the date picker and range picker fields, and decide whether a filter-chip trigger is needed. FinDateField switches to FinCalendar after approval. | Component library | ❓ Design to add |
 
 ---
 
@@ -4415,6 +4506,7 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 > - **Approved and merged (4 Nov 2026):** the third brand, **Sampath** (§3.10): its own scales, Neutral dark and Neutral light aliases (§3.2), Hanken Grotesk (§3.4), story exclusions scoped to Finspace, brand exceptions as `color-contrast` only (`brandContrastExceptions.ts`); §10 #81–#109 (one HIGH: #103). Sampath isn't live.
 > - **Approved and merged (4 Nov 2026):** `FinLogo` (§9.83, Figma Logo sizes; Sampath's logo, Colored in Light, White in Dark), shown in the side nav when the brand is Sampath; Finspace and Burgundy keep the "Fintech loyalty" placeholder. §10 #110, #111.
 > - **Approved and merged (12 Nov 2026):** Reward catalog **Add reward step 1** (Provider a required multi-select, Reward value moved to step 2) and **step 2, Rules** (§8.6): Give the reward after Reward value, Figma's texts and suffixes; promo code, Max total uses and the stacked layout kept as built (design, 12 Nov 2026). Storybook only, no release. The full a11y run timed out on an overloaded Mac (30 timeouts, no violations); design approved merging without a rerun.
+> - **Approved and merged (13 Nov 2026):** `FinCalendar` (§9.86), `FinDatePicker` and `FinDateRangePicker` (§9.87), code first from shadcn's date picker; the picker's menu as wide as the calendar (design review). **Next:** FinDateField opens FinCalendar instead of the browser's picker (§9.79), then a filter-chip trigger if design wants one.
 > - **Next:** the next component named by design. The row count and country menus wait for the List component (§10 #19, #49). The country selector's menu waits for the List component (§10 #19, #49). Figma to add `Tone` and the White/Destructive variants to `all-button` (§10 #43); then recheck FinButton against Figma.
 > - **Follow-up:** the Label and Helper text stories use a plain stand-in `<input>` (story-only); swap it for the real input field when §8 #52 is built.
 > - **Deferred to the end:** §10 #37 (names outside the Figma ↔ code patterns, including FinTextBox `align` and `h1`…`h6`).
@@ -4766,3 +4858,7 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 12 Nov 2026 | 0.4 | **Reward catalog, Add reward step 2 updated to Figma** (§8.6, `388:33159`): Give the reward after Reward value, "Count of the nth qualifying event", the promo code toggle's description, Points cost without a suffix, Maximum claims per customer with Customer, Maximum capacity without a helper text. |
 | 12 Nov 2026 | 0.4 | **Reward catalog, Add reward step 3 text from Figma** (§8.6, `402:33879`): "All eligible segments" with "All customers (All tiers & segments)" and "Rules - segments & tiers", no warning banner, an "Added rules" title, "Badge after completion" without a section title; step 2's "Cash back (Points are earned)" on one line. |
 | 12 Nov 2026 | 0.4 | **Reports: Segments column** (§8.6, `435:90575`) after Tier in the customer table, with Figma's segments for its ten customers; no filter. |
+
+| 13 Nov 2026 | 0.4 | **`FinCalendar`, `FinDatePicker` and `FinDateRangePicker` built** (§8 #85, #86; §9.86, §9.87), public, code first from shadcn's date picker: weeks from Monday, a range over two months, our field style for the trigger, YYYY-MM-DD in code. FinMenu: `data-menu-focus` also takes focus when a filter menu is opened with the keyboard. The chosen day joins Sampath's accepted Primary contrast exception (§10 #89). To add to Figma (§10 #120). |
+
+| 13 Nov 2026 | 0.4 | `FinCalendar`, `FinDatePicker` and `FinDateRangePicker` approved by design and merged into `main`. |
