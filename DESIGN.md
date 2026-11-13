@@ -4862,3 +4862,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 13 Nov 2026 | 0.4 | **`FinCalendar`, `FinDatePicker` and `FinDateRangePicker` built** (§8 #85, #86; §9.86, §9.87), public, code first from shadcn's date picker: weeks from Monday, a range over two months, our field style for the trigger, YYYY-MM-DD in code. FinMenu: `data-menu-focus` also takes focus when a filter menu is opened with the keyboard. The chosen day joins Sampath's accepted Primary contrast exception (§10 #89). To add to Figma (§10 #120). |
 
 | 13 Nov 2026 | 0.4 | `FinCalendar`, `FinDatePicker` and `FinDateRangePicker` approved by design and merged into `main`. |
+| 13 Nov 2026 | 0.2 | **Released v0.5.0** (both packages; what's in it: CHANGELOG.md). |

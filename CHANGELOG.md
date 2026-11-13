@@ -8,6 +8,18 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Breaking
+
+### Known issues
+
+## v0.5.0 — 2026-11-13
+
+### Added
+
 - `FinCalendar`: a month calendar (weeks from Monday) to pick one date (`mode="single"`, the default) or a range (`mode="range"`: a start, then an end). `value` / `defaultValue` / `onChange` as YYYY-MM-DD or `{ from, to }`, `numberOfMonths` (1 or 2), `min`, `max`, `isDateDisabled`, `defaultMonth`, `onMonthChange`, `today`. Full keyboard support (arrows, Home / End, Page Up / Page Down).
 - `FinDatePicker`: a field with the select field's look that opens `FinCalendar` and shows the date as DD/MM/YYYY. `value` / `defaultValue` / `onChange` (YYYY-MM-DD), `label`, `placeholder`, `helperText`, `error`, `disabled`, `size`, `name`, `min`, `max`, `isDateDisabled`.
 - `FinDateRangePicker`: the same field for a range, opening two months; `onChange({ from, to })` once the range is whole; `fromName` / `toName` for forms.
@@ -15,12 +27,6 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 ### Changed
 
 - `FinMenu`: content marked `data-menu-focus` now also takes focus when a filter menu is opened with the keyboard (it was the first focusable element).
-
-### Fixed
-
-### Breaking
-
-### Known issues
 
 ## v0.4.0 — 2026-11-11
 
