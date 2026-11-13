@@ -1,5 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react';
-import { FinLabel, type FinLabelSize } from '../Label';
+import { FinLabel, type FinLabelSize, type FinLabelTone } from '../Label';
 import * as styles from './FinTextBox.styles';
 
 export type FinTextBoxType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -17,6 +17,8 @@ interface FinTextBoxBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
   label?: string;
   /** The Label's `Size` (exposed by Figma's Text Box): Medium (default, as in Figma) or Small. */
   labelSize?: FinLabelSize;
+  /** Code only (13 Nov 2026): the Label's `tone` (`default` text-tertiary, `secondary` text-secondary). Default `default`. */
+  labelTone?: FinLabelTone;
   /** Figma `Show Heading` + its text. */
   heading?: ReactNode;
   /** Figma `Show Description` + its text. */
@@ -26,6 +28,12 @@ interface FinTextBoxBaseProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
    * structure only, never the look (decided 15 Oct 2026).
    */
   headingLevel?: FinHeadingLevel;
+  /**
+   * Code only (13 Nov 2026, for FinStatCard): `p` renders the heading as a paragraph, for text that looks like a
+   * heading but isn't one (a summary number), so it stays out of the page's heading outline. The look is unchanged.
+   * Default: the heading element.
+   */
+  headingAs?: 'p';
   /**
    * The heading and description use `text-disabled`, for a Text Box inside a disabled control (Figma Checkbox
    * `State=Disabled` overrides its Text Box this way; added 19 Oct 2026).
@@ -57,9 +65,11 @@ export function FinTextBox({
   align = 'left',
   label,
   labelSize = 'medium',
+  labelTone = 'default',
   heading,
   description,
   headingLevel,
+  headingAs,
   disabled = false,
   tone = 'default',
   truncateHeading = false,
@@ -68,18 +78,20 @@ export function FinTextBox({
   className,
   ...rest
 }: FinTextBoxProps) {
-  const Heading = `h${headingLevel ?? Number(type.slice(1))}` as 'h1';
+  const Heading = headingAs ?? (`h${headingLevel ?? Number(type.slice(1))}` as 'h1');
   const colour = disabled ? 'disabled' : tone === 'inverse' ? 'inverse' : 'default';
   const truncate = truncateHeading === 2 ? 'two' : truncateHeading ? 'one' : 'none';
   return (
     <div {...rest} className={className ? `${styles.textBox[align]} ${className}` : styles.textBox[align]} data-type={type} data-align={align} data-disabled={disabled || undefined} data-tone={tone === 'inverse' ? 'inverse' : undefined} data-truncate-heading={truncateHeading === 2 ? '2' : truncateHeading ? '' : undefined}>
       {label !== undefined &&
         (labelBadge ? (
-          <FinLabel size={labelSize} badge badgeLabel={labelBadgeLabel}>
+          <FinLabel size={labelSize} tone={labelTone} badge badgeLabel={labelBadgeLabel}>
             {label}
           </FinLabel>
         ) : (
-          <FinLabel size={labelSize}>{label}</FinLabel>
+          <FinLabel size={labelSize} tone={labelTone}>
+            {label}
+          </FinLabel>
         ))}
       {(heading !== undefined || description !== undefined) && (
         <div className={styles.content[type]}>

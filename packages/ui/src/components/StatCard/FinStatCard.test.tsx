@@ -3,11 +3,13 @@ import { describe, expect, it } from 'vitest';
 import { FinStatCard } from './FinStatCard';
 
 describe('FinStatCard', () => {
-  it('shows the label above the value, in reading order', () => {
+  it('shows the label above the value, in reading order, from the Text Box atom', () => {
     const { container } = render(<FinStatCard label="Total points" value="806,400" />);
     expect(container.firstElementChild).toHaveTextContent(/^Total points806,400$/);
+    // The Label atom, in text-secondary (labelTone), and the Text Box heading as a paragraph: no heading in the outline.
+    expect(screen.getByText('Total points').closest('[data-size="medium"]')).toHaveAttribute('data-label-tone', 'secondary');
     expect(screen.getByText('806,400').tagName).toBe('P');
-    expect(screen.getByText('Total points').tagName).toBe('P');
+    expect(screen.queryByRole('heading')).toBeNull();
   });
 
   it('takes any value and passes other attributes to the card', () => {

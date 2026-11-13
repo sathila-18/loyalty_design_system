@@ -1784,6 +1784,7 @@ import { FinSlider } from '@finspace-loyalty/ui';
 | `Show badge` | `badge` (boolean) |
 | — | `badgeLabel`: **required when `badge` is on** (enforced by the types; decided 15 Oct 2026). The dot's meaning depends on the screen (required, new, unread, error…), so there's no default |
 | — | `htmlFor`: renders a real `<label>` linked to that field; without it, a `<span>` (decided 15 Oct 2026) |
+| — (code only) | `tone: 'default' \| 'secondary'` (default `'default'`, `text-tertiary`): `secondary` is `text-secondary`, for a label on a tinted surface where `text-tertiary` is under 4.5:1 (Dark `bg-active`); added 13 Nov 2026 for FinStatCard (§9.81), decided by design; Figma does it with an override on the Label's text. `data-label-tone="secondary"` |
 
 **Structure:** `<span>` (or `<label htmlFor>`) with the `FinBadgeIndicator` dot (decorative), the text, and the `badgeLabel` visually hidden **after** the text, so it's read "Email address, Required" rather than "Required Email address".
 
@@ -1869,6 +1870,8 @@ Presentational: no `'use client'`. `className` and other `<div>` attributes go t
 | — (Figma Checkbox `State=Disabled` overrides its Text Box) | `disabled`: heading and description use `--fin-text-disabled` (added 19 Oct 2026 for FinCheckbox, §9.30) |
 | — (code only) | `truncateHeading`: the heading stays on one line (`true`) or up to two (`2`) and ends in "…" (added 22 Oct 2026 for FinHeader, §9.63; `2` added 26 Oct 2026 for FinSideSheet; off by default) |
 | — (code only) | `tone: 'default' \| 'inverse'` (default `'default'`): `inverse` puts the heading and description in `--fin-text-inverse`, for a Text Box on a `bg-direct` surface (added 3 Nov 2026 for FinTooltip's rich type, §9.82; `data-tone`) |
+| — (code only) | `labelTone`: the Label's `tone` (§9.19; default `'default'`); added 13 Nov 2026 for FinStatCard |
+| — (code only) | `headingAs: 'p'`: the heading rendered as a paragraph, same look, for text that looks like a heading but isn't one (a summary number), so it stays out of the page's heading outline; default the heading element; added 13 Nov 2026 for FinStatCard, decided by design |
 
 **Tokens used:**
 
@@ -4030,13 +4033,13 @@ Not `'use client'` (no state); exports `FinEmptyState`, `FinEmptyStateProps`, `F
 
 **Figma:** none: the Reports screens draw it each time (`435:90575` four cards, `440:94624` three; read 28 Oct 2026), as plain frames (no component; the Cards page is under "Do not use"). Code first, measured from them (decided by design 28 Oct 2026: a component, since the Dashboard will need it too).
 
-**Layout:** a column, `bg-active`, `Radius-L` (16), `Space-2XL` (20) padding (the screens' raw 16 and 20 are these tokens); the label (Label/Medium, **`text-secondary`**, one line, "…"; the screens' `text-tertiary` is 4.48:1 on Dark `bg-active`, under 4.5, so design chose `text-secondary` on 28 Oct 2026: 5.3:1 Light, about 7:1 Dark; the card's own text, as FinLabel has no colour option) and under it the value (Headline Large-H4, `text-primary`), no gap: 95 tall with one line of each (Figma 95). It fills its container; the page lays the cards on its grid (the screens: 364 wide, 32 apart at 1920). A long value wraps.
+**Layout:** a column, `bg-active`, `Radius-L` (16), `Space-2XL` (20) padding (the screens' raw 16 and 20 are these tokens), holding the **Text Box atom** (FinTextBox, §9.21; **built from the atoms since 13 Nov 2026, decided by design**; it had its own text before): `type="h4"`, the card label as its **Label** (FinLabel Medium, one line, "…") with **`labelTone="secondary"`** (`text-secondary`; the Label's `text-tertiary` is 4.48:1 on Dark `bg-active`, under 4.5, so design chose `text-secondary` on 28 Oct 2026: 5.3:1 Light, about 7:1 Dark), and the value as its heading (Headline Large-H4, `text-primary`) with **`headingAs="p"`** (a number isn't a section heading), no gap: 95 tall with one line of each (Figma 95). It fills its container; the page lays the cards on its grid (the screens: 364 wide, 32 apart at 1920). A long value wraps.
 
 **API:** `label: string`, `value: ReactNode` (the page formats it: "806,400"; the screens' "806, 400" is a typo). Other attributes go to the `div`.
 
-**Tokens used:** `--fin-bg-active`, `--fin-radius-l`, `--fin-space-2xl`, `--fin-font-label-medium`, `--fin-text-secondary`, `--fin-font-headline-large-h4`, `--fin-text-primary`.
+**Tokens used:** its own `--fin-bg-active`, `--fin-radius-l`, `--fin-space-2xl`; the rest through FinTextBox and FinLabel (`--fin-font-label-medium`, `--fin-text-secondary` via `labelTone`, `--fin-font-headline-large-h4`, `--fin-text-primary`).
 
-**Accessibility:** plain text in reading order: the label, then the value. Not a heading or a landmark. Contrast: the label `text-secondary` and the value `text-primary` on `bg-active` meet 4.5:1 in Light and Dark (a11y check).
+**Accessibility:** plain text in reading order: the label (a `<span>`), then the value (a `<p>`, through `headingAs`). Not a heading or a landmark. Contrast: the label `text-secondary` and the value `text-primary` on `bg-active` meet 4.5:1 in Light and Dark (a11y check).
 
 **Built, approved and merged (28 Oct 2026).** Storybook: Components/Stat card (Playground, Reports, Customer history, Narrow). Checked in Chrome against Figma: 364 × 94.6 at the screens' width, padding 20, radius 16, `#efefff`, label 14 semibold (`text-secondary`, lighter than the screens' `#474748`), value 24 bold `#19191a` (Light); Dark uses the Dark tokens. A long label ends in "…", a long value wraps.
 
@@ -4867,3 +4870,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 13 Nov 2026 | 0.5 | **`FinDateField` opens our calendar** (§9.79): FinCalendar in a FinMenu under the field, replacing the browser's date picker; focus back in the text after a pick or Escape; `isDateDisabled` and `today` added. FinInputBase `trailing` can be a function given the box; FinMenu `returnFocusTo` (both code only). |
 | 13 Nov 2026 | 0.5 | `FinDateField` with our calendar approved by design and merged into `main`. |
 | 13 Nov 2026 | 0.2 | **Released v0.6.0** (both packages; what's in it: CHANGELOG.md). |
+| 13 Nov 2026 | 0.6 | **`FinStatCard` built from the atoms** (§9.81, design review): a FinTextBox (h4) with its FinLabel, instead of its own text; looks the same. Code-only options added for it: FinLabel `tone` (`secondary`, §9.19), FinTextBox `labelTone` and `headingAs="p"` (§9.21). |
