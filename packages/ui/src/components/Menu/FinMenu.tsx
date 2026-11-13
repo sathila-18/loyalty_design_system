@@ -237,10 +237,14 @@ export function FinMenu({
     // focused, decided 22 Oct 2026); typing moves into it (see onMenuKeyDown).
     const field = menuEl.querySelector<HTMLElement>('[data-menu-header] input');
     if (kind === 'select' && field) current?.scrollIntoView?.({ block: 'center' });
+    // Content can name where focus goes (`data-menu-focus`): a select's or action's list, a calendar's day (13 Nov 2026).
+    const marked = menuEl.querySelector<HTMLElement>('[data-menu-focus]');
     const target =
       focusOnOpen === 'container'
-        ? menuEl.querySelector<HTMLElement>('[data-menu-focus]') ?? menuEl
-        : kind === 'select' && current
+        ? marked ?? menuEl
+        : kind === 'filter' && marked
+          ? marked
+          : kind === 'select' && current
           ? current
           : focusOnOpen === 'last'
             ? list.at(-1)

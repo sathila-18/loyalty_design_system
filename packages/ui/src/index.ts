@@ -35,6 +35,8 @@ export * from './components/EmptyState';
 export * from './components/NotificationBanner';
 export * from './components/Skeleton';
 export * from './components/DateField';
+export * from './components/Calendar';
+export * from './components/DatePicker';
 export * from './components/FileUpload';
 export * from './components/StatCard';
 export * from './components/Stepper';
