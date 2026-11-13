@@ -8,18 +8,24 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
-- `FinLabel` `tone`: `'default'` (`text-tertiary`, as before) or `'secondary'` (`text-secondary`), for a label on a tinted surface.
-- `FinTextBox` `labelTone` (its Label's `tone`) and `headingAs="p"` (the heading as a paragraph, same look, for text that isn't a section heading).
-
 ### Changed
-
-- `FinStatCard` is built from the atoms: a `FinTextBox` (type `h4`) with its `FinLabel`. It looks the same; in the markup the label is now a `<span>` (was a `<p>`). The API is unchanged.
 
 ### Fixed
 
 ### Breaking
 
 ### Known issues
+
+## v0.7.0 — 2026-11-13
+
+### Added
+
+- `FinLabel` `tone`: `'default'` (`text-tertiary`, as before) or `'secondary'` (`text-secondary`), for a label on a tinted surface.
+- `FinTextBox` `labelTone` (its Label's `tone`) and `headingAs="p"` (the heading as a paragraph, same look, for text that isn't a section heading).
+
+### Changed
+
+- `FinStatCard` is built from the atoms: a `FinTextBox` (type `h4`) with its `FinLabel`. It looks the same; in the markup the label is now a `<span>` (was a `<p>`). The API is unchanged.
 
 ## v0.6.0 — 2026-11-13
 

@@ -4871,3 +4871,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 13 Nov 2026 | 0.5 | `FinDateField` with our calendar approved by design and merged into `main`. |
 | 13 Nov 2026 | 0.2 | **Released v0.6.0** (both packages; what's in it: CHANGELOG.md). |
 | 13 Nov 2026 | 0.6 | **`FinStatCard` built from the atoms** (§9.81, design review): a FinTextBox (h4) with its FinLabel, instead of its own text; looks the same. Code-only options added for it: FinLabel `tone` (`secondary`, §9.19), FinTextBox `labelTone` and `headingAs="p"` (§9.21). |
+| 13 Nov 2026 | 0.2 | **Released v0.7.0** (both packages; what's in it: CHANGELOG.md). |
