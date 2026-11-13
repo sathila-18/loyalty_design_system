@@ -40,8 +40,9 @@ export interface FinInputBaseProps extends Omit<InputHTMLAttributes<HTMLInputEle
   suffix?: string;
   /** Figma `Show Leading accessory` and Leading slot: a 24 icon (20 when `small`) or other component before the value. */
   leading?: ReactNode;
-  /** Figma `Show Trailing accessory` and Trailing slot. Select shows `keyboard_arrow_down` without it. */
-  trailing?: ReactNode;
+  /** Figma `Show Trailing accessory` and Trailing slot. Select shows `keyboard_arrow_down` without it. Or a function given
+   * the box (code only, 13 Nov 2026: FinDateField lines its calendar up with it). */
+  trailing?: ReactNode | ((field: HTMLDivElement | null) => ReactNode);
   /** Figma `Show Helper text` and Helper text slot: the message under the field, linked to the input. */
   helperText?: ReactNode;
   /** Mobile number: the chosen country (Figma Contry selecter). Default `LK`, as Figma. */
@@ -105,7 +106,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
   const generatedId = useId();
   const id = idProp ?? generatedId;
   const helperId = `${id}-helper`;
-  const trailingContent = trailing ?? (variant === 'select' ? <FinIcon name="keyboard_arrow_down" size={size === 'small' ? 20 : 24} /> : undefined);
+  const trailingContent = (typeof trailing === 'function' ? trailing(fieldEl) : trailing) ?? (variant === 'select' ? <FinIcon name="keyboard_arrow_down" size={size === 'small' ? 20 : 24} /> : undefined);
   const hasHelper = helperText !== undefined && helperText !== null && helperText !== false;
   // The mask: the value (invisible, to take its width) and the rest of the hint after it.
   const typed = String(rest.value ?? '');

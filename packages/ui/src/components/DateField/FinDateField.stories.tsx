@@ -24,8 +24,8 @@ const KNOWN_CONTRAST_ISSUES = ['[data-tone="disabled"]'];
 
 /**
  * A date field (code first, no Figma component; DESIGN.md §9): the text field with a calendar button. Type the digits
- * (the slashes are added) or press the calendar for the browser's date picker (for now: our own calendar replaces it
- * once it's designed). It shows DD/MM/YYYY; code gets YYYY-MM-DD. Leave it with a wrong date to see its error.
+ * (the slashes are added) or press the calendar button for our calendar (FinCalendar, as the date picker's). It shows
+ * DD/MM/YYYY; code gets YYYY-MM-DD. Leave it with a wrong date to see its error.
  */
 const meta: Meta<Args> = {
   title: 'Components/Input field/Date field',
@@ -127,5 +127,18 @@ export const BeforeMin: Story = {
   play: async ({ canvasElement }) => {
     await userEvent.type(within(canvasElement).getByRole('textbox', { name: 'End date' }), '01072026');
     await userEvent.tab();
+  },
+};
+
+/** The calendar open from the button, on the date typed (01/08/2026); today is 12/08/2026 here. Picking a day fills the field. */
+export const CalendarOpen: Story = {
+  name: 'Calendar open',
+  render: () => (
+    <div className={`${styles.column} ${styles.open}`}>
+      <FinDateField label="Start date" today="2026-08-12" defaultValue="2026-08-01" helperText="The first day members can claim it" />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole('button', { name: 'Choose date' }));
   },
 };

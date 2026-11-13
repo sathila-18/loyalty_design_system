@@ -83,6 +83,11 @@ export interface FinMenuProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
   label?: string;
   /** Default `content`. */
   width?: FinMenuWidth;
+  /**
+   * Code only (13 Nov 2026, for FinDateField): where focus goes when the menu closes with focus inside it (Escape, a
+   * choice), instead of the trigger. The date field's calendar returns focus to its text input.
+   */
+  returnFocusTo?: HTMLElement | null;
   /** A fixed limit (CSS length). Without it, the menu fits the space between the trigger and the window edge. */
   maxHeight?: string;
   /** Default `bottom-start`; it flips when there isn't room. */
@@ -157,6 +162,7 @@ export function FinMenu({
   label,
   width = 'content',
   maxHeight,
+  returnFocusTo,
   placement = 'bottom-start',
   multiple = false,
   className,
@@ -211,9 +217,9 @@ export function FinMenu({
   const close = useCallback(
     (returnFocus: boolean) => {
       flushSync(() => setOpen(false));
-      if (returnFocus) triggerEl?.focus();
+      if (returnFocus) (returnFocusTo ?? triggerEl)?.focus();
     },
-    [setOpen, triggerEl],
+    [setOpen, triggerEl, returnFocusTo],
   );
 
   const items = useCallback(
@@ -261,8 +267,8 @@ export function FinMenu({
   useEffect(() => {
     if (open || !focusInside.current) return;
     focusInside.current = false;
-    if (!document.activeElement || document.activeElement === document.body) triggerEl?.focus();
-  }, [open, triggerEl]);
+    if (!document.activeElement || document.activeElement === document.body) (returnFocusTo ?? triggerEl)?.focus();
+  }, [open, triggerEl, returnFocusTo]);
 
   // Close on a pointer press outside the menu and its trigger.
   useEffect(() => {
