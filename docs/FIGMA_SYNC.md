@@ -30,7 +30,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 
 | # | Code | What it is | Figma before | `DESIGN.md` ref | Status |
 |---|---|---|---|---|---|
-| N1 | `FinCalendar` | Month grid, Monday first; single or range; day looks: default, outside, chosen, in range, today, disabled | — | §9.86, §10 #120 | ⬜ |
+| N1 | `FinCalendar` | Month grid, Monday first; single or range; day looks: default, outside, chosen, in range, today, disabled | — | §9.86, §10 #120 | ✅ 13 Nov 2026 |
 | N2 | `FinDatePicker`, `FinDateRangePicker` | Select-look field that opens the calendar; range shows two months | — | §9.87, §10 #120 | ⬜ |
 | N3 | `FinDateField` | Text field with DD/MM/YYYY mask and a calendar button | screens draw a text field with `calendar_today` | §9.79 | ⬜ |
 | N4 | `FinStepper` | Steps of a multi-step form: done, current, upcoming | drawn on each Add reward screen | §9.77 | ✅ 13 Nov 2026 |
@@ -100,6 +100,41 @@ itself, not code changes, so they're not part of this sync.
 - Loose design-note text layers on the Side nav (`3653:9300`), Input field (`3783:3280`) and Menu (`3553:25049`) pages.
 
 ## Done
+
+### N1 · Calendar: 13 Nov 2026
+
+- **Page:** Calender `3818:4065` (Figma's page name). Page frame `3820:4` (header `3820:5`, section `3820:9`).
+- **`Calendar day`** component set `3820:76`: **Type** × **State** (22 variants), 40 × 40 (Size-40); text property
+  **Day** (the number, Body/Medium). The component is the cell (a range's `bg-active` band, rounded Radius-S on the
+  range's own side at its start and end); inside it the **Day** frame (Radius-S) carries the state's fill:
+
+  | Type | Enabled | Hovered | Pressed | Text |
+  |---|---|---|---|---|
+  | Default | — | `bg-secondary` | `bg-tertiary` | `text-primary` |
+  | Today | — + 1px `border-strong` inside | `bg-secondary` | `bg-tertiary` | `text-primary` |
+  | Outside | — | `bg-secondary` | `bg-tertiary` | `text-tertiary` |
+  | Selected | `bg-action-primary` | `bg-action-primary_hovered` | `bg-action-primary_pressed` | `text-white_both` |
+  | Range start / Range end | as Selected, on the band (rounded left / right) | | | `text-white_both` |
+  | Range middle | — on the band | `bg-active-hover` | `bg-active-hover` | `text-primary` |
+  | Disabled | — (Enabled only) | | | `text-disabled` |
+
+- **`Calendar`** component set `3821:530`, **Type** = Single (`3821:12`, 304 × 356) / Range (`3821:219`, 604 × 356):
+  the same sizes as `FinCalendar` in the browser (306 / 606 with the menu's 1px border). Built from instances:
+
+  | Part | Built from |
+  |---|---|
+  | Previous / next month | **all-button** `Size=Small, State=Enabled, Type=Tertiary, Icon=Only Icon` (`47:1673`), its 20px icon set to `State=Secondary` (`fg-secondary`, code's `iconTone="secondary"`) and the glyph swapped to Loyalty Iconography `chevron_left` / `chevron_right` |
+  | Month title | text, Title/Small, `text-primary`, centred in the 40 header (no atom covers Title styles) |
+  | Weekdays Mo … Su | **Label atom** `Size=Small` (`28:971`), text overridden to `text-secondary`, centred in 40 cells |
+  | Days | **Calendar day** instances, six weeks from the Monday on or before the 1st |
+
+  Padding Space-L; months Space-2XL apart; Space-S between header, weekdays and weeks. Single: August 2026, 1 Aug
+  Selected, 12 Aug Today, other months' days Outside. Range: August + September 2026, 20 Aug Range start, 4 Sep Range
+  end, the days between Range middle, other months' days empty (as code with two months). The previous button sits on
+  the first month, the next on the last; a 36 spacer keeps the title centred.
+- **Descriptions** on both sets: types, tokens, how to set each day, and what Figma can't show (keyboard, hover
+  preview of a range, the menu in the date pickers: that's N2 with `standard-menu`).
+- **Source:** `FinCalendar` (`packages/ui/src/components/Calendar/`), `DESIGN.md` §9.86.
 
 ### N4 · Stepper: 13 Nov 2026
 
