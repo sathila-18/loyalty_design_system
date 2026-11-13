@@ -4866,3 +4866,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 13 Nov 2026 | 0.2 | **Released v0.5.0** (both packages; what's in it: CHANGELOG.md). |
 | 13 Nov 2026 | 0.5 | **`FinDateField` opens our calendar** (§9.79): FinCalendar in a FinMenu under the field, replacing the browser's date picker; focus back in the text after a pick or Escape; `isDateDisabled` and `today` added. FinInputBase `trailing` can be a function given the box; FinMenu `returnFocusTo` (both code only). |
 | 13 Nov 2026 | 0.5 | `FinDateField` with our calendar approved by design and merged into `main`. |
+| 13 Nov 2026 | 0.2 | **Released v0.6.0** (both packages; what's in it: CHANGELOG.md). |

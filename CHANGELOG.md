@@ -8,18 +8,24 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
-- `FinDateField` `isDateDisabled` and `today`, passed to its calendar (as `FinDatePicker`).
-- `FinMenu` `returnFocusTo`: where focus goes when the menu closes with focus inside it, instead of the trigger.
-
 ### Changed
-
-- `FinDateField`'s calendar button opens our calendar (`FinCalendar`) under the field instead of the browser's date picker. It opens on the typed date (or today); picking a day fills the field and puts focus back in the text. The API is the same.
 
 ### Fixed
 
 ### Breaking
 
 ### Known issues
+
+## v0.6.0 — 2026-11-13
+
+### Added
+
+- `FinDateField` `isDateDisabled` and `today`, passed to its calendar (as `FinDatePicker`).
+- `FinMenu` `returnFocusTo`: where focus goes when the menu closes with focus inside it, instead of the trigger.
+
+### Changed
+
+- `FinDateField`'s calendar button opens our calendar (`FinCalendar`) under the field instead of the browser's date picker. It opens on the typed date (or today); picking a day fills the field and puts focus back in the text. The API is the same.
 
 ## v0.5.0 — 2026-11-13
 
