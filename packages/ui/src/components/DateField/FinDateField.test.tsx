@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
@@ -80,27 +80,66 @@ describe('FinDateField', () => {
     expect(input).toHaveAccessibleDescription('Use DD/MM/YYYY');
   });
 
-  it('fills the field from the browser picker, and keeps the hidden picker out of the way', () => {
+  it('opens our calendar from the calendar button, on the typed date, and fills the field from it', async () => {
+    const user = userEvent.setup();
     const onChange = vi.fn();
-    const { container } = render(<FinDateField label="Start date" onChange={onChange} min="2026-01-01" />);
-    const native = container.querySelector('input[type="date"]') as HTMLInputElement;
-    expect(native).toHaveAttribute('tabindex', '-1');
-    expect(native).toHaveAttribute('aria-hidden', 'true');
-    expect(native).toHaveAttribute('min', '2026-01-01');
-    fireEvent.change(native, { target: { value: '2026-08-01' } });
-    expect(screen.getByRole('textbox')).toHaveValue('01/08/2026');
-    expect(onChange).toHaveBeenLastCalledWith('2026-08-01');
+    render(<FinDateField label="Start date" today="2026-08-12" defaultValue="2026-08-01" onChange={onChange} />);
+    const button = screen.getByRole('button', { name: 'Choose date' });
+    expect(button).toHaveAttribute('aria-haspopup', 'dialog');
+    await user.click(button);
+    expect(screen.getByRole('dialog', { name: 'Choose date' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Saturday, 1 August 2026' })).toHaveFocus();
+    await user.click(screen.getByRole('button', { name: 'Friday, 14 August 2026' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.getByRole('textbox')).toHaveValue('14/08/2026');
+    expect(onChange).toHaveBeenLastCalledWith('2026-08-14');
+    // Focus goes back to the text, not the calendar button (decided by design 13 Nov 2026).
+    expect(screen.getByRole('textbox')).toHaveFocus();
   });
 
-  it('opens the picker from the calendar button, and is fully disabled when disabled', async () => {
-    const { container, rerender } = render(<FinDateField label="Start date" />);
-    const native = container.querySelector('input[type="date"]') as HTMLInputElement & { showPicker: () => void };
-    native.showPicker = vi.fn();
-    await userEvent.click(screen.getByRole('button', { name: 'Choose date' }));
-    expect(native.showPicker).toHaveBeenCalled();
-    rerender(<FinDateField label="Start date" disabled pickerLabel="Pick a start date" />);
+  it('greys out dates outside min and max in the calendar', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<FinDateField label="End date" today="2026-08-12" min="2026-08-05" onChange={onChange} />);
+    await user.click(screen.getByRole('button', { name: 'Choose date' }));
+    const early = screen.getByRole('button', { name: 'Monday, 3 August 2026' });
+    expect(early).toHaveAttribute('aria-disabled', 'true');
+    await user.click(early);
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('works with the keyboard: Enter opens on today, the arrows move, Escape returns to the text', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    render(<FinDateField label="Start date" today="2026-08-12" onChange={onChange} />);
+    screen.getByRole('button', { name: 'Choose date' }).focus();
+    await user.keyboard('{Enter}');
+    expect(screen.getByRole('button', { name: 'Wednesday, 12 August 2026' })).toHaveFocus();
+    await user.keyboard('{ArrowRight}{Enter}');
+    expect(onChange).toHaveBeenLastCalledWith('2026-08-13');
+    expect(screen.getByRole('textbox')).toHaveFocus();
+    screen.getByRole('button', { name: 'Choose date' }).focus();
+    await user.keyboard('{Enter}');
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.getByRole('textbox')).toHaveFocus();
+  });
+
+  it("doesn't flag a half-typed date while the calendar is open", async () => {
+    const user = userEvent.setup();
+    render(<FinDateField label="Start date" today="2026-08-12" />);
+    await user.type(screen.getByRole('textbox'), '0108');
+    await user.click(screen.getByRole('button', { name: 'Choose date' }));
+    expect(screen.queryByText('Enter a date as DD/MM/YYYY')).toBeNull();
+  });
+
+  it('is fully disabled when disabled', async () => {
+    const user = userEvent.setup();
+    render(<FinDateField label="Start date" disabled pickerLabel="Pick a start date" />);
     expect(screen.getByRole('textbox')).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Pick a start date' })).toBeDisabled();
+    await user.click(screen.getByRole('button', { name: 'Pick a start date' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
   });
 
   it('keeps the rest of the format behind the digits while typing', async () => {

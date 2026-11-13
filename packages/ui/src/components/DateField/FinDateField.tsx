@@ -1,8 +1,10 @@
 'use client';
 
-import { forwardRef, useRef, useState, type ChangeEvent, type FocusEvent } from 'react';
+import { forwardRef, useState, type ChangeEvent, type FocusEvent } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
+import { FinCalendar } from '../Calendar';
 import { FinInputBase, type FinInputBaseProps } from '../InputBase';
+import { FinMenu } from '../Menu';
 import { formatDate, maskDate, parseDate } from './dates';
 import * as styles from './FinDateField.styles';
 
@@ -32,10 +34,14 @@ export interface FinDateFieldProps
   defaultValue?: string;
   /** Called as the date changes: YYYY-MM-DD once it's a whole, real date, or `null` while it isn't (or is cleared). */
   onChange?: (date: string | null) => void;
-  /** The earliest date allowed, as YYYY-MM-DD (the picker greys out the ones before it). */
+  /** The earliest date allowed, as YYYY-MM-DD (the calendar greys out the ones before it). */
   min?: string;
   /** The latest date allowed, as YYYY-MM-DD. */
   max?: string;
+  /** Rules out other dates in the calendar: return `true` for a date (YYYY-MM-DD) that can't be picked there. */
+  isDateDisabled?: (date: string) => boolean;
+  /** Today, as YYYY-MM-DD (the calendar marks it and opens on it). Default: the viewer's today (see FinCalendar). */
+  today?: string;
   /** The calendar button's name (default "Choose date"). */
   pickerLabel?: string;
   /** The field's own messages after it's left with a wrong date. Defaults are in sentence case, with the dates as shown. */
@@ -51,8 +57,8 @@ const DEFAULT_MESSAGES = {
 /**
  * A date field (code first, no Figma component: the Add reward screens draw a text field with `calendar_today`;
  * DESIGN.md §9), on FinInputBase, so it looks and behaves as the other fields. It shows DD/MM/YYYY: type the digits
- * and the slashes are added, or press the calendar button for the **browser's date picker** (for now, decided 27 Oct
- * 2026: replaced by our own calendar once it's designed in Figma). Code gets YYYY-MM-DD. Left with a date that isn't
+ * and the slashes are added, or press the calendar button for **our calendar** (FinCalendar in a FinMenu, as
+ * FinDatePicker; replaced the browser's date picker 13 Nov 2026). Code gets YYYY-MM-DD. Left with a date that isn't
  * whole or real, or outside `min` / `max`, it shows its own error (unless the page sets `error` itself).
  */
 export const FinDateField = forwardRef<HTMLInputElement, FinDateFieldProps>(function FinDateField(
@@ -62,6 +68,8 @@ export const FinDateField = forwardRef<HTMLInputElement, FinDateFieldProps>(func
     onChange,
     min,
     max,
+    isDateDisabled,
+    today,
     pickerLabel = 'Choose date',
     messages,
     error = false,
@@ -82,7 +90,9 @@ export const FinDateField = forwardRef<HTMLInputElement, FinDateFieldProps>(func
     if ((value || null) !== parseDate(text)) setText(formatDate(value));
   }
   const [problem, setProblem] = useState<string | null>(null);
-  const picker = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  // The text input: focus goes back to it when the calendar closes.
+  const [input, setInput] = useState<HTMLInputElement | null>(null);
   const iso = parseDate(text);
   const words = { ...DEFAULT_MESSAGES, ...messages };
 
@@ -95,21 +105,15 @@ export const FinDateField = forwardRef<HTMLInputElement, FinDateFieldProps>(func
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => update(maskDate(event.target.value));
 
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    // Focus going into the calendar isn't leaving the field: no error while a date is being picked.
+    if (open) {
+      onBlur?.(event);
+      return;
+    }
     if (text && !iso) setProblem(words.invalid);
     else if (iso && min && iso < min) setProblem(words.beforeMin(formatDate(min)));
     else if (iso && max && iso > max) setProblem(words.afterMax(formatDate(max)));
     onBlur?.(event);
-  };
-
-  const openPicker = () => {
-    const native = picker.current;
-    if (!native) return;
-    try {
-      native.showPicker();
-    } catch {
-      // Browsers without showPicker() (or blocked): focusing the date input opens it in most of them.
-      native.focus();
-    }
   };
 
   const iconSize = size === 'small' ? 20 : 24;
@@ -121,7 +125,11 @@ export const FinDateField = forwardRef<HTMLInputElement, FinDateFieldProps>(func
       autoComplete="off"
       maxLength={10}
       {...rest}
-      ref={ref}
+      ref={(node) => {
+        setInput(node);
+        if (typeof ref === 'function') ref(node);
+        else if (ref) ref.current = node;
+      }}
       size={size}
       disabled={disabled}
       placeholder={placeholder}
@@ -132,34 +140,45 @@ export const FinDateField = forwardRef<HTMLInputElement, FinDateFieldProps>(func
       onBlur={handleBlur}
       error={error || showProblem}
       {...(showProblem ? { helperText: problem } : helperText !== undefined ? { helperText } : {})}
-      trailing={
-        <span className={styles.trailing}>
-          <button
-            type="button"
-            className={styles.button}
-            aria-label={pickerLabel}
-            disabled={disabled}
-            // A click doesn't take focus from the input; Tab still reaches the button.
-            onMouseDown={(event) => event.preventDefault()}
-            onClick={openPicker}
-          >
-            <FinIcon name="calendar_today" size={iconSize} />
-          </button>
-          {/* The browser's picker opens from this native date input, hidden under the button. */}
-          <input
-            ref={picker}
-            type="date"
-            className={styles.picker}
-            tabIndex={-1}
-            aria-hidden="true"
-            disabled={disabled}
-            value={iso ?? ''}
+      trailing={(field) => (
+        <FinMenu
+          kind="filter"
+          anchor={field}
+          // As wide as the calendar, as FinDatePicker (§9.87).
+          width="fit-content"
+          label={pickerLabel}
+          open={open && !disabled}
+          onOpenChange={setOpen}
+          returnFocusTo={input}
+          trigger={(menuProps) => (
+            <button
+              {...menuProps}
+              type="button"
+              className={styles.button}
+              aria-label={pickerLabel}
+              disabled={disabled}
+              // A click doesn't take focus from the input; Tab still reaches the button.
+              onMouseDown={(event) => event.preventDefault()}
+            >
+              <FinIcon name="calendar_today" size={iconSize} />
+            </button>
+          )}
+        >
+          <FinCalendar
+            value={iso}
             {...(min ? { min } : {})}
             {...(max ? { max } : {})}
-            onChange={(event) => update(formatDate(event.target.value))}
+            {...(isDateDisabled ? { isDateDisabled } : {})}
+            {...(today ? { today } : {})}
+            onChange={(date) => {
+              update(formatDate(date));
+              // Focus back in the text before the menu goes, so it doesn't land on the button.
+              input?.focus();
+              setOpen(false);
+            }}
           />
-        </span>
-      }
+        </FinMenu>
+      )}
     />
   );
 });

@@ -24,3 +24,8 @@
   color: var(--fin-text-secondary);
   font: var(--fin-font-body-small);
 }
+
+/* Room below for the open calendar (it sits in the top layer; this keeps the story's frame tall enough). */
+.open {
+  min-height: var(--fin-size-500);
+}
