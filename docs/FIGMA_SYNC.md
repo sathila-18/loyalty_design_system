@@ -33,7 +33,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N1 | `FinCalendar` | Month grid, Monday first; single or range; day looks: default, outside, chosen, in range, today, disabled | — | §9.86, §10 #120 | ⬜ |
 | N2 | `FinDatePicker`, `FinDateRangePicker` | Select-look field that opens the calendar; range shows two months | — | §9.87, §10 #120 | ⬜ |
 | N3 | `FinDateField` | Text field with DD/MM/YYYY mask and a calendar button | screens draw a text field with `calendar_today` | §9.79 | ⬜ |
-| N4 | `FinStepper` | Steps of a multi-step form: done, current, upcoming | drawn on each Add reward screen | §9.77 | ⬜ |
+| N4 | `FinStepper` | Steps of a multi-step form: done, current, upcoming | drawn on each Add reward screen | §9.77 | ✅ 13 Nov 2026 |
 | N5 | `FinStatCard` | Summary number on `bg-active` | drawn on each Reports screen | §9.81 | ✅ 13 Nov 2026 |
 | N6 | `FinSkeleton` | Loading placeholder: text, rect, circle | — | §9.76 | ✅ 13 Nov 2026 |
 | N7 | `FinSignInLayout` | Login layout: artwork panel and form | drawn on each Login screen | §9.84, §10 #116 | ⬜ |
@@ -100,6 +100,46 @@ itself, not code changes, so they're not part of this sync.
 - Loose design-note text layers on the Side nav (`3653:9300`), Input field (`3783:3280`) and Menu (`3553:25049`) pages.
 
 ## Done
+
+### N4 · Stepper: 13 Nov 2026
+
+- **Page:** Stepper `3815:3701`. Page frame `3817:11` (header `3817:12`, section `3817:16`).
+- **Decided by design (13 Nov 2026):** the step label uses the **Label atom in Figma only** (code keeps FinStepper's own
+  label text); the Stepper is offered as **variants** (Steps × Current), built from a Step component.
+- **`Step`** component set `3817:68`, **State** × **Line** (6 variants), 80 wide (Space-10XL), 65 tall:
+
+  | Variant | Node |
+  |---|---|
+  | `State=Done, Line=True` / `False` | `3817:17` / `3817:31` |
+  | `State=Current, Line=True` / `False` | `3817:42` / `3817:49` |
+  | `State=Upcoming, Line=True` / `False` | `3817:55` / `3817:62` |
+
+  | Part | Built from | Bindings / overrides |
+  |---|---|---|
+  | Box | frame, 36 (Size-36), Radius-S, 2px inside stroke | Done `bg-success_secondary` / `border-success`; Current `bg-active` / `border-active`; Upcoming `bg-secondary` / `border-default` |
+  | Check (Done) | **20px icon set** instance, `State=Success` (`3017:6330`), glyph swapped to Loyalty Iconography `check` | glyph `fg-success` |
+  | Number (Current, Upcoming) | text, Title/Medium; text property **Number** | Current `text-action`, Upcoming `text-secondary` |
+  | Label | **Label atom** instance (`Size=Medium`, `28:969`), **exposed** | text colour overridden: Done `text-primary`, Current `text-action`, Upcoming `text-secondary`; centred, wraps (truncation off) in the column |
+  | Line (Line=True) | 2px rectangle, absolute, from the box's edge (x 58) to the next box, 124 long | Done `border-success`, Current `border-active`, Upcoming `border-default` |
+
+  Gap box → label Space-M (8). The line's 124 isn't a token: it's the distance between boxes in a stepper whose steps
+  are 80 apart (80 + 80 − 36), as code's `hug`.
+- **`Stepper`** component set `3817:476`, **Steps** = 3 / 4 / 5 × **Current** = 1…Steps (12 variants), each a row of
+  Step instances Space-10XL (80) apart, the last with Line=False: widths 400 / 560 / 720 (4 steps = 560, as code's
+  `hug`). Labels Reward, Rules, Eligibility, UX (the code stories' steps) and Review for a fifth.
+
+  | Variants | Nodes |
+  |---|---|
+  | Steps=3, Current=1–3 | `3817:69`, `3817:90`, `3817:114` |
+  | Steps=4, Current=1–4 | `3817:141`, `3817:169`, `3817:200`, `3817:234` |
+  | Steps=5, Current=1–5 | `3817:271`, `3817:306`, `3817:344`, `3817:385`, `3817:429` |
+
+- **Descriptions** on both sets: the states and tokens, how to edit (exposed Label, Number), and what Figma can't show:
+  done steps as buttons back to them (focus ring round the box), and `width="fill"` (only the lines change length).
+- **Not drawn** (code only): `width="fill"`; `doneSteps="all"` (Edit reward: every step but the current done, a
+  combination designers can make by setting each Step instance's State); the all-done state (`current` = steps).
+- **Check icon:** Loyalty Iconography has two `check` components with identical geometry; `c3bdd89c…` is used.
+- **Source:** `FinStepper` (`packages/ui/src/components/Stepper/`), `DESIGN.md` §9.77.
 
 ### N5 · Stat card: 13 Nov 2026
 
