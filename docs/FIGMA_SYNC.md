@@ -34,7 +34,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N2 | `FinDatePicker`, `FinDateRangePicker` | Select-look field that opens the calendar; range shows two months | — | §9.87, §10 #120 | ⬜ |
 | N3 | `FinDateField` | Text field with DD/MM/YYYY mask and a calendar button | screens draw a text field with `calendar_today` | §9.79 | ⬜ |
 | N4 | `FinStepper` | Steps of a multi-step form: done, current, upcoming | drawn on each Add reward screen | §9.77 | ⬜ |
-| N5 | `FinStatCard` | Summary number on `bg-active` | drawn on each Reports screen | §9.81 | ⬜ |
+| N5 | `FinStatCard` | Summary number on `bg-active` | drawn on each Reports screen | §9.81 | ✅ 13 Nov 2026 |
 | N6 | `FinSkeleton` | Loading placeholder: text, rect, circle | — | §9.76 | ✅ 13 Nov 2026 |
 | N7 | `FinSignInLayout` | Login layout: artwork panel and form | drawn on each Login screen | §9.84, §10 #116 | ⬜ |
 | N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ⬜ |
@@ -100,6 +100,34 @@ itself, not code changes, so they're not part of this sync.
 - Loose design-note text layers on the Side nav (`3653:9300`), Input field (`3783:3280`) and Menu (`3553:25049`) pages.
 
 ## Done
+
+### N5 · Stat card: 13 Nov 2026
+
+- **Page:** Cards `3805:3461` (a new page; not the old Cards page `1:132` under "🔒 Do not use"). Page frame `3806:6`
+  (header `3806:7`, section `3806:11`).
+- **Component:** `Stat card` `3806:12` (a single component, no variants), 364 × 95 (the Reports screens' size),
+  **built from the atoms** (design review 13 Nov 2026: no raw text; the first version had plain text layers):
+
+  | Part | Node | What | Bindings / overrides |
+  |---|---|---|---|
+  | Card | `3806:12` | vertical, content centred | fill `bg-active`; padding Space-2XL (20); radius Radius-L (16) |
+  | Text Box | `3809:57` | instance of **Text Box** `Alignment=Left, Type=Headline Large-H4` (`28:1017`), Show Description off; **exposed** | — |
+  | Label | in the Text Box | its **Label** atom (Size Medium), the card label | text overridden to `text-secondary` |
+  | Value | in the Text Box | its Headline/Large-H4 heading, `text-primary` | — |
+
+- **Properties:** the card exposes its Text Box, so **Text Box** and its **Label** (label text) show in the card's
+  properties panel; the value is edited by double-clicking the heading. Card-level `Label` / `Value` text properties
+  aren't possible: Figma can't point a component's own property at text inside a nested instance ("Cannot set component
+  property references on instance sublayer").
+- **Example:** "Example: Reports summary" `3806:15`: four instances (Total points 806,400; Reward redemption (pts)
+  806,400; Cash conversion (pts) 286,400; Points expired 76,200), Space-4XL (32) apart, each 220 wide to fit the page
+  frame (the screens use 364 at 1920).
+- **Description** on the component: the structure, the label's `text-secondary` override (the Label atom's default is
+  too light on Dark `bg-active`, decided 28 Oct 2026), how to edit, and that it fills its column.
+- **Width** 364 isn't a token (it's the screens' column width); instances are resized to the grid, as in code.
+- **Possible follow-up (not done):** a heading text property on the Text Box atom would let the value be edited from
+  the properties panel too; that's a change to an existing atom, for design to decide.
+- **Source:** `FinStatCard` (`packages/ui/src/components/StatCard/`), `DESIGN.md` §9.81.
 
 ### N6 · Skeleton: 13 Nov 2026
 
