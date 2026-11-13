@@ -67,4 +67,15 @@ describe('FinLabel', () => {
     const stray = <FinLabel badgeLabel="New">Text</FinLabel>;
     expect(missing && stray).toBeTruthy();
   });
+
+  it('has a secondary tone (code only) and no tone attribute by default', () => {
+    const { rerender } = render(<FinLabel>Total points</FinLabel>);
+    const label = () => screen.getByText('Total points').parentElement!;
+    expect(label()).not.toHaveAttribute('data-label-tone');
+    expect(label()).toHaveClass('fin:text-tertiary');
+    rerender(<FinLabel tone="secondary">Total points</FinLabel>);
+    expect(label()).toHaveAttribute('data-label-tone', 'secondary');
+    expect(label()).toHaveClass('fin:text-secondary');
+    expect(label()).not.toHaveClass('fin:text-tertiary');
+  });
 });

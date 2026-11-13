@@ -1,1 +1,1 @@
-export { FinLabel, type FinLabelProps, type FinLabelSize } from './FinLabel';
+export { FinLabel, type FinLabelProps, type FinLabelSize, type FinLabelTone } from './FinLabel';

@@ -80,4 +80,13 @@ describe('FinTextBox', () => {
     rerender(<FinTextBox heading="H" data-testid="tb" truncateHeading={2} />);
     expect(screen.getByTestId('tb')).toHaveAttribute('data-truncate-heading', '2');
   });
+
+  it('passes labelTone to its Label, and headingAs="p" renders the heading as a paragraph with the same look', () => {
+    render(<FinTextBox type="h4" label="Total points" labelTone="secondary" heading="806,400" headingAs="p" />);
+    expect(screen.getByText('Total points').parentElement).toHaveAttribute('data-label-tone', 'secondary');
+    const value = screen.getByText('806,400');
+    expect(value.tagName).toBe('P');
+    expect(value).toHaveClass('fin:font-headline-large-h4');
+    expect(screen.queryByRole('heading')).toBeNull();
+  });
 });
