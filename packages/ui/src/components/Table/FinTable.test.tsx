@@ -366,4 +366,28 @@ describe('FinTable', () => {
     rerender(<FinTable label="Members" columns={columns} rows={members} getRowId={(m) => m.id} />);
     expect(screen.queryByRole('status')).toBeNull();
   });
+
+  it('shows checkbox columns named by row and column, with per-row disabled boxes and the keyboard', async () => {
+    interface Perm { id: string; name: string; view: boolean }
+    const onCheckedChange = vi.fn();
+    const rows: Perm[] = [
+      { id: 'a', name: 'Dashboard', view: true },
+      { id: 'b', name: 'Reports', view: false },
+    ];
+    const cols: FinTableColumn<Perm>[] = [
+      { key: 'name', header: 'Permission' },
+      { key: 'view', header: 'View', type: 'checkbox', onCheckedChange },
+      { key: 'add', header: 'Add', type: 'checkbox', checked: () => false, disabled: (row) => row.id === 'a' },
+    ];
+    render(<FinTable label="Permissions" columns={cols} rows={rows} getRowId={(r) => r.id} selectable={false} />);
+    expect(screen.getByRole('checkbox', { name: 'Dashboard, View' })).toBeChecked();
+    expect(screen.getByRole('checkbox', { name: 'Reports, View' })).not.toBeChecked();
+    expect(screen.getByRole('checkbox', { name: 'Dashboard, Add' })).toBeDisabled();
+    expect(screen.getByRole('checkbox', { name: 'Reports, Add' })).toBeEnabled();
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Reports, View' }));
+    expect(onCheckedChange).toHaveBeenLastCalledWith(rows[1], true);
+    screen.getByRole('checkbox', { name: 'Dashboard, View' }).focus();
+    await userEvent.keyboard(' ');
+    expect(onCheckedChange).toHaveBeenLastCalledWith(rows[0], false);
+  });
 });

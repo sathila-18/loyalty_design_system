@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { finIcons, type FinIconName } from '../../icons/finIcons';
 import { FinFlag } from '../../flags';
 import { FinAvatar } from '../Avatar';
@@ -45,7 +45,7 @@ const meta: Meta<Args> = {
     actionIcon: 'edit',
   },
   argTypes: {
-    type: { control: 'inline-radio', options: ['default', 'badge', 'link'], description: 'Figma `Type`' },
+    type: { control: 'inline-radio', options: ['default', 'badge', 'link', 'checkbox'], description: 'Figma `Type` (Checkbox: code first)' },
     leadingAccessories: { control: 'boolean', description: 'Figma `Show leading accessories` (the row checkbox)' },
     showContent: { control: 'boolean', description: 'Figma `Show content`' },
     content: { control: 'text', description: 'Figma Content slot (text)' },
@@ -139,6 +139,26 @@ export const SelectCell: Story = {
       <FinTableCell leadingAccessories={false}>Ann Perera</FinTableCell>
     </Row>
   ),
+};
+
+/**
+ * Checkbox type (code first, 16 Nov 2026): the cell is only a checkbox, a value per row such as a permission, lined up
+ * with the header text (24 padding). Ticked, unticked, and disabled (a value that doesn't apply).
+ */
+export const CheckboxCell: Story = {
+  name: 'Checkbox cell',
+  render: function CheckboxCell() {
+    const [view, setView] = useState(true);
+    const [add, setAdd] = useState(false);
+    return (
+      <Row>
+        <FinTableCell leadingAccessories={false}>Dashboard</FinTableCell>
+        <FinTableCell type="checkbox" checkboxLabel="Dashboard, View" checked={view} onCheckedChange={setView} />
+        <FinTableCell type="checkbox" checkboxLabel="Dashboard, Add" checked={add} onCheckedChange={setAdd} />
+        <FinTableCell type="checkbox" checkboxLabel="Dashboard, Delete" checked={false} disabled />
+      </Row>
+    );
+  },
 };
 
 /** Any other component goes in the Content slot as it is: here an avatar with a name, and a flag with a country. */

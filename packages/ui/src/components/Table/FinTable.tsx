@@ -55,8 +55,18 @@ export interface FinTableColumn<Row> {
   header: string;
   /** The value for a row. Text is shown as `type` says; any other component is shown as given. Default `row[key]`. */
   value?: (row: Row) => ReactNode;
-  /** How text values are shown (FinTableCell `type`): default, badge or link. Default `'default'`. */
+  /**
+   * How text values are shown (FinTableCell `type`): default, badge or link. Default `'default'`. **`'checkbox'`**
+   * (code first, 16 Nov 2026): each cell is only a checkbox, a value per row such as a permission (`checked`,
+   * `onCheckedChange`, `disabled`); named "{row}, {header}" for screen readers.
+   */
   type?: FinTableCellType;
+  /** Checkbox type: whether a row's box is ticked. Default `Boolean(row[key])`. */
+  checked?: (row: Row) => boolean;
+  /** Checkbox type: called with the row and the new value when a box is clicked. */
+  onCheckedChange?: (row: Row, checked: boolean) => void;
+  /** Checkbox type: the box can't be changed (shown disabled), for every row or per row (a value that doesn't apply). */
+  disabled?: boolean | ((row: Row) => boolean);
   /**
    * Something before the value, per row (FinTableCell's leading accessories slot; code only, added 28 Oct 2026): an
    * avatar or an image before a name, as the Badges screen. The value stays text, shown as `type` says. Nothing
@@ -513,7 +523,9 @@ function FinTableInner<Row>(
                         {actionsAt === 'start' && skeletonActionsCell}
                         {columns.map((column, columnIndex) => (
                           <FinTableCell key={column.key} leadingAccessories={false}>
-                            {column.type === 'badge' ? (
+                            {column.type === 'checkbox' ? (
+                              <FinSkeleton shape="rect" width={20} height={20} />
+                            ) : column.type === 'badge' ? (
                               <FinSkeleton shape="rect" width={64} />
                             ) : (
                               <FinSkeleton width={SKELETON_WIDTHS[(index + columnIndex) % SKELETON_WIDTHS.length]!} />
@@ -540,6 +552,21 @@ function FinTableInner<Row>(
                         >
                           {actionsAt === 'start' && actionsCell(row, index)}
                           {columns.map((column) => {
+                            if (column.type === 'checkbox') {
+                              const on = column.checked ? column.checked(row) : Boolean((row as Record<string, unknown>)[column.key]);
+                              const off = typeof column.disabled === 'function' ? column.disabled(row) : (column.disabled ?? false);
+                              const change = column.onCheckedChange;
+                              return (
+                                <FinTableCell
+                                  key={column.key}
+                                  type="checkbox"
+                                  checked={on}
+                                  disabled={off}
+                                  checkboxLabel={`${rowLabel(row, index)}, ${column.header}`}
+                                  {...(change ? { onCheckedChange: (next: boolean) => change(row, next) } : {})}
+                                />
+                              );
+                            }
                             const value = column.value ? column.value(row) : ((row as Record<string, unknown>)[column.key] as ReactNode);
                             const tone = typeof column.badgeTone === 'function' ? column.badgeTone(row) : column.badgeTone;
                             const leading = column.leading?.(row);

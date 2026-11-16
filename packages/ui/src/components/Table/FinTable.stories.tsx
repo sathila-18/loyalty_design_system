@@ -414,3 +414,76 @@ export const Bordered: Story = {
     );
   },
 };
+
+type PermissionAction = 'view' | 'add' | 'delete' | 'update' | 'download' | 'import';
+
+interface Permission {
+  id: string;
+  name: string;
+  /** The actions that apply to this area; the others are shown disabled. */
+  actions: PermissionAction[];
+}
+
+const PERMISSION_ACTIONS: { key: PermissionAction; header: string }[] = [
+  { key: 'view', header: 'View' },
+  { key: 'add', header: 'Add' },
+  { key: 'delete', header: 'Delete' },
+  { key: 'update', header: 'Update' },
+  { key: 'download', header: 'Download' },
+  { key: 'import', header: 'Import' },
+];
+
+const PERMISSIONS: Permission[] = [
+  { id: 'dashboard', name: 'Dashboard', actions: ['view'] },
+  { id: 'programme', name: 'Programme configuration', actions: ['view', 'add', 'delete', 'update'] },
+  { id: 'tiers', name: 'Tier management', actions: ['view', 'add', 'delete', 'update'] },
+  { id: 'rewards', name: 'Reward catalogue', actions: ['view', 'add', 'delete', 'update'] },
+  { id: 'badges', name: 'Badge management', actions: ['view', 'add', 'delete', 'update'] },
+  { id: 'learning', name: 'Focus & learning', actions: ['view', 'add', 'update'] },
+  { id: 'lessons', name: 'Focus & learning - lessons', actions: ['view', 'add', 'update'] },
+  { id: 'questions', name: 'Focus & learning - questions', actions: ['view', 'add', 'update'] },
+  { id: 'system', name: 'System configuration', actions: ['view', 'add', 'delete', 'update'] },
+  { id: 'reports', name: 'Report management', actions: ['view', 'download', 'import'] },
+];
+
+/**
+ * Checkbox columns (code first, 16 Nov 2026), as the Create user role screen: each cell is only a checkbox (`type:
+ * 'checkbox'`), named "{permission}, {action}" for screen readers. Actions that don't apply to an area are disabled.
+ * Every applicable permission starts ticked (the screen's Admin role).
+ */
+export const Permissions: Story = {
+  render: function Permissions() {
+    const [granted, setGranted] = useState<Record<string, PermissionAction[]>>(() =>
+      Object.fromEntries(PERMISSIONS.map((p) => [p.id, [...p.actions]])),
+    );
+    const set = (row: Permission, action: PermissionAction, on: boolean) =>
+      setGranted((prev) => {
+        const current = prev[row.id] ?? [];
+        return { ...prev, [row.id]: on ? [...current, action] : current.filter((a) => a !== action) };
+      });
+    const permissionColumns: FinTableColumn<Permission>[] = [
+      { key: 'name', header: 'List of permissions', width: 320 },
+      ...PERMISSION_ACTIONS.map(
+        ({ key, header }): FinTableColumn<Permission> => ({
+          key,
+          header,
+          type: 'checkbox',
+          checked: (row) => (granted[row.id] ?? []).includes(key),
+          onCheckedChange: (row, on) => set(row, key, on),
+          disabled: (row) => !row.actions.includes(key),
+        }),
+      ),
+    ];
+    return (
+      <FinTable
+        label="Permissions"
+        columns={permissionColumns}
+        rows={PERMISSIONS}
+        getRowId={(p) => p.id}
+        getRowLabel={(p) => p.name}
+        selectable={false}
+        hover={false}
+      />
+    );
+  },
+};

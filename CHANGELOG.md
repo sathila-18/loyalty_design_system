@@ -9,6 +9,7 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 ### Added
 
 - List rows: `density` (`'default'` | `'compact'`, default `'default'`) on `FinListStandard`, `FinListRadio`, `FinListCheckbox`, `FinListToggle`, their filled versions, and `FinListRadioGroup` / `FinListCheckboxGroup` (passed to every row). Compact is 8 padding on every side and between the content and the line (Default 16); filled cards 8 all round. Type `FinListItemDensity`.
+- `FinTable` checkbox columns: `type: 'checkbox'` with `checked(row)`, `onCheckedChange(row, checked)` and `disabled` (boolean or per row), for values per row such as permissions. Each box is named "{row}, {header}" for screen readers.
 
 ### Changed
 
