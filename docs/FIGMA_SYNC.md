@@ -651,6 +651,9 @@ itself, not code changes, so they're not part of this sync.
 - **Small variants:** Enabled `3885:110`, Focus `3885:297`, Typing `3885:237`, Complete `3885:177`.
 - **Sizes:** 343 × 40 (no helper, as code). Large unchanged (343 × 48).
 - **Description** on the set: the Size property.
-- **Known:** Figma lists the Size options as Small, Large (the Plugin API can't reorder variant options); drag Large
-  first in the properties panel to match C3 / C4.
+- **Option order:** the Plugin API listed Size as Small, Large; design reordered it to Large, Small by hand (as C3 /
+  C4).
+- **Found while checking (C3, C4):** some slot icons swapped to the 20px set kept a 24 × 24 size: the eye in all 22
+  Small `Input field-password` variants and the 3 Disabled icons in Small `Input field-standard`. Design is fixing
+  them to 20 × 20 by hand (16 Nov 2026).
 - **Source:** `FinSearchField` `size` (20px icons when small), `DESIGN.md` §9.61.
