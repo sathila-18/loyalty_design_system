@@ -61,7 +61,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C8 | `Chips` (`95:1848`) | Three chip types (Assist / Filter / Input); Input chip Unselected-border | §9.32, §10 #46 | ✅ 16 Nov 2026 (before C7) |
 | C9 | `Checkbox` (`42:220`) | Checkbox on the left only; Selected + Disabled | §10 #44 | ✅ 16 Nov 2026 |
 | C10 | `Segmented_button-base` / `Segmented button` (`117:4667` / `117:4688`) | Small (32) and XSmall sizes, icon only, tooltips | §9.33, §9.34 | ✅ 16 Nov 2026 (for N13) |
-| C11 | `Header notification` (`3178:24467`) | 40 everywhere, 20 bell (Figma 48) | §9.62 | ⬜ |
+| C11 | `Header notification` (`3178:24467`) | 40 everywhere, 20 bell (Figma 48) | §9.62 | ✅ 16 Nov 2026 |
 | C12 | `Main header` (`3178:24570`) | Headline Small-H6 title; XSmall (32) back button (Figma H4, 48) | §9.63 | ⬜ |
 | C13 | `Button dock` (`75:5858`) | Small buttons; buttons hug labels, Secondary + Primary at the right | §9.69 | ⬜ |
 | C14 | `Side Menu` (`3142:11871`) | Tree style; logo text "Fintech loyalty" | §9.57, §10 #76, #111 | ⬜ |
@@ -749,3 +749,22 @@ unchanged. As §10 #46.
   fills it).
 - **Description** on the set.
 - **Source:** `FinCheckbox` (`checked`, `indeterminate`, `disabled`), `DESIGN.md` §9.30, §10 #44.
+
+### C11 · Header notification: 40 circle, 20 bell: 16 Nov 2026
+
+- **Page:** Header. `Header notification` `3178:24467`, updated in place (10 variants, same properties and IDs).
+- **The circle:** each variant's `48px bg` icon container is **replaced by a plain auto-layout frame `Circle`**:
+  40 × 40, padding **Space-M** (bound), radius **Radius-Full** (bound), centred, its fill the variant's own
+  (`bg-action-secondary` / `_hovered` / `_pressed`, Disabled `bg-disabled`, kept). As code, which draws the circle on
+  the button, not FinIconContainer (§9.62 (3)). Why not `40px bg`: an icon inside an icon-container instance can't be
+  resized (Figma: "size cannot be overridden in an instance"), and `40px bg` holds a 24 icon top-left, so a 20 bell
+  wouldn't be 20 or centred.
+- **The bell:** a **20px** icon wrapper instance (`State=Secondary`; Disabled `State=Disabled`) with `notifications`,
+  its colour the variant's own (`fg-action` / `fg-hovered` / `fg-pressed`, Disabled `fg-disabled-on_bg`): 20 × 20 at
+  10 / 10.
+- **Badges** (absolute, as before): the dot at **26 / 8** (8 from the top and right); the number at **20 / −4** (the
+  centre line, 4 above the top, growing right). Disabled: no badge (unchanged).
+- **Effect elsewhere:** every instance (the Main header's notification button) is now 40, as code; C12 updates the
+  header itself.
+- **Description** on the set.
+- **Source:** `FinHeaderNotificationButton` (`FinHeaderNotificationButton.styles.ts`), `DESIGN.md` §9.62.
