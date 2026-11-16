@@ -66,7 +66,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C13 | `Button dock` (`75:5858`) | Small buttons; buttons hug labels, Secondary + Primary at the right | §9.69 | ⬜ |
 | C14 | `Side Menu` (`3142:11871`) | Tree style; logo text "Fintech loyalty" | §9.57, §10 #76, #111 | ⬜ |
 | C15 | `Main Selection` / `sub selection` (`3140:10997` / `3140:11076`) | Tree lines; chevron colours on tokens | §9.47, §10 #52, #76 | ⬜ |
-| C16 | `standard-menu` (`3549:12004`) | Shadow/Menu effect style; header and footer slots; slot `conten` → content | §9.64, §10 #59 | ⬜ |
+| C16 | `standard-menu` (`3549:12004`) | Shadow/Menu effect style; header and footer slots; slot `conten` → content | §9.64, §10 #59 | ✅ 16 Nov 2026 (shadow kept Sticky for now) |
 | C17 | `Table header cell` (`3151:14941`) | Sort / filter icons; narrow checkbox and ⋮ cells (56, Figma 72) | §9.41, §10 #50 | ✅ 16 Nov 2026 (with N11) |
 | C18 | `Table - Cell` / `Table row` / `Header row` | Narrow checkbox cell; Link cell padding | §9.43, §10 #61 | ⬜ |
 | C19 | Table (assembled) | Bordered style | §9.45, §10 #77 | ⬜ |
@@ -319,3 +319,24 @@ itself, not code changes, so they're not part of this sync.
 - **Still to do for N11:** the filter menu (FinTableColumnFilter, §9.65) after C16.
 - **Source:** `FinTableHeaderCell` (`packages/ui/src/components/TableHeaderCell/`), `FinTableColumnFilter`,
   `DESIGN.md` §9.41, §9.65, §10 #50.
+
+### C16 · Menu: 16 Nov 2026
+
+- **Page:** Menu `3549:11198`. `standard-menu` set `3549:12004`, variant `Type=Normal` `3549:11762`, updated in place.
+- **Slot name:** already `content` in Figma (`content#3549:1`); the `conten` typo had been fixed. Nothing to do.
+- **Header and footer added** (code's `header` and `footer`), both off by default, so existing menus are unchanged
+  (377 × 305):
+
+  | Part | Node | Built from | Layout |
+  |---|---|---|---|
+  | **Header** frame, `Show header` (off) | `3843:123` | slot **header** `3843:124` holding a **Search** instance (`State=Enabled` `440:5163`) | padding Space-L, 1px `border-subtle` line below, above the content |
+  | **Footer** frame, `Show footer` (off) | `3843:165` | slot **footer** `3843:166` holding **all-button** Small Tertiary "Reset" (`47:1601`) and Small Primary "Apply" (`47:1585`) | padding Space-XL, gap Space-M, right aligned, 1px `border-subtle` line above |
+
+  New properties: `header`, `footer` (slots), `Show header`, `Show footer` (booleans).
+- **Example:** "Example: menu with header and footer" `3843:201` (377 × 451) below the set.
+- **Shadow (decided by design 16 Nov 2026):** stays **`Shadow/Sticky`** for now (the same values as code's
+  `Shadow/Menu`). Design adds `Shadow/Menu` to Foundation – Loyalty and publishes it; then it's swapped in.
+- **Divider between groups:** described (full-width Divider, as `FinMenuDivider`), not drawn.
+- **Search size:** the header's Search is Figma's only size (48); code's country search uses Small (40), which is C5.
+- **Description** on the set: content, header, footer, and code-only behaviour (kind, placement, height, width).
+- **Source:** `FinMenu`, `FinMenuDivider` (`packages/ui/src/components/Menu/`), `DESIGN.md` §9.64, §10 #59.
