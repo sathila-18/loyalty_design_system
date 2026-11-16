@@ -844,3 +844,21 @@ where a section is open; the nav to code's 272 / 240; the logo text in the Logo 
 - **Effect elsewhere:** the Side Menu's open sections now show the purple up arrow.
 - **Description** on the set.
 - **Source:** `FinSideNavItem` (`FinSideNavItem.styles.ts` `chevron`, the `open` arrow), `DESIGN.md` §9.48, §10 #52.
+
+### C14 follow-up · Side Menu section icons as code: 17 Nov 2026
+
+Asked by design 17 Nov 2026: every section showed the placeholder `perm_identity`.
+
+- **Page:** Side nav. `Side Menu` `3142:11871`, all 21 variants (Expanded, Minimized, Tree): the 7 Main Selections'
+  glyphs swapped to code's icons (`pageShell.tsx` / FinSideNav stories), from the **Loyalty Iconography** library:
+  Dashboard `home`, Loyalty Management `loyalty`, Gamification `sports_esports`, System Configuration
+  `desktop_windows`, Report Management `assignment`, User Management `supervised_user_circle`, System Audit
+  `plagiarism`.
+- **Filled when selected**, as code (FinSideNavIcon: filled + `fg-active` on the selected section, outlined
+  otherwise): the selected section uses the library's filled glyph, the rest the outlined one. Colours unchanged (the
+  icon's own State).
+- **Known:** the library's two `desktop_windows` glyphs both look outlined (no solid-screen filled version), so a
+  selected System Configuration looks outlined in Figma; code's filled one (Material Symbols FILL 1) has a solid
+  screen. To add to Loyalty Iconography if wanted.
+- **Not changed:** the `Main Selection` set itself keeps `perm_identity` as its generic default.
+- **Source:** `apps/storybook/src/pages/pageShell.tsx`, `FinSideNavIcon` (§9.48), `DESIGN.md` §9.57.
