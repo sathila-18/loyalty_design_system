@@ -38,7 +38,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N6 | `FinSkeleton` | Loading placeholder: text, rect, circle | — | §9.76 | ✅ 13 Nov 2026 |
 | N7 | `FinSignInLayout` | Login layout: artwork panel and form | drawn on each Login screen | §9.84, §10 #116 | ⬜ |
 | N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ⬜ |
-| N9 | `FinListCheckbox` | Checkbox list row, as List-radio_button | — | §9.54, §10 #55 | ⬜ |
+| N9 | `FinListCheckbox` | Checkbox list row, as List-radio_button | — | §9.54, §10 #55 | ✅ 16 Nov 2026 |
 | N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ⬜ |
 | N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | ⬜ |
 | N12 | Table row actions (⋮) | 64-wide ⋮ column with its menu | hidden "Action Slot" in cells | §9.66, §10 #60 | ⬜ |
@@ -222,3 +222,32 @@ itself, not code changes, so they're not part of this sync.
 - **Source:** `FinSkeleton` (`packages/ui/src/components/Skeleton/`), `DESIGN.md` §9.76.
 - **Note:** the header text styles are referenced by their IDs in the file (Heading 2/Semibold, Text xl/Medium); their
   library keys can't be imported, so a new page copies them from an existing page's header.
+
+### N9 · List checkbox: 16 Nov 2026
+
+- **Page:** List `1:143` (the designer's choice, with the other list rows). Page frame `3828:13487` at x 16344, to the
+  right of List-toggle (header copied from the List-radio_button frame; section heading `3828:13493` "List-checkbox").
+- **Decided by design (16 Nov 2026):** built the same way as **List-radio_button** (`3503:21171`), from the base
+  component; **no Indeterminate state in Figma** (code only).
+- **Component set:** `List-checkbox` `3828:13494`, the radio list's properties and grid (50 variants):
+  **Type** Default / Country / Payment × **State** Default / Hovered / Selected / Selected+hovered / Disabled ×
+  **Item side** Leading / Trailing (Country and Payment; Default is Leading only, as the radio) × **Description**
+  True / False.
+- **Built from:** each variant is a **List-base** instance with **Base-Checkbox** (`42:185`) in its accessory slot;
+  row fills, text, flag (Flag sizes) and payment icon (Payment Icons) are List-radio_button's, unchanged.
+
+  | Row State | Base-Checkbox variant |
+  |---|---|
+  | Default, Hovered | `State=Enabled, Type=Unselected, Focused=False` (`42:186`) |
+  | Selected, Selected+hovered | `State=Enabled, Type=Selected, Focused=False` (`42:189`) |
+  | Disabled | `State=Disabled, Type=Unselected, Focused=False` (`42:204`) |
+
+  As in the radio list, the row (not the control) shows hover and selection: Hovered `bg-secondary`, Selected `bg-active`,
+  Selected+hovered `bg-active-hover`.
+- **Description** on the set: types and states, and what Figma can't show: `indeterminate` for a "select all" row,
+  keyboard (Space toggles), the focus ring round the row, and `FinListCheckboxGroup`.
+- **Source:** `FinListCheckbox`, `FinListCheckboxGroup` (`packages/ui/src/components/ListCheckbox/`), `DESIGN.md` §9.54,
+  §10 #55.
+- **Subtitles corrected (16 Nov 2026, asked by design):** all five List page frames had the Input field subtitle
+  ("Input Fields will help users…"). Each now describes its own list: List-base `77:10169`, List-standard `3500:14329`,
+  List-radio_button `3503:21176`, List-toggle `3506:23930`, List-checkbox `3828:13491`.
