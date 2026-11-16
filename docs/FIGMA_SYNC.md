@@ -42,7 +42,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ✅ 16 Nov 2026 |
 | N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | ✅ 16 Nov 2026 |
 | N12 | Table row actions (⋮) | 64-wide ⋮ column with its menu | hidden "Action Slot" in cells | §9.66, §10 #60 | ✅ 16 Nov 2026 (sideways shadow to add with Shadow/Menu) |
-| N13 | Side nav account menu | User row as a menu trigger; 320-wide menu with a Theme row | — | §9.57, §10 #62 | ⬜ |
+| N13 | Side nav account menu | User row as a menu trigger; 320-wide menu with a Theme row | — | §9.57, §10 #62 | ✅ 16 Nov 2026 (Light / Dark icons temporary) |
 | N14 | `FinTable` (assembled) | Whole table with footer and pagination | parts only, by decision (§10 #26) | §9.45 | ✅ 16 Nov 2026 |
 
 ### ✏️ Changed: in Figma, but code differs visually
@@ -536,3 +536,34 @@ itself, not code changes, so they're not part of this sync.
   Icon only: the track hugs its segments (as code). All sizes measured equal to code.
 - **Not drawn:** the filled icon when selected, tooltips, `menuitemradio` (code only; in the descriptions).
 - **Source:** `FinSegmentBase`, `FinSegmentedButton`, `DESIGN.md` §9.33, §9.34.
+
+### N13 · Side nav account menu: 16 Nov 2026
+
+- **Page:** Side nav `1:129` (designer's link), in the section with Side Menu.
+- **Decided by design (16 Nov 2026):** the user row is a **standalone** set (Side Menu left as it is); **C10 first**
+  so the Theme row uses the real XSmall icon-only control; Light / Dark use the **nearest library icons for now**.
+- **`Side nav user`** set `3872:1506` (built from the Side Menu's own user row, a List-base Small instance):
+
+  | Variant | Node | Look |
+  |---|---|---|
+  | `Type=Expanded, State=Default` | `3872:1380` | 240 × 70; padding Space-L / Space-XL, Radius-M; `keyboard_arrow_down` |
+  | `Type=Expanded, State=Hovered` | `3872:1411` | `bg-tertiary` |
+  | `Type=Expanded, State=Pressed` | `3872:1442` | `bg-neutral` |
+  | `Type=Expanded, State=Open` | `3872:1473` | `bg-tertiary`, `keyboard_arrow_up` |
+  | `Type=Minimized, State=Default` | `3872:1504` | the avatar (40) in a 48 column, Space-L above and below; no fill (as code) |
+
+- **`Account menu`** component `3873:1489`, 320 × 294: a **standard-menu** instance (C16 version) at 320, Show
+  header on with the header padding set to Space-none (code's `headerPadding="none"`), no footer:
+
+  | Part | Built from | Height |
+  |---|---|---|
+  | Header | List-standard Small (description) "Olivia James" / "oliviajames@email.com", trailing **Badge-primary State=Neutral** "Admin"; no line of its own (the header's line) | 75 |
+  | My profile, Settings, Log out | List-standard Small, no description, Show Divider off + Space-XL bottom padding | 53 each (as code) |
+  | Theme | the same row, trailing **Segmented button `Size=XSmall, Icon only=True`** (72 × 24, C10): System `desktop_windows` (Selected), Light, Dark | 56 (as code) |
+  | Line | **Divider** atom, full width, before Log out | 1 |
+
+- **Icons (temporary):** Loyalty Iconography has no `light_mode` or `dark_mode`; Light uses `brightness_low` and
+  Dark `bedtime` until they're added (code uses `light_mode` and `dark_mode`). To swap when published.
+- **Descriptions** on both: states, placement (above the user area, or right of the minimized nav) and code-only
+  behaviour (keyboard, theme picking keeps the menu open, tooltips).
+- **Source:** `FinSideNav` (`profile.menu`, the theme row), `DESIGN.md` §9.57, §10 #62.
