@@ -795,7 +795,7 @@ unchanged. As §10 #46.
   still right with Tertiary hidden. Their `Show Secondary button` / `Show Primary button` booleans still work. The row
   centres its items.
 - **Measured** (711 drawing width): 141 tall with a one-line accessory (16 + 21 + 24 + 40 + 40), 96 with buttons only
-  (as code); Tertiary 96 at 24; Secondary at 421, Primary at 533 (16 apart, ending at the right padding).
+  (as code); Tertiary 96 at 24; Secondary at 533, Primary at 591 (16 apart, ending at 687, the right padding).
 - **Not changed:** the Tertiary layer is still named "Button-Secondary" (renaming could confuse existing overrides; rename
   by hand if wanted).
 - **Description** on the set. **Effect elsewhere:** the Side sheet's dock (an instance) gets the same.
