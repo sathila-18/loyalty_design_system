@@ -51,7 +51,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 
 | # | Figma component (node) | Code differs by | `DESIGN.md` ref | Status |
 |---|---|---|---|---|
-| C1 | `all-button` (`47:1580`) | Link variant; `iconTone` secondary; `contentTone` colours | §9.28, §10 #118 | ⬜ |
+| C1 | `all-button` (`47:1580`) | Link variant; `iconTone` secondary; `contentTone` colours | §9.28, §10 #118 | ✅ 16 Nov 2026 |
 | C2 | `Input field-base` (`49:5734`) | Small (40) size; mask | §9.58 | ⬜ |
 | C3 | `Input field-standard` (`52:2629`) | Small size | §9.59 | ⬜ |
 | C4 | `Input field-password` (`60:7165`) | Small size | §9.60 | ⬜ |
@@ -567,3 +567,27 @@ itself, not code changes, so they're not part of this sync.
 - **Descriptions** on both: states, placement (above the user area, or right of the minimized nav) and code-only
   behaviour (keyboard, theme picking keeps the menu open, tooltips).
 - **Source:** `FinSideNav` (`profile.menu`, the theme row), `DESIGN.md` §9.57, §10 #62.
+
+### C1 · Button: Link, icon and content tones: 16 Nov 2026
+
+- **Page:** Buttons `1:130`. `all-button` `47:1580`, updated in place.
+- **Decided by design (16 Nov 2026):** Link as **`Type = Link`** variants; Tertiary's code-only colour options as
+  **documented overrides**, not variants (as variants they'd add 576).
+- **`Type=Link`** (§10 #118): 48 new variants (Size × State × Icon None / Leading / Trailing; no Only Icon), copied
+  from the Tertiary ones (Base-button instances, same sizes and padding: all 48 measured equal to Tertiary), with:
+
+  | State | Background | Label | Icon |
+  |---|---|---|---|
+  | Enabled | none | `text-action` | `fg-action` |
+  | Hovered | none | `text-action`, underlined | `fg-action` |
+  | Pressed | none | `text-pressed`, underlined | `fg-pressed` |
+  | Disabled | none | `text-disabled` | `fg-disabled` |
+
+  The set now has 240 variants; the Link rows sit below the others.
+- **Tertiary tones** (`iconTone="secondary"`, `contentTone` inverse / primary / secondary / info / success / error /
+  warning): a reference frame **"Tertiary tones (overrides)"** `3877:6319` under the set: eight cards, each a
+  Tertiary Small Leading instance with the label and icon recoloured, on the background it's used on (`bg-direct`
+  for inverse, the status `*_secondary` fills, `bg-primary`). Captions are Label atoms.
+- **Description** on the set: the Link states, and how to apply the tones (with code's hover and press tints).
+- **Not in this item:** the `Tone` property (Normal / White / Destructive, §9.28) is still separate sets in Figma.
+- **Source:** `FinButton` / `FinButtonBase` (`variant="link"`, `iconTone`, `contentTone`), `DESIGN.md` §9.28, §10 #118.
