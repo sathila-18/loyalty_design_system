@@ -78,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 | Attribute | Values |
 |---|---|
-| `data-brand` | `finspace`, `burgundy`, `sampath` |
+| `data-brand` | `finspace`, `burgundy`, `sampath`, or `custom` (an admin-chosen colour, see "Custom brand colour" below) |
 | `data-theme` | `light`, `dark` |
 
 **Rules:**
@@ -104,6 +104,72 @@ export function ThemeToggle() {
 ```
 
 If the user's choice must be remembered across visits, store it (in a cookie, so the server can render the right `data-theme` on first load and the page doesn't flash). That isn't built into the library yet.
+
+### Custom brand colour (admin-defined)
+
+An admin can pick **one primary colour** in the product's settings. With `data-brand="custom"` and the CSS variable `--fin-custom-primary` on `<html>`, the browser generates the whole brand scale from that colour, in Light and Dark: buttons, links, focus rings, selected states, toggles, sliders and so on. No component code changes. Neutrals, text, status colours (success, warning, error), **info** and fonts stay as Finspace's. Full guide: [CUSTOM-BRAND.md](./CUSTOM-BRAND.md).
+
+**Set it on the server**, so the first paint already has the colour:
+
+```tsx
+// app/layout.tsx
+import type { CSSProperties } from 'react';
+import { checkBrandColor } from '@finspace-loyalty/ui';
+import '@finspace-loyalty/ui/index.css';
+
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const settings = await getTenantSettings(); // your own data source
+  // Only a valid hex reaches the page: checkBrandColor returns null for anything else.
+  const color = settings.brandColor ? checkBrandColor(settings.brandColor)?.input : undefined;
+
+  return (
+    <html
+      lang="en"
+      data-brand={color ? 'custom' : settings.brand /* finspace | burgundy | sampath */}
+      data-theme={settings.theme ?? 'light'}
+      style={color ? ({ '--fin-custom-primary': color } as CSSProperties) : undefined}
+    >
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+Without `--fin-custom-primary`, the custom brand falls back to Finspace's primary (`#625bff`).
+
+**Live preview in the settings screen** (optional), from a Client Component while the admin picks a colour:
+
+```tsx
+'use client';
+
+function previewBrandColor(hex: string) {
+  const root = document.documentElement;
+  root.dataset.brand = 'custom';
+  root.style.setProperty('--fin-custom-primary', hex);
+}
+// On cancel, put back the saved data-brand and --fin-custom-primary (or remove it).
+```
+
+This variable is the **one exception** to "never inject brand or theme styles": set only `--fin-custom-primary`, never another `--fin-*` variable.
+
+**`checkBrandColor(hex)`** tells the settings screen what the colour becomes. It **never blocks**: every colour gives a readable brand, because very light colours are darkened for buttons.
+
+```ts
+import { checkBrandColor } from '@finspace-loyalty/ui';
+
+checkBrandColor('#38bdf8');
+// {
+//   input: '#38bdf8',     // the colour as a 6-digit hex
+//   button: '#006388',    // the primary button's colour (what admins will see most)
+//   deltaE: 0.2866,       // how far the button colour is from the input (0 = the same)
+//   adjusted: true,       // true when the difference is visible (deltaE ≥ 0.02)
+//   lightness: 'lowered', // 'kept', 'lowered' (too light for white text) or 'raised' (near black)
+// }
+checkBrandColor('#660033'); // { input: '#660033', button: '#660033', deltaE: 0, adjusted: false, lightness: 'kept' }
+checkBrandColor('red');     // null: not a hex colour (#rgb or #rrggbb)
+```
+
+When `adjusted` is true, show **"Adjusted for readability"** next to the colour, with a swatch of `button`. Save the admin's own colour (`input`) either way. `resolveCustomScale(hex)` returns every generated colour, if the screen shows a full preview.
 
 ---
 
