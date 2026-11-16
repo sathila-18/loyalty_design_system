@@ -40,7 +40,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ⬜ |
 | N9 | `FinListCheckbox` | Checkbox list row, as List-radio_button | — | §9.54, §10 #55 | ✅ 16 Nov 2026 |
 | N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ✅ 16 Nov 2026 |
-| N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | 🟡 header cell 16 Nov 2026; filter menu after C16 |
+| N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | ✅ 16 Nov 2026 |
 | N12 | Table row actions (⋮) | 64-wide ⋮ column with its menu | hidden "Action Slot" in cells | §9.66, §10 #60 | ⬜ |
 | N13 | Side nav account menu | User row as a menu trigger; 320-wide menu with a Theme row | — | §9.57, §10 #62 | ⬜ |
 | N14 | `FinTable` (assembled) | Whole table with footer and pagination | parts only, by decision (§10 #26) | §9.45 | ⬜ optional |
@@ -316,7 +316,7 @@ itself, not code changes, so they're not part of this sync.
   to the original `Slot#3151:16` property, and the extra slot properties were deleted.
 - **Description** on the set: all properties, tokens, and code-only behaviour (icon hover / pressed, focus ring, the
   filter menu).
-- **Still to do for N11:** the filter menu (FinTableColumnFilter, §9.65) after C16.
+- **Filter menu:** done after C16, on the Menu page (below).
 - **Source:** `FinTableHeaderCell` (`packages/ui/src/components/TableHeaderCell/`), `FinTableColumnFilter`,
   `DESIGN.md` §9.41, §9.65, §10 #50.
 
@@ -340,3 +340,25 @@ itself, not code changes, so they're not part of this sync.
 - **Search size:** the header's Search is Figma's only size (48); code's country search uses Small (40), which is C5.
 - **Description** on the set: content, header, footer, and code-only behaviour (kind, placement, height, width).
 - **Source:** `FinMenu`, `FinMenuDivider` (`packages/ui/src/components/Menu/`), `DESIGN.md` §9.64, §10 #59.
+
+### N11 · Table column filter menu: 16 Nov 2026
+
+- **Page:** Menu `3549:11198` (designer's choice), below the standard menu: heading `3845:1873` "Table column filter"
+  and the set.
+- **Component set:** `Table column filter` `3845:1872`, **Type** × **Search** (4 variants), each a **standard-menu**
+  instance (the C16 version) with Small list rows in its `content` slot. Examples are the code stories' columns.
+
+  | Variant | Node | Size | Contents |
+  |---|---|---|---|
+  | `Type=Checkbox, Search=False` | `3845:673` | 377 × 245 | **List-checkbox** rows Active, Inactive, Pending (Selected); `Show footer` on: Reset, Apply |
+  | `Type=Checkbox, Search=True` | `3845:942` | 377 × 318 | as above; `Show header` on, Search "Search Status" |
+  | `Type=Radio, Search=False` | `3845:1241` | 377 × 229 | **List-radio_button** rows All (Selected), Silver, Gold, Platinum; no footer |
+  | `Type=Radio, Search=True` | `3845:1560` | 377 × 302 | as above; `Show header` on, Search "Search Tier" |
+
+- **Rows:** `Type=Default, Item side=Leading, Description=False`, the nested List-base set to **Size=Small** (code's
+  `size="small"`). The **last row** has `Show Divider` off and **Space-XL bottom padding** (bound on the nested
+  List-base), as code's last-of-many rule (`FinListItem.styles.ts`).
+- **Width:** the menu's 377 (code fits the content; noted, not drawn).
+- **Description** on the set: when each type is used, Reset / Apply vs apply on selection, "All", search from 8 values,
+  and code-only behaviour.
+- **Source:** `FinTableColumnFilter` (`packages/ui/src/components/TableColumnFilter/`), `DESIGN.md` §9.65, §10 #50.
