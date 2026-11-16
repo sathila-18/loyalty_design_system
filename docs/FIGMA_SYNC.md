@@ -70,7 +70,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C17 | `Table header cell` (`3151:14941`) | Sort / filter icons; narrow checkbox and ⋮ cells (56, Figma 72) | §9.41, §10 #50 | ✅ 16 Nov 2026 (with N11) |
 | C18 | `Table - Cell` / `Table row` / `Header row` | Narrow checkbox cell; Link cell padding | §9.43, §10 #61 | ✅ 16 Nov 2026 (with N12) |
 | C19 | Table (assembled) | Bordered style | §9.45, §10 #77 | ✅ 16 Nov 2026 (with N14) |
-| C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ⬜ |
+| C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ➖ not needed (decided 17 Nov 2026: only used in menus, already in C16) |
 | C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ⬜ |
 | C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ⬜ |
 | C23 | `List-base` (`77:10185`) and every list built on it | **Compact density** (v0.8.0): a `Density` property, Default / Compact; Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16). Exposed on List-standard, List-radio_button, List-checkbox, List-toggle and the four `List_fill-*` sets (filled cards 8 all round). Then use it in the **Row actions menu** (`3849:786`, N12) and the **Rows per page** menu, which are compact in code | §9.49–9.56, §9.38, §9.66, §10 #121 | ✅ 16 Nov 2026 |
