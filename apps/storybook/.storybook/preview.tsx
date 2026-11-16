@@ -1,5 +1,6 @@
 import type { Decorator, Preview } from '@storybook/react-vite';
 import { finBrands, finThemes, type FinBrand, type FinTheme } from '@finspace-loyalty/tokens';
+import { CUSTOM_PRIMARY_FALLBACK, CUSTOM_PRIMARY_PROPERTY, checkBrandColor } from '@finspace-loyalty/tokens/custom-brand';
 // The same stylesheet apps get (tokens, fonts, reset), from source so changes reload live.
 import '../../../packages/ui/src/styles/index.css';
 // The Tailwind utilities of the components, stories and pages (DESIGN.md §3.11).
@@ -35,11 +36,21 @@ type ThemeGlobal = FinTheme | 'side-by-side';
 
 const title = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-/** Theme and brand go on <html> (DESIGN.md §3.0). Side by side sets data-theme on two panels instead. */
+/**
+ * Theme and brand go on <html> (DESIGN.md §3.0). Side by side sets data-theme on two panels instead. With the custom
+ * brand, the toolbar's Custom colour (manager.tsx; stored without "#") goes on <html> as --fin-custom-primary, as an
+ * app does (§3.12); only a valid hex is applied, else Finspace's primary.
+ */
 const withThemeAndBrand: Decorator = (Story, { globals }) => {
   const theme = globals.theme as ThemeGlobal;
   const root = document.documentElement;
   root.dataset.brand = globals.brand as FinBrand;
+  if (globals.brand === 'custom') {
+    const color = checkBrandColor(`#${String(globals.customColor ?? '')}`)?.input ?? CUSTOM_PRIMARY_FALLBACK;
+    root.style.setProperty(CUSTOM_PRIMARY_PROPERTY, color);
+  } else {
+    root.style.removeProperty(CUSTOM_PRIMARY_PROPERTY);
+  }
   root.dataset.theme = theme === 'side-by-side' ? finThemes[0] : theme;
 
   if (theme !== 'side-by-side') return <Story />;
@@ -93,8 +104,10 @@ const preview: Preview = {
         items: finBrands.map((b) => ({ value: b, title: title(b) })),
       },
     },
+    // Set by the Custom colour field in the toolbar (manager.tsx), used while Brand is custom. A hex without "#".
+    customColor: { description: 'Custom brand colour (--fin-custom-primary)' },
   },
-  initialGlobals: { theme: finThemes[0], brand: finBrands[0] },
+  initialGlobals: { theme: finThemes[0], brand: finBrands[0], customColor: CUSTOM_PRIMARY_FALLBACK.slice(1) },
   parameters: {
     // WCAG 2.2 AA (CLAUDE.md). 'error' fails the story's test in pnpm test:a11y.
     a11y: {

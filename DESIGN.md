@@ -590,6 +590,8 @@ An admin picks **one colour**; the app sets `data-brand="custom"` and `--fin-cus
 
 **a11y (16 Nov 2026).** `finBrands` now includes `custom`, so `test:a11y` runs every story in `custom-light` and `custom-dark` (with the default colour): no brand-colour pair fails. The custom brand uses Finspace's neutral and status colours, so Finspace's accepted **neutral and status** exceptions (the Grey table header in Dark, §10 #3; the error badge in Dark; the success and warning badges in Light) are scoped to `html:is([data-brand="finspace"], [data-brand="custom"])`; Finspace's brand-colour exceptions (selected chips, pagination, side nav) aren't, because the custom scale passes them.
 
+**Storybook (16 Nov 2026):** with Brand = Custom in the toolbar, a **Custom colour** field appears beside it (`.storybook/manager.tsx`). It sets the `customColor` global (a hex without "#", so it travels in the URL: `globals=brand:custom;customColor:660033`), which the preview puts on `<html>` as `--fin-custom-primary` (default `#625bff`), so every story and page can be checked with any colour. Invalid entries are ignored.
+
 **Browser support:** needs CSS relative colour syntax (current Chrome, Safari and Firefox; older browsers ignore the custom block's Primary values). Check the product's supported browsers before release.
 
 ## 4. Foundations: styles (not variables)
