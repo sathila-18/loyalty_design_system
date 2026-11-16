@@ -58,6 +58,7 @@ export function FinTableRowActions({ label, actions, placement = 'bottom-end' }:
           <FinListStandard
             as="li"
             size="small"
+            density="compact"
             behavior="menuitem"
             divider={false}
             title={action.label}

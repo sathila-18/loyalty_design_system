@@ -12,6 +12,8 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Changed
 
+- The table's Rows per page menu and row actions menu use compact rows (8 padding instead of 16), so the menus are shorter.
+
 ### Fixed
 
 ### Breaking

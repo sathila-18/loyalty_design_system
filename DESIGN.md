@@ -2601,6 +2601,8 @@ Size `--fin-size-32` (at least 32 wide: 3+ digit numbers widen it), padding `--f
 
 **Built (19 Oct 2026), trigger only.** Storybook (Internal/Pagination/Row count dropdown): Playground (value, label), States (Figma), Focused. Checked against Figma in a browser: 165.3 × 40 (Figma 166 × 40), padding 8 / 12, gap 8, full radius, Body S / Label S, arrow 24; Default and Hovered (and pressed) equal Figma in Light; Dark uses the Dark tokens. a11y: no violations in Light or Dark.
 
+**Compact rows (decided by design 16 Nov 2026):** the menu's List-standard Small options are `density="compact"` (8 padding on every side, §9.49).
+
 ### 9.39 FinPagination (Pagination group)
 
 **Figma:** page **Table**, component set `Pagination group` `3151:14607`: `Property 1` = Limited / More than limit / Only one. A row (gap `Space-M`): a previous arrow, the Pagination items (§9.37) and a next arrow. The arrows are `all-button` instances (XSmall, Only Icon, 32 × 32) with a grey 1px `border-strong` outline override and an `fg-primary` `chevron_left` / `chevron_right` 20; at an end they're disabled (`fg-disabled`, `border-disabled`). Limited (4 pages) is 232 × 32. Part of the Table footer (§8 #73).
@@ -3564,6 +3566,8 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 **Accessibility:** a native button with `aria-haspopup="menu"`, `aria-expanded`; the action menu's keyboard (§9.64); the column header is a `th` named "Actions" (visually hidden).
 
 **Built (22 Oct 2026).** Storybook: Components/Table/Row actions (position end / start, container width; actions differ per member status: Reactivate for inactive ones, Deactivate unavailable for pending ones). Checked in a browser at 640 wide: scrolled 400 sideways, the ⋮ stays at the right (end) or stays after the checkbox, which stays too (start); the fixed cell takes the row's hover fill; the menu 4 below the ⋮, right edges aligned at the end; the ⋮ purple while open.
+
+**Compact rows (decided by design 16 Nov 2026):** the action menu's List-standard Small items are `density="compact"` (8 padding on every side, §9.49).
 
 ### 9.67 FinTableToolbar (Table Header) — internal
 
@@ -4889,4 +4893,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 13 Nov 2026 | 0.2 | **Released v0.6.0** (both packages; what's in it: CHANGELOG.md). |
 | 13 Nov 2026 | 0.6 | **`FinStatCard` built from the atoms** (§9.81, design review): a FinTextBox (h4) with its FinLabel, instead of its own text; looks the same. Code-only options added for it: FinLabel `tone` (`secondary`, §9.19), FinTextBox `labelTone` and `headingAs="p"` (§9.21). |
 | 13 Nov 2026 | 0.2 | **Released v0.7.0** (both packages; what's in it: CHANGELOG.md). |
-| 16 Nov 2026 | 0.6 | **Compact list density** (§9.49–9.56, code first, §10 #121): `density` (`default` / `compact`) on FinListItem, FinListItemFilled and every list row and group; Compact is 8 on every side and above the divider. |
+| 16 Nov 2026 | 0.6 | **Compact list density** (§9.49–9.56, code first, §10 #121): `density` (`default` / `compact`) on FinListItem, FinListItemFilled and every list row and group; Compact is 8 on every side and above the divider. The Rows per page menu (§9.38) and the row actions menu (§9.66) use it. |
