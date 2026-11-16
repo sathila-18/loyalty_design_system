@@ -2993,9 +2993,12 @@ Forwards `ref` (presentational, no `'use client'`).
 | `Show body content` (on) + slot | `showBody` (default `true`) + `children` | Text → description; other content as given |
 | `Show trailing accessory` (on) + slot | `trailingAccessory` (default `true`) + `trailing` | Default: FinIcon `keyboard_arrow_right` 24, `fg-secondary` |
 | `Show divider` (on) | `divider` (default `true`) | FinDivider (decorative) |
+| — (code first, 16 Nov 2026; §10 #121) | `density: 'default' \| 'compact'` (default `'default'`) | `data-density`; see **Density** below |
 | — | `as: 'div' \| 'li'` (default `'div'`), `className`, other attributes | `li` for items in a list |
 
-**Tokens used:** padding and gaps `--fin-space-xl`, `--fin-space-l`, `--fin-space-m`, `--fin-space-xs`; title `--fin-font-headline-small-h6` (Small `--fin-font-label-medium`), `--fin-text-primary`; body `--fin-font-body-medium` (Small `--fin-font-body-small`), `--fin-text-secondary`; icons `--fin-fg-secondary` (Figma's raw chevron color mapped). The icon container, label and divider bring their own.
+**Density (code first, decided by design 16 Nov 2026; §10 #121):** `default` is the Figma row (16 `Space-XL` top and sides, 16 between the content and the divider, 16 at the bottom without a divider or on the last of several). **`compact`** is **8 (`Space-M`) on every side and between the content and the divider**, and 8 at the bottom where Default has 16. Independent of `size` (which only sets the text styles). Every list row built on the base takes it (§9.50–9.56); the radio and checkbox groups pass theirs to their rows, and a row's own wins.
+
+**Tokens used:** padding and gaps `--fin-space-xl`, `--fin-space-l`, `--fin-space-m`, `--fin-space-xs` (Compact: `--fin-space-m`); title `--fin-font-headline-small-h6` (Small `--fin-font-label-medium`), `--fin-text-primary`; body `--fin-font-body-medium` (Small `--fin-font-body-small`), `--fin-text-secondary`; icons `--fin-fg-secondary` (Figma's raw chevron color mapped). The icon container, label and divider bring their own.
 
 **API (internal):**
 
@@ -3035,6 +3038,8 @@ Presentational (no `'use client'`).
 **Accessibility:** as FinListItem: plain content (`div`, or `li` in a list); the components built on it add roles and keyboard behaviour. Contrast as FinListItem, on `bg-primary`.
 
 **Built (20 Oct 2026).** Storybook (Internal/List/List fill base): Playground (every Figma property), Sizes (Figma), Group (items 12 apart, one without a body centred). Checked against Figma in a browser (in a 360 column): Large 81 tall, Small 75; avatar 40 at 16 / 16, title 52 after it, arrow 16 from the right edge; 1px `#ededed` border inside, radius 16, white (Dark `#19191a` with `#363636`); stacked items 12 apart. a11y: no violations in Light or Dark.
+
+**Density (16 Nov 2026, §9.49):** `density="compact"` pads the card **8 (`Space-M`) all round** instead of 16; cards stay 12 (`Space-L`) apart.
 
 ### 9.51 FinListStandard (List-standard) — public
 
@@ -3079,6 +3084,9 @@ Presentational (no `'use client'`).
 
 
 **Tone (code only, 23 Oct 2026):** `tone` = `default` / `destructive`. Destructive is for actions that delete or remove (in menus): the title `text-error` and the icon accessory `fg-error`, the destructive button's colours; states and fills unchanged; Disabled wins. Storybook: the Playground's `tone` control. To add in Figma (§10 #67).
+
+**Density (16 Nov 2026, §9.49):** `density` (`'default'` 16 padding, `'compact'` 8 on every side and above the line).
+
 ### 9.52 FinPaymentIcon (Payment Icons) — public
 
 **Figma:** page **Icon types**, component set `Payment Icons` `58:14556`: `Payment Method` (23 brands and `Default card`) × `Size` = Small 23 × 16 / Medium 34.5 × 24 / Large 46 × 32 / XLarge 69 × 48 × `State` = Enabled / Disabled (greyed). White cards with a light edge. **Visual reference only**: the logos come from `activemerchant/payment_icons` in code (§6.1, §8.5). **Public**, under Components/Payment icon; used by List-standard (§9.51) and later the payment input field (§8 #53).
@@ -3147,6 +3155,8 @@ import { FinPaymentIcon } from '@finspace-loyalty/ui';
 
 **Built (20 Oct 2026).** Storybook (Components/List/List radio): Playground (Type, Item side, Description, Size, Disabled), Types (Figma), Payment method (a real choice). Checked against Figma in a browser (in a 360 column): radio 24 at 16 / 16; Leading flag at 48 (title at 92), Leading logo at 48 (title at 98; Figma 94.5, the logo is 38 wide here); Trailing items 16 from the right; rows 82 / 57 (the last without a line); Selected `bg-active` with the radio chosen (Dark `#29266b`); Tab focuses the chosen radio and the ring goes around its row; clicking a title or anywhere on the row chooses it. a11y: no violations in Light or Dark (Disabled rows skipped).
 
+**Density (16 Nov 2026, §9.49):** `density` (`'default'` 16 padding, `'compact'` 8 on every side and above the line); on the group too, passed to every row (a row's own wins).
+
 ### 9.54 FinListCheckbox and FinListCheckboxGroup (code first) — public
 
 **Figma:** none yet (§10 #55). Built 20 Oct 2026 at design's request as **the radio list's twin** (§9.53): the same layout, properties and states, with Base-Checkbox (FinCheckboxBase, 24) in the radio's place. **Public**, under Components/List.
@@ -3171,6 +3181,8 @@ import { FinPaymentIcon } from '@finspace-loyalty/ui';
 **Accessibility:** a `group` named by `label`; each native checkbox is named by the row's title and described by its description; the row is its label; keyboard as native checkboxes; the focus ring around the row. Contrast as List-standard.
 
 **Built (20 Oct 2026).** Storybook (Components/List/List checkbox): Playground, Types, Select all. Checked in a browser against the radio list: checkbox 24 at 16 / 16, items and title at the same places, rows 82 / 57 (the last 16 padded, no line), ticked rows `bg-active`, the ring around the focused row. a11y: no violations in Light or Dark (Disabled rows skipped).
+
+**Density (16 Nov 2026, §9.49):** `density` (`'default'` 16 padding, `'compact'` 8 on every side and above the line); on the group too, passed to every row (a row's own wins).
 
 ### 9.55 FinListToggle (List-toggle) — public
 
@@ -3206,6 +3218,8 @@ import { FinPaymentIcon } from '@finspace-loyalty/ui';
 
 **Built (20 Oct 2026).** Storybook (Components/List/List toggle): Playground (State, Leading accessory, Description, Size), States (Figma), Settings (a real list). Checked against Figma in a browser (in a 360 column): toggle 40 × 24 at 16 from the top and the right; icon 24 at 16 (`#19191a`, Disabled `#b7b7b7`); rows 82 / 57 (the last 16 padded, no line); on rows have no fill, hover `#f5f5f5`; clicking the description switches it; the ring around the focused row. a11y: no violations in Light or Dark (Disabled rows skipped).
 
+**Density (16 Nov 2026, §9.49):** `density` (`'default'` 16 padding, `'compact'` 8 on every side and above the line).
+
 ### 9.56 Filled lists: FinListStandardFilled, FinListRadioFilled, FinListCheckboxFilled, FinListToggleFilled (code first) — public
 
 **Figma:** none yet (§10 #56). Built 20 Oct 2026 at design's request: the List-standard, radio, checkbox and toggle rows (§9.51, §9.53–9.55) on **List_fill-base** (§9.50) instead of List-base. **Public**, under **Components/List/Filled** in Storybook (the plain lists moved to **Components/List/Plain**); each in its own folder (`ListStandardFilled`, `ListRadioFilled`, `ListCheckboxFilled`, `ListToggleFilled`).
@@ -3228,6 +3242,8 @@ import { FinPaymentIcon } from '@finspace-loyalty/ui';
 **Accessibility:** as the plain components (native links, buttons, options, radios, checkboxes and switches; the row is the control's label; the ring around the card).
 
 **Built (20 Oct 2026).** Storybook (Components/List/Filled/…): List standard (Playground, States, Accessories), List radio (Playground, Payment method, Types), List checkbox (Playground, Countries, Types), List toggle (Playground, States, Settings); each Playground has the same controls as the plain version. Checked in a browser: cards 81 tall (16 padding), 12 apart, radius 16; edges `#ededed` / Selected `#625bff` (Dark `#363636` / `#817cff`) / Disabled `#e9e9e9`, no Selected fill; hover `#f5f5f5` keeps the blue edge; toggle on has no edge; the chevron on every standard card; the focus ring rounded. a11y: no violations in Light or Dark (Disabled cards skipped).
+
+**Density (16 Nov 2026, §9.49):** `density` (`'default'` 16 padding, `'compact'` 8 on every side and above the line); the filled cards' padding follows it (8 all round).
 
 ### 9.57 FinSideNav (Side Menu) — public
 
@@ -4434,6 +4450,7 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 118 | **Text link button, to add to Figma** (11 Nov 2026): FinButton `variant="link"` (§9.28) is code first, like shadcn's link variant: all-button's sizes and padding, `text-action` with no background, the label underlined on hover in the same colour, `text-pressed` when pressed, `text-disabled` when disabled; leading or trailing icon, no icon-only; Normal tone only. Add it to all-button as `Type` = Link (or as its own component). The Login screen's "Forgot password" uses it (Figma shows Tertiary). | Buttons, Login screens | 🔧 Fix in Figma |
 | 119 | **Input field-Multi select, to update in Figma** (11 Nov 2026; built §9.85): (1) the **Typing** variant shows text typed into the field, but the field is a button with the search in the menu (as Input field-select): show the search in an open-menu frame instead; (2) the chip's leading **person icon** is the slot's default: hide it (code shows the label and ✕ only); (3) add **several chips** with the "+N" overflow chip, the **open menu** with checkbox rows, and Disabled / Error. | Input field | 🔧 Fix in Figma |
 | 120 | **Calendar and date pickers, to add to Figma** (13 Nov 2026; built §9.86, §9.87): code first, from shadcn's date picker in our tokens. Design to draw the calendar (single, range over two months; day looks: default, another month's, chosen, in range, today, disabled) and the date picker and range picker fields, and decide whether a filter-chip trigger is needed. FinDateField opens FinCalendar since 13 Nov 2026 (§9.79). | Component library | ❓ Design to add |
+| 121 | **Compact list density, to add to Figma** (16 Nov 2026, built code first, §9.49): a `Density` property on List-base (Default / Compact): Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16); exposed on List-standard, the radio, checkbox and toggle lists and their filled versions (filled cards 8 all round). | List | ⏳ Design to add in Figma |
 
 ---
 
@@ -4872,3 +4889,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 13 Nov 2026 | 0.2 | **Released v0.6.0** (both packages; what's in it: CHANGELOG.md). |
 | 13 Nov 2026 | 0.6 | **`FinStatCard` built from the atoms** (§9.81, design review): a FinTextBox (h4) with its FinLabel, instead of its own text; looks the same. Code-only options added for it: FinLabel `tone` (`secondary`, §9.19), FinTextBox `labelTone` and `headingAs="p"` (§9.21). |
 | 13 Nov 2026 | 0.2 | **Released v0.7.0** (both packages; what's in it: CHANGELOG.md). |
+| 16 Nov 2026 | 0.6 | **Compact list density** (§9.49–9.56, code first, §10 #121): `density` (`default` / `compact`) on FinListItem, FinListItemFilled and every list row and group; Compact is 8 on every side and above the divider. |

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import type { FinListItemSize } from '../ListItem';
+import type { FinListItemDensity, FinListItemSize } from '../ListItem';
 import { FinListRadio, FinListRadioGroup, type FinListRadioItemSide, type FinListRadioType } from './FinListRadio';
 import styles from './FinListRadio.stories.module.css';
 
@@ -15,22 +15,24 @@ interface Args {
   itemSide: FinListRadioItemSide;
   description: boolean;
   size: FinListItemSize;
+  density: FinListItemDensity;
   disabled: boolean;
 }
 
 /** A radio list: choose one row. Matches Figma's properties (DESIGN.md §9). */
 const meta: Meta<Args> = {
   title: 'Components/List/Plain/List radio',
-  args: { type: 'default', itemSide: 'leading', description: true, size: 'large', disabled: false },
+  args: { type: 'default', itemSide: 'leading', description: true, size: 'large', density: 'default', disabled: false },
   argTypes: {
     type: { control: 'inline-radio', options: ['default', 'country', 'payment'], description: 'Figma `Type`' },
     itemSide: { control: 'inline-radio', options: ['leading', 'trailing'], description: 'Figma `Item side`' },
     description: { control: 'boolean', description: 'Figma `Description`' },
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Size (List-base)' },
+    density: { control: 'inline-radio', options: ['default', 'compact'], description: 'Density (code first): `default` 16 padding, `compact` 8 on every side' },
     disabled: { control: 'boolean', description: 'Figma `State=Disabled` (the third row)' },
   },
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  render: function Playground({ type, itemSide, description, size, disabled }) {
+  render: function Playground({ type, itemSide, description, size, density, disabled }) {
     const [value, setValue] = useState('one');
     const rows = [
       { value: 'one', country: 'LK', payment: 'visa' },
@@ -39,7 +41,7 @@ const meta: Meta<Args> = {
     ] as const;
     return (
       <div className={styles.column}>
-        <FinListRadioGroup label="Example" value={value} onValueChange={setValue} size={size}>
+        <FinListRadioGroup label="Example" value={value} onValueChange={setValue} size={size} density={density}>
           {rows.map((row) => (
             <FinListRadio
               key={row.value}

@@ -66,4 +66,9 @@ describe('FinListToggle', () => {
     const { container } = render(<FinListToggle title="Email" divider={false} />);
     expect(container.querySelector('hr')).toBeNull();
   });
+
+  it('takes density (default 16 padding, compact 8)', () => {
+    const { container } = render(<FinListToggle title="Compact" density="compact" />);
+    expect(container.querySelector('[data-density]')).toHaveAttribute('data-density', 'compact');
+  });
 });

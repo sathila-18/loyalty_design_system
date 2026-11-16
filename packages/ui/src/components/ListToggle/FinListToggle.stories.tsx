@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import type { FinListItemSize } from '../ListItem';
+import type { FinListItemDensity, FinListItemSize } from '../ListItem';
 import { FinListToggle, type FinListToggleLeading } from './FinListToggle';
 import styles from './FinListToggle.stories.module.css';
 
@@ -12,20 +12,22 @@ interface Args {
   leadingAccessory: FinListToggleLeading;
   description: boolean;
   size: FinListItemSize;
+  density: FinListItemDensity;
 }
 
 /** Settings rows with a toggle. Matches Figma's properties (DESIGN.md §9). */
 const meta: Meta<Args> = {
   title: 'Components/List/Plain/List toggle',
-  args: { state: 'off', leadingAccessory: 'none', description: true, size: 'large' },
+  args: { state: 'off', leadingAccessory: 'none', description: true, size: 'large', density: 'default' },
   argTypes: {
     state: { control: 'inline-radio', options: ['off', 'on', 'disabled'], description: 'Figma `State` (Selected is on; Hovered is the mouse)' },
     leadingAccessory: { control: 'inline-radio', options: ['none', 'icon'], description: 'Figma `Leading accessory`' },
     description: { control: 'boolean', description: 'Figma `Description`' },
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Size (List-base)' },
+    density: { control: 'inline-radio', options: ['default', 'compact'], description: 'Density (code first): `default` 16 padding, `compact` 8 on every side' },
   },
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  render: function Playground({ state, leadingAccessory, description, size }) {
+  render: function Playground({ state, leadingAccessory, description, size, density }) {
     const [on, setOn] = useState(state === 'on');
     return (
       <ul className={styles.list}>
@@ -35,6 +37,7 @@ const meta: Meta<Args> = {
           title="Title here"
           leadingAccessory={leadingAccessory}
           size={size}
+          density={density}
           checked={on}
           onCheckedChange={setOn}
           disabled={state === 'disabled'}

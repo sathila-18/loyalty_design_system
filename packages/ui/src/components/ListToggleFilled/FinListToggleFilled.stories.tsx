@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import type { FinListItemSize } from '../ListItem';
+import type { FinListItemDensity, FinListItemSize } from '../ListItem';
 import type { FinListToggleLeading } from '../ListToggle';
 import { FinListToggleFilled } from './FinListToggleFilled';
 import styles from './FinListToggleFilled.stories.module.css';
@@ -13,20 +13,22 @@ interface Args {
   leadingAccessory: FinListToggleLeading;
   description: boolean;
   size: FinListItemSize;
+  density: FinListItemDensity;
 }
 
 /** Toggle cards: the toggle list on List_fill-base; on has no edge or fill. Code first (DESIGN.md §10 #56). */
 const meta: Meta<Args> = {
   title: 'Components/List/Filled/List toggle',
-  args: { state: 'off', leadingAccessory: 'none', description: true, size: 'large' },
+  args: { state: 'off', leadingAccessory: 'none', description: true, size: 'large', density: 'default' },
   argTypes: {
     state: { control: 'inline-radio', options: ['off', 'on', 'disabled'], description: 'State (Hovered is the mouse)' },
     leadingAccessory: { control: 'inline-radio', options: ['none', 'icon'], description: 'Leading accessory' },
     description: { control: 'boolean', description: 'Description' },
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Size' },
+    density: { control: 'inline-radio', options: ['default', 'compact'], description: 'Density (code first): `default` 16 padding, `compact` 8 on every side' },
   },
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  render: function Playground({ state, leadingAccessory, description, size }) {
+  render: function Playground({ state, leadingAccessory, description, size, density }) {
     const [on, setOn] = useState(state === 'on');
     return (
       <ul className={styles.list}>
@@ -36,6 +38,7 @@ const meta: Meta<Args> = {
           title="Title here"
           leadingAccessory={leadingAccessory}
           size={size}
+          density={density}
           checked={on}
           onCheckedChange={setOn}
           disabled={state === 'disabled'}

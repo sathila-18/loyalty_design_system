@@ -33,4 +33,13 @@ describe('FinListItemFilled', () => {
     expect(screen.getAllByRole('listitem')).toHaveLength(2);
     expect(screen.getByTestId('one')).toHaveClass('extra');
   });
+
+  it('pads the card 16 by default and 8 with density compact', () => {
+    const { container: base } = render(<FinListItemFilled title="Default" />);
+    expect((base.firstElementChild as HTMLElement).className).toContain('fin:placement:p-xl');
+    const { container } = render(<FinListItemFilled density="compact" title="Compact" />);
+    const card = container.firstElementChild as HTMLElement;
+    expect(card.className).toContain('fin:placement:p-m');
+    expect(card.className).not.toContain('fin:placement:p-xl');
+  });
 });

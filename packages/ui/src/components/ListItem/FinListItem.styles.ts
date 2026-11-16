@@ -9,18 +9,27 @@
  * The item is marked fin:group/list-item for the last-of-many variants in tailwind.css: when several items are shown
  * together, the last one (not a single item) has no divider and gets the 16 bottom padding.
  */
-import type { FinListItemSize } from './FinListItem';
+import type { FinListItemDensity, FinListItemSize } from './FinListItem';
 
 /*
  * Rule: an item without a divider gets 16 (Space-XL) of bottom padding, so it doesn't end flush with its content
  * (decided 22 Oct 2026; extends the rule of 20 Oct 2026). A component that sets its own padding (the side nav's user
  * row, the filled card) does it with `placement:`.
+ *
+ * Density (code first, 16 Nov 2026): Default as above; Compact is 8 (Space-M) on every side and between the content
+ * and the divider, and 8 at the bottom where Default has 16.
  */
-const itemBase = 'fin:group/list-item fin:flex fin:flex-col fin:gap-xl fin:m-none fin:list-none fin:pt-xl fin:px-xl';
+const itemBase = 'fin:group/list-item fin:flex fin:flex-col fin:m-none fin:list-none';
 
-export const item = {
-  divider: `${itemBase} fin:pb-none fin:last-of-many:pb-xl`,
-  none: `${itemBase} fin:pb-xl`,
+export const item: Record<FinListItemDensity, { divider: string; none: string }> = {
+  default: {
+    divider: `${itemBase} fin:gap-xl fin:pt-xl fin:px-xl fin:pb-none fin:last-of-many:pb-xl`,
+    none: `${itemBase} fin:gap-xl fin:pt-xl fin:px-xl fin:pb-xl`,
+  },
+  compact: {
+    divider: `${itemBase} fin:gap-m fin:pt-m fin:px-m fin:pb-none fin:last-of-many:pb-m`,
+    none: `${itemBase} fin:gap-m fin:pt-m fin:px-m fin:pb-m`,
+  },
 };
 
 export const divider = 'fin:list-item-last:hidden';

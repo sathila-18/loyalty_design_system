@@ -2,13 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { finIcons, type FinIconName } from '../../icons/finIcons';
 import { FinAvatar } from '../Avatar';
 import { FinBadge } from '../Badge';
-import type { FinListItemSize } from '../ListItem';
+import type { FinListItemDensity, FinListItemSize } from '../ListItem';
 import { FinListItemFilled } from './FinListItemFilled';
 import avatarSample from '../Avatar/avatar-sample.jpg';
 import styles from './FinListItemFilled.stories.module.css';
 
 interface Args {
   size: FinListItemSize;
+  density: FinListItemDensity;
   leadingAccessory: boolean;
   topLabel: string;
   title: string;
@@ -24,7 +25,7 @@ const photo = <FinAvatar size="medium" src={avatarSample} />;
 const meta: Meta<Args> = {
   title: 'Internal/List/List fill base',
   args: {
-    size: 'large',
+    size: 'large', density: 'default',
     leadingAccessory: true,
     topLabel: '',
     title: 'Title here',
@@ -35,6 +36,7 @@ const meta: Meta<Args> = {
   },
   argTypes: {
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Figma `Size`' },
+    density: { control: 'inline-radio', options: ['default', 'compact'], description: 'Density (code first): `default` 16 padding, `compact` 8 on every side' },
     leadingAccessory: { control: 'boolean', description: 'Figma `Show leading accessory`' },
     topLabel: { control: 'text', description: 'Figma `Show top label` (empty: hidden)' },
     title: { control: 'text', description: 'The title' },

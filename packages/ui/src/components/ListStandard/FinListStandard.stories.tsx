@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import avatarSample from '../Avatar/avatar-sample.jpg';
-import type { FinListItemSize } from '../ListItem';
+import type { FinListItemDensity, FinListItemSize } from '../ListItem';
 import {
   FinListStandard,
   type FinListStandardBehavior,
@@ -15,6 +15,7 @@ type State = 'default' | 'selected' | 'disabled';
 interface Args {
   state: State;
   size: FinListItemSize;
+  density: FinListItemDensity;
   description: boolean;
   chevron: boolean;
   leadingAccessory: FinListStandardLeading;
@@ -33,10 +34,11 @@ const KNOWN_CONTRAST_ISSUES = ['li[data-disabled]', 'html[data-brand="finspace"]
 
 const meta: Meta<Args> = {
   title: 'Components/List/Plain/List standard',
-  args: { state: 'default', size: 'large', description: true, chevron: false, leadingAccessory: 'none', caption: false, behavior: 'link', tone: 'default' },
+  args: { state: 'default', size: 'large', density: 'default', description: true, chevron: false, leadingAccessory: 'none', caption: false, behavior: 'link', tone: 'default' },
   argTypes: {
     state: { control: 'inline-radio', options: ['default', 'selected', 'disabled'], description: 'Figma `State` (Hovered is the mouse)' },
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Size (List-base, nested in Figma)' },
+    density: { control: 'inline-radio', options: ['default', 'compact'], description: 'Density (code first): `default` 16 padding, `compact` 8 on every side' },
     description: { control: 'boolean', description: 'Figma `Description`' },
     chevron: { control: 'boolean', description: 'Figma `Chevron`' },
     leadingAccessory: { control: 'inline-radio', options: ['none', 'icon', 'flag', 'payment', 'avatar'], description: 'Figma `Leading accessory`' },

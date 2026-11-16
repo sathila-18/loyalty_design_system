@@ -8,11 +8,16 @@ import * as styles from './FinListItem.styles';
 
 export type FinListItemSize = 'large' | 'small';
 
+/** Padding: Default 16 (Space-XL), Compact 8 (Space-M) on every side and above the divider (code first, 16 Nov 2026). */
+export type FinListItemDensity = 'default' | 'compact';
+
 export interface FinListItemProps extends Omit<HTMLAttributes<HTMLElement>, 'children' | 'title'> {
   /** The root element: `li` when the items are in a `ul` / `ol`, so they're siblings and the rule for the last one applies. Default `div`. */
   as?: 'div' | 'li';
   /** Figma `Size`: Large (title Headline Small-H6, body Body/Medium) or Small (Label/Medium, Body/Small). */
   size?: FinListItemSize;
+  /** Density: `default` (16 padding, 16 above the divider) or `compact` (8 on every side and above the divider). Code first, no Figma property yet. */
+  density?: FinListItemDensity;
   /** Figma `Show leading accessory`. Default on, as in Figma. */
   leadingAccessory?: boolean;
   /** Figma Leading accessory slot. Default: a 40 Icon container (info, `person`). Any component per scenario. */
@@ -47,6 +52,7 @@ export interface FinListItemProps extends Omit<HTMLAttributes<HTMLElement>, 'chi
 export function FinListItem({
   as: Root = 'div',
   size = 'large',
+  density = 'default',
   leadingAccessory = true,
   leading,
   topLabel,
@@ -63,7 +69,7 @@ export function FinListItem({
   const body =
     typeof children === 'string' || typeof children === 'number' ? <p className={styles.description[size]}>{children}</p> : children;
   const hasBody = showBody && children !== undefined && children !== null;
-  const itemClass = divider ? styles.item.divider : styles.item.none;
+  const itemClass = divider ? styles.item[density].divider : styles.item[density].none;
   const layout = hasBody ? 'body' : 'title';
 
   return (
@@ -71,6 +77,7 @@ export function FinListItem({
       {...rest}
       className={className ? `${itemClass} ${className}` : itemClass}
       data-size={size}
+      data-density={density}
       data-body={hasBody ? '' : undefined}
       data-divider={divider ? undefined : 'none'}
     >

@@ -80,4 +80,16 @@ describe('FinListRadio', () => {
     await user.click(screen.getByText('Alone'));
     expect(onChange).toHaveBeenCalledTimes(1);
   });
+
+  it('passes the group density to its rows, and a row can set its own', () => {
+    const { container } = render(
+      <FinListRadioGroup label="Density" density="compact">
+        <FinListRadio value="a" title="From the group" />
+        <FinListRadio value="b" title="Its own" density="default" />
+      </FinListRadioGroup>,
+    );
+    const rows = container.querySelectorAll('[data-density]');
+    expect(rows[0]).toHaveAttribute('data-density', 'compact');
+    expect(rows[1]).toHaveAttribute('data-density', 'default');
+  });
 });
