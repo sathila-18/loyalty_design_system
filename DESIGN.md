@@ -4900,3 +4900,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 13 Nov 2026 | 0.2 | **Released v0.7.0** (both packages; what's in it: CHANGELOG.md). |
 | 16 Nov 2026 | 0.6 | **Compact list density** (§9.49–9.56, code first, §10 #121): `density` (`default` / `compact`) on FinListItem, FinListItemFilled and every list row and group; Compact is 8 on every side and above the divider. The Rows per page menu (§9.38) and the row actions menu (§9.66) use it. |
 | 16 Nov 2026 | 0.6 | **Checkbox cells** (§9.43, §9.45, code first, §10 #122): FinTableCell `type="checkbox"` with `disabled`; FinTable checkbox columns (`checked`, `onCheckedChange`, `disabled`), named "{row}, {header}". Storybook: Components/Table/Permissions. |
+| 16 Nov 2026 | 0.2 | **Released v0.8.0** (both packages; what's in it: CHANGELOG.md). |
