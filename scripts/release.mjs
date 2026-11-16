@@ -18,7 +18,7 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const [bump, ...flags] = process.argv.slice(2);
 const dryRun = flags.includes('--dry-run');
 const PACKAGES = ['packages/tokens/package.json', 'packages/ui/package.json'];
-const A11Y = ['finspace-light', 'finspace-dark', 'burgundy-light', 'burgundy-dark', 'sampath-light', 'sampath-dark'];
+const A11Y = ['finspace-light', 'finspace-dark', 'burgundy-light', 'burgundy-dark', 'sampath-light', 'sampath-dark', 'custom-light', 'custom-dark'];
 
 const fail = (msg) => {
   console.error(`\n✗ release stopped: ${msg}`);
