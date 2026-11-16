@@ -58,7 +58,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C5 | `Search` (`440:5164`) | Small size | §9.61 | ✅ 16 Nov 2026 |
 | C6 | `Input field-select` (`537:2736`) | Small size; Disabled and Error | §9.72, §10 #58 | ✅ 16 Nov 2026 |
 | C7 | `Input field-Multi select` (`922:6170`) | Small; Disabled and Error; no Typing look; Input chip XSmall chips | §9.85, §10 #119 | ⬜ |
-| C8 | `Chips` (`95:1848`) | Three chip types (Assist / Filter / Input); Input chip Unselected-border | §9.32, §10 #46 | ⬜ |
+| C8 | `Chips` (`95:1848`) | Three chip types (Assist / Filter / Input); Input chip Unselected-border | §9.32, §10 #46 | ✅ 16 Nov 2026 (before C7) |
 | C9 | `Checkbox` (`42:220`) | Checkbox on the left only; Selected + Disabled | §10 #44 | ⬜ |
 | C10 | `Segmented_button-base` / `Segmented button` (`117:4667` / `117:4688`) | Small (32) and XSmall sizes, icon only, tooltips | §9.33, §9.34 | ✅ 16 Nov 2026 (for N13) |
 | C11 | `Header notification` (`3178:24467`) | 40 everywhere, 20 bell (Figma 48) | §9.62 | ⬜ |
@@ -680,3 +680,31 @@ itself, not code changes, so they're not part of this sync.
 - **Already different from code, unchanged:** Focused and Typing show the base's caret (code's select is a button,
   no caret, §9.72 (2)); no open-menu look (`keyboard_arrow_up`) in Figma.
 - **Source:** `FinSelectField` (`disabled`, `error`, `size` from FinInputBase), `DESIGN.md` §9.72.
+
+### C8 · Chips: Filter, Assist and Input chip: 16 Nov 2026 (done before C7)
+
+Done before C7 by design's choice (16 Nov 2026), so the Multi select can use the real Input chip. Page **Chips**,
+frame `Headline - EN` `95:1810` (now: Chips-base, Filter chip, Assist chip, Input chip, Chips-group). `Chips-base`
+unchanged. As §10 #46.
+
+- **Filter chip** = the old `Chips` `95:1848`, **renamed** in place (same node, every instance keeps working, e.g. the
+  Multi select's chip and Chips-group). `Type` (Unselected / Selected) → **`Selected`** (False / True); new **`Size`**
+  (XSmall / Small / Large, Chips-base's Xsmall / Small / Large): `State` × `Selected` × `Size` = 24 variants. No icons
+  (as before). → `FinFilterChip`.
+- **Assist chip** `3891:8729` (new): Chips-base **Unselected-border**, leading icon on (the slot's `perm_identity`),
+  `State` Enabled / Hovered / Pressed / Disabled / **Open** × **`Dropdown`** (False / True: `keyboard_arrow_down` in
+  the trailing icon) × `Size` = 27 (Open only with Dropdown). Open = Chips-base **Selected** with `keyboard_arrow_up`
+  (code: `expanded`). → `FinAssistChip` (`dropdown`, `expanded`).
+- **Input chip** `3891:8808` (new): Chips-base **Unselected-border**, label + ✕ (`close`), leading accessory off,
+  `State` Enabled / Disabled × `Size` = 6 (no hover or pressed: the ✕ has a cursor only). → `FinInputChip`.
+- **States** (every set, every size; each set explicitly, bound to Foundation – Loyalty variables): Hovered
+  `bg-active-hover`; Pressed `bg-action-primary_pressed`, `text-inverse`, icons `fg-inverse`; Disabled `bg-disabled`,
+  `text-disabled-on_bg`, icons `fg-disabled-on_bg`. Unselected / Unselected-border drop the stroke (and shadow) in those
+  states; Selected keeps `border-active` / `border-pressed` / `border-disabled`. Selected icons `fg-brand`.
+- **Layout:** each set a fixed grid, a column per State, a row per Size × the other property, **Small rows first** so
+  **Small is the default** (as code; Figma takes the default from the top-left variant), then XSmall, Large. The new
+  sets have the same dashed set outline as the others.
+- **Descriptions** on the three sets (meaning, code component, states).
+- **Option order** of `Size` in Filter chip reads Small, XSmall, Large (Assist XSmall, Small, Large); reorder by hand
+  if wanted.
+- **Source:** `FinChipBase` (§9.31), `FinAssistChip` / `FinFilterChip` / `FinInputChip` (§9.32), `DESIGN.md` §10 #46.
