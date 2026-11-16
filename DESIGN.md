@@ -548,6 +548,50 @@ The separate files are still there: `styles.css` (tokens, fonts, reset), `compon
 
 ---
 
+### 3.12 Custom brand (code only, 16 Nov 2026; on `feat/custom-brand`, in review)
+
+An admin picks **one colour**; the app sets `data-brand="custom"` and `--fin-custom-primary: <hex>` on `<html>`. The custom brand is Finspace's alias colours with the **Primary scale (50–900) and the Primary dark group generated in CSS** from that colour. It isn't a Figma mode: `packages/tokens/build.ts` writes the `[data-brand="custom"]` block from one definition, `packages/tokens/src/customBrand.ts` (also published as `@finspace-loyalty/tokens/custom-brand`), which `checkBrandColor`, the tests and the Storybook page (Foundations / Custom brand) use too.
+
+**Decided by design (16 Nov 2026):** (1) all 28 brand-scale tokens follow the custom colour **except info**; (2) **Info** is a new alias group (below) so info keeps a fixed scale; (3) every step is `oklch(from var(--fin-custom-primary) L min(calc(c * k), cap) h)`: hue and scaled, capped chroma from the colour; (4) **lightness is fixed per step**, except **step 500 and dark-fill**, which keep the colour's own lightness clamped to `clamp(0.30, l, 0.47)` (so dark brand colours such as Burgundy `#660033` or navy come through unchanged); 600 / 700 and dark-fill-hovered / -pressed are 0.05 / 0.11 darker than that, never lighter; (5) `checkBrandColor` only reports how far the button colour moved; it never blocks.
+
+| Step | L | k (× input chroma) | cap |
+|---|---|---|---|
+| 50 / 100 / 200 / 300 / 400 | 0.97 / 0.93 / 0.87 / 0.78 / 0.58 | 0.12 / 0.30 / 0.50 / 0.75 / 0.90 | 0.03 / 0.06 / 0.10 / 0.14 / 0.18 |
+| **500** | **clamp(0.30, input l, 0.47)** | 1.00 | 0.20 |
+| 600 / 700 | 500 − 0.05 / 500 − 0.11 | 1.00 / 0.95 | 0.20 / 0.18 |
+| 800 / 900 | 0.30 / 0.24 | 0.85 / 0.70 | 0.15 / 0.12 |
+| dark-action / -hovered / -pressed / -focus | 0.80 / 0.85 / 0.90 / 0.74 | 0.80 / 0.60 / 0.40 / 0.80 | 0.14 / 0.11 / 0.08 / 0.15 |
+| **dark-fill** / -hovered / -pressed | **as 500** / − 0.05 / − 0.11 | 1.00 / 1.00 / 0.95 | 0.20 / 0.20 / 0.18 |
+
+**Why these values.** 0.47 is the highest lightness at which white text (and action text, also step 500, on the Light page and panels) passes 4.5:1 for every hue and chroma; 0.30 keeps hover and pressed visibly darker than the button. The **chroma cap** keeps very saturated colours near the sRGB gamut: browsers bring out-of-gamut colours in either by clipping each channel or by lowering chroma (CSS Color 4), and clipping shifts lightness; with the caps, every rule passes under both.
+
+**Proof (16 Nov 2026).** 58 inputs: 24 hues every 15° (vivid, at the gamut edge, and muted, C 0.06), each at 5 input lightnesses (0.15, 0.30, 0.45, 0.62, 0.85), and 10 extremes (pure yellow, cyan, blue, red, green, magenta, black, white, near-black `#0a0a0a`, near-white `#f5f5f5`); both gamut methods. Light surfaces `#ffffff` / `#f5f5f5` / `#ededed`, Dark `#19191a` / `#292929` / `#363636`. Worst results:
+
+| Rule | Needed | Worst |
+|---|---|---|
+| White text on 500, 600, 700 | 4.5 | 5.68 |
+| Action text (500) on the Light page and panels | 4.5 | 4.85 |
+| Focus ring (400) in Light | 3 | 3.23 |
+| dark-action on the Dark page and panels | 4.5 | 5.83 |
+| dark-focus in Dark | 3 | 4.88 |
+| White text on the Dark fills (fill, hovered, pressed) | 4.5 | 5.68 |
+| Action text on selected fills (50, 100) | 4.5 | 4.72 |
+| dark-action on the Dark selected fills (900, 800) | 4.5 | 6.51 |
+| dark-hovered / -pressed on Dark | 4.5 | 6.98 |
+| Action text on `#e9e9e9` / dark-action on `#464646` | 4.5 | 4.70 / 4.55 |
+
+`packages/ui/test/custom-brand.test.ts` repeats it (CSS gamut mapping) on every test run. In the browser the generated colours equal the JS values to 1/255 (checked on the Storybook page, 7 colours × 17 steps).
+
+**What changes for an admin's colour.** Colours darker than 0.47 keep their button colour (Burgundy, navy `#1f2a5c`, forest `#1e5631`, teal, crimson `#a4161a`, purple: ΔE 0). Lighter ones are darkened to 0.47 at their hue (Finspace `#625bff` → `#4841c7`, Sampath orange → `#904100`, sky blue → `#006388`, yellow → `#5f5f00`); near-black is raised to 0.30 (`#2e2e2e`).
+
+**`checkBrandColor(hex)`** (`@finspace-loyalty/ui`, from the tokens package) → `{ input, button, deltaE, adjusted, lightness }`: the button colour (step 500), its OKLab distance from the input, `adjusted` when ΔE ≥ 0.02 (visible: "adjusted for readability"), and whether the lightness was `kept`, `lowered` or `raised`. `null` for something that isn't a hex colour. `resolveCustomScale(hex)` gives every generated colour.
+
+**The Info group (code side).** The info tokens (`bg-info`, `bg-info_secondary`, `text-info`, `border-info`, `fg-info`) used the Primary scale. The build adds an **Info** alias group with the 8 steps they use (50, 100, 200, 400, 500, 600, 700, 900), copied from each Figma brand's Primary, and points the 5 tokens at it; the custom brand points Info at Finspace's Electric Indigo. The build proves the **30 info values** (5 tokens × Light/Dark × 3 brands) resolve to the same primitive as before, or stops. To add to Figma's Foundation file (§10 #123).
+
+**a11y (16 Nov 2026).** `finBrands` now includes `custom`, so `test:a11y` runs every story in `custom-light` and `custom-dark` (with the default colour): no brand-colour pair fails. The custom brand uses Finspace's neutral and status colours, so Finspace's accepted **neutral and status** exceptions (the Grey table header in Dark, §10 #3; the error badge in Dark; the success and warning badges in Light) are scoped to `html:is([data-brand="finspace"], [data-brand="custom"])`; Finspace's brand-colour exceptions (selected chips, pagination, side nav) aren't, because the custom scale passes them.
+
+**Browser support:** needs CSS relative colour syntax (current Chrome, Safari and Firefox; older browsers ignore the custom block's Primary values). Check the product's supported browsers before release.
+
 ## 4. Foundations: styles (not variables)
 
 These are saved as Figma **styles**, not variables, so they are **not** in the token JSON. Their values are recorded here. Claude Code puts them in `packages/tokens/src/styles.css` by hand, and they must be updated here and in code whenever the Figma style changes.
@@ -4460,6 +4504,7 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 120 | **Calendar and date pickers, to add to Figma** (13 Nov 2026; built §9.86, §9.87): code first, from shadcn's date picker in our tokens. Design to draw the calendar (single, range over two months; day looks: default, another month's, chosen, in range, today, disabled) and the date picker and range picker fields, and decide whether a filter-chip trigger is needed. FinDateField opens FinCalendar since 13 Nov 2026 (§9.79). | Component library | ❓ Design to add |
 | 121 | **Compact list density, to add to Figma** (16 Nov 2026, built code first, §9.49): a `Density` property on List-base (Default / Compact): Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16); exposed on List-standard, the radio, checkbox and toggle lists and their filled versions (filled cards 8 all round). | List | ⏳ Design to add in Figma |
 | 122 | **Table - Cell `Type=Checkbox`, to add to Figma** (16 Nov 2026, built code first, §9.43): a cell that is only a checkbox (Base-Checkbox, Selected / Unselected / Disabled), lined up with the header text, for values per row such as permissions. The Create user role screen draws it as `Type=Default` + leading checkbox with `Show content` off, and shows "doesn't apply" as Disabled + Indeterminate; code uses an ordinary disabled box (decided by design 16 Nov 2026). | Table | ⏳ Design to add in Figma |
+| 123 | **Info alias group, to add to Figma** (16 Nov 2026, code first, §3.12): an `Info` group in Foundation – Loyalty's Alias Colors (Info-50, 100, 200, 400, 500, 600, 700, 900, each brand mode pointing at the same primitive as its Primary step), and the 5 info semantic tokens pointed at it instead of Primary. No visual change; then the export matches the build. | Foundation | ⏳ Design to add in Figma |
 
 ---
 

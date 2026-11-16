@@ -27,6 +27,10 @@
       "types": "./dist/reference.d.ts",
       "import": "./dist/reference.js"
     },
+    "./custom-brand": {
+      "types": "./dist/customBrand.d.ts",
+      "import": "./dist/customBrand.js"
+    },
     "./tokens.css": "./dist/tokens.css",
     "./breakpoints.css": "./dist/breakpoints.css",
     "./styles.css": "./src/styles.css"

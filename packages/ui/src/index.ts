@@ -68,3 +68,5 @@ export * from './components/Menu';
 export * from './components/Tooltip';
 export * from './components/AppShell';
 export * from './components/SignInLayout';
+// The custom brand (DESIGN.md §3.12): what an admin's colour becomes, for the settings screen.
+export { checkBrandColor, resolveCustomScale, type BrandColorCheck } from '@finspace-loyalty/tokens/custom-brand';
