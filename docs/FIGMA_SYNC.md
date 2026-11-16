@@ -22,7 +22,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | | Count |
 |---|---|
 | 🆕 New: in code, not in Figma | 14 |
-| ✏️ Changed: in both, code differs visually | 22 |
+| ✏️ Changed: in both, code differs visually | 24 (C23, C24 added 16 Nov 2026) |
 | ✅ Unchanged | 38 |
 | ⬜ In Figma only, not built in code | 4 |
 
@@ -73,6 +73,8 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ⬜ |
 | C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ⬜ |
 | C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ⬜ |
+| C23 | `List-base` (`77:10185`) and every list built on it | **Compact density** (v0.8.0): a `Density` property, Default / Compact; Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16). Exposed on List-standard, List-radio_button, List-checkbox, List-toggle and the four `List_fill-*` sets (filled cards 8 all round). Then use it in the **Row actions menu** (`3849:786`, N12) and the **Rows per page** menu, which are compact in code | §9.49–9.56, §9.38, §9.66, §10 #121 | ⬜ |
+| C24 | `Table - Cell` (`3151:14990`) | **`Type=Checkbox`** (v0.8.0): the cell is only a checkbox (Base-Checkbox Selected / Unselected / Disabled), lined up with the header text (24 padding, 40 tall), for values per row such as permissions (the Create user role screen). Not applicable = an ordinary Disabled unticked box (not the screen's Disabled + Indeterminate dash) | §9.43, §9.45, §10 #122 | ⬜ |
 
 Smaller, optional: `Indicator` (`98:3532`) Selected 24 wide (Figma 22, §10 #35); `Side sheet` (`3120:30707`) with a
 two-line title (§10 #69).
