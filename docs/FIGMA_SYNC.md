@@ -53,7 +53,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 |---|---|---|---|---|
 | C1 | `all-button` (`47:1580`) | Link variant; `iconTone` secondary; `contentTone` colours | §9.28, §10 #118 | ✅ 16 Nov 2026 |
 | C2 | `Input field-base` (`49:5734`) | Small (40) size; mask | §9.58 | ✅ 16 Nov 2026 |
-| C3 | `Input field-standard` (`52:2629`) | Small size | §9.59 | ⬜ |
+| C3 | `Input field-standard` (`52:2629`) | Small size | §9.59 | ✅ 16 Nov 2026 |
 | C4 | `Input field-password` (`60:7165`) | Small size | §9.60 | ⬜ |
 | C5 | `Search` (`440:5164`) | Small size | §9.61 | ⬜ |
 | C6 | `Input field-select` (`537:2736`) | Small size; Disabled and Error | §9.72, §10 #58 | ⬜ |
@@ -616,3 +616,16 @@ itself, not code changes, so they're not part of this sync.
   is drawn in `Input field-date`'s Typing variants (N3). Noted in the description.
 - **Not yet:** the mapped fields (standard, password, search, select, multi select) still use Large: C3–C7.
 - **Source:** `FinInputBase` (`size`, `mask`), `DESIGN.md` §9.58.
+
+### C3 · Input field standard: Small size: 16 Nov 2026
+
+- **Page:** Input field `1:142`. `Input field-standard` `52:2629`, updated in place.
+- **New variant property `Size`** (Large / Small): 132 variants (Type × State × Trailing icon × Error × Size). Each
+  Small one is a copy of its Large one (a single Input field-base instance, no slots or links of its own) with the
+  base set to **Size=Small** (C2) and any icon placed in its leading / trailing slot swapped to the 20px icon set
+  (same State and glyph; 3 needed it, the rest come from the base).
+- **Sizes:** box 40, 66 tall with the helper (as code). Two Mobile number variants (Enabled and Hovered, Trailing
+  icon) are 68 in Small because they're already 76 in Large (2 more than the others): an existing difference, kept.
+- **Known difference (from C2):** the country selector's chevron stays 24 in Small.
+- **Description** on the set: the Size property.
+- **Source:** `FinTextField` `size`, `DESIGN.md` §9.59.
