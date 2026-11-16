@@ -71,7 +71,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C18 | `Table - Cell` / `Table row` / `Header row` | Narrow checkbox cell; Link cell padding | §9.43, §10 #61 | ✅ 16 Nov 2026 (with N12) |
 | C19 | Table (assembled) | Bordered style | §9.45, §10 #77 | ✅ 16 Nov 2026 (with N14) |
 | C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ➖ not needed (decided 17 Nov 2026: only used in menus, already in C16) |
-| C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ⬜ |
+| C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ✅ 17 Nov 2026 |
 | C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ⬜ |
 | C23 | `List-base` (`77:10185`) and every list built on it | **Compact density** (v0.8.0): a `Density` property, Default / Compact; Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16). Exposed on List-standard, List-radio_button, List-checkbox, List-toggle and the four `List_fill-*` sets (filled cards 8 all round). Then use it in the **Row actions menu** (`3849:786`, N12) and the **Rows per page** menu, which are compact in code | §9.49–9.56, §9.38, §9.66, §10 #121 | ✅ 16 Nov 2026 |
 | C24 | `Table - Cell` (`3151:14990`) | **`Type=Checkbox`** (v0.8.0): the cell is only a checkbox (Base-Checkbox Selected / Unselected / Disabled), lined up with the header text (24 padding, 40 tall), for values per row such as permissions (the Create user role screen). Not applicable = an ordinary Disabled unticked box (not the screen's Disabled + Indeterminate dash) | §9.43, §9.45, §10 #122 | ✅ 16 Nov 2026 |
@@ -862,3 +862,18 @@ Asked by design 17 Nov 2026: every section showed the placeholder `perm_identity
   screen. To add to Loyalty Iconography if wanted.
 - **Not changed:** the `Main Selection` set itself keeps `perm_identity` as its generic default.
 - **Source:** `apps/storybook/src/pages/pageShell.tsx`, `FinSideNavIcon` (§9.48), `DESIGN.md` §9.57.
+
+### C21 · Avatar: Online indicator: 17 Nov 2026
+
+- **Page:** Avatar. `Avatar` `932:1387`, updated in place: new **`Online`** property (False / True), 42 variants
+  (Type × Size × Online). The 21 originals are `Online=False`, unchanged.
+- **Online=True:** a copy of each with an **Online Indicator** instance (`14:995`, the real component, its 1px outside
+  ring) at the bottom-right, as code: inside the 1px border (x / y = size − 1 − dot), so the ring meets the outer
+  corner; **2px (Space-XXS) further in at 64 and 96**. Indicator per avatar: 24 → XSmall 6, 32 → Small 8, 40 / 48 →
+  Medium 12, 56 / 64 → Large 16, 96 → XLarge 24. Constraints right / bottom.
+- **No clip** on the Online variants (they clipped content, which would cut the ring), as code since 15 Oct 2026; the
+  photo fill is rounded by the circle itself.
+- **Layout:** the Online rows below the originals (same columns), set 644 × 1190; its frames hug.
+- **Description** on the set. Avatar Group and Profile image don't show it (as code).
+- **Source:** `FinAvatar` `online` / `onlineLabel` (`FinAvatar.styles.ts` `onlineFlush` / `onlineIn`), `DESIGN.md`
+  §9.4, §10 #33.
