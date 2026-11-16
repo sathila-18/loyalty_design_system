@@ -41,7 +41,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N9 | `FinListCheckbox` | Checkbox list row, as List-radio_button | — | §9.54, §10 #55 | ✅ 16 Nov 2026 |
 | N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ✅ 16 Nov 2026 |
 | N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | ✅ 16 Nov 2026 |
-| N12 | Table row actions (⋮) | 64-wide ⋮ column with its menu | hidden "Action Slot" in cells | §9.66, §10 #60 | ⬜ |
+| N12 | Table row actions (⋮) | 64-wide ⋮ column with its menu | hidden "Action Slot" in cells | §9.66, §10 #60 | ✅ 16 Nov 2026 (sideways shadow to add with Shadow/Menu) |
 | N13 | Side nav account menu | User row as a menu trigger; 320-wide menu with a Theme row | — | §9.57, §10 #62 | ⬜ |
 | N14 | `FinTable` (assembled) | Whole table with footer and pagination | parts only, by decision (§10 #26) | §9.45 | ⬜ optional |
 
@@ -68,7 +68,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C15 | `Main Selection` / `sub selection` (`3140:10997` / `3140:11076`) | Tree lines; chevron colours on tokens | §9.47, §10 #52, #76 | ⬜ |
 | C16 | `standard-menu` (`3549:12004`) | Shadow/Menu effect style; header and footer slots; slot `conten` → content | §9.64, §10 #59 | ✅ 16 Nov 2026 (shadow kept Sticky for now) |
 | C17 | `Table header cell` (`3151:14941`) | Sort / filter icons; narrow checkbox and ⋮ cells (56, Figma 72) | §9.41, §10 #50 | ✅ 16 Nov 2026 (with N11) |
-| C18 | `Table - Cell` / `Table row` / `Header row` | Narrow checkbox cell; Link cell padding | §9.43, §10 #61 | ⬜ |
+| C18 | `Table - Cell` / `Table row` / `Header row` | Narrow checkbox cell; Link cell padding | §9.43, §10 #61 | ✅ 16 Nov 2026 (with N12) |
 | C19 | Table (assembled) | Bordered style | §9.45, §10 #77 | ⬜ |
 | C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ⬜ |
 | C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ⬜ |
@@ -362,3 +362,40 @@ itself, not code changes, so they're not part of this sync.
 - **Description** on the set: when each type is used, Reset / Apply vs apply on selection, "All", search from 8 values,
   and code-only behaviour.
 - **Source:** `FinTableColumnFilter` (`packages/ui/src/components/TableColumnFilter/`), `DESIGN.md` §9.65, §10 #50.
+
+### N12 + C18 · Table row actions, narrow cells: 16 Nov 2026
+
+- **Decided by design (16 Nov 2026):** the ⋮ cell is a **variant of Table - Cell**; the ⋮ button and its menu are
+  their own components; **C18 done with N12**.
+- **`Row actions button`** set `3848:792` (Table page, before Table - Cell), **State** (32 × 32 each), each an
+  **all-button** `Size=XSmall, Type=Tertiary, Icon=Only Icon` instance, 20px glyph swapped to Loyalty Iconography
+  `more_vert`:
+
+  | State | Node | Built from | Overrides |
+  |---|---|---|---|
+  | Enabled | `3848:744` | all-button Enabled `47:1675` | glyph `fg-secondary` (not the Tertiary purple) |
+  | Hovered | `3848:756` | all-button Hovered `3062:2111` | — (`bg-action-secondary_hovered`, `fg-hovered`) |
+  | Pressed | `3848:768` | all-button Pressed `47:1771` | — (`bg-action-secondary_pressed`, `fg-pressed`) |
+  | Open | `3848:780` | all-button Enabled `47:1675` | Base-button fill `bg-action-secondary`, glyph `fg-action` |
+
+- **`Table - Cell`** `3151:14990`, new **Narrow** property (5 variants, slots relinked in the copies):
+  - `Type=Default, Narrow=True`: padding Space-XL, the checkbox column (56).
+  - `Type=Row actions, Narrow=True`: 64 wide; only the Action Slot (always shown), holding a Row actions button.
+  - **Link (C18):** the link button's Base-button side padding overridden to Space-none, so the text lines up.
+  - Variants now hug (Default 173, was 174 from the set's fill).
+- **`Table row`** `3151:15248` and **`Header row`** `3151:15203` (C18): the select cell set to **Narrow** (56); a new
+  **Row actions** boolean (off) adds the ⋮ column: the Row actions cell in each row variant, and an empty Grey
+  Narrow header cell fixed at 64 in the header row. Rows with it off: Table row 902 (was 918).
+- **`Row actions menu`** `3849:786` (Menu page, heading `3849:1044`): a standard-menu instance 240 wide with
+  List-standard Small rows (Leading accessory=Icon, no lines, Space-XL bottom padding): View details (`visibility`),
+  Edit member (`edit`), Assign tier (`assignment`), a full-width Divider, Deactivate (`cancel`, destructive: title
+  `text-error`, icon `fg-error`). Icons `fg-secondary`. The code story's actions.
+- **Not drawn:** the fixed column's **sideways Sticky shadow** (needs new effect styles in Foundation – Loyalty, like
+  `Shadow/Menu`); fixed position while scrolling (code only).
+- **Fixes to N11's header cell found here:** (1) the copied variants had lost the `Show checkbox` link on the
+  checkbox (32 variants) and `Show trailing icon` on the arrow (8 Filter=None variants): relinked; (2) the Title
+  frame kept its width with the title hidden (a select cell was 150, not 72): its visibility is now linked to
+  `Show title` (a sorted column with no title isn't drawn).
+- **Descriptions** on all new and changed components.
+- **Source:** `FinTableRowActions`, `FinTableCell`, `FinTableRow`, `FinTableHeaderRow`, `DESIGN.md` §9.43, §9.66,
+  §10 #60, #61.
