@@ -40,7 +40,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ⬜ |
 | N9 | `FinListCheckbox` | Checkbox list row, as List-radio_button | — | §9.54, §10 #55 | ✅ 16 Nov 2026 |
 | N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ✅ 16 Nov 2026 |
-| N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | ⬜ |
+| N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | 🟡 header cell 16 Nov 2026; filter menu after C16 |
 | N12 | Table row actions (⋮) | 64-wide ⋮ column with its menu | hidden "Action Slot" in cells | §9.66, §10 #60 | ⬜ |
 | N13 | Side nav account menu | User row as a menu trigger; 320-wide menu with a Theme row | — | §9.57, §10 #62 | ⬜ |
 | N14 | `FinTable` (assembled) | Whole table with footer and pagination | parts only, by decision (§10 #26) | §9.45 | ⬜ optional |
@@ -67,7 +67,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C14 | `Side Menu` (`3142:11871`) | Tree style; logo text "Fintech loyalty" | §9.57, §10 #76, #111 | ⬜ |
 | C15 | `Main Selection` / `sub selection` (`3140:10997` / `3140:11076`) | Tree lines; chevron colours on tokens | §9.47, §10 #52, #76 | ⬜ |
 | C16 | `standard-menu` (`3549:12004`) | Shadow/Menu effect style; header and footer slots; slot `conten` → content | §9.64, §10 #59 | ⬜ |
-| C17 | `Table header cell` (`3151:14941`) | Sort / filter icons; narrow checkbox and ⋮ cells (56, Figma 72) | §9.41, §10 #50 | ⬜ |
+| C17 | `Table header cell` (`3151:14941`) | Sort / filter icons; narrow checkbox and ⋮ cells (56, Figma 72) | §9.41, §10 #50 | ✅ 16 Nov 2026 (with N11) |
 | C18 | `Table - Cell` / `Table row` / `Header row` | Narrow checkbox cell; Link cell padding | §9.43, §10 #61 | ⬜ |
 | C19 | Table (assembled) | Bordered style | §9.45, §10 #77 | ⬜ |
 | C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ⬜ |
@@ -287,3 +287,35 @@ itself, not code changes, so they're not part of this sync.
 - **Subtitles** written for the four new frames (the copied ones described the plain lists).
 - **Source:** `FinListStandardFilled`, `FinListRadioFilled`, `FinListCheckboxFilled`, `FinListToggleFilled`
   (`packages/ui/src/components/List*Filled/`), `DESIGN.md` §9.56, §10 #56.
+
+### N11 (header cell) + C17 · Table header cell sort, filter, narrow: 16 Nov 2026
+
+- **Page:** Table `3144:13398`. The existing **`Table header cell`** set `3151:14941` updated in place (not a new
+  component), so the Header row and tables pick it up.
+- **Decided by design (16 Nov 2026):** sort and filter as **variants on the cell**; **C17 done with N11**; the
+  **filter menu after C16** (it's built from `standard-menu`).
+- **Structure:** the title Slot now sits in a **Title** frame (auto layout, gap Space-XS) with a hidden **Sort icon**
+  (20px icon set `3017:6326`, State=Secondary). The trailing **24px** arrow is unchanged; in Filter variants it's
+  renamed **Filter icon**, always shown (unlinked from `Show trailing icon`). Slot property, `Show checkbox`,
+  `Show title` and `Show trailing icon` kept.
+- **New variant properties** (34 variants; defaults = the old look):
+
+  | Property | Values | Look |
+  |---|---|---|
+  | Sort | None / Unsorted / Ascending / Descending | Unsorted `unfold_more` `fg-secondary`; Ascending `arrow_upward`, Descending `arrow_downward`, glyph `fg-action` |
+  | Filter | None / Default / Open / Applied | None = display-only arrow (the boolean); Default `keyboard_arrow_down` `fg-secondary`; Open `keyboard_arrow_up` `fg-action`; Applied `keyboard_arrow_down` `fg-action` |
+  | Narrow | False / True | True: padding Space-XL (16) either side; only with Sort=None, Filter=None |
+
+  Type (White / Grey) × Sort × Filter = 32, plus Narrow=True for each Type.
+- **Icons:** Loyalty Iconography `unfold_more`, `arrow_upward`, `arrow_downward`, `keyboard_arrow_up` (each has two
+  identical components in the library; the first listed is used). The icon sets have no Action state, so the glyph's
+  fill is overridden to `Foreground/fg-action` (imported from Foundation – Loyalty).
+- **Widths:** variants now hug (the set wraps at 1152); the default is 150 wide (code 150; was 151 from the old fill).
+  Header row checked after the change: same variants and widths.
+- **API note:** copying a variant turns its Slot into a plain frame; each copy got a real slot (`createSlot`) linked
+  to the original `Slot#3151:16` property, and the extra slot properties were deleted.
+- **Description** on the set: all properties, tokens, and code-only behaviour (icon hover / pressed, focus ring, the
+  filter menu).
+- **Still to do for N11:** the filter menu (FinTableColumnFilter, §9.65) after C16.
+- **Source:** `FinTableHeaderCell` (`packages/ui/src/components/TableHeaderCell/`), `FinTableColumnFilter`,
+  `DESIGN.md` §9.41, §9.65, §10 #50.
