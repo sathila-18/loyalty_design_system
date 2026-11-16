@@ -54,7 +54,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C1 | `all-button` (`47:1580`) | Link variant; `iconTone` secondary; `contentTone` colours | §9.28, §10 #118 | ✅ 16 Nov 2026 |
 | C2 | `Input field-base` (`49:5734`) | Small (40) size; mask | §9.58 | ✅ 16 Nov 2026 |
 | C3 | `Input field-standard` (`52:2629`) | Small size | §9.59 | ✅ 16 Nov 2026 |
-| C4 | `Input field-password` (`60:7165`) | Small size | §9.60 | ⬜ |
+| C4 | `Input field-password` (`60:7165`) | Small size | §9.60 | ✅ 16 Nov 2026 |
 | C5 | `Search` (`440:5164`) | Small size | §9.61 | ⬜ |
 | C6 | `Input field-select` (`537:2736`) | Small size; Disabled and Error | §9.72, §10 #58 | ⬜ |
 | C7 | `Input field-Multi select` (`922:6170`) | Small; Disabled and Error; no Typing look; Input chip XSmall chips | §9.85, §10 #119 | ⬜ |
@@ -629,3 +629,14 @@ itself, not code changes, so they're not part of this sync.
 - **Known difference (from C2):** the country selector's chevron stays 24 in Small.
 - **Description** on the set: the Size property.
 - **Source:** `FinTextField` `size`, `DESIGN.md` §9.59.
+
+### C4 · Input field password: Small size: 16 Nov 2026
+
+- **Page:** Input field `1:142`. `Input field-password` `60:7165`, updated in place.
+- **New variant property `Size`** (Large / Small): 44 variants (State × Show password × Error × Size). Each Small one
+  is a copy of its Large one (a single Input field-base instance) with the base set to **Size=Small** (C2) and the
+  eye swapped to the 20px icon set (same State, same `visibility` / `visibility_off` glyph): 22 swapped, no 24px icon
+  left.
+- **Sizes:** box 40, 66 tall with the helper in all 22 (as code).
+- **Description** on the set: the Size property.
+- **Source:** `FinPasswordField` `size`, `DESIGN.md` §9.60.
