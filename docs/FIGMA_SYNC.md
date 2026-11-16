@@ -73,7 +73,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ⬜ |
 | C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ⬜ |
 | C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ⬜ |
-| C23 | `List-base` (`77:10185`) and every list built on it | **Compact density** (v0.8.0): a `Density` property, Default / Compact; Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16). Exposed on List-standard, List-radio_button, List-checkbox, List-toggle and the four `List_fill-*` sets (filled cards 8 all round). Then use it in the **Row actions menu** (`3849:786`, N12) and the **Rows per page** menu, which are compact in code | §9.49–9.56, §9.38, §9.66, §10 #121 | ⬜ |
+| C23 | `List-base` (`77:10185`) and every list built on it | **Compact density** (v0.8.0): a `Density` property, Default / Compact; Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16). Exposed on List-standard, List-radio_button, List-checkbox, List-toggle and the four `List_fill-*` sets (filled cards 8 all round). Then use it in the **Row actions menu** (`3849:786`, N12) and the **Rows per page** menu, which are compact in code | §9.49–9.56, §9.38, §9.66, §10 #121 | ✅ 16 Nov 2026 |
 | C24 | `Table - Cell` (`3151:14990`) | **`Type=Checkbox`** (v0.8.0): the cell is only a checkbox (Base-Checkbox Selected / Unselected / Disabled), lined up with the header text (24 padding, 40 tall), for values per row such as permissions (the Create user role screen). Not applicable = an ordinary Disabled unticked box (not the screen's Disabled + Indeterminate dash) | §9.43, §9.45, §10 #122 | ⬜ |
 
 Smaller, optional: `Indicator` (`98:3532`) Selected 24 wide (Figma 22, §10 #35); `Side sheet` (`3120:30707`) with a
@@ -401,3 +401,30 @@ itself, not code changes, so they're not part of this sync.
 - **Descriptions** on all new and changed components.
 - **Source:** `FinTableRowActions`, `FinTableCell`, `FinTableRow`, `FinTableHeaderRow`, `DESIGN.md` §9.43, §9.66,
   §10 #60, #61.
+
+### C23 · Compact list density: 16 Nov 2026
+
+- **Page:** List `1:143`. **Decided by design (16 Nov 2026):** Density on the two bases only; the list sets expose
+  their nested base, so Density shows in their properties panel without doubling their variants.
+- **`List-base`** `77:10185`: new variant property **Density** (Default / Compact), 4 variants:
+
+  | Variant | Node | Padding (top / sides) | Content → divider | Height |
+  |---|---|---|---|---|
+  | `Size=Large, Density=Default` | `77:10186` | Space-XL | Space-XL | 82 |
+  | `Size=Small, Density=Default` | `3097:27929` | Space-XL | Space-XL | 76 |
+  | `Size=Large, Density=Compact` | `3857:24199` | Space-M | Space-M | 66 (code 66) |
+  | `Size=Small, Density=Compact` | `3857:24493` | Space-M | Space-M | 60 (code 60) |
+
+- **`List_fill-base`** `3494:14233`: the same property; Compact `Size=Large` `3857:25274` (65, code 65) and
+  `Size=Small` `3857:25308` (59), padding Space-M all round.
+- **Copies checked:** each Compact variant was copied from its Default one, and its 4 slots and every property link
+  were restored (List-base 8 links, List_fill-base 7, as the originals).
+- **Exposed:** the nested List-base / List_fill-base is now an exposed instance in all 8 list sets (List-standard,
+  List-radio_button, List-checkbox, List-toggle and the four `List_fill-*`, 840 variants), so Density (and the base's
+  other properties) can be set from them.
+- **Row actions menu** `3849:786` (N12): its rows set to Density=Compact with Space-M bottom padding (no lines), 40
+  tall as in code; its description updated. Figma's **Row count dropdown** (`3151:14547`) has no menu, so nothing to
+  change there.
+- **Descriptions** on both bases: the Density values and the bottom-padding rule.
+- **Source:** `FinListItem`, `FinListItemFilled` and the list rows (`density`), `DESIGN.md` §9.49–9.56, §10 #121
+  (released in v0.8.0).
