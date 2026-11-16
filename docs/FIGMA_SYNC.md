@@ -36,13 +36,13 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N4 | `FinStepper` | Steps of a multi-step form: done, current, upcoming | drawn on each Add reward screen | §9.77 | ✅ 13 Nov 2026 |
 | N5 | `FinStatCard` | Summary number on `bg-active` | drawn on each Reports screen | §9.81 | ✅ 13 Nov 2026 |
 | N6 | `FinSkeleton` | Loading placeholder: text, rect, circle | — | §9.76 | ✅ 13 Nov 2026 |
-| N7 | `FinSignInLayout` | Login layout: artwork panel and form | drawn on each Login screen | §9.84, §10 #116 | ⬜ |
-| N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ⬜ |
+| N7 | `FinSignInLayout` | Login layout: artwork panel and form | drawn on each Login screen | §9.84, §10 #116 | ➖ not needed in Figma (decided 16 Nov 2026) |
+| N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ➖ not needed in Figma (decided 16 Nov 2026) |
 | N9 | `FinListCheckbox` | Checkbox list row, as List-radio_button | — | §9.54, §10 #55 | ✅ 16 Nov 2026 |
 | N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ✅ 16 Nov 2026 |
 | N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | ✅ 16 Nov 2026 |
 | N12 | Table row actions (⋮) | 64-wide ⋮ column with its menu | hidden "Action Slot" in cells | §9.66, §10 #60 | ✅ 16 Nov 2026 (sideways shadow to add with Shadow/Menu) |
-| N13 | Side nav account menu | User row as a menu trigger; 320-wide menu with a Theme row | — | §9.57, §10 #62 | ⬜ |
+| N13 | Side nav account menu | User row as a menu trigger; 320-wide menu with a Theme row | — | §9.57, §10 #62 | ✅ 16 Nov 2026 (Light / Dark icons temporary) |
 | N14 | `FinTable` (assembled) | Whole table with footer and pagination | parts only, by decision (§10 #26) | §9.45 | ✅ 16 Nov 2026 |
 
 ### ✏️ Changed: in Figma, but code differs visually
@@ -60,7 +60,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C7 | `Input field-Multi select` (`922:6170`) | Small; Disabled and Error; no Typing look; Input chip XSmall chips | §9.85, §10 #119 | ⬜ |
 | C8 | `Chips` (`95:1848`) | Three chip types (Assist / Filter / Input); Input chip Unselected-border | §9.32, §10 #46 | ⬜ |
 | C9 | `Checkbox` (`42:220`) | Checkbox on the left only; Selected + Disabled | §10 #44 | ⬜ |
-| C10 | `Segmented_button-base` / `Segmented button` (`117:4667` / `117:4688`) | Small (32) and XSmall sizes, icon only, tooltips | §9.33, §9.34 | ⬜ |
+| C10 | `Segmented_button-base` / `Segmented button` (`117:4667` / `117:4688`) | Small (32) and XSmall sizes, icon only, tooltips | §9.33, §9.34 | ✅ 16 Nov 2026 (for N13) |
 | C11 | `Header notification` (`3178:24467`) | 40 everywhere, 20 bell (Figma 48) | §9.62 | ⬜ |
 | C12 | `Main header` (`3178:24570`) | Headline Small-H6 title; XSmall (32) back button (Figma H4, 48) | §9.63 | ⬜ |
 | C13 | `Button dock` (`75:5858`) | Small buttons; buttons hug labels, Secondary + Primary at the right | §9.69 | ⬜ |
@@ -503,3 +503,67 @@ itself, not code changes, so they're not part of this sync.
   keyboard, min / max. The calendar opening is described (the N2 composition), not drawn.
 - **Description** on the set: states, texts, the calendar button and the code-only behaviour.
 - **Source:** `FinDateField` (`packages/ui/src/components/DateField/`), `DESIGN.md` §9.79.
+
+### N7, N8 · not needed in Figma (decided 16 Nov 2026)
+
+- `FinSignInLayout` (N7) and `FinAppShell` (N8) stay code only: screens already draw the login layout and the page
+  shell, so no Figma components are added.
+
+### C10 · Segmented button sizes and icon only: 16 Nov 2026
+
+- **Page:** Segmented button `3:150`. Both sets updated in place. **Decided by design (16 Nov 2026):** done before
+  N13, so the account menu's Theme row uses the real XSmall icon-only control.
+- **`Segmented_button-base`** `117:4667`: new **Size** (Medium / Small / XSmall) and **Icon only** (False / True),
+  48 variants (Type × State × Size × Icon only); the 40 new ones copied from the 8 originals with their slot and
+  property links restored:
+
+  | Size | Padding | Gap, radius, text | Height | Icon only |
+  |---|---|---|---|---|
+  | Medium (Figma's) | Space-M / Space-3XL | Space-M, Radius-M, Button/Medium | 40 | 36 (Space-M all round, 20 icon) |
+  | Small | Space-XS / Space-L | Space-XS, Radius-S, Button/Small | 32 | 28 (Space-XS, 20 icon) |
+  | XSmall | 0 / Space-M | Space-XS, Radius-S, Button/Small; 16px icon set | 24 | 24 (Space-XS, 16 icon) |
+
+  Icon only hides the label and always shows the Leading accessory slot (unlinked from its boolean there).
+- **`Segmented button`** `117:4688`: the same two properties, 12 variants (State × Size × Icon only); its segments
+  set to the matching size; Show Button 1–3 links kept:
+
+  | Size | Track | Text | Icon only (3) |
+  |---|---|---|---|
+  | Medium | padding Space-XS, gap Space-L, Radius-L | 343 × 48 | 140 × 44 |
+  | Small | padding and gap Space-XS, Radius-M | 343 × 40 | 100 × 36 |
+  | XSmall | none, Radius-S, segments flush | 343 × 24 | **72 × 24** |
+
+  Icon only: the track hugs its segments (as code). All sizes measured equal to code.
+- **Not drawn:** the filled icon when selected, tooltips, `menuitemradio` (code only; in the descriptions).
+- **Source:** `FinSegmentBase`, `FinSegmentedButton`, `DESIGN.md` §9.33, §9.34.
+
+### N13 · Side nav account menu: 16 Nov 2026
+
+- **Page:** Side nav `1:129` (designer's link), in the section with Side Menu.
+- **Decided by design (16 Nov 2026):** the user row is a **standalone** set (Side Menu left as it is); **C10 first**
+  so the Theme row uses the real XSmall icon-only control; Light / Dark use the **nearest library icons for now**.
+- **`Side nav user`** set `3872:1506` (built from the Side Menu's own user row, a List-base Small instance):
+
+  | Variant | Node | Look |
+  |---|---|---|
+  | `Type=Expanded, State=Default` | `3872:1380` | 240 × 70; padding Space-L / Space-XL, Radius-M; `keyboard_arrow_down` |
+  | `Type=Expanded, State=Hovered` | `3872:1411` | `bg-tertiary` |
+  | `Type=Expanded, State=Pressed` | `3872:1442` | `bg-neutral` |
+  | `Type=Expanded, State=Open` | `3872:1473` | `bg-tertiary`, `keyboard_arrow_up` |
+  | `Type=Minimized, State=Default` | `3872:1504` | the avatar (40) in a 48 column, Space-L above and below; no fill (as code) |
+
+- **`Account menu`** component `3873:1489`, 320 × 294: a **standard-menu** instance (C16 version) at 320, Show
+  header on with the header padding set to Space-none (code's `headerPadding="none"`), no footer:
+
+  | Part | Built from | Height |
+  |---|---|---|
+  | Header | List-standard Small (description) "Olivia James" / "oliviajames@email.com", trailing **Badge-primary State=Neutral** "Admin"; no line of its own (the header's line) | 75 |
+  | My profile, Settings, Log out | List-standard Small, no description, Show Divider off + Space-XL bottom padding | 53 each (as code) |
+  | Theme | the same row, trailing **Segmented button `Size=XSmall, Icon only=True`** (72 × 24, C10): System `desktop_windows` (Selected), Light, Dark | 56 (as code) |
+  | Line | **Divider** atom, full width, before Log out | 1 |
+
+- **Icons (temporary):** Loyalty Iconography has no `light_mode` or `dark_mode`; Light uses `brightness_low` and
+  Dark `bedtime` until they're added (code uses `light_mode` and `dark_mode`). To swap when published.
+- **Descriptions** on both: states, placement (above the user area, or right of the minimized nav) and code-only
+  behaviour (keyboard, theme picking keeps the menu open, tooltips).
+- **Source:** `FinSideNav` (`profile.menu`, the theme row), `DESIGN.md` §9.57, §10 #62.
