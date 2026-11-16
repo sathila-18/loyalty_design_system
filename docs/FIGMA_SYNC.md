@@ -59,7 +59,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C6 | `Input field-select` (`537:2736`) | Small size; Disabled and Error | §9.72, §10 #58 | ✅ 16 Nov 2026 |
 | C7 | `Input field-Multi select` (`922:6170`) | Small; Disabled and Error; no Typing look; Input chip XSmall chips | §9.85, §10 #119 | ✅ 16 Nov 2026 (Typing kept; "+N" and open menu later) |
 | C8 | `Chips` (`95:1848`) | Three chip types (Assist / Filter / Input); Input chip Unselected-border | §9.32, §10 #46 | ✅ 16 Nov 2026 (before C7) |
-| C9 | `Checkbox` (`42:220`) | Checkbox on the left only; Selected + Disabled | §10 #44 | ⬜ |
+| C9 | `Checkbox` (`42:220`) | Checkbox on the left only; Selected + Disabled | §10 #44 | ✅ 16 Nov 2026 |
 | C10 | `Segmented_button-base` / `Segmented button` (`117:4667` / `117:4688`) | Small (32) and XSmall sizes, icon only, tooltips | §9.33, §9.34 | ✅ 16 Nov 2026 (for N13) |
 | C11 | `Header notification` (`3178:24467`) | 40 everywhere, 20 bell (Figma 48) | §9.62 | ⬜ |
 | C12 | `Main header` (`3178:24570`) | Headline Small-H6 title; XSmall (32) back button (Figma H4, 48) | §9.63 | ⬜ |
@@ -729,3 +729,23 @@ unchanged. As §10 #46.
 - **Not yet (later, §10 #119 (3)):** several chips with the "+N" chip, and the open menu with checkbox rows.
 - **Option order:** `Error` False, True; `state` Complete, Enabled, Focused, Typing, Hovered, Disabled (as C6).
 - **Source:** `FinMultiSelectField` (`disabled`, `error`, `size`), `FinInputChip` XSmall, `DESIGN.md` §9.85.
+
+### C9 · Checkbox: left only, box focus ring, Selected + Disabled, Indeterminate: 16 Nov 2026
+
+- **Page:** Checkbox. `Checkbox` `42:220`, updated in place (decided by design 16 Nov 2026, §10 #44).
+- **Left only:** the trailing Base-Checkbox is deleted from every variant and the `Show Leading Icon` and
+  `Show Trailing Icon` properties are removed; the left checkbox is always shown. The Text Box now **fills** the row
+  (it was 271 wide, leaving room for the trailing box), so lines break as code's. `Show Text box` stays.
+- **Focused** = the checkbox's own ring (Base-Checkbox `Focused=True`), as code; the row `Focus ring` frame is deleted
+  from the three Focused variants.
+- **New variants** (Base-Checkbox has the looks): Selected + Disabled `3895:135`; Indeterminate Enabled `3895:147`,
+  Enabled Focused `3895:159`, Disabled `3895:173` (disabled text from the Unselected Disabled variant). 10 variants:
+  `Type` Unselected / Selected / Indeterminate × `State` Enabled / Disabled × `Focused`; Hovered and Pressed stay in
+  Base-Checkbox (code: from the base).
+- **Kept:** `Type=Unselected, State=Disabled, Focused=True` (a disabled checkbox can't take focus in code; kept so
+  existing instances don't break).
+- **Layout:** fixed grid, a row per Type × State, Focused False / True in two columns; set 766 × 572. Its frame
+  `Headline - EN` and the page frame `Checkbox` `42:179` widened 797 → **894** so the set isn't clipped (the header
+  fills it).
+- **Description** on the set.
+- **Source:** `FinCheckbox` (`checked`, `indeterminate`, `disabled`), `DESIGN.md` §9.30, §10 #44.
