@@ -65,12 +65,12 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C12 | `Main header` (`3178:24570`) | Headline Small-H6 title; XSmall (32) back button (Figma H4, 48) | §9.63 | ✅ 16 Nov 2026 |
 | C13 | `Button dock` (`75:5858`) | Small buttons; buttons hug labels, Secondary + Primary at the right | §9.69 | ✅ 16 Nov 2026 |
 | C14 | `Side Menu` (`3142:11871`) | Tree style; logo text "Fintech loyalty" | §9.57, §10 #76, #111 | ✅ 17 Nov 2026 (with the tree part of C15) |
-| C15 | `Main Selection` / `sub selection` (`3140:10997` / `3140:11076`) | Tree lines; chevron colours on tokens | §9.47, §10 #52, #76 | 🟨 tree lines done with C14 (17 Nov 2026); chevron colours open |
+| C15 | `Main Selection` / `sub selection` (`3140:10997` / `3140:11076`) | Tree lines; chevron colours on tokens | §9.47, §10 #52, #76 | ✅ 17 Nov 2026 (tree lines with C14) |
 | C16 | `standard-menu` (`3549:12004`) | Shadow/Menu effect style; header and footer slots; slot `conten` → content | §9.64, §10 #59 | ✅ 16 Nov 2026 (shadow kept Sticky for now) |
 | C17 | `Table header cell` (`3151:14941`) | Sort / filter icons; narrow checkbox and ⋮ cells (56, Figma 72) | §9.41, §10 #50 | ✅ 16 Nov 2026 (with N11) |
 | C18 | `Table - Cell` / `Table row` / `Header row` | Narrow checkbox cell; Link cell padding | §9.43, §10 #61 | ✅ 16 Nov 2026 (with N12) |
 | C19 | Table (assembled) | Bordered style | §9.45, §10 #77 | ✅ 16 Nov 2026 (with N14) |
-| C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ⬜ |
+| C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ➖ not needed (decided 17 Nov 2026: only used in menus, already in C16) |
 | C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ⬜ |
 | C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ⬜ |
 | C23 | `List-base` (`77:10185`) and every list built on it | **Compact density** (v0.8.0): a `Density` property, Default / Compact; Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16). Exposed on List-standard, List-radio_button, List-checkbox, List-toggle and the four `List_fill-*` sets (filled cards 8 all round). Then use it in the **Row actions menu** (`3849:786`, N12) and the **Rows per page** menu, which are compact in code | §9.49–9.56, §9.38, §9.66, §10 #121 | ✅ 16 Nov 2026 |
@@ -828,3 +828,37 @@ where a section is open; the nav to code's 272 / 240; the logo text in the Logo 
 - **Still open (C15):** the Main Selection chevron colours on tokens (§10 #52).
 - **Source:** `FinSideNav` `variant="tree"` (§9.57), `FinSideNavSubItem` (§9.47), `sidenav-tree-lines` in
   `tailwind.css`, `DESIGN.md` §10 #76, #111.
+
+### C15 · Main Selection: chevron colour and direction: 17 Nov 2026
+
+(The `sub selection` tree lines are in C14's entry.)
+
+- **Page:** Side nav. `Main Selection` `3140:10997`, updated in place (Full variants; Minimized has no chevron).
+- **Found:** the chevrons were already on a token (`fg-secondary`, no raw colours left from §10 #52 (1)), but **every**
+  variant, open or selected, showed `keyboard_arrow_down` in grey.
+- **Colour:** Selected - BG and Selected → **`fg-active`** (4 variants), as code (`chevron.selected`); the others stay
+  `fg-secondary`.
+- **Direction:** Expanded=True → **`keyboard_arrow_up`** (2 variants), as code (up while open; §10 #52 (2)).
+- **Kept:** `Show Dropdown` (§10 #52 (3)): it's how a design marks a section with pages; code shows the chevron from
+  the data. Noted in the description.
+- **Effect elsewhere:** the Side Menu's open sections now show the purple up arrow.
+- **Description** on the set.
+- **Source:** `FinSideNavItem` (`FinSideNavItem.styles.ts` `chevron`, the `open` arrow), `DESIGN.md` §9.48, §10 #52.
+
+### C14 follow-up · Side Menu section icons as code: 17 Nov 2026
+
+Asked by design 17 Nov 2026: every section showed the placeholder `perm_identity`.
+
+- **Page:** Side nav. `Side Menu` `3142:11871`, all 21 variants (Expanded, Minimized, Tree): the 7 Main Selections'
+  glyphs swapped to code's icons (`pageShell.tsx` / FinSideNav stories), from the **Loyalty Iconography** library:
+  Dashboard `home`, Loyalty Management `loyalty`, Gamification `sports_esports`, System Configuration
+  `desktop_windows`, Report Management `assignment`, User Management `supervised_user_circle`, System Audit
+  `plagiarism`.
+- **Filled when selected**, as code (FinSideNavIcon: filled + `fg-active` on the selected section, outlined
+  otherwise): the selected section uses the library's filled glyph, the rest the outlined one. Colours unchanged (the
+  icon's own State).
+- **Known:** the library's two `desktop_windows` glyphs both look outlined (no solid-screen filled version), so a
+  selected System Configuration looks outlined in Figma; code's filled one (Material Symbols FILL 1) has a solid
+  screen. To add to Loyalty Iconography if wanted.
+- **Not changed:** the `Main Selection` set itself keeps `perm_identity` as its generic default.
+- **Source:** `apps/storybook/src/pages/pageShell.tsx`, `FinSideNavIcon` (§9.48), `DESIGN.md` §9.57.
