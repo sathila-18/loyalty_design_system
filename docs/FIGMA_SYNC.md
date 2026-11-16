@@ -62,7 +62,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C9 | `Checkbox` (`42:220`) | Checkbox on the left only; Selected + Disabled | §10 #44 | ✅ 16 Nov 2026 |
 | C10 | `Segmented_button-base` / `Segmented button` (`117:4667` / `117:4688`) | Small (32) and XSmall sizes, icon only, tooltips | §9.33, §9.34 | ✅ 16 Nov 2026 (for N13) |
 | C11 | `Header notification` (`3178:24467`) | 40 everywhere, 20 bell (Figma 48) | §9.62 | ✅ 16 Nov 2026 |
-| C12 | `Main header` (`3178:24570`) | Headline Small-H6 title; XSmall (32) back button (Figma H4, 48) | §9.63 | ⬜ |
+| C12 | `Main header` (`3178:24570`) | Headline Small-H6 title; XSmall (32) back button (Figma H4, 48) | §9.63 | ✅ 16 Nov 2026 |
 | C13 | `Button dock` (`75:5858`) | Small buttons; buttons hug labels, Secondary + Primary at the right | §9.69 | ⬜ |
 | C14 | `Side Menu` (`3142:11871`) | Tree style; logo text "Fintech loyalty" | §9.57, §10 #76, #111 | ⬜ |
 | C15 | `Main Selection` / `sub selection` (`3140:10997` / `3140:11076`) | Tree lines; chevron colours on tokens | §9.47, §10 #52, #76 | ⬜ |
@@ -768,3 +768,18 @@ unchanged. As §10 #46.
   header itself.
 - **Description** on the set.
 - **Source:** `FinHeaderNotificationButton` (`FinHeaderNotificationButton.styles.ts`), `DESIGN.md` §9.62.
+
+### C12 · Main header: H6 title, XSmall back button: 16 Nov 2026
+
+- **Page:** Header. `Main header` `3178:24570` (a component), updated in place.
+- **Title:** the Text Box `Type` Headline Large-H4 → **Headline Small-H6** (16 / 24, Semibold 600); the body content
+  slot stays 4 below (now at 28).
+- **Back button:** all-button `Size` Medium (48) → **XSmall** (32, 20 icon), Tertiary, Only Icon. The size change
+  reset the icon to the slot default (`perm_identity`), so `arrow_back` was swapped back in (the glyph component from
+  the Side sheet page, `3173:14562`).
+- **Bell:** the Header notification is 40 from C11.
+- **Measured:** 1368 × **77** (12 + 24 + 4 + 21 + 12 + the 4 border, as code; was 87); back button 32 at 24; the text
+  at **68** (24 + 32 + 12); the bell 40 at the right edge minus 24. Padding, gaps, border and radius unchanged.
+- **Description** on the component.
+- **Effect elsewhere:** screens using Main header get the 77 header.
+- **Source:** `FinHeader` (`FinHeader.styles.ts`), `DESIGN.md` §9.63.
