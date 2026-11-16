@@ -55,7 +55,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C2 | `Input field-base` (`49:5734`) | Small (40) size; mask | §9.58 | ✅ 16 Nov 2026 |
 | C3 | `Input field-standard` (`52:2629`) | Small size | §9.59 | ✅ 16 Nov 2026 |
 | C4 | `Input field-password` (`60:7165`) | Small size | §9.60 | ✅ 16 Nov 2026 |
-| C5 | `Search` (`440:5164`) | Small size | §9.61 | ⬜ |
+| C5 | `Search` (`440:5164`) | Small size | §9.61 | ✅ 16 Nov 2026 |
 | C6 | `Input field-select` (`537:2736`) | Small size; Disabled and Error | §9.72, §10 #58 | ⬜ |
 | C7 | `Input field-Multi select` (`922:6170`) | Small; Disabled and Error; no Typing look; Input chip XSmall chips | §9.85, §10 #119 | ⬜ |
 | C8 | `Chips` (`95:1848`) | Three chip types (Assist / Filter / Input); Input chip Unselected-border | §9.32, §10 #46 | ⬜ |
@@ -640,3 +640,20 @@ itself, not code changes, so they're not part of this sync.
 - **Sizes:** box 40, 66 tall with the helper in all 22 (as code).
 - **Description** on the set: the Size property.
 - **Source:** `FinPasswordField` `size`, `DESIGN.md` §9.60.
+
+### C5 · Search: Small size: 16 Nov 2026
+
+- **Page:** Search. `Search` `440:5164`, updated in place.
+- **New variant property `Size`** (Large / Small): 8 variants (State × Size). Each Small one is a copy of its Large
+  one (a single Input field-base instance) with the base set to **Size=Small** (C2) and every slot icon swapped to the
+  20px icon set (same State, same glyph) and sized 20 × 20: `search` in all 4, `cancel` in Typing and Complete (6 icons,
+  no 24px icon left).
+- **Small variants:** Enabled `3885:110`, Focus `3885:297`, Typing `3885:237`, Complete `3885:177`.
+- **Sizes:** 343 × 40 (no helper, as code). Large unchanged (343 × 48).
+- **Description** on the set: the Size property.
+- **Option order:** the Plugin API listed Size as Small, Large; design reordered it to Large, Small by hand (as C3 /
+  C4).
+- **Found while checking (C3, C4):** some slot icons swapped to the 20px set kept a 24 × 24 size: the eye in all 22
+  Small `Input field-password` variants and the 3 Disabled icons in Small `Input field-standard`. Design is fixing
+  them to 20 × 20 by hand (16 Nov 2026).
+- **Source:** `FinSearchField` `size` (20px icons when small), `DESIGN.md` §9.61.
