@@ -39,7 +39,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N7 | `FinSignInLayout` | Login layout: artwork panel and form | drawn on each Login screen | §9.84, §10 #116 | ⬜ |
 | N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ⬜ |
 | N9 | `FinListCheckbox` | Checkbox list row, as List-radio_button | — | §9.54, §10 #55 | ✅ 16 Nov 2026 |
-| N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ⬜ |
+| N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ✅ 16 Nov 2026 |
 | N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | ⬜ |
 | N12 | Table row actions (⋮) | 64-wide ⋮ column with its menu | hidden "Action Slot" in cells | §9.66, §10 #60 | ⬜ |
 | N13 | Side nav account menu | User row as a menu trigger; 320-wide menu with a Theme row | — | §9.57, §10 #62 | ⬜ |
@@ -251,3 +251,39 @@ itself, not code changes, so they're not part of this sync.
 - **Subtitles corrected (16 Nov 2026, asked by design):** all five List page frames had the Input field subtitle
   ("Input Fields will help users…"). Each now describes its own list: List-base `77:10169`, List-standard `3500:14329`,
   List-radio_button `3503:21176`, List-toggle `3506:23930`, List-checkbox `3828:13491`.
+
+### N10 · Filled lists: 16 Nov 2026
+
+- **Page:** List `1:143` (designer's choice), four new frames in a row at y 14000, each under its plain list:
+  `List_fill-standard` frame `3833:23177` (x 1948), `List_fill-radio_button` `3833:16165` (x 8112),
+  `List_fill-toggle` `3833:15073` (x 12228), `List_fill-checkbox` `3833:19561` (x 16344). Names follow `List_fill-base`.
+- **Built from:** each plain set copied and every variant's **List-base** instance swapped to **List_fill-base** of the
+  same size (Large `3494:14234`, Small `3494:14251`), keeping the plain rows' content (controls, flags, payment icons,
+  avatars, captions, chevrons). Card fill and edge are overridden on the List_fill-base instance per state
+  (`DESIGN.md` §9.56):
+
+  | Row State | Fill | Edge (1px) |
+  |---|---|---|
+  | Default | `bg-primary` | `border-subtle` |
+  | Hovered | `bg-secondary` | `border-subtle` |
+  | Selected | `bg-primary` | `border-active` (toggle on: `border-subtle`, no edge) |
+  | Selected+hovered | `bg-secondary` | `border-active` (toggle: `border-subtle`) |
+  | Disabled | `bg-primary` | `border-disabled` |
+
+- **Component sets:**
+
+  | Set | Node | Variants | Properties |
+  |---|---|---|---|
+  | `List_fill-standard` | `3833:23184` | 200 | as List-standard **without Chevron** (always shown, code's "always clickable"): State, Description, Leading accessory, Trailing accessory, Size |
+  | `List_fill-radio_button` | `3833:16172` | 50 | as List-radio_button |
+  | `List_fill-checkbox` | `3833:19568` | 50 | as List-checkbox (no Indeterminate) |
+  | `List_fill-toggle` | `3833:15080` | 20 | as List-toggle |
+
+  The standard set keeps List-standard's grid with the Chevron=False columns removed.
+- **Variables:** `Border/border-active` and `Border/border-disabled` imported from Foundation – Loyalty
+  for the edges.
+- **Descriptions** on all four sets: the card, the state table, and what Figma can't show (keyboard, focus ring round
+  the card, indeterminate on the checkbox, 12 between cards in a list).
+- **Subtitles** written for the four new frames (the copied ones described the plain lists).
+- **Source:** `FinListStandardFilled`, `FinListRadioFilled`, `FinListCheckboxFilled`, `FinListToggleFilled`
+  (`packages/ui/src/components/List*Filled/`), `DESIGN.md` §9.56, §10 #56.
