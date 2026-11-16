@@ -122,4 +122,25 @@ describe('FinTableCell', () => {
     expect(ref.current?.tagName).toBe('TD');
     expect(ref.current).toHaveClass('extra');
   });
+
+  it('with type checkbox is only a named checkbox, which can be ticked or disabled', async () => {
+    const onCheckedChange = vi.fn();
+    inTable(
+      <>
+        <FinTableCell type="checkbox" checkboxLabel="Dashboard, View" checked={false} onCheckedChange={onCheckedChange} action actionLabel="Edit">
+          Hidden content
+        </FinTableCell>
+        <FinTableCell type="checkbox" checkboxLabel="Dashboard, Add" checked={false} disabled onCheckedChange={onCheckedChange} />
+      </>,
+    );
+    expect(screen.queryByText('Hidden content')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Edit' })).toBeNull();
+    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Dashboard, View' }));
+    expect(onCheckedChange).toHaveBeenCalledWith(true);
+    const add = screen.getByRole('checkbox', { name: 'Dashboard, Add' });
+    expect(add).toBeDisabled();
+    await userEvent.click(add);
+    expect(onCheckedChange).toHaveBeenCalledTimes(1);
+  });
 });

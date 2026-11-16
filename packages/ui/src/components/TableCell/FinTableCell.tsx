@@ -8,12 +8,14 @@ import type { FinBadgeTone } from '../BadgeBase';
 import { FinCheckboxBase } from '../CheckboxBase';
 import * as styles from './FinTableCell.styles';
 
-export type FinTableCellType = 'default' | 'badge' | 'link';
+export type FinTableCellType = 'default' | 'badge' | 'link' | 'checkbox';
 
 interface FinTableCellOwnProps extends Omit<TdHTMLAttributes<HTMLTableCellElement>, 'children'> {
   /**
    * Figma `Type`: how text content is shown. Default (Body/Medium, `text-secondary`), Badge (FinBadge) or Link
-   * (`text-action`, underlined). Content that isn't text is shown as given, whatever the type.
+   * (`text-action`, underlined). Content that isn't text is shown as given, whatever the type. **Checkbox** (code
+   * first, 16 Nov 2026): the cell is only a checkbox (`checked`, `onCheckedChange`, `checkboxLabel`, `disabled`), a
+   * value per row such as a permission; leading accessories, content and action are left out.
    */
   type?: FinTableCellType;
   /** Figma `Show leading accessories`. Default on, as in Figma. */
@@ -24,8 +26,10 @@ interface FinTableCellOwnProps extends Omit<TdHTMLAttributes<HTMLTableCellElemen
   checked?: boolean;
   /** Called with the new value when the row checkbox is clicked. */
   onCheckedChange?: (checked: boolean) => void;
-  /** The row checkbox's name for screen readers. Default "Select row". */
+  /** The row checkbox's name for screen readers. Default "Select row". With `type="checkbox"`, name it for what it ticks ("Dashboard, View"). */
   checkboxLabel?: string;
+  /** Checkbox type: the checkbox can't be changed (shown disabled, unticked or ticked as `checked` says), for a value that doesn't apply. */
+  disabled?: boolean;
   /** Figma `Show content`. Default on. */
   showContent?: boolean;
   /**
@@ -75,6 +79,7 @@ export const FinTableCell = forwardRef<HTMLTableCellElement, FinTableCellProps>(
     checked,
     onCheckedChange,
     checkboxLabel = 'Select row',
+    disabled = false,
     showContent = true,
     children,
     badgeTone = 'primary',
@@ -90,6 +95,16 @@ export const FinTableCell = forwardRef<HTMLTableCellElement, FinTableCellProps>(
   },
   ref,
 ) {
+  const checkbox = (
+    <FinCheckboxBase
+      label={checkboxLabel}
+      {...(type === 'checkbox' && disabled ? { disabled: true } : {})}
+      {...(checked !== undefined ? { checked } : {})}
+      {...(onCheckedChange ? { onChange: (event) => onCheckedChange(event.target.checked) } : {})}
+      {...(checked !== undefined && !onCheckedChange ? { readOnly: true } : {})}
+    />
+  );
+  const isCheckbox = type === 'checkbox';
   const isText = typeof children === 'string' || typeof children === 'number';
   let content: ReactNode = children;
   if (isText && type === 'default') content = <span className={styles.text}>{children}</span>;
@@ -109,20 +124,12 @@ export const FinTableCell = forwardRef<HTMLTableCellElement, FinTableCellProps>(
       data-narrow={narrow ? '' : undefined}
       className={className ? `${styles.cell} ${className}` : styles.cell}>
       <div className={narrow ? styles.inner.narrow : styles.inner.default}>
-        {leadingAccessories && (
-          <span className={styles.leading}>
-            {leading ?? (
-              <FinCheckboxBase
-                label={checkboxLabel}
-                {...(checked !== undefined ? { checked } : {})}
-                {...(onCheckedChange ? { onChange: (event) => onCheckedChange(event.target.checked) } : {})}
-                {...(checked !== undefined && !onCheckedChange ? { readOnly: true } : {})}
-              />
-            )}
-          </span>
+        {isCheckbox && <span className={styles.leading}>{checkbox}</span>}
+        {!isCheckbox && leadingAccessories && <span className={styles.leading}>{leading ?? checkbox}</span>}
+        {!isCheckbox && showContent && children !== undefined && children !== null && (
+          <span className={styles.content}>{content}</span>
         )}
-        {showContent && children !== undefined && children !== null && <span className={styles.content}>{content}</span>}
-        {action && (
+        {!isCheckbox && action && (
           // The icon button (all-button XSmall Tertiary, Only Icon; decided by design 22 Oct 2026): its hover and
           // pressed fills, a 32 square with a 20 icon; the label is hidden and names it.
           <FinButton variant="tertiary" size="xsmall" icon="only-icon" iconName={actionIcon} onClick={onAction}>
