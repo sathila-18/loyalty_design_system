@@ -8,7 +8,11 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
+- List rows: `density` (`'default'` | `'compact'`, default `'default'`) on `FinListStandard`, `FinListRadio`, `FinListCheckbox`, `FinListToggle`, their filled versions, and `FinListRadioGroup` / `FinListCheckboxGroup` (passed to every row). Compact is 8 padding on every side and between the content and the line (Default 16); filled cards 8 all round. Type `FinListItemDensity`.
+
 ### Changed
+
+- The table's Rows per page menu and row actions menu use compact rows (8 padding instead of 16), so the menus are shorter.
 
 ### Fixed
 

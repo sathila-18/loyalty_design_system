@@ -121,4 +121,9 @@ describe('FinListStandard', () => {
     expect(container.querySelector('hr')).toBeNull();
     expect(container.firstElementChild).toHaveAttribute('data-divider', 'none');
   });
+
+  it('takes density (default 16 padding, compact 8)', () => {
+    const { container } = render(<FinListStandard title="Compact" density="compact" />);
+    expect(container.querySelector('[data-density]')).toHaveAttribute('data-density', 'compact');
+  });
 });

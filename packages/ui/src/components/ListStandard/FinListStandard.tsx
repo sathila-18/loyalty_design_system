@@ -24,7 +24,7 @@ export type FinListStandardBehavior = 'static' | 'link' | 'button' | 'option' | 
 export type FinListStandardTone = 'default' | 'destructive';
 
 export interface FinListStandardProps
-  extends Pick<FinListItemProps, 'as' | 'size' | 'divider' | 'className' | 'id' | 'style'> {
+  extends Pick<FinListItemProps, 'as' | 'size' | 'density' | 'divider' | 'className' | 'id' | 'style'> {
   /** The title (Headline Small-H6, Small: Label/Medium). */
   title: ReactNode;
   /** Figma `Description`: the line under the title. Without it the row is centred. */

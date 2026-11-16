@@ -3,11 +3,12 @@ import { finIcons, type FinIconName } from '../../icons/finIcons';
 import { FinAvatar } from '../Avatar';
 import { FinBadge } from '../Badge';
 import { FinFlag } from '../../flags';
-import { FinListItem, type FinListItemSize } from './FinListItem';
+import { FinListItem, type FinListItemDensity, type FinListItemSize } from './FinListItem';
 import styles from './FinListItem.stories.module.css';
 
 interface Args {
   size: FinListItemSize;
+  density: FinListItemDensity;
   leadingAccessory: boolean;
   topLabel: string;
   title: string;
@@ -22,7 +23,7 @@ interface Args {
 const meta: Meta<Args> = {
   title: 'Internal/List/List base',
   args: {
-    size: 'large',
+    size: 'large', density: 'default',
     leadingAccessory: true,
     topLabel: '',
     title: 'Title here',
@@ -34,6 +35,7 @@ const meta: Meta<Args> = {
   },
   argTypes: {
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Figma `Size`' },
+    density: { control: 'inline-radio', options: ['default', 'compact'], description: 'Density (code first): `default` 16 padding, `compact` 8 on every side' },
     leadingAccessory: { control: 'boolean', description: 'Figma `Show leading accessory`' },
     topLabel: { control: 'text', description: 'Figma `Show top label` (empty: hidden)' },
     title: { control: 'text', description: 'The title' },
@@ -117,6 +119,31 @@ export const Group: Story = {
         <FinListItem as="li" size="small" title="India" showBody={false} />
         <FinListItem as="li" size="small" title="Maldives" showBody={false} />
       </ul>
+    </div>
+  ),
+};
+
+/**
+ * Density (code first, 16 Nov 2026): Default (16 padding, 16 above the divider) and Compact (8 on every side and above
+ * the divider), each a group of three at Large and Small. The last item has no divider and gets the bottom padding.
+ */
+export const Density: Story = {
+  render: () => (
+    <div className={styles.row}>
+      {(['default', 'compact'] as const).map((density) => (
+        <div key={density} className={styles.row}>
+          <ul className={styles.list} aria-label={`Members, ${density}`}>
+            <FinListItem as="li" density={density} title="Ann Perera">ann.perera@email.com</FinListItem>
+            <FinListItem as="li" density={density} title="Ravi Fernando">ravi.fernando@email.com</FinListItem>
+            <FinListItem as="li" density={density} title="Mala Silva">mala.silva@email.com</FinListItem>
+          </ul>
+          <ul className={styles.list} aria-label={`Countries, ${density}`}>
+            <FinListItem as="li" size="small" density={density} title="Sri Lanka" showBody={false} />
+            <FinListItem as="li" size="small" density={density} title="India" showBody={false} />
+            <FinListItem as="li" size="small" density={density} title="Maldives" showBody={false} />
+          </ul>
+        </div>
+      ))}
     </div>
   ),
 };

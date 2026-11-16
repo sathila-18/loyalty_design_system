@@ -73,4 +73,21 @@ describe('FinListItem', () => {
     render(<FinListItem title="Title" data-testid="item" className="extra" />);
     expect(screen.getByTestId('item')).toHaveClass('extra');
   });
+
+  it('uses 16 padding by default and 8 with density compact (code first, 16 Nov 2026)', () => {
+    const { container: base } = render(<FinListItem title="Default" />);
+    const item = base.firstElementChild as HTMLElement;
+    expect(item).toHaveAttribute('data-density', 'default');
+    expect(item.className).toContain('fin:pt-xl');
+    expect(item.className).toContain('fin:gap-xl');
+
+    const { container } = render(<FinListItem density="compact" title="Compact" />);
+    const compact = container.firstElementChild as HTMLElement;
+    expect(compact).toHaveAttribute('data-density', 'compact');
+    for (const cls of ['fin:pt-m', 'fin:px-m', 'fin:gap-m', 'fin:last-of-many:pb-m']) expect(compact.className).toContain(cls);
+    expect(compact.className).not.toContain('fin:pt-xl');
+
+    const { container: none } = render(<FinListItem density="compact" divider={false} title="No divider" />);
+    expect((none.firstElementChild as HTMLElement).className).toContain('fin:pb-m');
+  });
 });

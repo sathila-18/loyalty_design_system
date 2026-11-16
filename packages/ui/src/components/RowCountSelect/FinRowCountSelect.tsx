@@ -60,6 +60,7 @@ export const FinRowCountSelect = forwardRef<HTMLButtonElement, FinRowCountSelect
           key={count}
           as="li"
           size="small"
+          density="compact"
           behavior="option"
           divider={false}
           title={String(count)}

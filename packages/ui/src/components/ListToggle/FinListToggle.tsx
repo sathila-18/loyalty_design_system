@@ -3,7 +3,7 @@
 import { useId, type ReactNode } from 'react';
 import { FinIcon } from '../../icons/FinIcon';
 import type { FinIconName } from '../../icons/finIcons';
-import type { FinListItemProps, FinListItemSize } from '../ListItem';
+import type { FinListItemDensity, FinListItemProps, FinListItemSize } from '../ListItem';
 import { ListStandardRow } from '../ListStandard/FinListStandard';
 import { FinToggle } from '../Toggle';
 
@@ -31,6 +31,8 @@ export interface FinListToggleProps extends Pick<FinListItemProps, 'as'> {
   disabled?: boolean;
   /** Size (List-base). Default large. */
   size?: FinListItemSize;
+  /** Density (List-base): `default` 16 padding, `compact` 8. Default `default`. */
+  density?: FinListItemDensity;
   /** The toggle's `name` (form posting). */
   name?: string;
   /** Figma `Show divider` (List-base): the line under the row. Default on; the last of several rows never has one. */
@@ -51,6 +53,7 @@ export function FinListToggleRow({
   onCheckedChange,
   disabled = false,
   size = 'large',
+  density = 'default',
   divider,
   name,
   as,
@@ -69,6 +72,7 @@ export function FinListToggleRow({
       {...(as ? { as } : {})}
       className={className}
       size={size}
+      density={density}
       {...(filled ? {} : { divider })}
       title={title}
       titleId={`${id}-title`}

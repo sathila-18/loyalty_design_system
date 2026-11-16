@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import avatarSample from '../Avatar/avatar-sample.jpg';
-import type { FinListItemSize } from '../ListItem';
+import type { FinListItemDensity, FinListItemSize } from '../ListItem';
 import type { FinListStandardLeading } from '../ListStandard';
 import { FinListStandardFilled } from './FinListStandardFilled';
 import styles from './FinListStandardFilled.stories.module.css';
@@ -11,6 +11,7 @@ const KNOWN_CONTRAST_ISSUES = ['[data-disabled]'];
 interface Args {
   state: 'default' | 'selected' | 'disabled';
   size: FinListItemSize;
+  density: FinListItemDensity;
   description: boolean;
   leadingAccessory: FinListStandardLeading;
   caption: boolean;
@@ -19,10 +20,11 @@ interface Args {
 /** Clickable cards: List-standard on List_fill-base, always with the chevron. Code first (DESIGN.md §10 #56). */
 const meta: Meta<Args> = {
   title: 'Components/List/Filled/List standard',
-  args: { state: 'default', size: 'large', description: true, leadingAccessory: 'icon', caption: false },
+  args: { state: 'default', size: 'large', density: 'default', description: true, leadingAccessory: 'icon', caption: false },
   argTypes: {
     state: { control: 'inline-radio', options: ['default', 'selected', 'disabled'], description: 'State (Hovered is the mouse)' },
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Size' },
+    density: { control: 'inline-radio', options: ['default', 'compact'], description: 'Density (code first): `default` 16 padding, `compact` 8 on every side' },
     description: { control: 'boolean', description: 'Description' },
     leadingAccessory: { control: 'inline-radio', options: ['none', 'icon', 'flag', 'payment', 'avatar'], description: 'Leading accessory' },
     caption: { control: 'boolean', description: 'Caption (before the chevron)' },

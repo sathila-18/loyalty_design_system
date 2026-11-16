@@ -4,7 +4,7 @@ import { createContext, useContext, useId, type HTMLAttributes, type ReactNode }
 import { FinFlag, type FinFlagCountry } from '../../flags';
 import { FinPaymentIcon, type FinPaymentMethod } from '../../payment';
 import { FinCheckboxBase } from '../CheckboxBase';
-import type { FinListItemSize } from '../ListItem';
+import type { FinListItemDensity, FinListItemSize } from '../ListItem';
 import type { FinListRadioItemSide, FinListRadioType } from '../ListRadio';
 import { ListStandardRow } from '../ListStandard/FinListStandard';
 import * as styles from './FinListCheckbox.styles';
@@ -21,6 +21,7 @@ interface GroupContext {
   onValueChange: ((value: string[]) => void) | undefined;
   disabled: boolean;
   size: FinListItemSize;
+  density: FinListItemDensity;
 }
 
 const CheckboxGroupContext = createContext<GroupContext | null>(null);
@@ -38,6 +39,8 @@ export interface FinListCheckboxGroupProps extends Omit<HTMLAttributes<HTMLDivEl
   disabled?: boolean;
   /** Size for every row (List-base). Default large. */
   size?: FinListItemSize;
+  /** Density for every row (List-base): `default` 16 padding, `compact` 8. Default `default`. */
+  density?: FinListItemDensity;
   /** The rows: FinListCheckbox. */
   children: ReactNode;
 }
@@ -54,12 +57,13 @@ export function FinListCheckboxGroup({
   name,
   disabled = false,
   size = 'large',
+  density = 'default',
   children,
   ...rest
 }: FinListCheckboxGroupProps) {
   return (
     <div {...rest} role="group" aria-label={label} aria-disabled={disabled || undefined}>
-      <CheckboxGroupContext.Provider value={{ name, value, onValueChange, disabled, size }}>{children}</CheckboxGroupContext.Provider>
+      <CheckboxGroupContext.Provider value={{ name, value, onValueChange, disabled, size, density }}>{children}</CheckboxGroupContext.Provider>
     </div>
   );
 }
@@ -85,6 +89,8 @@ export interface FinListCheckboxProps {
   disabled?: boolean;
   /** Size (List-base). Default the group's. */
   size?: FinListItemSize;
+  /** Density (List-base): `default` 16 padding, `compact` 8. Default the group's, else `default`. */
+  density?: FinListItemDensity;
   /** Outside a group: whether it's ticked. */
   checked?: boolean;
   /** Outside a group: called with the new value. */
@@ -109,6 +115,7 @@ export function FinListCheckboxRow({
   item,
   disabled: disabledProp = false,
   size: sizeProp,
+  density: densityProp,
   divider,
   checked: checkedProp,
   onCheckedChange,
@@ -120,6 +127,7 @@ export function FinListCheckboxRow({
   const disabled = disabledProp || (group?.disabled ?? false);
   const checked = group ? group.value.includes(value) : (checkedProp ?? false);
   const size = sizeProp ?? group?.size ?? 'large';
+  const density = densityProp ?? group?.density ?? 'default';
 
   let itemNode: ReactNode = item;
   if (itemNode === undefined && type === 'country' && country)
@@ -152,6 +160,7 @@ export function FinListCheckboxRow({
       filled={filled}
       className={className}
       size={size}
+      density={density}
       {...(filled ? {} : { divider })}
       title={title}
       titleId={`${id}-title`}

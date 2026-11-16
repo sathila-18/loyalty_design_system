@@ -74,4 +74,16 @@ describe('FinListCheckbox', () => {
     expect(document.querySelector('[data-shape="rectangle"]')).not.toBeNull();
     expect(document.querySelectorAll('[data-size="medium"]').length).toBeGreaterThan(0);
   });
+
+  it('passes the group density to its rows, and a row can set its own', () => {
+    const { container } = render(
+      <FinListCheckboxGroup label="Density" density="compact">
+        <FinListCheckbox value="a" title="From the group" />
+        <FinListCheckbox value="b" title="Its own" density="default" />
+      </FinListCheckboxGroup>,
+    );
+    const rows = container.querySelectorAll('[data-density]');
+    expect(rows[0]).toHaveAttribute('data-density', 'compact');
+    expect(rows[1]).toHaveAttribute('data-density', 'default');
+  });
 });
