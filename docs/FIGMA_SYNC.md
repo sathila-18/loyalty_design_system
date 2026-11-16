@@ -31,8 +31,8 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | # | Code | What it is | Figma before | `DESIGN.md` ref | Status |
 |---|---|---|---|---|---|
 | N1 | `FinCalendar` | Month grid, Monday first; single or range; day looks: default, outside, chosen, in range, today, disabled | — | §9.86, §10 #120 | ✅ 13 Nov 2026 |
-| N2 | `FinDatePicker`, `FinDateRangePicker` | Select-look field that opens the calendar; range shows two months | — | §9.87, §10 #120 | ⬜ |
-| N3 | `FinDateField` | Text field with DD/MM/YYYY mask and a calendar button | screens draw a text field with `calendar_today` | §9.79 | ⬜ |
+| N2 | `FinDatePicker`, `FinDateRangePicker` | Select-look field that opens the calendar; range shows two months | — | §9.87, §10 #120 | ➖ compose from parts (decided 16 Nov 2026) |
+| N3 | `FinDateField` | Text field with DD/MM/YYYY mask and a calendar button | screens draw a text field with `calendar_today` | §9.79 | ✅ 16 Nov 2026 |
 | N4 | `FinStepper` | Steps of a multi-step form: done, current, upcoming | drawn on each Add reward screen | §9.77 | ✅ 13 Nov 2026 |
 | N5 | `FinStatCard` | Summary number on `bg-active` | drawn on each Reports screen | §9.81 | ✅ 13 Nov 2026 |
 | N6 | `FinSkeleton` | Loading placeholder: text, rect, circle | — | §9.76 | ✅ 13 Nov 2026 |
@@ -466,3 +466,40 @@ itself, not code changes, so they're not part of this sync.
 - **Description** on the set: the parts, the properties, and code-only behaviour (widths and scrolling, sort and
   filter, selection, the fixed ⋮ column, Empty and Loading).
 - **Source:** `FinTable` (`packages/ui/src/components/Table/`), `DESIGN.md` §9.45, §10 #26, #77.
+
+### N2 · Date pickers: composed from parts (decided 16 Nov 2026)
+
+- **Decided by design:** no separate Date picker component in Figma; designers compose it from the parts, so N2 is
+  closed without a build. The Calendar (N1) is the grid; the date picker is the field that opens it.
+- **How to compose** (as `FinDatePicker` / `FinDateRangePicker`, `DESIGN.md` §9.87):
+
+  | Part | Use |
+  |---|---|
+  | Field | **Input field-select** (`537:2736`), trailing icon swapped to Loyalty Iconography `calendar_today`; placeholder "Pick a date" / "Pick a date range"; value "DD/MM/YYYY", a range "DD/MM/YYYY – DD/MM/YYYY" (en dash) |
+  | Menu (open) | **standard-menu** (`3549:12004`) 4 (Space-XS) below the field, **as wide as the calendar** (not the field), the Calendar in its `content` slot |
+  | Calendar | **Calendar** (`3821:530`): Type=Single for a date, Type=Range (two months) for a range |
+
+- States follow the select field (Focused while open, Complete once chosen, Disabled, Error).
+
+### N3 · Date field: 16 Nov 2026
+
+- **Page:** Input field `1:142` (designer's link). New frame `3866:3442` at x 17069 (header copied from the
+  Input field-password frame; section heading "Input field-date", subtitle written for it).
+- **Component set:** `Input field-date` `3866:3654`, **State** × **Error** (11 variants), copied from
+  **Input field-standard** `Type=Default, Trailing icon=True` (each an **Input field-base** instance), so it has
+  the standard field's states and looks:
+
+  | Change | All variants |
+  |---|---|
+  | Trailing icon | Loyalty Iconography `calendar_today` (24px icon set, State=Secondary: `fg-secondary`) |
+  | Label | "Start date" |
+  | Placeholder | "DD/MM/YYYY" (Enabled, Hovered, Disabled; **Focused shows it too**, as code: the hidden Placeholder-text frame shown) |
+  | Typing | "01/0" `text-primary` + "M/YYYY" `text-placeholder` (code's pattern-while-typing) |
+  | Complete | "01/08/2026" |
+  | Error helper | "Enter a date as DD/MM/YYYY" |
+
+- **Large only:** the Small (40) size is C2 / C3 (not in Figma yet).
+- **Not drawn:** the caret moving through the pattern (Figma's caret sits after the text), the digit mask, the
+  keyboard, min / max. The calendar opening is described (the N2 composition), not drawn.
+- **Description** on the set: states, texts, the calendar button and the code-only behaviour.
+- **Source:** `FinDateField` (`packages/ui/src/components/DateField/`), `DESIGN.md` §9.79.
