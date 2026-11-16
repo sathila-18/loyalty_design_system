@@ -248,3 +248,6 @@ itself, not code changes, so they're not part of this sync.
   keyboard (Space toggles), the focus ring round the row, and `FinListCheckboxGroup`.
 - **Source:** `FinListCheckbox`, `FinListCheckboxGroup` (`packages/ui/src/components/ListCheckbox/`), `DESIGN.md` §9.54,
   §10 #55.
+- **Subtitles corrected (16 Nov 2026, asked by design):** all five List page frames had the Input field subtitle
+  ("Input Fields will help users…"). Each now describes its own list: List-base `77:10169`, List-standard `3500:14329`,
+  List-radio_button `3503:21176`, List-toggle `3506:23930`, List-checkbox `3828:13491`.
