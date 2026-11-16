@@ -63,7 +63,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C10 | `Segmented_button-base` / `Segmented button` (`117:4667` / `117:4688`) | Small (32) and XSmall sizes, icon only, tooltips | §9.33, §9.34 | ✅ 16 Nov 2026 (for N13) |
 | C11 | `Header notification` (`3178:24467`) | 40 everywhere, 20 bell (Figma 48) | §9.62 | ✅ 16 Nov 2026 |
 | C12 | `Main header` (`3178:24570`) | Headline Small-H6 title; XSmall (32) back button (Figma H4, 48) | §9.63 | ✅ 16 Nov 2026 |
-| C13 | `Button dock` (`75:5858`) | Small buttons; buttons hug labels, Secondary + Primary at the right | §9.69 | ⬜ |
+| C13 | `Button dock` (`75:5858`) | Small buttons; buttons hug labels, Secondary + Primary at the right | §9.69 | ✅ 16 Nov 2026 |
 | C14 | `Side Menu` (`3142:11871`) | Tree style; logo text "Fintech loyalty" | §9.57, §10 #76, #111 | ⬜ |
 | C15 | `Main Selection` / `sub selection` (`3140:10997` / `3140:11076`) | Tree lines; chevron colours on tokens | §9.47, §10 #52, #76 | ⬜ |
 | C16 | `standard-menu` (`3549:12004`) | Shadow/Menu effect style; header and footer slots; slot `conten` → content | §9.64, §10 #59 | ✅ 16 Nov 2026 (shadow kept Sticky for now) |
@@ -783,3 +783,20 @@ unchanged. As §10 #46.
 - **Description** on the component.
 - **Effect elsewhere:** screens using Main header get the 77 header.
 - **Source:** `FinHeader` (`FinHeader.styles.ts`), `DESIGN.md` §9.63.
+
+### C13 · Button dock: Small buttons that hug, Secondary + Primary at the right: 16 Nov 2026
+
+- **Page:** Button dock. `Button dock` `75:5858`, updated in place (both variants, Sticky False / True).
+- **Small:** the three all-buttons `Size` Large (56) → **Small** (40); labels kept.
+- **Hug:** Secondary and Primary were Fill (sharing the width): now **Hug** (their inner Base-button too, which was
+  Fill), so each is as wide as its label (96 with "Text here"), as Tertiary already was.
+- **At the right:** Secondary and Primary moved into a new auto-layout frame **`End buttons`** inside `Button content`:
+  Fill width, aligned right, gap bound to **Space-XL** (as the row). Same as code's `ms-auto` on the first of them;
+  still right with Tertiary hidden. Their `Show Secondary button` / `Show Primary button` booleans still work. The row
+  centres its items.
+- **Measured** (711 drawing width): 141 tall with a one-line accessory (16 + 21 + 24 + 40 + 40), 96 with buttons only
+  (as code); Tertiary 96 at 24; Secondary at 421, Primary at 533 (16 apart, ending at the right padding).
+- **Not changed:** the Tertiary layer is still named "Button-Secondary" (renaming could confuse existing overrides; rename
+  by hand if wanted).
+- **Description** on the set. **Effect elsewhere:** the Side sheet's dock (an instance) gets the same.
+- **Source:** `FinButtonDock` (`FinButtonDock.styles.ts`), `DESIGN.md` §9.69.
