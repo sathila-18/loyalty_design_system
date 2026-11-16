@@ -56,7 +56,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C3 | `Input field-standard` (`52:2629`) | Small size | §9.59 | ✅ 16 Nov 2026 |
 | C4 | `Input field-password` (`60:7165`) | Small size | §9.60 | ✅ 16 Nov 2026 |
 | C5 | `Search` (`440:5164`) | Small size | §9.61 | ✅ 16 Nov 2026 |
-| C6 | `Input field-select` (`537:2736`) | Small size; Disabled and Error | §9.72, §10 #58 | ⬜ |
+| C6 | `Input field-select` (`537:2736`) | Small size; Disabled and Error | §9.72, §10 #58 | ✅ 16 Nov 2026 |
 | C7 | `Input field-Multi select` (`922:6170`) | Small; Disabled and Error; no Typing look; Input chip XSmall chips | §9.85, §10 #119 | ⬜ |
 | C8 | `Chips` (`95:1848`) | Three chip types (Assist / Filter / Input); Input chip Unselected-border | §9.32, §10 #46 | ⬜ |
 | C9 | `Checkbox` (`42:220`) | Checkbox on the left only; Selected + Disabled | §10 #44 | ⬜ |
@@ -657,3 +657,26 @@ itself, not code changes, so they're not part of this sync.
   Small `Input field-password` variants and the 3 Disabled icons in Small `Input field-standard`. Design is fixing
   them to 20 × 20 by hand (16 Nov 2026).
 - **Source:** `FinSearchField` `size` (20px icons when small), `DESIGN.md` §9.61.
+
+### C6 · Input field select: Small size, Disabled and Error: 16 Nov 2026
+
+- **Page:** Input field `1:142`. `Input field-select` `537:2736`, updated in place (was 5 variants, `state` only).
+- **Properties now:** `state` (Enabled / Hovered / Focused / Typing / Complete / **Disabled**) × **`Error`** (False /
+  True) × **`Size`** (Large / Small): 22 variants, no Disabled + Error (as `Input field-standard`). The lowercase
+  `state` is kept (§10 #21).
+- **Disabled** (new, from Enabled, the overrides `Input field-standard` Disabled uses): border `border-disabled`,
+  placeholder `text-disabled`, the chevron's 24px wrapper `State=Disabled` (`fg-disabled`), helper text
+  `State=Disabled`. Large `3886:6041`, Small `3886:6648`.
+- **Error** (new, from each of the 5 states): Input field-base `Destructive=True` and helper text `State=Error`, the
+  rest as the state (Hovered keeps its `bg-secondary`, Focused / Typing the ring in error colour).
+- **Small:** a copy of every Large variant with the base **Size=Small** (C2) and the chevron's wrapper swapped to the
+  20px set (same State) at 20 × 20: 343 × 66 with the helper (as code).
+- **Layout:** the set's wrap auto-layout put the 5-item Error rows out of line, so it's now a fixed grid: a row per
+  Size × Error (Large, Large error, Small, Small error), a column per state, 100 apart, 20 padding; the Error rows
+  leave the Disabled column empty. Set 2598 × 620.
+- **Description** on the set: the three properties and how Disabled / Error / Small are drawn.
+- **Option order:** Figma lists `Error` as False, True (`Input field-standard` has True, False) and `state` as
+  Complete, Enabled, Focused, Typing, Hovered, Disabled (as before, plus Disabled); reorder by hand if wanted.
+- **Already different from code, unchanged:** Focused and Typing show the base's caret (code's select is a button,
+  no caret, §9.72 (2)); no open-menu look (`keyboard_arrow_up`) in Figma.
+- **Source:** `FinSelectField` (`disabled`, `error`, `size` from FinInputBase), `DESIGN.md` §9.72.
