@@ -64,8 +64,8 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C11 | `Header notification` (`3178:24467`) | 40 everywhere, 20 bell (Figma 48) | §9.62 | ✅ 16 Nov 2026 |
 | C12 | `Main header` (`3178:24570`) | Headline Small-H6 title; XSmall (32) back button (Figma H4, 48) | §9.63 | ✅ 16 Nov 2026 |
 | C13 | `Button dock` (`75:5858`) | Small buttons; buttons hug labels, Secondary + Primary at the right | §9.69 | ✅ 16 Nov 2026 |
-| C14 | `Side Menu` (`3142:11871`) | Tree style; logo text "Fintech loyalty" | §9.57, §10 #76, #111 | ⬜ |
-| C15 | `Main Selection` / `sub selection` (`3140:10997` / `3140:11076`) | Tree lines; chevron colours on tokens | §9.47, §10 #52, #76 | ⬜ |
+| C14 | `Side Menu` (`3142:11871`) | Tree style; logo text "Fintech loyalty" | §9.57, §10 #76, #111 | ✅ 17 Nov 2026 (with the tree part of C15) |
+| C15 | `Main Selection` / `sub selection` (`3140:10997` / `3140:11076`) | Tree lines; chevron colours on tokens | §9.47, §10 #52, #76 | 🟨 tree lines done with C14 (17 Nov 2026); chevron colours open |
 | C16 | `standard-menu` (`3549:12004`) | Shadow/Menu effect style; header and footer slots; slot `conten` → content | §9.64, §10 #59 | ✅ 16 Nov 2026 (shadow kept Sticky for now) |
 | C17 | `Table header cell` (`3151:14941`) | Sort / filter icons; narrow checkbox and ⋮ cells (56, Figma 72) | §9.41, §10 #50 | ✅ 16 Nov 2026 (with N11) |
 | C18 | `Table - Cell` / `Table row` / `Header row` | Narrow checkbox cell; Link cell padding | §9.43, §10 #61 | ✅ 16 Nov 2026 (with N12) |
@@ -800,3 +800,31 @@ unchanged. As §10 #46.
   by hand if wanted).
 - **Description** on the set. **Effect elsewhere:** the Side sheet's dock (an instance) gets the same.
 - **Source:** `FinButtonDock` (`FinButtonDock.styles.ts`), `DESIGN.md` §9.69.
+
+### C14 (+ C15 tree lines) · Side Menu: tree style, 272 / 240, "Fintech loyalty": 17 Nov 2026
+
+Decided by design 17 Nov 2026: the tree lines go in `sub selection` (C15's part) and the Side Menu uses them; Tree only
+where a section is open; the nav to code's 272 / 240; the logo text in the Logo sizes set too (see below).
+
+- **`sub selection`** `3140:11076` (C15): new **`Tree`** property, None / Middle / Last, on every `state` (12 variants;
+  lowercase `state` kept, §10 #21). Middle / Last add an absolute vector **`Tree line`**, 1px stroke bound to
+  **`border-default`**, at code's geometry (`sidenav-tree-lines`): the line at x 21–22 (the section icon's centre) from
+  4 above the item (in the gap) to its middle, curving with an 8 radius (`Radius-S`) right to x 36 (4 before the text);
+  Middle also carries the line on to the item's bottom. Drawn over the Selected fill; the Tree variants don't clip.
+  The set's horizontal auto-layout became a fixed grid (columns state, rows Tree).
+- **`Side Menu`** `3142:11871`: new **`Style`** property, Default / **Tree**: 5 Tree variants, the Expanded menus with
+  an open section (Loyalty Management `3903:1714`, Program Configuration `3903:1850`, Gamification `3903:1986`, User
+  Management `3903:2119`, System Audit `3903:2255`), their pages `Tree=Middle`, the last `Last`. Minimized and closed
+  menus have no Tree variant (no pages, so no lines). 21 variants.
+- **Width (every Expanded variant):** the 7 Main Selections and the user row (List-base) 280 → **240**, so the nav is
+  **272** (as code since 29 Oct 2026); the header (logo + collapse button, space between) follows. Each open section's
+  `Expanded Slot` and its pages now **fill** the 240 (were 280). The user's email is cut at 152 (as code: "…").
+- **Pages 4 apart:** Program Configuration's pages were 8 apart (§9.57 decision (2), to fix in Figma): its slot gap is
+  now bound to **Space-XS** (4), as the other menus (with 8 the tree line broke between pages).
+- **Logo text:** "Company Name" → **"Fintech loyalty"** in the 8 Expanded Side Menu logos (text override; §10 #111).
+  The **Logo sizes** set itself is a **library** component (not in this file), so its master can't be changed from
+  here: change it in its own library file.
+- **Description** on both sets.
+- **Still open (C15):** the Main Selection chevron colours on tokens (§10 #52).
+- **Source:** `FinSideNav` `variant="tree"` (§9.57), `FinSideNavSubItem` (§9.47), `sidenav-tree-lines` in
+  `tailwind.css`, `DESIGN.md` §10 #76, #111.
