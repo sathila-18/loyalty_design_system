@@ -72,7 +72,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C19 | Table (assembled) | Bordered style | §9.45, §10 #77 | ✅ 16 Nov 2026 (with N14) |
 | C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ➖ not needed (decided 17 Nov 2026: only used in menus, already in C16) |
 | C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ✅ 17 Nov 2026 |
-| C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ⬜ |
+| C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ✅ 17 Nov 2026 |
 | C23 | `List-base` (`77:10185`) and every list built on it | **Compact density** (v0.8.0): a `Density` property, Default / Compact; Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16). Exposed on List-standard, List-radio_button, List-checkbox, List-toggle and the four `List_fill-*` sets (filled cards 8 all round). Then use it in the **Row actions menu** (`3849:786`, N12) and the **Rows per page** menu, which are compact in code | §9.49–9.56, §9.38, §9.66, §10 #121 | ✅ 16 Nov 2026 |
 | C24 | `Table - Cell` (`3151:14990`) | **`Type=Checkbox`** (v0.8.0): the cell is only a checkbox (Base-Checkbox Selected / Unselected / Disabled), lined up with the header text (24 padding, 40 tall), for values per row such as permissions (the Create user role screen). Not applicable = an ordinary Disabled unticked box (not the screen's Disabled + Indeterminate dash) | §9.43, §9.45, §10 #122 | ✅ 16 Nov 2026 |
 
@@ -877,3 +877,16 @@ Asked by design 17 Nov 2026: every section showed the placeholder `perm_identity
 - **Description** on the set. Avatar Group and Profile image don't show it (as code).
 - **Source:** `FinAvatar` `online` / `onlineLabel` (`FinAvatar.styles.ts` `onlineFlush` / `onlineIn`), `DESIGN.md`
   §9.4, §10 #33.
+
+### C22 · File uploads: XSmall (36) button: 17 Nov 2026
+
+- **Page:** Input field. `File uploads` `775:4280`, updated in place (8 variants, same names and IDs).
+- **The button:** each all-button was `Size=Small` with its Base-button padding overridden to 0 / 12 (24 tall, not a
+  FinButton size). Now **`Size=XSmall`** with the XSmall Base-button's own padding and bindings put back
+  (**Space-S** top / bottom, **Space-XL** sides): **36** tall, as code (FinButton Tertiary XSmall, §9.80 decision 2).
+  Glyph (`cloud_upload`, `cancel`, `delete_outline`), label and colours (Delete in `text-error`) kept.
+- **Heights now as code:** Large **218** (238 uploading), Small **102** (122 uploading; the 40 icon sets the row).
+- **Description** on the set.
+- **Unchanged, already logged in §9.80:** Figma's titles "Uploading..." and "failed" (code: "Uploading…", "Upload
+  failed", decision 9); code-only Disabled and drag-over looks aren't drawn.
+- **Source:** `FinFileUpload` (§9.80).
