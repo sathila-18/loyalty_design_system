@@ -52,7 +52,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | # | Figma component (node) | Code differs by | `DESIGN.md` ref | Status |
 |---|---|---|---|---|
 | C1 | `all-button` (`47:1580`) | Link variant; `iconTone` secondary; `contentTone` colours | §9.28, §10 #118 | ✅ 16 Nov 2026 |
-| C2 | `Input field-base` (`49:5734`) | Small (40) size; mask | §9.58 | ⬜ |
+| C2 | `Input field-base` (`49:5734`) | Small (40) size; mask | §9.58 | ✅ 16 Nov 2026 |
 | C3 | `Input field-standard` (`52:2629`) | Small size | §9.59 | ⬜ |
 | C4 | `Input field-password` (`60:7165`) | Small size | §9.60 | ⬜ |
 | C5 | `Search` (`440:5164`) | Small size | §9.61 | ⬜ |
@@ -591,3 +591,28 @@ itself, not code changes, so they're not part of this sync.
 - **Description** on the set: the Link states, and how to apply the tones (with code's hover and press tints).
 - **Not in this item:** the `Tone` property (Normal / White / Destructive, §9.28) is still separate sets in Figma.
 - **Source:** `FinButton` / `FinButtonBase` (`variant="link"`, `iconTone`, `contentTone`), `DESIGN.md` §9.28, §10 #118.
+
+### C2 · Input field base: Small size, mask: 16 Nov 2026
+
+- **Page:** Input field `1:142`. `Input field-base` `49:5734`, updated in place.
+- **New variant property `Size`** (Large / Small): 16 variants (Type × Destructive × Size). The 8 Small ones are copies
+  of the Large ones, with their 4 slots and 11 property links restored (checked equal to the originals, no extra
+  properties):
+
+  | | Large (Figma's) | Small (code's `size="small"`) |
+  |---|---|---|
+  | Box | 48 | **40** |
+  | Content padding | Space-L / Space-XL | **Space-M** / Space-XL |
+  | Slot icons (leading, trailing) | 24px | **20px** (same State) |
+  | Country selector (Mobile number) | 78 × 48 | 78 × **40** |
+  | Focus overlay | 341 × 46 | 341 × **38** (1 in from the border) |
+  | Whole field with helper | 343 × 74 | 343 × **66** (as code) |
+
+  Small variants: Default `3879:3477` / `3879:4879`, Select `3879:4372` / `3879:4817`, Payment `3879:4848` /
+  `3879:4910`, Mobile number `3879:4941` / `3879:4998` (Destructive False / True).
+- **Known difference:** the country selector's chevron stays **24** in Small (the `Contry selecter` component keeps
+  its icon in a fixed 24 frame); code uses 20. Noted in the description.
+- **Mask** (code only): not a base property; the look (the rest of "DD/MM/YYYY" in `text-placeholder` while typing)
+  is drawn in `Input field-date`'s Typing variants (N3). Noted in the description.
+- **Not yet:** the mapped fields (standard, password, search, select, multi select) still use Large: C3–C7.
+- **Source:** `FinInputBase` (`size`, `mask`), `DESIGN.md` §9.58.
