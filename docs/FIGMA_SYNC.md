@@ -43,7 +43,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | ✅ 16 Nov 2026 |
 | N12 | Table row actions (⋮) | 64-wide ⋮ column with its menu | hidden "Action Slot" in cells | §9.66, §10 #60 | ✅ 16 Nov 2026 (sideways shadow to add with Shadow/Menu) |
 | N13 | Side nav account menu | User row as a menu trigger; 320-wide menu with a Theme row | — | §9.57, §10 #62 | ⬜ |
-| N14 | `FinTable` (assembled) | Whole table with footer and pagination | parts only, by decision (§10 #26) | §9.45 | ⬜ optional |
+| N14 | `FinTable` (assembled) | Whole table with footer and pagination | parts only, by decision (§10 #26) | §9.45 | ✅ 16 Nov 2026 |
 
 ### ✏️ Changed: in Figma, but code differs visually
 
@@ -69,7 +69,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C16 | `standard-menu` (`3549:12004`) | Shadow/Menu effect style; header and footer slots; slot `conten` → content | §9.64, §10 #59 | ✅ 16 Nov 2026 (shadow kept Sticky for now) |
 | C17 | `Table header cell` (`3151:14941`) | Sort / filter icons; narrow checkbox and ⋮ cells (56, Figma 72) | §9.41, §10 #50 | ✅ 16 Nov 2026 (with N11) |
 | C18 | `Table - Cell` / `Table row` / `Header row` | Narrow checkbox cell; Link cell padding | §9.43, §10 #61 | ✅ 16 Nov 2026 (with N12) |
-| C19 | Table (assembled) | Bordered style | §9.45, §10 #77 | ⬜ |
+| C19 | Table (assembled) | Bordered style | §9.45, §10 #77 | ✅ 16 Nov 2026 (with N14) |
 | C20 | `List-standard` (`3491:5292`) | Destructive tone | §9.51 | ⬜ |
 | C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ⬜ |
 | C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ⬜ |
@@ -444,3 +444,25 @@ itself, not code changes, so they're not part of this sync.
 - **Description** on the set: the Checkbox type, the three looks, and the code's screen-reader names.
 - **Source:** `FinTableCell` `type="checkbox"`, `FinTable` checkbox columns, `DESIGN.md` §9.43, §9.45, §10 #122
   (released in v0.8.0).
+
+### N14 + C19 · Table (assembled), bordered style: 16 Nov 2026
+
+- **Page:** Table `3144:13398` (designer's choice), after Table row.
+- **Decided by design (16 Nov 2026):** a configurable component (frame + slots), not a fixed example; **C19 done with
+  N14** as a Style property; **data only** (Empty and Loading described, not drawn).
+- **Component set:** `Table` `3863:976`, **Style** = Default (`3863:806`, 1152 × 562) / Bordered (`3863:891`,
+  1152 × 564). Auto layout, 1152 wide, Space-XL between toolbar, table and footer (as code):
+
+  | Part | Built from | Notes |
+  |---|---|---|
+  | **Toolbar** (`Show toolbar`, on) | **Table Header** `3313:18577` | fills the width |
+  | **Table** frame | — | Bordered: 1px `border-subtle` inside, Radius-S, clips its content |
+  | **Rows** slot (in the Table frame) | **Header row** `3151:15203` + 10 **Table row** `State=Default` `3151:15247` | each fills the width (the row's Cell Slot set to fill), so the 6 columns line up; the last row's line removed (code: the last row never has one) |
+  | **Footer** (`Show footer`, on) | **Table footer** `3151:14830` | fills the width |
+
+  Properties: `Rows` (slot, one property for both variants), `Show toolbar`, `Show footer`, `Style`.
+- **Not table-level:** Select Cell and Row actions stay on the rows (a table boolean can't reach instances in a
+  slot); designers select every row to change them at once (in the description).
+- **Description** on the set: the parts, the properties, and code-only behaviour (widths and scrolling, sort and
+  filter, selection, the fixed ⋮ column, Empty and Loading).
+- **Source:** `FinTable` (`packages/ui/src/components/Table/`), `DESIGN.md` §9.45, §10 #26, #77.
