@@ -74,7 +74,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C21 | `Avatar` (`932:1387`) | Online indicator placed on the avatar | §9.4, §10 #33 | ⬜ |
 | C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ⬜ |
 | C23 | `List-base` (`77:10185`) and every list built on it | **Compact density** (v0.8.0): a `Density` property, Default / Compact; Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16). Exposed on List-standard, List-radio_button, List-checkbox, List-toggle and the four `List_fill-*` sets (filled cards 8 all round). Then use it in the **Row actions menu** (`3849:786`, N12) and the **Rows per page** menu, which are compact in code | §9.49–9.56, §9.38, §9.66, §10 #121 | ✅ 16 Nov 2026 |
-| C24 | `Table - Cell` (`3151:14990`) | **`Type=Checkbox`** (v0.8.0): the cell is only a checkbox (Base-Checkbox Selected / Unselected / Disabled), lined up with the header text (24 padding, 40 tall), for values per row such as permissions (the Create user role screen). Not applicable = an ordinary Disabled unticked box (not the screen's Disabled + Indeterminate dash) | §9.43, §9.45, §10 #122 | ⬜ |
+| C24 | `Table - Cell` (`3151:14990`) | **`Type=Checkbox`** (v0.8.0): the cell is only a checkbox (Base-Checkbox Selected / Unselected / Disabled), lined up with the header text (24 padding, 40 tall), for values per row such as permissions (the Create user role screen). Not applicable = an ordinary Disabled unticked box (not the screen's Disabled + Indeterminate dash) | §9.43, §9.45, §10 #122 | ✅ 16 Nov 2026 |
 
 Smaller, optional: `Indicator` (`98:3532`) Selected 24 wide (Figma 22, §10 #35); `Side sheet` (`3120:30707`) with a
 two-line title (§10 #69).
@@ -427,4 +427,20 @@ itself, not code changes, so they're not part of this sync.
   change there.
 - **Descriptions** on both bases: the Density values and the bottom-padding rule.
 - **Source:** `FinListItem`, `FinListItemFilled` and the list rows (`density`), `DESIGN.md` §9.49–9.56, §10 #121
+  (released in v0.8.0).
+
+### C24 · Table - Cell `Type=Checkbox`: 16 Nov 2026
+
+- **Page:** Table `3144:13398`. `Table - Cell` set `3151:14990`, updated in place.
+- **New variant** `Type=Checkbox, Narrow=False` `3860:782`, 72 × 40, copied from `Type=Default, Narrow=False`:
+  only the **Leading accessories** slot is shown (Base-Checkbox `State=Enabled, Type=Unselected`); the Content slot
+  and Action Slot are hidden. In this variant the three slots are unlinked from their Show booleans (always shown /
+  hidden), as Type=Row actions. Padding Space-3XL, so the box lines up with the header text (as code).
+- **Copy checked:** its 3 slots restored as real slots linked to the original properties (`Leading accessories`,
+  `Content slot`, `Action Slot`); no extra properties.
+- **Looks:** set by swapping the Base-Checkbox in the slot: Selected (ticked), Unselected, Disabled Unselected
+  (doesn't apply; not the screen's Disabled + Indeterminate dash, decided by design 16 Nov 2026).
+- **Example:** "Example: checkbox cells (ticked, unticked, disabled)" `3860:799`, below the set.
+- **Description** on the set: the Checkbox type, the three looks, and the code's screen-reader names.
+- **Source:** `FinTableCell` `type="checkbox"`, `FinTable` checkbox columns, `DESIGN.md` §9.43, §9.45, §10 #122
   (released in v0.8.0).
