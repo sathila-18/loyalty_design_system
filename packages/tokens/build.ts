@@ -12,6 +12,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import StyleDictionary from 'style-dictionary';
 import type { Dictionary, TransformedToken } from 'style-dictionary/types';
+import { CUSTOM_DARK, CUSTOM_SCALE, customStepCss } from './src/customBrand.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const SOURCE = join(here, '../../tokens/design.tokens.json');
@@ -30,6 +31,8 @@ const BRAND_SLUGS: Record<string, string> = {
 };
 /** Single-mode collections export `mode: {}`, so the brand needs a name (§3.9). */
 const SINGLE_MODE_BRAND = 'finspace';
+/** The admin-defined brand (code only, §3.12): not a Figma mode. */
+const CUSTOM_BRAND = 'custom';
 /**
  * Brand primitives (§3.1, §3.10), keyed by the primitive group. Only these scales are generated.
  * Burgundy: Figma copies every Fintech scale into its group, but only the Burgundy scale is its own;
@@ -91,6 +94,57 @@ const sources = collect(JSON.parse(readFileSync(SOURCE, 'utf8')) as Record<strin
 if (sources.length !== EXPECTED.tokens) {
   throw new Error(`Expected ${EXPECTED.tokens} variables in the export, found ${sources.length}`);
 }
+
+// ---------------------------------------------------------------------------
+// 1b. The Info alias group (code side, 16 Nov 2026; DESIGN.md §3.12)
+// ---------------------------------------------------------------------------
+// The info tokens used the Primary scale, so a custom brand would recolour info. An `Info` group in Alias Colors (one
+// entry per step info uses, copied from each brand's Primary) takes them over; the custom brand points it at
+// Finspace's fixed scale. The export (Figma) is unchanged; the build proves the 30 info values don't move.
+
+const PRIMARY = 'Alias Colors.Colors.Fintech.Primary.Primary-';
+const INFO = 'Alias Colors.Colors.Fintech.Info.Info-';
+const INFO_TOKENS = ['Background.bg-info', 'Background.bg-info_secondary', 'Text.text-info', 'Border.border-info', 'Foreground.fg-info'];
+const bySourcePath = new Map(sources.map((s) => [s.path.join('.'), s]));
+/** The primitive an alias resolves to for a brand mode (`Electric-Indigo-500`), following alias chains. */
+function primitiveOf(ref: string, brand: string): string {
+  const path = ref.replace(/^\{|\}$/g, '');
+  const source = bySourcePath.get(path);
+  if (!source) throw new Error(`Unresolved reference {${path}}`);
+  const value = source.token.$extensions?.mode?.[brand] ?? source.token.$value;
+  return typeof value === 'string' && value.startsWith('{') && path.startsWith('Alias Colors') ? primitiveOf(value, brand) : path;
+}
+const infoTokens = INFO_TOKENS.map((name) => {
+  const source = bySourcePath.get(`Color collection.${name}`);
+  if (!source) throw new Error(`Info token ${name} is missing from the export`);
+  return source;
+});
+const infoBrands = Object.keys(bySourcePath.get(`${PRIMARY}500`)!.token.$extensions!.mode!);
+const resolveInfo = () =>
+  infoTokens.flatMap((s) =>
+    Object.entries(s.token.$extensions!.mode!).flatMap(([theme, ref]) =>
+      infoBrands.map((brand) => `${s.path.at(-1)} ${theme} ${brand} → ${primitiveOf(String(ref), brand)}`),
+    ),
+  );
+const infoBefore = resolveInfo();
+const infoSteps = new Set<string>();
+for (const s of infoTokens) {
+  for (const [theme, ref] of Object.entries(s.token.$extensions!.mode!)) {
+    const step = /Primary\.Primary-(\d+)\}$/.exec(String(ref))?.[1];
+    if (!step) throw new Error(`${s.path.join('/')} (${theme}) no longer points at the Primary scale: update the Info group (§3.12)`);
+    infoSteps.add(step);
+    s.token.$extensions!.mode![theme] = `{${INFO}${step}}`;
+  }
+}
+for (const step of [...infoSteps].sort((a, b) => Number(a) - Number(b))) {
+  const primary = bySourcePath.get(`${PRIMARY}${step}`)!;
+  const info: Source = { path: `${INFO}${step}`.split('.'), token: structuredClone(primary.token) };
+  sources.push(info);
+  bySourcePath.set(info.path.join('.'), info);
+}
+const infoAfter = resolveInfo();
+if (infoAfter.join('\n') !== infoBefore.join('\n')) throw new Error('The Info group changed an info colour (§3.12)');
+if (infoAfter.length !== 30) throw new Error(`Expected 30 info values (5 tokens × 2 themes × 3 brands), found ${infoAfter.length}`);
 
 // ---------------------------------------------------------------------------
 // 2. Name every variable: layer + key → `--fin-<layer>-<key>` (§3.8)
@@ -320,7 +374,7 @@ StyleDictionary.registerFormat({
       group('finRadius', 'radius'),
       group('finSize', 'size'),
       group('finFont', 'font', (key) => styles.includes(key)),
-      `export const finBrands = ${JSON.stringify(brands.map(brandName))} as const;`,
+      `export const finBrands = ${JSON.stringify([...brands.map(brandName), CUSTOM_BRAND])} as const;`,
       `export type FinBrand = (typeof finBrands)[number];\n`,
       `export const finThemes = ${JSON.stringify(themes.map((t) => themeName(t!)))} as const;`,
       `export type FinTheme = (typeof finThemes)[number];\n`,
@@ -424,6 +478,29 @@ for (const [i, brand] of brands.entries()) {
   ]);
   blocks.push(block!);
 }
+// The custom brand (code only, §3.12): Finspace's alias colours, with the Primary scale and the Primary dark group
+// generated from --fin-custom-primary. Info stays on Finspace's fixed scale (the Info group).
+{
+  const [block] = await render(withTextStyles(tree(brands[0], themes[0])), [
+    { format: css, filter: isBranded, selector: `[data-brand="${CUSTOM_BRAND}"]` },
+  ]);
+  const custom: Record<string, string> = {
+    ...Object.fromEntries(Object.entries(CUSTOM_SCALE).map(([step, def]) => [`primary-${step}`, customStepCss(def)])),
+    ...Object.fromEntries(Object.entries(CUSTOM_DARK).map(([step, def]) => [`primary-dark-${step}`, customStepCss(def)])),
+  };
+  let replaced = 0;
+  const lines = block!.split('\n').map((line) => {
+    const m = /^(\s*)--fin-color-([a-z0-9-]+):/.exec(line);
+    const value = m ? custom[m[2]!] : undefined;
+    if (!m || value === undefined) return line;
+    replaced++;
+    return `${m[1]}--fin-color-${m[2]}: ${value};`;
+  });
+  if (replaced !== Object.keys(custom).length) {
+    throw new Error(`Custom brand: replaced ${replaced} of ${Object.keys(custom).length} primary colours (§3.12)`);
+  }
+  blocks.push(lines.join('\n'));
+}
 for (const [i, theme] of themes.entries()) {
   const [block] = await render(withTextStyles(tree(brands[0], theme)), [
     { format: css, filter: ['semantic'], selector: `${i === 0 ? ':root,\n' : ''}[data-theme="${themeName(theme!)}"]` },
@@ -439,5 +516,7 @@ write('tokens.ts', ts!);
 write('breakpoints.css', customMedia!);
 write('breakpoints.ts', tsBreakpoints!);
 write('reference.ts', referenceFile());
+write('customBrand.ts', readFileSync(join(here, 'src/customBrand.ts'), 'utf8'));
 
-console.log(`tokens: ${placed.size} variables, ${styles.length} text styles, brands [${brands.map(brandName)}], themes [${themes.map((t) => themeName(t!))}]`);
+console.log(`info: ${infoAfter.length} values unchanged by the Info group`);
+console.log(`tokens: ${placed.size} variables, ${styles.length} text styles, brands [${brands.map(brandName)},${CUSTOM_BRAND}], themes [${themes.map((t) => themeName(t!))}]`);

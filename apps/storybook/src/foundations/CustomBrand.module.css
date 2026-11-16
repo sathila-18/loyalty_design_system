@@ -1,0 +1,140 @@
+/* Layout for the Foundations / Custom brand page. Semantic tokens and text styles only. */
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-3xl);
+  align-items: flex-end;
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xs);
+}
+
+.pickerLabel {
+  font: var(--fin-font-label-medium);
+  color: var(--fin-text-tertiary);
+}
+
+/* The native colour input (there's no picker component; a Storybook page only). */
+.colorInput {
+  width: var(--fin-space-12xl);
+  height: var(--fin-space-7xl);
+  padding: var(--fin-space-xxs);
+  background-color: var(--fin-bg-primary);
+  border: 1px solid var(--fin-border-default);
+  border-radius: var(--fin-radius-s);
+}
+
+.hex {
+  width: calc(var(--fin-space-12xl) * 2);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-l);
+  align-items: center;
+}
+
+.compare {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--fin-space-6xl);
+}
+
+.compareItem {
+  display: flex;
+  gap: var(--fin-space-l);
+  align-items: center;
+}
+
+.bigChip {
+  width: var(--fin-space-12xl);
+  height: var(--fin-space-7xl);
+  background-color: var(--chip);
+  border: 1px solid var(--fin-border-subtle);
+  border-radius: var(--fin-radius-s);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-xxs);
+}
+
+.metaTitle {
+  font: var(--fin-font-label-medium);
+  color: var(--fin-text-primary);
+}
+
+.code {
+  font: var(--fin-font-body-small);
+  color: var(--fin-text-tertiary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--fin-space-12xl) * 2.5), 1fr));
+  gap: var(--fin-space-xl);
+}
+
+.panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(var(--fin-space-12xl) * 5), 1fr));
+  gap: var(--fin-space-3xl);
+}
+
+/* Each panel sets data-brand="custom" and data-theme, so the semantic tokens are worked out inside it. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fin-space-3xl);
+  padding: var(--fin-space-3xl);
+  color: var(--fin-text-primary);
+  background-color: var(--fin-bg-primary);
+  border: 1px solid var(--fin-border-subtle);
+  border-radius: var(--fin-radius-m);
+}
+
+.panelTitle {
+  font: var(--fin-font-headline-small-h6);
+  color: var(--fin-text-primary);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+}
+
+.table {
+  width: 100%;
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-primary);
+  border-collapse: collapse;
+}
+
+.caption {
+  padding-block-end: var(--fin-space-l);
+  font: var(--fin-font-body-medium);
+  color: var(--fin-text-secondary);
+  text-align: start;
+}
+
+.table th,
+.table td {
+  padding: var(--fin-space-m) var(--fin-space-l);
+  text-align: start;
+  border-bottom: 1px solid var(--fin-border-subtle);
+}
+
+.table thead th {
+  font: var(--fin-font-label-medium);
+  color: var(--fin-text-tertiary);
+}
+
+.table tbody th {
+  font: var(--fin-font-body-medium);
+}

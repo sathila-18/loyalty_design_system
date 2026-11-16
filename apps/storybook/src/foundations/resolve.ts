@@ -1,5 +1,18 @@
-/** Turns a computed color (`rgb()`, `rgba()` or `color(srgb …)`) into `#rrggbb` or `#rrggbbaa`. */
+import { oklchToRgb, toHex as rgbToHex } from '@finspace-loyalty/tokens/custom-brand';
+
+/** `oklch(L C H)` (the custom brand's computed colours) → `#rrggbb`, with the browser's gamut mapping. */
+function oklchHex(css: string): string | null {
+  const m = /^oklch\(([^)]+)\)$/.exec(css);
+  if (!m) return null;
+  const [l = '0', c = '0', h = '0'] = m[1]!.split('/')[0]!.trim().split(/\s+/);
+  const n = (v: string, scale = 1) => (v === 'none' ? 0 : v.endsWith('%') ? (parseFloat(v) / 100) * scale : parseFloat(v));
+  return rgbToHex(oklchToRgb({ l: n(l), c: n(c, 0.4), h: n(h) }));
+}
+
+/** Turns a computed color (`rgb()`, `rgba()`, `color(srgb …)` or `oklch()`) into `#rrggbb` or `#rrggbbaa`. */
 export function toHex(css: string): string {
+  const oklch = oklchHex(css);
+  if (oklch) return oklch;
   let channels: number[] | undefined;
   const rgb = /^rgba?\(([^)]+)\)$/.exec(css);
   const srgb = /^color\(srgb ([^)]+)\)$/.exec(css);

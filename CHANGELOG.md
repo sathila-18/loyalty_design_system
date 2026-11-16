@@ -8,7 +8,11 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
+- **Custom brand** (`data-brand="custom"` with `--fin-custom-primary: <hex>` on `<html>`): the Primary scale and the Primary dark group are generated in CSS from one admin-chosen colour (OKLCH relative colour syntax; DESIGN.md §3.12). Dark colours are kept; light ones are darkened so white text and action text stay readable. Info keeps a fixed scale. `checkBrandColor(hex)` and `resolveCustomScale(hex)` in `@finspace-loyalty/ui` (and `@finspace-loyalty/tokens/custom-brand`) say what a colour becomes. `FinBrand` now includes `'custom'`. How to use it: NEXTJS-USAGE.md ("Custom brand colour") and CUSTOM-BRAND.md.
+
 ### Changed
+
+- Info colours (`bg-info`, `bg-info_secondary`, `text-info`, `border-info`, `fg-info`) now come from a new `--fin-color-info-*` alias group. Same colours in every brand and theme.
 
 ### Fixed
 

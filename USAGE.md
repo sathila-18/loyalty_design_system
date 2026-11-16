@@ -115,7 +115,7 @@ Or set them from JavaScript (useful for a theme toggle):
 ```ts
 // Set once at app startup, or on toggle
 document.documentElement.setAttribute('data-theme', 'light'); // 'light' | 'dark'
-document.documentElement.setAttribute('data-brand', 'finspace'); // 'finspace' | 'burgundy' | 'sampath'
+document.documentElement.setAttribute('data-brand', 'finspace'); // 'finspace' | 'burgundy' | 'sampath' | 'custom' (CUSTOM-BRAND.md)
 ```
 
 ### 2.3 Peer dependencies

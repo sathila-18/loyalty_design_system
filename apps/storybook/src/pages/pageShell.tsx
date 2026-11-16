@@ -104,8 +104,8 @@ export function usePageSideNav(currentHref: string): FinAppShellProps['sideNav']
  */
 export const PAGE_KNOWN_CONTRAST_ISSUES = [
   'html[data-brand="finspace"] [data-selected="sub-item"]',
-  'html[data-brand="finspace"][data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])',
-  'html[data-brand="finspace"][data-theme="dark"] th[data-type="grey"] [data-size]',
+  'html:is([data-brand="finspace"], [data-brand="custom"])[data-theme="dark"] [data-tone="error"]:is([data-shape="circle"], [data-shape="pill"])',
+  'html:is([data-brand="finspace"], [data-brand="custom"])[data-theme="dark"] th[data-type="grey"] [data-size]',
   'html[data-brand="finspace"] tr[data-selected] a',
   'html[data-brand="finspace"] main nav [data-selected]',
 ];
