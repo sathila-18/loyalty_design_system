@@ -91,6 +91,7 @@ The app is React today and may move to Next.js. Components must work in both:
 
 ### Figma
 - **Figma is read-only.** Never create, edit, rename or delete anything in the Figma files. Only read and screenshot. If something in Figma needs changing, tell the designer.
+  - **Exceptions, asked for by the designer:** (1) the component sync (code → Component library – Loyalty, the page the designer names each time; logged in `docs/FIGMA_SYNC.md`); (2) the screens redesign (17 Nov 2026): the screens file's page **Admin UI V0.2** (`922:36767`) is built by Claude Code, flow by flow, from the built pages with the library's components only; logged in `docs/FIGMA_SCREENS.md`. Every other page and file stays read-only.
 - **Out of scope:** pages under "🔒 Do not use" in the component file (Cards, Notes, Image ratios, Tabs), and the Overlay `Mobile` variant. Never use a component from those pages, even inside another component.
 - **Don't build a component marked 🔴 in `DESIGN.md` §8.** Tell the designer which §10 item blocks it.
 
