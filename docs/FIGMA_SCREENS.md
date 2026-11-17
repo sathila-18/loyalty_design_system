@@ -21,7 +21,7 @@ stay as they are.
 
 | # | Flow | Source (Storybook) | Status |
 |---|---|---|---|
-| S1 | Programme configuration | Pages/Loyalty Management/Programme Configuration | 🟨 built 17 Nov 2026, awaiting approval |
+| S1 | Programme configuration | Pages/Loyalty Management/Programme Configuration | ✅ 17 Nov 2026 |
 | S2 | Tier management | Pages/Loyalty Management/Tier Management | ⬜ |
 | S3 | Reward catalog | Pages/Loyalty Management/Reward Catalog | ⬜ |
 | S4 | Focus areas | Pages/Gamification/Focus Areas | ⬜ |
