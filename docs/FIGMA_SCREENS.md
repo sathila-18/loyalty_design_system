@@ -27,8 +27,19 @@ stay as they are.
 | S4 | Focus areas | Pages/Gamification/Focus Areas | ✅ 17 Nov 2026 |
 | S5 | Badges | Pages/Gamification/Badges | ✅ 17 Nov 2026 |
 | S6 | Reports | Pages/Report Management/Reports | ✅ 17 Nov 2026 |
-| S7 | Login | Pages/Login | ⬜ |
-| — | System users, Role management, System audit, Dashboard | not built in code | to decide |
+| S7 | Login | Pages/Login | ✅ 17 Nov 2026 |
+| S8 | Forgot password | Old Figma screen (link from design) | ⬜ |
+| S9 | Reset password | Old Figma screen (link from design) | ⬜ |
+| S10 | System users | Old Figma screens, User management (link from design) | ⬜ |
+| S11 | Role management | Old Figma screens, User management (link from design) | ⬜ |
+| S12 | System audit | Old Figma screens (link from design) | ⬜ |
+| — | Dashboard | not built in code, no reference yet | to decide |
+
+**S8–S12: screens not built in code (agreed with design 17 Nov 2026).** The old Figma screens give the **content**
+only (text, fields, columns, sample data, states). Everything else follows the screens above: the same library
+components and layout patterns (App shell or Sign in layout, Table with search in its toolbar and **filters in the
+column headers**, not the old screens' filter chips beside the buttons; side sheets, dialogs, snackbars, empty
+states). One flow at a time, in this order, each approved before the next.
 
 ## Done
 
@@ -229,3 +240,33 @@ stay as they are.
   again until it does, or the screens render in Finspace.
 - **Reference:** Storybook stories screenshotted at 1920 (local, from `main`); Mason Lee's first five Lifetime values,
   hidden by the open menu in the screenshot, from the stories' data.
+
+### S7 · Login: 17 Nov 2026
+
+- **Section** `1092:36487` "Login", under S6, one row. Each frame 1920 × 1080 holds a **Sign in layout** instance
+  (Image panel and Image text on: the trophy artwork, "Customer Engagement Management Portal" and its description, as
+  the component's defaults), with the screen's form in its **Form** slot in place of the sample form (608 wide):
+  - **Heading** (gap Space-XL): the logo (**Logo sizes** Small Coloured With text, as the side nav's: "Fintech
+    loyalty"), Text Box `Display Medium-H2` "Get started now!" / "Please enter the login credentials here".
+  - **Form** (Space-4XL below; gap Space-4XL): [banner], Fields (gap Space-XL): **Input field-standard** Large "User
+    name/ email", **Input field-password** Large "Password", a row (space between, Space-L): "Forgot password"
+    (**all-button** `Type=Link` XSmall, left padding 0 so the label sits on the fields' edge, as code's hanging link)
+    and **Checkbox** "Remember me"; then **all-button** Primary Medium "Login", full width.
+
+  | Frame | Node | Story | State |
+  |---|---|---|---|
+  | Default | `1092:36529` | Default | Empty fields |
+  | Empty-field errors | `1092:37339` | Empty-field errors | Both fields `Error=True` with Helper text content Error: "Enter your user name or email", "Enter your password" |
+  | Wrong password | `1092:37567` | Wrong password | **Notification** `Type=Error` (no title, close or button) "The user name, email or password is incorrect. Check them and try again."; fields `Complete` (olivia.james@bank.lk, 5 dots) |
+  | Submitting | `1092:37858` | Submitting | Fields `Complete` (9 dots); Login `Disabled` "Logging in…" |
+  | Success | `1092:38064` | Success | **Notification** `Type=Success` "Signed in (demo). In the real app this opens the dashboard."; fields `Complete` |
+
+- **Library issues found (in addition to S1–S6's):**
+  21. **Checkbox** is fixed 343 wide with its text filling; code's checkbox hugs its label: set to hug here so
+      "Remember me" sits at the row's end.
+  22. **Input field-standard / -password**: the helper slot is empty after switching on Show Helper text (no Helper
+      text content in it): a Helper text content `State=Error` placed in it. And a field switched to `Complete` keeps
+      its value in text-placeholder (as #8): recoloured to text-primary.
+- **Figma notes:** copying a frame that holds an instance with filled slots (Sign in layout) leaves a copy whose slot
+  content can't be edited by script: each state is a new Sign in layout with the form copied into its slot.
+- **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), compared frame by frame.
