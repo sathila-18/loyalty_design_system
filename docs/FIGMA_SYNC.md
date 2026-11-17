@@ -37,7 +37,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N5 | `FinStatCard` | Summary number on `bg-active` | drawn on each Reports screen | §9.81 | ✅ 13 Nov 2026 |
 | N6 | `FinSkeleton` | Loading placeholder: text, rect, circle | — | §9.76 | ✅ 13 Nov 2026 |
 | N7 | `FinSignInLayout` | Login layout: artwork panel and form | drawn on each Login screen | §9.84, §10 #116 | ✅ 17 Nov 2026 (was ➖ 16 Nov; designer asked for it) |
-| N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ➖ not needed in Figma (decided 16 Nov 2026) |
+| N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ✅ 17 Nov 2026 (was ➖ 16 Nov; designer asked for it) |
 | N9 | `FinListCheckbox` | Checkbox list row, as List-radio_button | — | §9.54, §10 #55 | ✅ 16 Nov 2026 |
 | N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ✅ 16 Nov 2026 |
 | N11 | Table column sort / filter | Header sort arrows and filter menu | hidden 24px icon in the header cell | §9.41, §9.65, §10 #50 | ✅ 16 Nov 2026 |
@@ -508,7 +508,7 @@ itself, not code changes, so they're not part of this sync.
 
 - `FinSignInLayout` (N7) and `FinAppShell` (N8) stay code only: screens already draw the login layout and the page
   shell, so no Figma components are added.
-- **Changed 17 Nov 2026:** the designer wants both in Figma after all, on the **Layout** page. N7 done (below); N8 next.
+- **Changed 17 Nov 2026:** the designer wants both in Figma after all, on the **Layout** page. Both done (below).
 
 ### N7 · Sign in layout: 17 Nov 2026
 
@@ -541,6 +541,39 @@ itself, not code changes, so they're not part of this sync.
 - **Not like code:** the form column width is a formula in code (`sign-in-form-width`); in Figma the sample form is a
   fixed 608 that designers resize. The text's max width is on its inner frame (Figma can't bind a max width on text).
 - **Source:** `FinSignInLayout` (`packages/ui/src/components/SignInLayout/`), `DESIGN.md` §9.84.
+
+### N8 · App shell: 17 Nov 2026
+
+- **Page:** Layout `3914:31022`, a second page frame `3923:224` (header `3923:225`, section `3923:229`) to the right of
+  Sign in layout's.
+- **`App shell`** component `3923:426`, 1920 × 1080, `bg-secondary`, clipped:
+
+  | Property | Type | Code |
+  |---|---|---|
+  | **Content** | Slot (in the panel, under the header) | `children`, in `main` |
+  | **Side Menu** | Exposed instance (`Side Menu` set: Menu, Type, Style) | `sideNav`; Type follows the width (Minimized below 1280) |
+  | **Main header** | Exposed instance (back button, notification, body content, title / description texts) | `header` |
+  | **Skip link** | Boolean, off | the skip link, shown only on keyboard focus |
+  | **Skip link text** | Text, "Skip to content" | `skipLabel` |
+
+  | Part | Built from |
+  |---|---|
+  | Side Menu | **Side Menu** `Menu=Loyalty Management - Program Configuration, Type=Expanded, Style=Default`, full height (272) |
+  | Panel area / Panel | **Space-M** from the top, right and bottom (none on the left); Panel **bg-primary**, **Radius-L**, clipped: 1640 × 1064 at 1920, as code |
+  | Main header | **Main header** `3178:24570` (77), fills the panel; "Programme configuration" / "One configuration per customer segment", back button off, bell 99+ (as the Storybook Playground) |
+  | Content slot | padding **Space-3XL** all round, gap **Space-4XL** (the pages' block spacing), clipped. Default content: 3 sample blocks (**bg-secondary**, **Radius-M**, padding **Space-3XL**, **Text Box** `Headline Medium-H5`, label off, "Section 1–3"), as the story |
+  | Skip link | absolute at the top left: a **bg-primary** pill, **Radius-Full**, padding **Space-M** / **Space-XL**, **Label/Medium** **text-action**; the focus ring as a 2px **border-focused** stroke on a frame **Space-XS** (4) outside the pill (2 ring + 2 offset) |
+
+- **Examples** (instances): **At 1024** (`3923:841`, Side Menu `Type=Minimized`, 80; panel 928 wide, as code) and
+  **Skip link** (`3923:1231`, Skip link on).
+- **Description** on the component: layout, the slot, the exposed parts, the 1280 rule, the skip link, and what
+  Figma can't show (only the content scrolls; the content area's own focus ring).
+- **Not like code:**
+  - **No Shadow/Menu** on the skip link pill: there's no Shadow/Menu effect style in Foundation – Loyalty or this file
+    (the same gap as N12's sideways shadow). Add it to the pill when the style exists.
+  - `DESIGN.md` §9.68 still says the nav is 312 at 1920 (written before the 272 nav, 29 Oct 2026); code and Figma are
+    272. Not changed here (`DESIGN.md` is never written for this work).
+- **Source:** `FinAppShell` (`packages/ui/src/components/AppShell/`), `DESIGN.md` §9.68.
 
 ### C10 · Segmented button sizes and icon only: 16 Nov 2026
 
