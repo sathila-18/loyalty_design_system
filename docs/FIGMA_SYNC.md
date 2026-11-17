@@ -36,7 +36,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | N4 | `FinStepper` | Steps of a multi-step form: done, current, upcoming | drawn on each Add reward screen | §9.77 | ✅ 13 Nov 2026 |
 | N5 | `FinStatCard` | Summary number on `bg-active` | drawn on each Reports screen | §9.81 | ✅ 13 Nov 2026 |
 | N6 | `FinSkeleton` | Loading placeholder: text, rect, circle | — | §9.76 | ✅ 13 Nov 2026 |
-| N7 | `FinSignInLayout` | Login layout: artwork panel and form | drawn on each Login screen | §9.84, §10 #116 | ➖ not needed in Figma (decided 16 Nov 2026) |
+| N7 | `FinSignInLayout` | Login layout: artwork panel and form | drawn on each Login screen | §9.84, §10 #116 | ✅ 17 Nov 2026 (was ➖ 16 Nov; designer asked for it) |
 | N8 | `FinAppShell` | Page shell: side nav, header, content | drawn on each screen | §9.68, §10 #63 | ➖ not needed in Figma (decided 16 Nov 2026) |
 | N9 | `FinListCheckbox` | Checkbox list row, as List-radio_button | — | §9.54, §10 #55 | ✅ 16 Nov 2026 |
 | N10 | Filled list rows (×4) | Filled versions of List-standard, radio, checkbox, toggle | only `List_fill-base` | §9.56, §10 #56 | ✅ 16 Nov 2026 |
@@ -508,6 +508,39 @@ itself, not code changes, so they're not part of this sync.
 
 - `FinSignInLayout` (N7) and `FinAppShell` (N8) stay code only: screens already draw the login layout and the page
   shell, so no Figma components are added.
+- **Changed 17 Nov 2026:** the designer wants both in Figma after all, on the **Layout** page. N7 done (below); N8 next.
+
+### N7 · Sign in layout: 17 Nov 2026
+
+- **Page:** Layout `3914:31022` (new, empty). Page frame `3917:301` (header `3917:302`, section `3917:306`), copied
+  from the Calender page's frame.
+- **`Sign in layout`** component `3919:8`, 1920 × 1080, `bg-primary`. One component, not variants: Figma can't do the
+  responsive switch, so it's two booleans:
+
+  | Property | Type | Code |
+  |---|---|---|
+  | **Form** | Slot (the right half) | `children`, in `main` |
+  | **Image panel** | Boolean, on | the panel shows from 1024; off = the under-1024 look |
+  | **Image text** | Boolean, on | `imageTitle` / `imageDescription` given: text block + scrim; off = artwork only |
+  | **Title** | Text | `imageTitle` |
+  | **Description** | Text | `imageDescription` |
+
+  | Part | Built from |
+  |---|---|
+  | Image half | half the width; padding **Space-3XL** top, left, bottom |
+  | Panel | **Radius-XL**, clipped, content at the bottom. **Image**: a rectangle that fills it, the login app's `trophy.jpg` as a Fill image (swap it per screen) |
+  | Scrim | lower half, linear gradient from **Alpha-md** (bound) at the bottom to transparent (`sign-in-scrim`) |
+  | Text | padding **Space-7XL**; inner frame gap **Space-M**, max width **Size-500**; Title **Display/Medium-H2**, Description **Body/Large**, both **text-white_both** |
+  | Form slot | half the width; padding **Space-3XL** top and bottom, **Space-XL** sides; content centred |
+  | Sample form (slot default) | 608 wide (4 columns at 1920), gap **Space-4XL**: **Text Box** `Display Medium-H2`, label off, "Get started now!" / "Please enter the login credentials here"; Fields (gap **Space-XL**): **Input field-standard** "User name/ email" and **Input field-password**, helper text hidden; **all-button** Large Primary "Login", full width (as the Storybook story) |
+
+- **Examples** in the section (instances): **Image only** (`3919:142`, Image text off, as the forgot password
+  screens) and **Below 1024 (768)** (`3919:205`, Image panel off, 768 wide, the form at **Size-343**).
+- **Description** on the component: the layout rules, the form widths per frame width (608 / 448 / 395 / 343), what
+  Figma can't show (the responsive column width, scrolling).
+- **Not like code:** the form column width is a formula in code (`sign-in-form-width`); in Figma the sample form is a
+  fixed 608 that designers resize. The text's max width is on its inner frame (Figma can't bind a max width on text).
+- **Source:** `FinSignInLayout` (`packages/ui/src/components/SignInLayout/`), `DESIGN.md` §9.84.
 
 ### C10 · Segmented button sizes and icon only: 16 Nov 2026
 
