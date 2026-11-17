@@ -24,7 +24,7 @@ stay as they are.
 | S1 | Programme configuration | Pages/Loyalty Management/Programme Configuration | ✅ 17 Nov 2026 |
 | S2 | Tier management | Pages/Loyalty Management/Tier Management | ✅ 17 Nov 2026 |
 | S3 | Reward catalog | Pages/Loyalty Management/Reward Catalog | ✅ 17 Nov 2026 |
-| S4 | Focus areas | Pages/Gamification/Focus Areas | ⬜ |
+| S4 | Focus areas | Pages/Gamification/Focus Areas | ✅ 17 Nov 2026 |
 | S5 | Badges | Pages/Gamification/Badges | ⬜ |
 | S6 | Reports | Pages/Report Management/Reports | ⬜ |
 | S7 | Login | Pages/Login | ⬜ |
@@ -138,3 +138,43 @@ stay as they are.
   (resized to fix, as S2); the half-width "Maximum claims per customer" placeholder clipped before its suffix, as code.
 - **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), the Edit reward steps opened from the
   stepper, compared frame by frame.
+
+### S4 · Focus areas: 17 Nov 2026
+
+- **Section** `1075:20402` "Focus areas", under S3. Three levels, one row each: focus areas, lessons, questions. A new
+  section (frames copied from S3's), with the section's variable modes set as S1–S3's (Alias Colors **Burgundy
+  theme**, Color collection Light): without them the screens render in the Finspace purple.
+- **App shell:** Side Menu `Menu=Gamification` (Gamification open, **Focus areas** selected, Badges); Main header as
+  the level: "Focus areas" / "Topics members learn about, in lessons and questions"; lessons and questions with the
+  **back button** and the breadcrumb as the description ("Focus areas › Lessons", "Focus areas › Using BNPL
+  responsibly › Questions").
+
+  | Frame | Node | Story | Built from |
+  |---|---|---|---|
+  | List | `1075:20403` | List | Table: "Search focus area", "Add focus area"; Order (120), Focus area, Lessons (200, Link cell "10 lessons"), Status (176, Badge, filter: Published Success, Draft Secondary); Figma's 10 rows |
+  | Add focus area | `1075:21523` | Add focus area | Sheet title (Display Small-H3) "Add focus area", no close button; "Details": Focus area name, Short description (textArea), Badge after completion (optional) + Order (`Complete` "11", helper "The others move down to make room"); "Status": Published (toggle, off); Cancel + Save focus area |
+  | Edit focus area | `1075:22872` | Edit focus area | Budgeting basics, "Learn about budgeting basics.", Order 02, Published on; Save `Disabled` |
+  | Remove focus area | `1075:24243` | Remove focus area | "Are you sure you want to remove the “Budgeting basics” focus area? Its 4 lessons will be removed too." |
+  | No focus areas | `1075:25406` | No focus areas | Empty state Medium, `sports_esports`: "No focus areas yet", "Add focus area" |
+  | No matches | `1075:25660` | No matches | Empty state Small: "No focus areas match “Lottery”" |
+  | Lessons | `1075:25913` | Lessons | Header "Using BNPL responsibly" with back; Order, Lesson topic, Questions (200, Link "5 questions"), Status; 10 rows |
+  | Add lesson | `1075:27033` | Add lesson | Title Text Box Headline Large-H4 "Add lesson" / "Using BNPL responsibly"; "Lesson": Topic, Description; "Example": Example topic (optional), Example description (optional); "After the lesson": Trigger event (after success) + Order 11, panel Tiers (**List_fill-checkbox** Basic, Silver, Gold); "Status": Published; Cancel + Save lesson. **Frame 1200 tall** |
+  | No lessons | `1075:28382` | No lessons | Header the long focus area name; Empty state: "No lessons yet", "Add a lesson to teach members about spotting scam messages…" |
+  | Questions | `1075:28636` | Questions | Header "What is an instalment plan" with back; No. (120), Question, Options (160), Points (160); 5 rows, "Showing 1–5 of 5 entries in page 1" |
+  | Question details | `1075:29756` | Question details | "Question 01 details": No., Question, Answer options, Correct option, Tiers, Explanation, Points; long values end in "…" as code |
+  | Add question | `1075:31097` | Add question | "Add question" / "What is an instalment plan"; **Notification** `Type=Info` "Question rule" (no close, no button; the four rules as a bulleted list); "Question": Question, panel Tiers; "Answer options": panel "Select the correct one" with Option + **Add option** (all-button Primary Medium, `add`) Space-L apart; "After answering": Explanation shown after answering (textArea), Points per correct answer (Points); Cancel + Save question. **Frame 1161 tall** |
+  | Edit question | `1075:32446` | Edit question | Values filled, Tiers all ticked; Option and Add option `Disabled`, Helper text with its info icon "A question has up to 4 options. Remove one to add another."; four options, each a radio card (Four payments chosen) and a delete button (all-button Tertiary Only Icon Small, `delete` in fg-error) Space-S apart; Save `Disabled`. **Frame 1477 tall** |
+  | No questions | `1075:33817` | No questions | Header "Choosing the right plan length"; Empty state: "No questions yet", "Add a question" |
+
+- **Not like code:** long sheets drawn at full height (the product scrolls), as S3; the snackbar isn't drawn (no
+  Removed story here).
+- **Library issues found (in addition to S1–S3's):**
+  16. **Side Menu** `Menu=Gamification`: its items are "Badge Management" then "Focus & Learning" (the product:
+      "Focus areas" then "Badges") and Title Case, and Gamification is `Selected - BG` (a pill) where the Loyalty
+      variants use `Selected`: all overridden.
+  17. **Input field-textArea** `Complete` shows the value in text-placeholder: recoloured to text-primary (as #8).
+  18. **all-button** has no error tone for Tertiary (code: `contentTone="error"`): the delete icon recoloured to
+      fg-error, as the library's "Tertiary tones (overrides)" says.
+- **Figma quirks:** clones and new instances drawn at old widths until resized (every field in the sheets resized);
+  Table cell text doesn't fill its cell, so the ellipsis needed a fixed width.
+- **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), compared frame by frame.
