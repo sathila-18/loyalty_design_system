@@ -31,7 +31,7 @@ stay as they are.
 | S8 | Forgot password | Old Figma screens `435:90303`, `435:90402` (Admin UIs, Login Option 02) | ✅ 17 Nov 2026 |
 | S9 | Reset password | Old Figma screens `150:5950`, `435:90550` (Admin UIs, Login Option 02) | ✅ 17 Nov 2026 |
 | S10 | System users | Old Figma screens, section `188:13373` (Admin UIs) | ✅ 17 Nov 2026 |
-| S11 | Role management | Old Figma screens, User management (link from design) | ⬜ |
+| S11 | Role management | Old Figma screens, section `196:18060` (Admin UIs) | ✅ 17 Nov 2026 |
 | S12 | System audit | Old Figma screens (link from design) | ⬜ |
 | — | Dashboard | not built in code, no reference yet | to decide |
 
@@ -325,3 +325,35 @@ states). One flow at a time, in this order, each approved before the next.
 
 - **Library issues found:** 23. **Side Menu** `Menu=User Management`: items "User Roles", "System Users" (Title Case)
   and User Management `Selected - BG`, as #16: overridden.
+
+### S11 · Role management: 17 Nov 2026
+
+- **Source:** the old section `196:18060` "Role management" (Admin UIs): list `428:66319`; Create user role empty
+  `434:74848` / `434:74877` and filled `428:68571` / `428:73285` (pages 1 and 2); Edit `434:77457` / `434:77486`;
+  Updated `434:79954`; Remove `434:81065`, Removed `434:82196`. Content only; built as S10.
+- **Decisions (design, 17 Nov 2026):** Edit's primary button "Update" (the old one says "Create"), disabled until a
+  change as the other edit forms; the permissions named as the product's pages; the remove dialog and list in the
+  built pages' words and conventions ("Add new role"); no empty-state frames. Create / Edit stay **full pages** (back
+  button in the header), as the old screens and as the library's checkbox cell was made for ("the Create user role
+  screen").
+- **Section** `1106:44206` "Role management". Side Menu `Menu=User Management` with **User roles** selected.
+
+  | Frame | Node | Built from |
+  |---|---|---|
+  | List | `1106:44207` | Header "User roles"; Table: "Search role name", "Add new role"; No. (80), Role name; ⋮; the old 10 roles (Admin, Editor, Viewer, Support, Analyst, Manager, Finance, HR, Legal, IT) |
+  | Create user role | `1106:45607` | Header "Create user role" with the back button; Content (Space-4XL apart): Role name (Input field-standard Small, full width); **List_fill-toggle** "Give full access" / "This will give this user role full access to the system." (off); Table without toolbar, select or ⋮ columns: List of permissions, View, Add, Delete, Update, Download, Import (128 each), the actions as **Table - Cell `Type=Checkbox`**: Base-Checkbox Unselected where the action applies, `State=Disabled` where it doesn't (the old screens' disabled dash, as the library decided); 10 of 14 permissions, pagination 1 2; Go back (Secondary Medium) + Create (Primary Medium, `Disabled`) |
+  | Create user role, page 2 | `1106:47015` | The last 4 permissions, page 2 selected |
+  | Create user role, filled | `1106:48423` | Role name "Admin"; every applicable action ticked; Create enabled |
+  | Create user role, filled, page 2 | `1106:49831` | As above, page 2 |
+  | Edit user role | `1106:51239` | Header "Edit user role"; filled as Admin; Go back + Update `Disabled` |
+  | Edit user role, page 2 | `1106:52647` | As above, page 2 |
+  | Updated | `1106:54055` | List + Snackbar "User role updated successfully!" |
+  | Remove user role | `1106:55478` | "Remove user role", "Are you sure you want to remove the “Manager” user role?" |
+  | Removed | `1106:56921` | List without Manager (9) + Snackbar "User role removed successfully!" |
+
+  The permissions and their actions (V View, A Add, D Delete, U Update, Dl Download, I Import), from the old screens:
+  Dashboard V; Programme configuration, Tier management, Reward catalog, Badges, System configuration V A D U; Focus
+  areas, Focus areas - Lessons, Focus areas - Questions V A U; Report management, Report management - Customer, System
+  audit - Audit trail V Dl I; User management - System users V A D U Dl; User management - User roles V A D U.
+- **Not like the old screens:** Pagination's previous arrow on page 2 still looks disabled (S1 issue #4, the arrows'
+  glyph colours are overridden in Pagination group).
