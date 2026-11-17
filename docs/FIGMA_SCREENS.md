@@ -23,7 +23,7 @@ stay as they are.
 |---|---|---|---|
 | S1 | Programme configuration | Pages/Loyalty Management/Programme Configuration | ✅ 17 Nov 2026 |
 | S2 | Tier management | Pages/Loyalty Management/Tier Management | ✅ 17 Nov 2026 |
-| S3 | Reward catalog | Pages/Loyalty Management/Reward Catalog | ⬜ |
+| S3 | Reward catalog | Pages/Loyalty Management/Reward Catalog | ✅ 17 Nov 2026 |
 | S4 | Focus areas | Pages/Gamification/Focus Areas | ⬜ |
 | S5 | Badges | Pages/Gamification/Badges | ⬜ |
 | S6 | Reports | Pages/Report Management/Reports | ⬜ |
@@ -97,3 +97,44 @@ stay as they are.
 - **Figma quirk:** a field cloned from a 584-wide field into a 280-wide column kept drawing at the old width (right edge
   cut off) until it was resized; resized on every field here.
 - **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), compared frame by frame.
+
+### S3 · Reward catalog: 17 Nov 2026
+
+- **Section** `1066:9060` "Reward catalog", under S2. Row 1 the flow (list, the four Add reward steps, details,
+  remove, removed), row 2 Edit and the empty states. Started as a copy of S2's frames (S1's workarounds carry over).
+  App shell as before with **Reward catalog** selected; Main header "Reward catalog" / "Rewards members can redeem
+  with their points". The Add reward steps aren't separate stories: their content is from stepping through the Add
+  and Edit reward stories in Storybook (Edit marks every step done and clickable).
+
+  | Frame | Node | Story | Built from |
+  |---|---|---|---|
+  | List | `1066:9061` | List | **Table** `Style=Bordered`: search "Search reward", "Add reward"; 6 columns as code: ID (120), Reward name, Partner, User limit, Users, Status (176, Badge, filter arrow: Draft Secondary, Published Success, Limit exceed Warning, Expired Error); Figma's 10 rows (N/A where none); "Showing 1–10 of 10 entries in page 1" |
+  | Add reward · Reward | `1066:9063` | Add reward | Side sheet, the sheet's own title (Text Box Display Small-H3) "Add reward", no close button; **Stepper** `Steps=4, Current=1`; "Basic details": Reward name, Event (select); "Availability": Provider (**Input field-Multi select** Small), Run for lifetime (List_fill-toggle, off), Start date + End date (**Input field-date**, side by side Space-XL apart); dock Cancel + Next |
+  | Add reward · Rules | `1066:9910` | (Add reward, step 2) | Back button on; Stepper `Current=2` (Reward Done); "Qualifying transaction": Minimum transaction value (LKR); "Reward value": panels Type (Discount, Cash back (Points are earned)) and Value (Fixed amount, Percentage), Discount amount (LKR); panel Give the reward (On every qualifying event, Count of the nth qualifying event); "Cost to the customer": Points cost, Customer must enter a promo code (toggle); "Limits": Maximum claim duration (select) + Maximum claims per customer (Customer), Max total uses of campaign (optional) (Uses, helper "Leave it empty for no limit"). **Frame 1468 tall**: the whole step |
+  | Add reward · Eligibility | `1066:10061` | (Add reward, step 3) | Stepper `Current=3`; "Who can claim this reward": panel All eligible segments (All customers (All tiers & segments) chosen, Tier only, Segment only, Rules - segments & tiers); Badge after completion (select) |
+  | Add reward · UX | `1066:10212` | (Add reward, step 4) | Stepper `Current=4`; "Offer text, shown in the reward catalogue": Headline, Description (**Input field-textArea**); "Notifications": Push notification (toggle); dock Save as draft (tertiary, left) + Cancel + Publish |
+  | Details | `1066:9067` | Details | "Transaction fee details": ID RW-002, Reward name, Partner SLT, User limit 20, Users 20, Status Published |
+  | Remove reward | `1066:9075` | Remove reward | "Remove reward", "Are you sure you want to remove the “Cash back” reward?" |
+  | Removed | `1066:9079` | Removed | List without Cash back ("Showing 1–9 of 9 entries in page 1") + Snackbar "Reward removed successfully" |
+  | Edit reward | `1066:9071` | Edit reward | Step 1 `Complete`: Transaction fee, Bill payment, Provider chip SLT (Input chip), 01/08/2026 – 31/07/2027; Stepper: Reward current, the rest Done (Edit: every step done); title "Edit reward", Cancel + Save `Disabled` |
+  | Edit reward, rules | `1066:10363` | Edit reward, rules | Step 3: Rules - segments & tiers chosen; "Create a rule": Segment + Tier (selects), Add rule (all-button Secondary Medium, `add`, full width); "Added rules": Table `Style=Default` Segment / Tier with Row actions, 5 rules; Badge after completion `Complete` "Budget builder". **Frame 1198 tall** |
+  | No rewards | `1066:9082` | No rewards | Empty state Medium: "No rewards yet", "Add a reward for members to redeem with their points.", "Add reward" |
+  | No matches | `1066:9084` | No matches | Empty state Small: "No rewards match “Lottery”"; the search **Typing** "Lottery" |
+
+- **Panels** (the grey frames round the radio cards): drawn on the screens as code's page CSS does (the library has no
+  panel): bg-secondary, Radius-L, Space-XL padding, the title (Label/Small, as the section titles) Space-L above the
+  cards, cards Space-L apart.
+- **Not like code:** the two long steps are drawn at full height (the product scrolls the sheet body); the stepper is
+  560 wide (code stretches its lines to fill 584); the snackbar is 343 wide, as S1.
+- **Library issues found (in addition to S1's and S2's):**
+  11. **Input field-date** has no Size: Large only (48). Code's is Small: the nested Input field-base set to Small
+      here; its calendar icon stays 24 (code 20).
+  12. **List_fill-radio_button** has no Size either: Large shows the title 16 semibold; code's small cards are 14
+      medium: the nested List_fill-base set to Small.
+  13. **Stepper** can't fill its container (80-wide steps, fixed 124 lines).
+  14. **all-button**: changing Type or Size resets the leading icon (to `person`): swapped back to `add`.
+  15. **Input chip**: the Chips-base "Label text" property didn't change the chip's text here: set on the text.
+- **Figma quirks:** fields, radio cards and the multi-select drawn at their old width after cloning or a Size change
+  (resized to fix, as S2); the half-width "Maximum claims per customer" placeholder clipped before its suffix, as code.
+- **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), the Edit reward steps opened from the
+  stepper, compared frame by frame.
