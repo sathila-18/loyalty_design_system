@@ -26,7 +26,7 @@ stay as they are.
 | S3 | Reward catalog | Pages/Loyalty Management/Reward Catalog | ✅ 17 Nov 2026 |
 | S4 | Focus areas | Pages/Gamification/Focus Areas | ✅ 17 Nov 2026 |
 | S5 | Badges | Pages/Gamification/Badges | ✅ 17 Nov 2026 |
-| S6 | Reports | Pages/Report Management/Reports | ⬜ |
+| S6 | Reports | Pages/Report Management/Reports | ✅ 17 Nov 2026 |
 | S7 | Login | Pages/Login | ⬜ |
 | — | System users, Role management, System audit, Dashboard | not built in code | to decide |
 
@@ -203,3 +203,29 @@ stay as they are.
   (`…/18268:346`); copying it through another id of the same collection (`…/18133:365`) passes the plugin check but
   the screens still render in Finspace.
 - **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), compared frame by frame.
+
+### S6 · Reports: 17 Nov 2026
+
+- **Section** `1087:35607` "Reports", under S5. Row 1 the customer list, row 2 a customer's points history. App shell:
+  Side Menu (Loyalty variant) with Loyalty management closed and **Report management** `Selected`; read only, so the
+  Table toolbar's button is off (Show Button).
+
+  | Frame | Node | Story | Built from |
+  |---|---|---|---|
+  | List | `1087:35608` | List | Header "Reports" / "Points earned, redeemed, converted and expired, by customer"; **Stat card** ×4 (Total points 138,900, Reward redemption (pts) 52,500, Cash conversion (pts) 17,600, Points expired 0), equal columns Space-4XL apart; Table: search "Search customer name or number"; No. (96), Customer, Tier (144, filter), Segments (144), Earned, Redeemed, Converted, Expired (128 each), Active balance (160, Link cell), Last activity (152); ⋮ on each row (View); Figma's 10 customers |
+  | No customers | `1087:36768` | No customers | Cards all 0; Empty state Medium `loyalty` "No customers yet", "Customers show here once they earn or use points.", no button |
+  | No matches | `1087:37041` | No matches | Search Typing "Lottery"; Empty state Small "No customers match “Lottery”" |
+  | Points history | `1087:37313` | Points history | Header "Fatima Khan" / "Reports › Points history" with the back button; 3 Stat cards in the first three of four columns (Active points 5,900, Lifetime points 12,400, Expires 31/10/2026 1,200 pts); toolbar search "Search activity" and, in the filter slot, **Assist chip** Large Dropdown "Duration: All"; Table: No. (96), Date (144), Type (200, filter), Description, Points (144), Active balance (160), Lifetime (144); no ⋮ (as code); Figma's 10 activities |
+  | Duration filter | `1087:38496` | Duration filter | Mason Lee (11,400 / 25,800 / 1,217 pts), 10 of 15 activities, pagination 1 2 with next enabled; the chip `State=Open`; **standard-menu** under it (4 below, right-aligned), List-standard Small rows without lines: All (Selected), Last 7 days, Last 30 days, Last 3 months, Last 12 months |
+  | No activity | `1087:39655` | No activity | Dilini Wickramasinghe: 0, 0, Next expiry N/A; Empty state Medium "No activity yet", "Dilini Wickramasinghe hasn't earned or used any points yet.", no button |
+
+- **Library issues found (in addition to S1–S5's):**
+  19. **List-standard** Small with Show Divider off has no bottom padding (37 tall) except the menu's last row (53);
+      code's rows without lines are 53 (16 top and bottom): the bottom padding set to the last row's on every row.
+  20. **Assist chip** shows Chips-base's leading accessory (a person icon) by default; code's chip has none: turned
+      off.
+- **Figma note:** setting the section's Alias Colors mode can be stored under another id of the same collection
+  (`…/18253:468` here) even when the exact id is passed; check `explicitVariableModes` has `…/18268:346` and set it
+  again until it does, or the screens render in Finspace.
+- **Reference:** Storybook stories screenshotted at 1920 (local, from `main`); Mason Lee's first five Lifetime values,
+  hidden by the open menu in the screenshot, from the stories' data.
