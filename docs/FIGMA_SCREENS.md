@@ -22,7 +22,7 @@ stay as they are.
 | # | Flow | Source (Storybook) | Status |
 |---|---|---|---|
 | S1 | Programme configuration | Pages/Loyalty Management/Programme Configuration | ✅ 17 Nov 2026 |
-| S2 | Tier management | Pages/Loyalty Management/Tier Management | ⬜ |
+| S2 | Tier management | Pages/Loyalty Management/Tier Management | ✅ 17 Nov 2026 |
 | S3 | Reward catalog | Pages/Loyalty Management/Reward Catalog | ⬜ |
 | S4 | Focus areas | Pages/Gamification/Focus Areas | ⬜ |
 | S5 | Badges | Pages/Gamification/Badges | ⬜ |
@@ -68,4 +68,32 @@ stay as they are.
   8. **Slot content keeps its overrides across variant changes**: switching a field Enabled → Complete kept the value
      text in `text-placeholder`, and a toggle row Default → Selected kept its switch off (the switch is slot content):
      fixed by hand. Worth knowing for designers editing these screens.
+- **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), compared frame by frame.
+
+### S2 · Tier management: 17 Nov 2026
+
+- **Section** `1060:4739` "Tier management", under S1, laid out the same way (row 1 the flow, row 2 the empty states).
+  Started as a copy of S1's frames, so every S1 workaround below carries over. App shell as S1, with **Tier management**
+  selected in the Side Menu's Loyalty management group (Side Menu has no Tier management variant: sub-item states
+  overridden); Main header "Tier management" / "Thresholds and earn multipliers".
+
+  | Frame | Node | Story | Built from |
+  |---|---|---|---|
+  | List | `1060:4740` | List | **Table** `Style=Bordered`: search "Search tier", "Add tier" with `add`; 7 columns as code: No. (80), Level (filter arrow), Tier name (Link cell), Upgrade threshold (pts) (Link, 216), Downgrade threshold (pts) (Link, 232), Earn multiplier (Link), Status (Badge, filter arrow; Active Success, Inactive Neutral); rows Silver, Gold, Platinum, sorted by level; footer "Showing 1–3 of 3 entries in page 1" |
+  | Add | `1060:4742` | Add tier | List + Overlay + Side sheet (632), no close button; title "Add tier" / "Tiers are common to every segment"; body: six Small fields **two by two** (rows and columns Space-3XL apart, as the page's grid): Tier name, Level (**Input field-select**), Upgrade threshold and Downgrade threshold (Suffix "Points" and helper text), Earn multiplier (×), Status (select); dock Cancel + Save tier |
+  | Details | `1060:4746` | Details | Side sheet with the close button, title "Gold details"; Table `Style=Default` Attribute / Added record, 7 rows (links as plain text, Status a Success badge); dock Remove + Edit |
+  | Edit | `1060:4750` | Edit tier | The Add sheet with every field `Complete` (Gold, Intermediate, 5000, 4000, 2.00, Active, unformatted as code's inputs), title "Edit tier", Save `Disabled` |
+  | Remove | `1060:4754` | Remove tier | List + Overlay + Dialog box: "Remove tier", "Are you sure you want to remove the “Silver” tier?", Cancel + Remove (Destructive) |
+  | Removed | `1060:4758` | Removed | List without Silver ("Showing 1–2 of 2 entries in page 1") + Snackbar Success "Tier removed successfully" |
+  | No tiers | `1060:4761` | No tiers | Empty state Medium (`loyalty`, "No tiers yet", "Add a tier to set the points members need to reach it and how fast they earn there.", "Add tier" with `add`) |
+  | No matches | `1060:4763` | No matches | Empty state Small (`search`, "No tiers match “Bronze”", "Clear search and filters"); the search **Typing** "Bronze" |
+
+- **Not like code:** the snackbar is the component's 343 wide, as S1.
+- **Library issues found (in addition to S1's):**
+  9. **Side sheet**: the Body content slot clips its content, so a `Complete` field in the first row loses the top of
+     its floating label: clipping turned off on the Add and Edit sheets.
+  10. **Table - Cell**: switching `Type` keeps the old slot content (a Default cell switched to Badge still holds its
+      text), as #8: cells of another type were replaced with fresh instances of the right variant.
+- **Figma quirk:** a field cloned from a 584-wide field into a 280-wide column kept drawing at the old width (right edge
+  cut off) until it was resized; resized on every field here.
 - **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), compared frame by frame.
