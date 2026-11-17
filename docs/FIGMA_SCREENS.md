@@ -28,8 +28,8 @@ stay as they are.
 | S5 | Badges | Pages/Gamification/Badges | ✅ 17 Nov 2026 |
 | S6 | Reports | Pages/Report Management/Reports | ✅ 17 Nov 2026 |
 | S7 | Login | Pages/Login | ✅ 17 Nov 2026 |
-| S8 | Forgot password | Old Figma screen (link from design) | ⬜ |
-| S9 | Reset password | Old Figma screen (link from design) | ⬜ |
+| S8 | Forgot password | Old Figma screens `435:90303`, `435:90402` (Admin UIs, Login Option 02) | ✅ 17 Nov 2026 |
+| S9 | Reset password | Old Figma screens `150:5950`, `435:90550` (Admin UIs, Login Option 02) | ✅ 17 Nov 2026 |
 | S10 | System users | Old Figma screens, User management (link from design) | ⬜ |
 | S11 | Role management | Old Figma screens, User management (link from design) | ⬜ |
 | S12 | System audit | Old Figma screens (link from design) | ⬜ |
@@ -270,3 +270,32 @@ states). One flow at a time, in this order, each approved before the next.
 - **Figma notes:** copying a frame that holds an instance with filled slots (Sign in layout) leaves a copy whose slot
   content can't be edited by script: each state is a new Sign in layout with the form copied into its slot.
 - **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), compared frame by frame.
+
+### S8 · Forgot password, S9 · Reset password: 17 Nov 2026
+
+- **Source:** the old screens in section `150:6161` "Login Option 02" (page Admin UIs), content only. Not built in
+  code. Layout as S7: each frame a **Sign in layout** instance with the screen's content (608 wide) in its Form slot,
+  built from the same parts as the Login form (Text Box `Display Medium-H2`, Large fields, all-button Primary Medium
+  full width, the hanging Link button). Artwork as code plans (`SignInScreen`): the trophy with the portal's title and
+  description on Reset password; the **detective** alone (Image text off) on the other three, the old screens' image
+  and colour adjustments (saturation, temperature, tint) copied onto the panel's Image fill.
+- **Text decisions (design, 17 Nov 2026):** the Forgot password button keeps the old screen's "Login"; field labels in
+  sentence case ("New password", "Confirm password"); the trailing space of "Password reset " dropped.
+- **S8** section `1097:37058` "Forgot password":
+
+  | Frame | Node | Old screen | Built from |
+  |---|---|---|---|
+  | Forgot password | `1097:37059` | `435:90303` | "Back" (all-button `Type=Link` XSmall, `arrow_back` leading, left padding 0), Space-XL above the Text Box "Forgot password" / "Please enter the email address on the below options to get a password reset link."; Space-4XL; Input field-standard Large "Email"; Space-4XL; "Login" |
+  | Reset link sent | `1097:37274` | `435:90402` | **48px bg** `State=Success` with `check` (as File uploads' Complete), Space-XL above the Text Box "Reset link sent" / "Please check your inbox to find an email with the password reset link. Use the link to complete password resetting process." |
+
+- **S9** section `1097:37354` "Reset password":
+
+  | Frame | Node | Old screen | Built from |
+  |---|---|---|---|
+  | Reset password | `1097:37355` | `150:5950` | Trophy with image text; Text Box "Reset password" (no description); Space-4XL; **Input field-password** Large "New password" with helper "Must be at least 8 characters", "Confirm password" with "Confirm your password" (Space-XL apart; Helper text content without its icon, as the old screen); Space-4XL; "Next" |
+  | Password reset | `1097:37512` | `435:90550` | 48px bg Success `check`, Text Box "Password reset" / "Your password has been successfully changed!"; Space-4XL; "Back to login" |
+
+- **Not like the old screens (by the rules above):** the old success icon (a Spinner component with a check) is the
+  library's 48px bg Success; headings are the Login's Text Box (Display Medium-H2), not the old smaller titles.
+- **Figma note:** a new section's first Alias Colors setting is stored under another id (`…/18133:365`); clearing it
+  and setting it again stores `…/18268:346` (checked on both sections).
