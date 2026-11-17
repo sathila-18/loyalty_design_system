@@ -3652,7 +3652,9 @@ import { FinSideNav } from '@finspace-loyalty/ui';
 
 **Accessibility:** one `nav`, one `banner`, one `main`; the skip link first; focus moves to `main`; `main` is a tab stop (it scrolls); the nav's own keyboard behaviour. Accepted exceptions skipped in its stories (§10 #3): the selected section's label, the bell's number in Dark.
 
-**Built (22 Oct 2026).** Storybook (Components/Layout/App shell): Playground (title, description, number of content blocks), At 1024, Long content, Skip link; the four viewports (§4.4) in the toolbar. Checked in a browser: at 1920 the nav 312 and the panel at (312, 8), 1600 × 1064, exactly as Figma; the header 87 (the approved FinHeader; the screen's older copy is 89); at 1440 / 1280 the panel 1120 / 960 wide; at 1024 the nav minimized (88) and the panel 928; at every width the window doesn't scroll, the content does, and the header stays at the panel's top. Light and Dark.
+**Built (22 Oct 2026).** Storybook (Components/Layout/App shell): Playground (title, description, number of content blocks), At 1024, Long content, Skip link; the four viewports (§4.4) in the toolbar. Checked in a browser: at 1920 the nav 312 and the panel at (312, 8), 1600 × 1064, exactly as Figma; the header 87 (the approved FinHeader; the screen's older copy is 89); at 1440 / 1280 the panel 1120 / 960 wide; at 1024 the nav minimized (88) and the panel 928; at every width the window doesn't scroll, the content does, and the header stays at the panel's top. Light and Dark. *(Those were the sizes on 22 Oct 2026; for today's, see below.)*
+
+**Sizes today (updated 17 Nov 2026).** The shell's own CSS hasn't changed; the sizes moved with its parts: the side nav is **272** expanded and **80** minimized (§9.57, decided 29 Oct 2026; was 312 / 88), and the header is **77** (§9.63, 2 Nov 2026; was 87). So at 1920 the panel is at (272, 8), **1640 × 1064**; at 1440 / 1280 it's **1160 / 1000** wide; at 1024 (nav minimized) **936**. Content padding 24 all round (decision 6, 3 Nov 2026).
 
 ### 9.69 FinButtonDock (Button dock) — public
 
@@ -4949,3 +4951,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 16 Nov 2026 | 0.6 | **Checkbox cells** (§9.43, §9.45, code first, §10 #122): FinTableCell `type="checkbox"` with `disabled`; FinTable checkbox columns (`checked`, `onCheckedChange`, `disabled`), named "{row}, {header}". Storybook: Components/Table/Permissions. |
 | 16 Nov 2026 | 0.2 | **Released v0.8.0** (both packages; what's in it: CHANGELOG.md). |
 | 16 Nov 2026 | 0.2 | **Released v0.9.0** (both packages; what's in it: CHANGELOG.md). |
+| 17 Nov 2026 | 0.2 | **§9.68 FinAppShell sizes corrected** (docs only): the record still had the 22 Oct 2026 sizes (nav 312 / 88, panel 1600, header 87); now the nav 272 / 80 (§9.57), header 77 (§9.63), panel 1640 at 1920, 1160 / 1000 / 936 at 1440 / 1280 / 1024. |

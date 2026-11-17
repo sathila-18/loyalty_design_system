@@ -564,7 +564,7 @@ itself, not code changes, so they're not part of this sync.
   | Content slot | padding **Space-3XL** all round, gap **Space-4XL** (the pages' block spacing), clipped. Default content: 3 sample blocks (**bg-secondary**, **Radius-M**, padding **Space-3XL**, **Text Box** `Headline Medium-H5`, label off, "Section 1–3"), as the story |
   | Skip link | absolute at the top left: a **bg-primary** pill, **Radius-Full**, padding **Space-M** / **Space-XL**, **Label/Medium** **text-action**; the focus ring as a 2px **border-focused** stroke on a frame **Space-XS** (4) outside the pill (2 ring + 2 offset) |
 
-- **Examples** (instances): **At 1024** (`3923:841`, Side Menu `Type=Minimized`, 80; panel 928 wide, as code) and
+- **Examples** (instances): **At 1024** (`3923:841`, Side Menu `Type=Minimized`, 80; panel 936 wide, as code; was logged as 928, corrected 17 Nov 2026) and
   **Skip link** (`3923:1231`, Skip link on).
 - **Description** on the component: layout, the slot, the exposed parts, the 1280 rule, the skip link, and what
   Figma can't show (only the content scrolls; the content area's own focus ring).
@@ -572,7 +572,8 @@ itself, not code changes, so they're not part of this sync.
   - **No Shadow/Menu** on the skip link pill: there's no Shadow/Menu effect style in Foundation – Loyalty or this file
     (the same gap as N12's sideways shadow). Add it to the pill when the style exists.
   - `DESIGN.md` §9.68 still says the nav is 312 at 1920 (written before the 272 nav, 29 Oct 2026); code and Figma are
-    272. Not changed here (`DESIGN.md` is never written for this work).
+    272. Not changed here (`DESIGN.md` is never written for this work). **Corrected 17 Nov 2026** on its own, as the
+    designer asked (`DESIGN.md` §9.68 "Sizes today").
 - **Source:** `FinAppShell` (`packages/ui/src/components/AppShell/`), `DESIGN.md` §9.68.
 
 ### C10 · Segmented button sizes and icon only: 16 Nov 2026
