@@ -30,7 +30,7 @@ stay as they are.
 | S7 | Login | Pages/Login | ✅ 17 Nov 2026 |
 | S8 | Forgot password | Old Figma screens `435:90303`, `435:90402` (Admin UIs, Login Option 02) | ✅ 17 Nov 2026 |
 | S9 | Reset password | Old Figma screens `150:5950`, `435:90550` (Admin UIs, Login Option 02) | ✅ 17 Nov 2026 |
-| S10 | System users | Old Figma screens, User management (link from design) | ⬜ |
+| S10 | System users | Old Figma screens, section `188:13373` (Admin UIs) | ✅ 17 Nov 2026 |
 | S11 | Role management | Old Figma screens, User management (link from design) | ⬜ |
 | S12 | System audit | Old Figma screens (link from design) | ⬜ |
 | — | Dashboard | not built in code, no reference yet | to decide |
@@ -299,3 +299,29 @@ states). One flow at a time, in this order, each approved before the next.
   library's 48px bg Success; headings are the Login's Text Box (Display Medium-H2), not the old smaller titles.
 - **Figma note:** a new section's first Alias Colors setting is stored under another id (`…/18133:365`); clearing it
   and setting it again stores `…/18268:346` (checked on both sections).
+
+### S10 · System users: 17 Nov 2026
+
+- **Source:** the old section `188:13373` "User management - System users" (Admin UIs): list `428:53386`, Add
+  `428:55936`, Edit and Updated `203:31563`, Remove and Removed `203:31578`. Content only; built as S1–S3.
+- **Decisions (design, 17 Nov 2026):** the remove dialog in the built pages' words; the Edit sheet titled "Edit
+  system user" (the old one repeats "Add new system user"); current conventions ("Add new user" in sentence case,
+  "Status" for the old "Ststus", dates DD/MM/YYYY, Inactive the neutral badge as Tier management and Badges); only the
+  old screens' states (no empty-state frames). The old inline edit / delete icons are the ⋮ menu, and the old Status
+  and Role chips beside the button are the columns' filters (the S8–S12 rule). The Add sheet is drawn empty and the
+  Edit sheet filled with the old screen's values, as the other pages.
+- **Section** `1101:80133` "System users". App shell: Side Menu `Menu=User Management` (User management `Selected`,
+  sub-items "User roles", **"System users"** selected, sentence case as the old screen's labels); Main header "System
+  users" with no description (as the old screen; Body content off).
+
+  | Frame | Node | Old screen | Built from |
+  |---|---|---|---|
+  | List | `1101:80134` | `428:53386` | Table: search "Search user name/ email", "Add new user" with `add`; No. (80), User name, First name (160), Last name (160), Email, Role (144, filter), Created date (152), Updated date (152), Status (176, Badge, filter: Active Success, Inactive Neutral); ⋮ on each row; the old 10 users; "Showing 1–10 of 10 entries in page 1" |
+  | Add new system user | `1101:80374` | `428:55936` | Side sheet, its own title (Display Small-H3) "Add new system user" **with the close button** (as the old screen) and Cancel + Create user; fields Small, Space-XL apart: NIC; First name + Last name; Email; User name + Contact number (**Input field-standard `Type=Mobile number`**: flag, +94); Date of birth (Input field-date, nested Small) + Role (select) |
+  | Edit system user | `1101:80525` | `203:31563` | The same, `Complete`: 956678437V, Fatima, Khar, fatimakhar@email.com, Fatima, +94 77 554 7776, 12/08/1996, Admin; Status (select) Active; a grey panel (bg-secondary, Radius-L, Space-XL padding, as S3's) with Text Box `Headline Small-H6` "Reset password" / "Send password reset email." and all-button Primary Small "Send email"; Cancel + Update `Disabled` (as the other edit sheets) |
+  | Updated | `1101:80676` | `203:31563` | List + Snackbar Success "User details updated successfully!" |
+  | Remove user | `1101:80897` | `203:31578` | Dialog "Remove user", "Are you sure you want to remove the “Fatima Khar” user?", Cancel + Remove |
+  | Removed | `1101:81141` | `203:31578` | List without Fatima Khar ("Showing 1–9 of 9 entries in page 1") + Snackbar "User removed successfully!" |
+
+- **Library issues found:** 23. **Side Menu** `Menu=User Management`: items "User Roles", "System Users" (Title Case)
+  and User Management `Selected - BG`, as #16: overridden.
