@@ -25,7 +25,7 @@ stay as they are.
 | S2 | Tier management | Pages/Loyalty Management/Tier Management | ✅ 17 Nov 2026 |
 | S3 | Reward catalog | Pages/Loyalty Management/Reward Catalog | ✅ 17 Nov 2026 |
 | S4 | Focus areas | Pages/Gamification/Focus Areas | ✅ 17 Nov 2026 |
-| S5 | Badges | Pages/Gamification/Badges | ⬜ |
+| S5 | Badges | Pages/Gamification/Badges | ✅ 17 Nov 2026 |
 | S6 | Reports | Pages/Report Management/Reports | ⬜ |
 | S7 | Login | Pages/Login | ⬜ |
 | — | System users, Role management, System audit, Dashboard | not built in code | to decide |
@@ -177,4 +177,29 @@ stay as they are.
       fg-error, as the library's "Tertiary tones (overrides)" says.
 - **Figma quirks:** clones and new instances drawn at old widths until resized (every field in the sheets resized);
   Table cell text doesn't fill its cell, so the ellipsis needed a fixed width.
+- **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), compared frame by frame.
+
+### S5 · Badges: 17 Nov 2026
+
+- **Section** `1084:29493` "Badges", under S4 (copied from S4's frames; the section's modes set as S4's: Alias Colors
+  Burgundy theme, Color collection Light). App shell: Side Menu Gamification with **Badges** selected; Main header
+  "Badges" / "Badges members earn as they use the programme", no back button.
+
+  | Frame | Node | Story | Built from |
+  |---|---|---|---|
+  | List | `1084:29494` | List | Table: "Search badge", "Add badge"; ID (120), Badge name (the cell's leading accessory an **Avatar** Small 32 before the name), Status (176, Badge, filter: Active Success, Inactive Neutral); Figma's 4 rows; "Showing 1–4 of 4 entries in page 1" |
+  | Add badge | `1084:29671` | Add badge | Sheet title "Add badge" **with the close button and no Cancel** (as code, decided 28 Oct 2026); "Badge": **File uploads** `Size=Large, State=Enabled` ("Upload badge icon", "(JPEG, PNG) / Max file size: 5 MB", Upload), Badge name; "Status": Active (toggle on), "Inactive badges are hidden from the badge list when creating a reward"; dock Save badge only |
+  | Edit badge | `1084:29885` | Edit badge | File uploads `State=Complete` "early-adopter.png" with Delete; Badge name `Complete` "Early adopter"; Active on; Save `Disabled` |
+  | Details | `1084:30099` | Details | "Top server details": ID 02, Badge name (avatar + "Top server"), Status Active |
+  | Remove badge | `1084:30277` | Remove badge | "Remove badge", "Are you sure you want to remove the “Early adopter” badge?" |
+  | Removed | `1084:30458` | Removed | List without Early adopter ("Showing 1–3 of 3 entries in page 1") + Snackbar "Badge removed successfully" |
+  | No badges | `1084:30635` | No badges | Empty state Medium, `loyalty`: "No badges yet", "Add a badge members can earn, for example by completing a focus area.", "Add badge" |
+  | No matches | `1084:30661` | No matches | Empty state Small: "No badges match “Lottery”" |
+
+- **Not like code:** the badge icons are uploaded artwork; the stories draw placeholders (a coloured disc with the
+  name's first letter). The screens use Avatar `Type=Text` with the letter (neutral), not an image; the snackbar is
+  343 wide, as S1.
+- **Figma note:** a new section must get the Alias Colors mode by the collection's exact id
+  (`…/18268:346`); copying it through another id of the same collection (`…/18133:365`) passes the plugin check but
+  the screens still render in Finspace.
 - **Reference:** Storybook stories screenshotted at 1920 (local, from `main`), compared frame by frame.
