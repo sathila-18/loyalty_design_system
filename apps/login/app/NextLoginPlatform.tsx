@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useMemo, type ReactNode } from 'react';
 import * as mockAuth from '@/lib/auth';
 import detective from '@/public/sign-in/detective.jpg';
+import laptop from '@/public/sign-in/laptop.jpg';
 import trophy from '@/public/sign-in/trophy.jpg';
 import { LoginPlatformProvider, type LoginArtwork, type LoginPlatform, type LoginRoute } from '@/screens';
 
@@ -22,7 +23,7 @@ const ROUTES: Record<LoginRoute, string> = {
   'reset-password-done': '/reset-password/done',
 };
 
-const IMAGES = { trophy, detective };
+const IMAGES = { laptop, trophy, detective };
 
 /* The panel is half the window from 1024 (hidden below), less its 24 inset; next/image serves WebP or AVIF at that size. */
 function NextArtwork({ artwork }: { artwork: LoginArtwork }) {

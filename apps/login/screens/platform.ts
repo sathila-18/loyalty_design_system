@@ -14,7 +14,7 @@ import type { requestPasswordReset, resetPassword, signIn } from '../lib/auth';
 export type LoginRoute = 'login' | 'forgot-password' | 'forgot-password-sent' | 'reset-password' | 'reset-password-done';
 
 /** The artwork in the image panel. */
-export type LoginArtwork = 'trophy' | 'detective';
+export type LoginArtwork = 'laptop' | 'trophy' | 'detective';
 
 /** The calls the screens make. The mock is lib/auth.ts; the real API replaces it with the same signatures. */
 export interface LoginAuth {
