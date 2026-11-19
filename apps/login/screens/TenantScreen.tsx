@@ -22,7 +22,7 @@ export function organisationInitials(name: string) {
  * Select your organisation (design's screenshot, 19 Nov 2026; Storybook only, no app route yet): after sign-in, an
  * account with access to several organisations picks one. The Login screen's shell and header (logo, Text Box
  * Display Medium-H2), the organisations as filled list cards (FinListStandardFilled: border, no fill; text avatar with
- * the initials, the name, the chevron) 12 apart, 32 below the header; "Back to login" (the hanging text link button)
+ * the initials, the name, the chevron) 8 apart (Space-M, design 19 Nov 2026), 32 below the header; "Back to login" (the hanging text link button)
  * 32 below. Choosing one shows a demo banner (in the real app it opens that organisation's dashboard).
  */
 export function TenantScreen({ organisations }: { organisations: TenantOrganisation[] }) {
@@ -45,7 +45,7 @@ export function TenantScreen({ organisations }: { organisations: TenantOrganisat
             {`Opening ${chosen.name} (demo). In the real app this opens its dashboard.`}
           </FinNotificationBanner>
         )}
-        <ul className="m-none flex list-none flex-col gap-l p-none" aria-label="Organisations">
+        <ul className="m-none flex list-none flex-col gap-m p-none" aria-label="Organisations">
           {organisations.map((organisation) => (
             <FinListStandardFilled
               key={organisation.id}
