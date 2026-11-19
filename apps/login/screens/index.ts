@@ -3,4 +3,5 @@ export { useLoginPlatform, type LoginArtwork, type LoginAuth, type LoginPlatform
 export { LoginPlatformProvider } from './LoginPlatformProvider';
 export { SignInScreen } from './SignInScreen';
 export { LoginScreen } from './LoginScreen';
+export { TenantScreen, organisationInitials, type TenantOrganisation } from './TenantScreen';
 export { AppLogo } from './AppLogo';

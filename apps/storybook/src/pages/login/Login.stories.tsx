@@ -1,22 +1,8 @@
 import '@finspace-loyalty/login/screens/screens.css';
-import { finBrands, type FinBrand } from '@finspace-loyalty/tokens';
-import { LoginPlatformProvider, LoginScreen, type LoginAuth } from '@finspace-loyalty/login/screens';
-import type { Decorator, Meta, StoryObj } from '@storybook/react-vite';
+import { LoginScreen, type LoginAuth } from '@finspace-loyalty/login/screens';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import { storybookPlatform } from './storybookPlatform';
-
-/**
- * The shared screen (apps/login/screens, also the Next.js app's /login) with Storybook's platform: plain links, the
- * mock auth, the Brand toolbar for the logo. `parameters.loginAuth` replaces mock calls for one story.
- */
-const withLoginPlatform: Decorator = (Story, { globals, parameters }) => {
-  const brand = finBrands.includes(globals['brand'] as FinBrand) ? (globals['brand'] as FinBrand) : 'finspace';
-  return (
-    <LoginPlatformProvider value={storybookPlatform(brand, parameters['loginAuth'] as Partial<LoginAuth> | undefined)}>
-      <Story />
-    </LoginPlatformProvider>
-  );
-};
+import { withLoginPlatform } from './withLoginPlatform';
 
 /**
  * Figma Login Option 02, Login (`135:4939`): FinSignInLayout with the laptop photo (Admin UI V2 `1092:36529`, 19 Nov 2026); the logo, "Get started now!",
