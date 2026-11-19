@@ -33,6 +33,7 @@ stay as they are.
 | S10 | System users | Old Figma screens, section `188:13373` (Admin UIs) | ✅ 17 Nov 2026 |
 | S11 | Role management | Old Figma screens, section `196:18060` (Admin UIs) | ✅ 17 Nov 2026 |
 | S12 | System audit | Old Figma screens, section `208:41600` (Admin UIs) | ✅ 19 Nov 2026 |
+| S13 | Tenant (Select your organisation) | Pages/Login/Tenant (built 19 Nov 2026) | ✅ 19 Nov 2026 |
 | — | Dashboard | not built in code, no reference yet | to decide |
 
 **S8–S12: screens not built in code (agreed with design 17 Nov 2026).** The old Figma screens give the **content**
@@ -379,3 +380,29 @@ states). One flow at a time, in this order, each approved before the next.
 
 - **Library issues found:** 24. **Side Menu** `Menu=System Audit`: its page is "Audit Trial" (typo) and Title Case
   items, as #16 / #23: overridden.
+
+### S13 · Tenant (Select your organisation): 19 Nov 2026
+
+- **Source:** Pages/Login/Tenant (`apps/login/screens/TenantScreen.tsx`, Storybook only; from design's screenshot,
+  19 Nov 2026). Built as S7.
+- **Section** `1217:55392` "Tenant", to the right of Reset password (x 4340, y −2612; the gap above Programme
+  configuration was too small). Variable modes as S7's section (Burgundy, Light; the brand mode checked on
+  `…/18268:346`). Each frame 1920 × 1080 holds a new **Sign in layout** (Image panel and Image text on, the laptop
+  photo as Login's), its **Form** slot holding the "Tenant form" (608 wide, gap **Space-4XL**):
+  - **Heading:** S7's (Logo sizes Small Coloured With text; Text Box `Display Medium-H2`) with "Select your
+    organisation" / "Your account has access to multiple organisations. Please select one to continue.".
+  - **Organisations** (gap **Space-L**, 12, the filled cards' own spacing): **List_fill-standard** `State=Default,
+    Description=False, Leading accessory=Avatar, Trailing accessory=None, Size=Large`, full width; Avatar
+    `Type=Text` with the initials (first letters of the first and last words, or a one-word name's first two
+    letters); the title truncated to one line with "…" (text truncation Ending, max 1 line), as code's `truncate`.
+  - **Back to login:** S7's Forgot password button (**all-button** `Type=Link` XSmall, left padding 0) relabelled.
+
+  | Frame | Node | Story | State |
+  |---|---|---|---|
+  | Default | `1217:55393` | Default | testname1, testname2 (TE) |
+  | Many organisations | `1217:55604` | Many organisations | Eight banks (BC, SB, CB, HB, SB, NB, DB, PB) |
+  | Long names | `1217:55972` | Long names | "Finspace Loyalty Programme for Retail and Corporate Banking Customers, Western Province" (FP), cut with "…"; testname2 |
+  | Chosen | `1217:56130` | Chosen | **Notification** `Type=Success` (no title, close or button) "Opening testname1 (demo). In the real app this opens its dashboard." between the heading and the list |
+
+- **Figma notes:** code's `truncate` (a list row option since this change) has no Figma property: the title text's
+  truncation is set on each card instead.
