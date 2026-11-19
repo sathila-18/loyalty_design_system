@@ -54,7 +54,7 @@ export const ManyOrganisations: Story = {
   },
 };
 
-/** A long name wraps onto more lines in its card. */
+/** A long name stays on one line, cut with "…"; the full name is its tooltip and is read in full. */
 export const LongNames: Story = {
   name: 'Long names',
   args: {
