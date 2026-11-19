@@ -74,6 +74,12 @@ export const action = {
   },
 };
 
+/*
+ * Code only (`truncate`, 19 Nov 2026): the title and description on one line, cut with "…". The title's span, link or
+ * button fills the text column (it's static, so the cover-action layer still covers the row).
+ */
+export const truncate = 'fin:block fin:w-full fin:truncate';
+
 /* The caption's colour when disabled, over FinCaption's own: `placement:`. */
 export const disabledCaption = 'fin:placement:text-disabled-on-bg';
 

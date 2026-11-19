@@ -172,3 +172,27 @@ export const Behaviors: Story = {
     );
   },
 };
+
+/** Code only: `truncate` keeps the title and description on one line with "…" (the full text is the tooltip); without it they wrap. */
+export const Truncate: Story = {
+  render: () => (
+    <ul className={styles.list}>
+      <FinListStandard
+        as="li"
+        behavior="link"
+        href="#"
+        title="Finspace Loyalty Programme for Retail and Corporate Banking Customers, Western Province"
+        description="Members, tiers, rewards and gamification for every branch in the province, with monthly reports"
+        leadingAccessory="icon"
+        chevron
+        truncate
+      />
+      <FinListStandard
+        as="li"
+        title="Finspace Loyalty Programme for Retail and Corporate Banking Customers, Western Province"
+        description="Members, tiers, rewards and gamification for every branch in the province, with monthly reports"
+        leadingAccessory="icon"
+      />
+    </ul>
+  ),
+};

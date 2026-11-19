@@ -15,12 +15,13 @@ interface Args {
   description: boolean;
   leadingAccessory: FinListStandardLeading;
   caption: boolean;
+  truncate: boolean;
 }
 
 /** Clickable cards: List-standard on List_fill-base, always with the chevron. Code first (DESIGN.md §10 #56). */
 const meta: Meta<Args> = {
   title: 'Components/List/Filled/List standard',
-  args: { state: 'default', size: 'large', density: 'default', description: true, leadingAccessory: 'icon', caption: false },
+  args: { state: 'default', size: 'large', density: 'default', description: true, leadingAccessory: 'icon', caption: false, truncate: false },
   argTypes: {
     state: { control: 'inline-radio', options: ['default', 'selected', 'disabled'], description: 'State (Hovered is the mouse)' },
     size: { control: 'inline-radio', options: ['large', 'small'], description: 'Size' },
@@ -28,6 +29,7 @@ const meta: Meta<Args> = {
     description: { control: 'boolean', description: 'Description' },
     leadingAccessory: { control: 'inline-radio', options: ['none', 'icon', 'flag', 'payment', 'avatar'], description: 'Leading accessory' },
     caption: { control: 'boolean', description: 'Caption (before the chevron)' },
+    truncate: { control: 'boolean', description: 'Truncate (code only): title and description on one line with "…"' },
   },
   parameters: { layout: 'padded', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
   render: ({ state, description, caption, ...args }) => (
@@ -84,5 +86,19 @@ export const Accessories: Story = {
         <FinListStandardFilled as="li" href="#" title="Title here" caption="Caption" leadingAccessory="avatar" avatar={{ src: avatarSample }} />
       </ul>
     </div>
+  ),
+};
+
+const LONG_TITLE = 'Finspace Loyalty Programme for Retail and Corporate Banking Customers, Western Province';
+const LONG_DESCRIPTION = 'Members, tiers, rewards and gamification for every branch in the province, with monthly reports';
+
+/** Code only: `truncate` keeps the title and description on one line with "…" (the full text is the tooltip); without it they wrap. */
+export const Truncate: Story = {
+  render: () => (
+    <ul className={styles.list}>
+      <FinListStandardFilled as="li" behavior="button" title={LONG_TITLE} description={LONG_DESCRIPTION} leadingAccessory="avatar" avatar={{ initials: 'FW' }} truncate />
+      <FinListStandardFilled as="li" behavior="button" title={LONG_TITLE} leadingAccessory="avatar" avatar={{ initials: 'FW' }} truncate />
+      <FinListStandardFilled as="li" behavior="button" title={LONG_TITLE} description={LONG_DESCRIPTION} leadingAccessory="avatar" avatar={{ initials: 'FW' }} />
+    </ul>
   ),
 };
