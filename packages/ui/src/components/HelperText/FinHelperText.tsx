@@ -42,7 +42,7 @@ export function FinHelperText({ children, tone = 'default', showIcon = true, ico
       data-tone={tone}
       data-icon={showIcon || undefined}
     >
-      {showIcon && <FinIcon name={icon ?? TONE[tone].icon} size={20} color={TONE[tone].color} filled={TONE[tone].filled} />}
+      {showIcon && <FinIcon name={icon ?? TONE[tone].icon} size={20} color={TONE[tone].color} filled={TONE[tone].filled ?? false} />}
       <span className={[styles.text, styles.tone[tone], showIcon && styles.textWithIcon].filter(Boolean).join(' ')}>{children}</span>
     </div>
   );
