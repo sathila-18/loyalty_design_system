@@ -61,6 +61,11 @@ export interface FinListStandardProps
   /** Figma `State=Disabled`: greyed, not interactive. Default false. */
   disabled?: boolean;
   /**
+   * Code only (19 Nov 2026): the title and description each on one line, cut with "…" when too long; text ones get
+   * their full text as a tooltip (screen readers read it all). Default false: they wrap.
+   */
+  truncate?: boolean;
+  /**
    * Code only (23 Oct 2026): `destructive` for an action that deletes or removes (in a menu): the title and the icon
    * accessory in the destructive button's colours, `text-error` and `fg-error`. Disabled wins. Default `default`.
    */
@@ -97,6 +102,7 @@ export function ListStandardRow({
   chevron = false,
   selected = false,
   disabled = false,
+  truncate = false,
   tone = 'default',
   behavior = 'static',
   href,
@@ -122,7 +128,9 @@ export function ListStandardRow({
   const describedBy = description !== undefined && description !== null ? descriptionId : undefined;
   const size = rest.size ?? 'large';
   const kind = filled ? 'filled' : 'plain';
-  const titleClass = disabled ? styles.title.disabled : tone === 'destructive' ? styles.title.destructive : styles.title.default;
+  const titleTone = disabled ? styles.title.disabled : tone === 'destructive' ? styles.title.destructive : styles.title.default;
+  const titleClass = truncate ? `${titleTone} ${styles.truncate}` : titleTone;
+  const tooltip = (text: ReactNode) => (truncate && (typeof text === 'string' || typeof text === 'number') ? String(text) : undefined);
   const actionClass = `${titleClass} ${disabled ? styles.action[kind].disabled : styles.action[kind].enabled}`;
   // A disabled card shows its Disabled edge, not the Selected one.
   const fill: styles.FinListRowFill =
@@ -137,13 +145,13 @@ export function ListStandardRow({
     .filter(Boolean)
     .join(' ');
   let titleNode: ReactNode = (
-    <span id={titleId} className={titleClass}>
+    <span id={titleId} className={titleClass} title={tooltip(title)}>
       {title}
     </span>
   );
   if (labelFor !== undefined)
     titleNode = (
-      <label id={titleId} htmlFor={labelFor} className={actionClass}>
+      <label id={titleId} htmlFor={labelFor} className={actionClass} title={tooltip(title)}>
         {title}
       </label>
     );
@@ -151,6 +159,7 @@ export function ListStandardRow({
     titleNode = (
       <Link
         className={actionClass}
+        title={tooltip(title)}
         {...(disabled ? { 'aria-disabled': true } : { href, onClick })}
         aria-current={selected ? 'page' : undefined}
         aria-describedby={describedBy}
@@ -165,6 +174,7 @@ export function ListStandardRow({
         role="menuitem"
         tabIndex={-1}
         className={actionClass}
+        title={tooltip(title)}
         disabled={disabled}
         onClick={onClick}
         aria-describedby={describedBy}
@@ -174,7 +184,14 @@ export function ListStandardRow({
     );
   if (behavior === 'button')
     titleNode = (
-      <button type="button" className={actionClass} disabled={disabled} onClick={onClick} aria-describedby={describedBy}>
+      <button
+        type="button"
+        className={actionClass}
+        title={tooltip(title)}
+        disabled={disabled}
+        onClick={onClick}
+        aria-describedby={describedBy}
+      >
         {title}
       </button>
     );
@@ -213,7 +230,13 @@ export function ListStandardRow({
       }
     >
       {describedBy && (
-        <p id={descriptionId} className={disabled ? styles.description[size].disabled : styles.description[size].enabled}>
+        <p
+          id={descriptionId}
+          className={[disabled ? styles.description[size].disabled : styles.description[size].enabled, truncate && styles.truncate]
+            .filter(Boolean)
+            .join(' ')}
+          title={tooltip(description)}
+        >
           {description}
         </p>
       )}

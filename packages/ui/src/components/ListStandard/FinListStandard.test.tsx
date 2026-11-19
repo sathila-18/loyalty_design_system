@@ -126,4 +126,20 @@ describe('FinListStandard', () => {
     const { container } = render(<FinListStandard title="Compact" density="compact" />);
     expect(container.querySelector('[data-density]')).toHaveAttribute('data-density', 'compact');
   });
+
+  it('truncate: the title (a button here) and description stay on one line, with the full text as their tooltip', () => {
+    render(<FinListStandard behavior="button" title="A very long organisation name" description="A long description" truncate />);
+    const button = screen.getByRole('button', { name: 'A very long organisation name' });
+    expect(button).toHaveAttribute('title', 'A very long organisation name');
+    expect(button.className).toContain('truncate');
+    const description = screen.getByText('A long description');
+    expect(description).toHaveAttribute('title', 'A long description');
+    expect(description.className).toContain('truncate');
+  });
+
+  it('without truncate, no tooltip and the text wraps', () => {
+    render(<FinListStandard title="Wraps" description="Also wraps" />);
+    expect(screen.getByText('Wraps')).not.toHaveAttribute('title');
+    expect(screen.getByText('Wraps').className).not.toContain('truncate');
+  });
 });
