@@ -17,15 +17,17 @@ describe('FinHelperText', () => {
   });
 
   it.each([
-    ['success', 'check_circle', 'var(--fin-fg-success)'],
-    ['warning', 'warning', 'var(--fin-fg-warning)'],
-    ['error', 'warning', 'var(--fin-fg-error)'],
-    ['disabled', 'info', 'var(--fin-fg-disabled)'],
-  ] as const)('the %s tone uses the Figma icon %s in %s', (tone, icon, color) => {
+    ['success', 'check_circle', 'var(--fin-fg-success)', false],
+    ['warning', 'warning', 'var(--fin-fg-warning)', false],
+    ['error', 'warning', 'var(--fin-fg-error)', true],
+    ['disabled', 'info', 'var(--fin-fg-disabled)', false],
+  ] as const)('the %s tone uses the Figma icon %s in %s (filled: %s)', (tone, icon, color, filled) => {
     const { container } = render(<FinHelperText tone={tone}>Text</FinHelperText>);
     expect(container.firstElementChild).toHaveAttribute('data-tone', tone);
     expect(glyph(container.firstElementChild!)).toHaveTextContent(icon);
     expect(glyph(container.firstElementChild!)!.style.getPropertyValue('--icon-color')).toBe(color);
+    if (filled) expect(glyph(container.firstElementChild!)).toHaveAttribute('data-filled');
+    else expect(glyph(container.firstElementChild!)).not.toHaveAttribute('data-filled');
   });
 
   it('hides the icon with showIcon={false}, in every tone (also success)', () => {

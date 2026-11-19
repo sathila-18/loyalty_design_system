@@ -40,6 +40,7 @@ describe('FinInputBase', () => {
     expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');
     expect(container.querySelector('[data-tone="error"]')).toHaveTextContent('Enter a valid email');
     expect(container.querySelector('[data-tone="error"] [translate="no"]')).toHaveTextContent('warning');
+    expect(container.querySelector('[data-tone="error"] [translate="no"]')).toHaveAttribute('data-filled');
   });
 
   it('disabled: the input is disabled and the error look is dropped', () => {
