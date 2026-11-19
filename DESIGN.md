@@ -4953,3 +4953,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 16 Nov 2026 | 0.2 | **Released v0.9.0** (both packages; what's in it: CHANGELOG.md). |
 | 17 Nov 2026 | 0.2 | **§9.68 FinAppShell sizes corrected** (docs only): the record still had the 22 Oct 2026 sizes (nav 312 / 88, panel 1600, header 87); now the nav 272 / 80 (§9.57), header 77 (§9.63), panel 1640 at 1920, 1160 / 1000 / 936 at 1440 / 1280 / 1024. |
 | 19 Nov 2026 | 0.6 | **Error helper text with its icon** (§9.58, design): FinInputBase's error helper text shows FinHelperText's `warning` icon, as Figma and FinTextArea, and **FinHelperText's Error icon is filled** (§9.20; everywhere: fields, text area, standalone), so every field built on it (text, password, select, multi select, date, mobile number, payment) does too. Default and Disabled stay without an icon. |
+| 19 Nov 2026 | 0.2 | **Released v0.9.1** (both packages; what's in it: CHANGELOG.md). |
