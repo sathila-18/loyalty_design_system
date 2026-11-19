@@ -5,16 +5,19 @@ import type { ReactNode } from 'react';
 import { useLoginPlatform, type LoginArtwork } from './platform';
 
 /*
- * Every screen's shell: FinSignInLayout with the artwork from the platform (the library ships none). As Figma's
- * Login Option 02: the trophy with the portal's title and description (Login, Reset password), the detective alone
- * (Forgot password and the two confirmations).
+ * Every screen's shell: FinSignInLayout with the artwork from the platform (the library ships none). Login: the
+ * laptop photo with the portal's title and description (Figma Admin UI V2, changed by design 19 Nov 2026); Reset
+ * password: the trophy with the same text; the detective alone (Forgot password and the two confirmations), as Login
+ * Option 02.
  */
+const PORTAL = {
+  title: 'Customer Engagement Management Portal',
+  description:
+    'Start your journey toward stronger customer engagement with our innovative loyalty and gamification solutions. Build meaningful interactions, reward participation, and create lasting customer relationships.',
+};
 const TEXT: Record<LoginArtwork, { title?: string; description?: string }> = {
-  trophy: {
-    title: 'Customer Engagement Management Portal',
-    description:
-      'Start your journey toward stronger customer engagement with our innovative loyalty and gamification solutions. Build meaningful interactions, reward participation, and create lasting customer relationships.',
-  },
+  laptop: PORTAL,
+  trophy: PORTAL,
   detective: {},
 };
 

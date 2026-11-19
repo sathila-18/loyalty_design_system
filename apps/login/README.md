@@ -45,7 +45,7 @@ Set once per deployment, on `<html>` (`lib/brand.ts`):
 |---|---|
 | `screens/` | **The screens**, shared with Storybook's Pages/Login: React, the library and Tailwind only, never `next/*` (ESLint). `platform.tsx` and `LoginPlatformProvider.tsx` are what they need from where they run |
 | `app/` | The Next.js side: the routes (`/` redirects to `/login`), metadata, and `NextLoginPlatform.tsx` (next/link, next/image, the router, the auth) |
-| `public/sign-in/` | The artwork, exported from Figma as the screens crop it (2×); Storybook serves the same files |
+| `public/sign-in/` | The artwork, exported from Figma as the screens crop it (2×; `laptop.jpg`, the Login photo, is Figma's original image, cropped by the panel); Storybook serves the same files |
 | `lib/brand.ts` | The brand and theme for this deployment |
 | `lib/auth.ts` | **The mock API** (every fake call) |
 

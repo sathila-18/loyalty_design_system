@@ -10,7 +10,7 @@ import { SignInScreen } from './SignInScreen';
 export function LoginScreen() {
   const { brand } = useLoginPlatform();
   return (
-    <SignInScreen artwork="trophy">
+    <SignInScreen artwork="laptop">
       <div className="flex flex-col gap-4xl">
         <div className="flex flex-col gap-xl">
           <AppLogo brand={brand} />
