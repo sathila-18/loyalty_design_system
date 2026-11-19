@@ -190,7 +190,7 @@ export const FinInputBase = forwardRef<HTMLInputElement, FinInputBaseProps>(func
         </label>
       </div>
       {hasHelper && (
-        <FinHelperText id={helperId} className={styles.helper} showIcon={false} tone={disabled ? 'disabled' : error ? 'error' : 'default'}>
+        <FinHelperText id={helperId} className={styles.helper} showIcon={error && !disabled} tone={disabled ? 'disabled' : error ? 'error' : 'default'}>
           {helperText}
         </FinHelperText>
       )}

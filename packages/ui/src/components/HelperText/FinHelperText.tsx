@@ -22,12 +22,12 @@ export interface FinHelperTextProps extends Omit<HTMLAttributes<HTMLDivElement>,
   announce?: boolean;
 }
 
-/** The tone's icon and color, as in Figma (icons updated by design 15 Oct 2026). */
-const TONE: Record<FinHelperTextTone, { icon: FinIconName; color: FinFgColor }> = {
+/** The tone's icon and color, as in Figma (icons updated by design 15 Oct 2026). Error's icon is filled (design, 19 Nov 2026). */
+const TONE: Record<FinHelperTextTone, { icon: FinIconName; color: FinFgColor; filled?: boolean }> = {
   default: { icon: 'info', color: 'secondary' },
   success: { icon: 'check_circle', color: 'success' },
   warning: { icon: 'warning', color: 'warning' },
-  error: { icon: 'warning', color: 'error' },
+  error: { icon: 'warning', color: 'error', filled: true },
   disabled: { icon: 'info', color: 'disabled' },
 };
 
@@ -42,7 +42,7 @@ export function FinHelperText({ children, tone = 'default', showIcon = true, ico
       data-tone={tone}
       data-icon={showIcon || undefined}
     >
-      {showIcon && <FinIcon name={icon ?? TONE[tone].icon} size={20} color={TONE[tone].color} />}
+      {showIcon && <FinIcon name={icon ?? TONE[tone].icon} size={20} color={TONE[tone].color} filled={TONE[tone].filled ?? false} />}
       <span className={[styles.text, styles.tone[tone], showIcon && styles.textWithIcon].filter(Boolean).join(' ')}>{children}</span>
     </div>
   );

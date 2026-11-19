@@ -10,6 +10,9 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Changed
 
+- **Input fields:** an error's helper text now shows the warning icon, as Figma and FinTextArea (FinTextField, FinPasswordField, FinSelectField, FinMultiSelectField, FinDateField and every field on FinInputBase). Default and disabled helper text stay without an icon.
+- **FinHelperText:** the error tone's `warning` icon is filled (was outlined), wherever error helper text shows it.
+
 ### Fixed
 
 ### Breaking
