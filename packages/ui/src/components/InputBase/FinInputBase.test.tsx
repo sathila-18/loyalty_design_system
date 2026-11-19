@@ -33,10 +33,13 @@ describe('FinInputBase', () => {
     expect(screen.getByRole('textbox').getAttribute('aria-describedby')).toMatch(/^other .+-helper$/);
   });
 
-  it('with an error, is invalid and its helper text is the error tone', () => {
-    const { container } = render(<FinInputBase label="Email" helperText="Enter a valid email" error />);
+  it('with an error, is invalid and its helper text is the error tone with the warning icon', () => {
+    const { container, rerender } = render(<FinInputBase label="Email" helperText="We'll send the receipt here" />);
+    expect(container.querySelector('[translate="no"]')).toBeNull();
+    rerender(<FinInputBase label="Email" helperText="Enter a valid email" error />);
     expect(screen.getByRole('textbox')).toHaveAttribute('aria-invalid', 'true');
     expect(container.querySelector('[data-tone="error"]')).toHaveTextContent('Enter a valid email');
+    expect(container.querySelector('[data-tone="error"] [translate="no"]')).toHaveTextContent('warning');
   });
 
   it('disabled: the input is disabled and the error look is dropped', () => {
@@ -44,6 +47,7 @@ describe('FinInputBase', () => {
     expect(screen.getByRole('textbox')).toBeDisabled();
     expect(container.firstElementChild).not.toHaveAttribute('data-error');
     expect(container.querySelector('[data-tone="disabled"]')).toBeInTheDocument();
+    expect(container.querySelector('[translate="no"]')).toBeNull();
   });
 
   it('shows the prefix, suffix and accessories', () => {
