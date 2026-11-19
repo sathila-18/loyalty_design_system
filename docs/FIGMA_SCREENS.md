@@ -394,15 +394,13 @@ states). One flow at a time, in this order, each approved before the next.
   - **Organisations** (gap **Space-L**, 12, the filled cards' own spacing): **List_fill-standard** `State=Default,
     Description=False, Leading accessory=Avatar, Trailing accessory=None, Size=Large`, full width; Avatar
     `Type=Text` with the initials (first letters of the first and last words, or a one-word name's first two
-    letters); the title truncated to one line with "…" (text truncation Ending, max 1 line), as code's `truncate`.
+    letters); a long name wraps (decided by design 19 Nov 2026; no truncation).
   - **Back to login:** S7's Forgot password button (**all-button** `Type=Link` XSmall, left padding 0) relabelled.
 
   | Frame | Node | Story | State |
   |---|---|---|---|
   | Default | `1217:55393` | Default | testname1, testname2 (TE) |
-  | Many organisations | `1217:55604` | Many organisations | Eight banks (BC, SB, CB, HB, SB, NB, DB, PB) |
-  | Long names | `1217:55972` | Long names | "Finspace Loyalty Programme for Retail and Corporate Banking Customers, Western Province" (FP), cut with "…"; testname2 |
-  | Chosen | `1217:56130` | Chosen | **Notification** `Type=Success` (no title, close or button) "Opening testname1 (demo). In the real app this opens its dashboard." between the heading and the list |
 
-- **Figma notes:** code's `truncate` (a list row option since this change) has no Figma property: the title text's
-  truncation is set on each card instead.
+  Many organisations, Long names and Chosen frames were built too and then removed by design (19 Nov 2026): the
+  section keeps Default only (2120 wide).
+
