@@ -22,7 +22,7 @@ export function organisationInitials(name: string) {
  * Select your organisation (design's screenshot, 19 Nov 2026; Storybook only, no app route yet): after sign-in, an
  * account with access to several organisations picks one. The Login screen's shell and header (logo, Text Box
  * Display Medium-H2), the organisations as filled list cards (FinListStandardFilled: border, no fill; text avatar with
- * the initials, the name on one line cut with "…" (`truncate`, the full name as its tooltip), the chevron) 12 apart
+ * the initials, the name (a long one wraps), the chevron) 12 apart
  * (the filled cards' own spacing, Space-L; design 19 Nov 2026), 32 below the header; "Back to login" (the hanging text link button)
  * 32 below. Choosing one shows a demo banner (in the real app it opens that organisation's dashboard).
  */
@@ -53,7 +53,6 @@ export function TenantScreen({ organisations }: { organisations: TenantOrganisat
               as="li"
               behavior="button"
               title={organisation.name}
-              truncate
               leadingAccessory="avatar"
               avatar={{ initials: organisationInitials(organisation.name) }}
               onClick={() => setChosen(organisation)}

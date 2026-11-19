@@ -8,8 +8,6 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
-- **FinListStandard, FinListStandardFilled:** `truncate` keeps the title and description on one line, cut with "…", with the full text as a tooltip (screen readers read it all). Default off: they wrap, as before.
-
 ### Changed
 
 ### Fixed
