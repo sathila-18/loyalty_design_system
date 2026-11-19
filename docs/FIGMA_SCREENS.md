@@ -32,7 +32,7 @@ stay as they are.
 | S9 | Reset password | Old Figma screens `150:5950`, `435:90550` (Admin UIs, Login Option 02) | ✅ 17 Nov 2026 |
 | S10 | System users | Old Figma screens, section `188:13373` (Admin UIs) | ✅ 17 Nov 2026 |
 | S11 | Role management | Old Figma screens, section `196:18060` (Admin UIs) | ✅ 17 Nov 2026 |
-| S12 | System audit | Old Figma screens (link from design) | ⬜ |
+| S12 | System audit | Old Figma screens, section `208:41600` (Admin UIs) | ✅ 19 Nov 2026 |
 | — | Dashboard | not built in code, no reference yet | to decide |
 
 **S8–S12: screens not built in code (agreed with design 17 Nov 2026).** The old Figma screens give the **content**
@@ -357,3 +357,25 @@ states). One flow at a time, in this order, each approved before the next.
   audit - Audit trail V Dl I; User management - System users V A D U Dl; User management - User roles V A D U.
 - **Not like the old screens:** Pagination's previous arrow on page 2 still looks disabled (S1 issue #4, the arrows'
   glyph colours are overridden in Pagination group).
+
+### S12 · System audit: 17 Nov 2026
+
+- **Source:** the old section `208:41600` "System audit" (Admin UIs): list `434:83306`, date range `435:85266`,
+  details `435:86927`. Content only; built as S6 (read-only list with a toolbar chip) and S10.
+- **Decisions (design, 17 Nov 2026):** the toolbar keeps the old screen's button, as "Add new user" (sentence case);
+  the sample data tidied: row 07's Page "Sofia" is "Badges", and the details sheet shows row 01 (Fatima Khar, Admin:
+  Question / Focus area / Update) with the old sheet's other values. Conventions as S10: "Audit trail" (the old menu
+  says "Audit Trial"), "Section" for "Sections", the date 28/09/2026, 08:19:40. Section and Task are the columns'
+  filters; the old "Start to end: All" range stays a toolbar chip (a range isn't a column filter), as Reports'
+  Duration; the old eye icon is the ⋮ menu (View).
+- **Section** `1112:51196` "System audit". Side Menu `Menu=System Audit`, System audit `Selected`, **Audit trail**
+  selected; Main header "Audit trail" (no description, as the old screen).
+
+  | Frame | Node | Built from |
+  |---|---|---|
+  | List | `1112:51197` | Toolbar: search "Search action by", **Assist chip** Large Dropdown "Start to end: All" (no leading icon, #20), "Add new user"; Table: No. (80), Section (200, filter), Page (200), Task (144, filter), Description, Action by (200); ⋮; the old 10 rows |
+  | Start to end | `1112:53127` | The chip `Open`; **standard-menu** (400 wide, 4 below, right-aligned) holding Start date + End date (Input field-date Small, labels shown, Space-XL apart) and "Apply" (all-button Primary Medium, full width), Space-XL padding |
+  | Audit trail details | `1112:54769` | Overlay + Side sheet (close button) "Audit trail details": Table Column / Value, 10 rows (Audit ID 2026094758948, User name Fatima Khar, Created date & time 28/09/2026, 08:19:40, Old value N/A, New value N/A, User role Admin, Section description Question, Page description Focus area, Task description Update, Description N/A); dock "Done" only |
+
+- **Library issues found:** 24. **Side Menu** `Menu=System Audit`: its page is "Audit Trial" (typo) and Title Case
+  items, as #16 / #23: overridden.
