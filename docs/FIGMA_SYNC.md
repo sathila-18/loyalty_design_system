@@ -22,7 +22,7 @@ IDs, and there are no new ones. Every difference comes from work done in code.
 | | Count |
 |---|---|
 | 🆕 New: in code, not in Figma | 14 |
-| ✏️ Changed: in both, code differs visually | 24 (C23, C24 added 16 Nov 2026) |
+| ✏️ Changed: in both, code differs visually | 25 (C23, C24 added 16 Nov 2026; C25 19 Nov 2026) |
 | ✅ Unchanged | 38 |
 | ⬜ In Figma only, not built in code | 4 |
 
@@ -75,6 +75,7 @@ Behaviour-only and accessibility props are left out (Figma can't show them).
 | C22 | `File uploads` (`775:4280`) | XSmall (36) button; Large 218 tall | §9.80 | ✅ 17 Nov 2026 |
 | C23 | `List-base` (`77:10185`) and every list built on it | **Compact density** (v0.8.0): a `Density` property, Default / Compact; Compact is 8 (`Space-M`) on every side and between the content and the divider (Default 16). Exposed on List-standard, List-radio_button, List-checkbox, List-toggle and the four `List_fill-*` sets (filled cards 8 all round). Then use it in the **Row actions menu** (`3849:786`, N12) and the **Rows per page** menu, which are compact in code | §9.49–9.56, §9.38, §9.66, §10 #121 | ✅ 16 Nov 2026 |
 | C24 | `Table - Cell` (`3151:14990`) | **`Type=Checkbox`** (v0.8.0): the cell is only a checkbox (Base-Checkbox Selected / Unselected / Disabled), lined up with the header text (24 padding, 40 tall), for values per row such as permissions (the Create user role screen). Not applicable = an ordinary Disabled unticked box (not the screen's Disabled + Indeterminate dash) | §9.43, §9.45, §10 #122 | ✅ 16 Nov 2026 |
+| C25 | `Input field-base` (`49:5734`) and the fields on it: standard, password, select, Multi select, date | **Error helper text with its icon** (v0.9.1): the Helper text content `State=Error` with `Show Leading Icon` on (the library's filled `warning`), as Input field-textArea | §9.58, §9.20 | ✅ 19 Nov 2026 |
 
 Smaller, optional: `Indicator` (`98:3532`) Selected 24 wide (Figma 22, §10 #35); `Side sheet` (`3120:30707`) with a
 two-line title (§10 #69).
@@ -957,3 +958,26 @@ Asked by design 17 Nov 2026: every section showed the placeholder `perm_identity
 - **Unchanged, already logged in §9.80:** Figma's titles "Uploading..." and "failed" (code: "Uploading…", "Upload
   failed", decision 9); code-only Disabled and drag-over looks aren't drawn.
 - **Source:** `FinFileUpload` (§9.80).
+
+### C25 · Input fields: error helper text with its icon: 19 Nov 2026
+
+Asked by design 19 Nov 2026, after the code change (v0.9.1: FinInputBase's error helper text shows FinHelperText's
+`warning` icon, filled).
+
+- **Page:** Input field. Updated in place; no variants added or renamed.
+- **Helper text content** (`28:973`): **no change.** Its `State=Error` already uses Loyalty Iconography's `warning`,
+  which is the solid (filled) triangle, as code now is.
+- **Show Leading Icon on** for every error helper text:
+  - `Input field-base` (`49:5734`): the 8 `Destructive=True` variants (Large and Small).
+  - Fields built on it, where a variant had its own override: `Input field-standard` (`52:2629`) 20, `Input
+    field-password` (`60:7165`) 12, `Input field-date` (`3866:3654`) 5; the rest follow the base (standard 40,
+    `Input field-select` `537:2736` 10, `Input field-Multi select` `922:6170` 10). 105 error variants in all.
+  - `Input field-textArea-base` and `Input field-textArea` already had it.
+- **Password, Enabled and Typing with `Error=True`** (8 variants, Large and Small): the helper text was `State=Default`
+  (grey, §10 #58 (3)); now `State=Error` with the icon, as code and the other error variants.
+- **Height:** an error variant is 2 taller (Large 76, Small 68), as the 20 icon is taller than the helper's line; code
+  is the same.
+- **Not changed:** Default and Disabled helper text stay without an icon, as code. The 4 Input field-standard
+  variants with an `info` icon in the Default helper text (§10 #58 (5)) are left as they were. Helper text content's
+  Success and Warning icons are solid in Figma and outlined in code; kept as they are (decided by design 19 Nov 2026).
+- **Source:** `FinInputBase` (§9.58), `FinHelperText` (§9.20), CHANGELOG v0.9.1.

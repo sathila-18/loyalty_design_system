@@ -1874,7 +1874,7 @@ Presentational: no `'use client'`. `className` and other attributes go to the ro
 | `default` | `info`, `fg-secondary` | `--fin-text-secondary` |
 | `success` | `check_circle`, `fg-success` | `--fin-text-success` |
 | `warning` | `warning`, `fg-warning` | `--fin-text-warning` |
-| `error` | `warning` **filled** (FILL 1; decided by design 19 Nov 2026, Figma outlined), `fg-error` (same glyph as warning) | `--fin-text-error` |
+| `error` | `warning` **filled** (FILL 1; decided by design 19 Nov 2026, as Figma's solid triangle); Success and Warning stay outlined in code although Figma's are solid (kept by design 19 Nov 2026), `fg-error` (same glyph as warning) | `--fin-text-error` |
 | `disabled` | `info`, `fg-disabled` | `--fin-text-disabled` |
 
 Layout: flex, gap `--fin-space-m`, items at the top; text `--fin-font-body-small`. With the icon, the text has a 1px top offset (`calc(var(--fin-space-xxs) / 2)`), so its 18px line is centred on the 20px icon as in Figma, and a wrapped message keeps the icon beside its first line. Figma's text-layer radius (another library, `Spacing, Radius & Widths`) has no effect and is dropped.
