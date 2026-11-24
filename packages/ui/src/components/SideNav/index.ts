@@ -1,5 +1,6 @@
 export {
   FinSideNav,
+  type FinSideNavMenuDensity,
   type FinSideNavMenuEntry,
   type FinSideNavMenuItem,
   type FinSideNavPage,

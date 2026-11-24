@@ -8,6 +8,8 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
+- **FinSideNav:** `profile.menuDensity` (`'default' | 'compact'`, default `'default'`): compact rows in the account menu (8 padding instead of 16) for the items and the Theme row. New type `FinSideNavMenuDensity`.
+
 ### Changed
 
 ### Fixed
