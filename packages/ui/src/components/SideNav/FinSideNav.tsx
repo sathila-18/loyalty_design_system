@@ -55,7 +55,15 @@ export interface FinSideNavProfile {
    * and `role` at the top (2 Nov 2026).
    */
   menu?: FinSideNavMenuEntry[];
+  /**
+   * Code only (24 Nov 2026): the account menu rows' density (FinListItem `density`). `default` (16 padding) or
+   * `compact` (8 on every side), for the items and the Theme row; the header stays as it is. Default `default`.
+   */
+  menuDensity?: FinSideNavMenuDensity;
 }
+
+/** The account menu rows' density (FinListItem `density`). */
+export type FinSideNavMenuDensity = 'default' | 'compact';
 
 /** Code only (2 Nov 2026): `default` (Figma's sub items) or `tree` (connected tree lines). */
 export type FinSideNavVariant = 'default' | 'tree';
@@ -213,6 +221,7 @@ export function FinSideNav({
   const [navEl, setNavEl] = useState<HTMLElement | null>(null);
   const [footerEl, setFooterEl] = useState<HTMLDivElement | null>(null);
   const themeTitleId = useId();
+  const menuDensity = profile?.menuDensity ?? 'default';
   const accountItems = profile?.menu?.map((item, index) => (
     <Fragment key={isThemeItem(item) ? `theme-${index}` : `${item.label}-${index}`}>
       {item.separator && index > 0 && <FinMenuDivider />}
@@ -221,6 +230,7 @@ export function FinSideNav({
         <li role="none">
           <FinListStandard
             size="small"
+            density={menuDensity}
             divider={false}
             title={item.label ?? 'Theme'}
             titleId={themeTitleId}
@@ -246,6 +256,7 @@ export function FinSideNav({
         <FinListStandard
           as="li"
           size="small"
+          density={menuDensity}
           behavior="menuitem"
           divider={false}
           title={item.label}

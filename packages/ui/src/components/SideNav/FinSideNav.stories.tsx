@@ -9,6 +9,7 @@ import { FinLogo } from '../../logos';
 import avatarSample from '../Avatar/avatar-sample.jpg';
 import {
   FinSideNav,
+  type FinSideNavMenuDensity,
   type FinSideNavMenuEntry,
   type FinSideNavProfile,
   type FinSideNavProps,
@@ -79,7 +80,11 @@ function useStoryTheme() {
 }
 
 /** The account menu (an example: the items follow the product): no leading icons; Log out last, after a line. */
-function useAccountProfile(role: string | undefined, profile: Omit<FinSideNavProfile, 'menu'> = STATIC_PROFILE): FinSideNavProfile {
+function useAccountProfile(
+  role: string | undefined,
+  profile: Omit<FinSideNavProfile, 'menu'> = STATIC_PROFILE,
+  menuDensity: FinSideNavMenuDensity = 'default',
+): FinSideNavProfile {
   const theme = useStoryTheme();
   const menu: FinSideNavMenuEntry[] = [
     { label: 'My profile', onSelect: () => {} },
@@ -87,7 +92,7 @@ function useAccountProfile(role: string | undefined, profile: Omit<FinSideNavPro
     { type: 'theme', ...theme },
     { label: 'Log out', onSelect: () => {}, separator: true },
   ];
-  return { ...profile, ...(role ? { role } : {}), menu };
+  return { ...profile, ...(role ? { role } : {}), menu, menuDensity };
 }
 
 /** Opens the account menu, as a click on the profile row (or the avatar, minimized) does. */
@@ -156,6 +161,7 @@ interface Args {
   showProfile: boolean;
   profileAction: 'menu' | 'link' | 'none';
   role: 'Admin' | 'Super admin' | 'none';
+  menuDensity: FinSideNavMenuDensity;
   variant: FinSideNavVariant;
 }
 
@@ -171,7 +177,7 @@ const meta: Meta<Args> = {
   title: 'Components/Side nav/Side menu',
   decorators: [withStoryBrand],
   parameters: { layout: 'fullscreen', a11y: { context: { include: ['body'], exclude: KNOWN_CONTRAST_ISSUES } } },
-  args: { type: 'expanded', menu: '#dashboard', showLogo: true, showProfile: true, profileAction: 'menu', role: 'Admin', variant: 'default' },
+  args: { type: 'expanded', menu: '#dashboard', showLogo: true, showProfile: true, profileAction: 'menu', role: 'Admin', menuDensity: 'default', variant: 'default' },
   argTypes: {
     type: { control: 'inline-radio', options: ['expanded', 'minimized'], description: 'Figma `Type` (click the button to change it)' },
     menu: {
@@ -191,14 +197,19 @@ const meta: Meta<Args> = {
       options: ['Admin', 'Super admin', 'none'],
       description: "`profile.role`: the badge in the account menu's header",
     },
+    menuDensity: {
+      control: 'inline-radio',
+      options: ['default', 'compact'],
+      description: "`profile.menuDensity` (code only): the account menu rows' padding, 16 (`default`) or 8 (`compact`)",
+    },
     variant: {
       control: 'inline-radio',
       options: ['default', 'tree'],
       description: '`variant` (code only): `tree` draws connected tree lines to a section’s pages',
     },
   },
-  render: function Render({ type, menu, showLogo, showProfile, profileAction, role, variant }) {
-    const menuProfile = useAccountProfile(role === 'none' ? undefined : role);
+  render: function Render({ type, menu, showLogo, showProfile, profileAction, role, menuDensity, variant }) {
+    const menuProfile = useAccountProfile(role === 'none' ? undefined : role, STATIC_PROFILE, menuDensity);
     // The collapse button changes the type; the `type` control sets it again.
     const [ownType, setOwnType] = useStoryState(type);
     useStoryEffect(() => setOwnType(type), [type]);
@@ -231,6 +242,15 @@ export const Playground: Story = {};
  */
 export const AccountMenu: Story = {
   name: 'Account menu',
+  play: async ({ canvasElement }) => {
+    await openAccountMenu(canvasElement);
+  },
+};
+
+/** Compact rows (`profile.menuDensity="compact"`, code only): 8 padding on every side instead of 16. */
+export const AccountMenuCompact: Story = {
+  name: 'Account menu, compact',
+  args: { menuDensity: 'compact' },
   play: async ({ canvasElement }) => {
     await openAccountMenu(canvasElement);
   },

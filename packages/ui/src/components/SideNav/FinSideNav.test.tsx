@@ -247,6 +247,20 @@ describe('FinSideNav', () => {
     expect(screen.getByRole('menu')).toBeInTheDocument();
   });
 
+  it('menuDensity: compact makes the account menu rows compact (items and the Theme row); default without it', async () => {
+    const user = userEvent.setup();
+    const menu = [
+      { label: 'Settings', onSelect: () => {} },
+      { type: 'theme' as const, value: 'light' as const, onValueChange: () => {} },
+    ];
+    const { rerender } = render(<FinSideNav sections={SECTIONS} type="expanded" profile={{ ...PROFILE, menu }} />);
+    await user.click(screen.getByRole('button', { name: 'Olivia James' }));
+    expect(screen.getByRole('menuitem', { name: 'Settings' }).closest('[data-density]')).toHaveAttribute('data-density', 'default');
+    rerender(<FinSideNav sections={SECTIONS} type="expanded" profile={{ ...PROFILE, menu, menuDensity: 'compact' }} />);
+    expect(screen.getByRole('menuitem', { name: 'Settings' }).closest('[data-density]')).toHaveAttribute('data-density', 'compact');
+    expect(screen.getByRole('group', { name: 'Theme' }).closest('[data-density]')).toHaveAttribute('data-density', 'compact');
+  });
+
   it('theme row: each choice shows its name in a tooltip on hover; the first Escape closes the tooltip, the next the menu', async () => {
     const user = userEvent.setup();
     render(
