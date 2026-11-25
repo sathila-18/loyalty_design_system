@@ -4978,3 +4978,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 24 Nov 2026 | 0.2 | **FinSideNav `profile.menuDensity`** (code only, §9.57): `default` / `compact` for the account menu's rows (items and the Theme row), so developers can make them compact from props. Story: Account menu, compact. |
 | 24 Nov 2026 | 0.2 | **Released v0.10.0** (both packages; what's in it: CHANGELOG.md). |
 | 25 Nov 2026 | 0.2 | **Scrollbars** (§4.6, code only, decided by design): the system's own on every scroll area, 8 thick, a `border-subtle` thumb (`border-default` on hover), fully rounded, transparent track; exempt from contrast. In `reset.css`. |
+| 25 Nov 2026 | 0.2 | **Released v0.11.0** (both packages; what's in it: CHANGELOG.md). |
