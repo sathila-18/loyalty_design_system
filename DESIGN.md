@@ -647,6 +647,22 @@ The four widths are the Storybook **viewport** options (toolbar), added 22 Oct 2
 
 **Ghost and Tertiary buttons placed under form fields use hanging alignment** (as in Carbon): the button keeps its normal padding and is shifted towards the start by exactly its own start padding, using the same spacing token as a negative margin (no arbitrary values), so the **label** lines up with the content edge (the fields' left edge). The hover background and focus ring hang past that edge; that's intended, so parents must not clip it (no `overflow: hidden` within the hang). In code: FinButton `hanging` (§9.28; "Ghost" is our Tertiary). Example: Login's "Forgot password" (XSmall, hangs by `Space-XL` 16). Buttons elsewhere (docks, toolbars, dialogs) keep normal alignment.
 
+
+### 4.6 Scrollbars (decided by design 25 Nov 2026)
+
+**The system draws its own scrollbar on every scroll area** (the window, the table's sideways scroll, the app shell's content, the side nav, menus, side sheet and dialog bodies, text areas), so it doesn't depend on the browser's default. Code only (no Figma node). In `reset.css` (global, `fin.base`, so app CSS can override it); no component sets its own.
+
+| Part | Value |
+|---|---|
+| Thickness | 8 (`Size-8`), vertical and horizontal |
+| Thumb | `border-subtle` (Light #ededed, Dark #363636), `Radius-full` |
+| Thumb on hover | `border-default` |
+| Track, corner | transparent |
+
+- **Light on purpose:** the thumb is decorative and **exempt from the contrast requirement** (decided by design 25 Nov 2026); scrolling still works with the wheel, trackpad and keyboard.
+- **Browsers:** Chrome, Edge and Safari draw it always visible from the `::-webkit-scrollbar` rules (macOS's hide-when-idle overlay bars become this bar, 8 wide). **Firefox** takes only the colours and `thin` (`scrollbar-color`, `scrollbar-width`, inside `@supports not selector(::-webkit-scrollbar)`, because Chrome ignores the `::-webkit-scrollbar` rules once those are set); on a Mac it still hides when idle. **Touch devices** (iPad, phones) keep their own overlay bars; they can't be styled. A custom-drawn scrollbar (identical everywhere) was considered and not chosen: more JS, and every scroll area would need it.
+- **Layout:** where macOS used overlay bars, a scroll area now gives 8 to the bar (the content is 8 narrower or shorter while it scrolls), as on Windows.
+
 ---
 
 ## 5. Motion
@@ -4961,3 +4977,4 @@ Hidden until 4 Nov 2026: Finspace's story exclusions applied to every brand (§3
 | 19 Nov 2026 | 0.2 | **Pages/Login/Tenant** (design's screenshot; Storybook only, no app route): "Select your organisation", `TenantScreen` in the shared login screens: the Login shell and laptop photo, the header as Login's, each organisation a FinListStandardFilled card (button; a long name wraps; text avatar with the initials: first letters of the first and last words, or a one-word name's first two letters; the name; the chevron) 12 apart (the filled cards' own Space-L); "Back to login" (hanging text link button). Choosing one shows a demo banner. Stories: Default, Many organisations, Long names, Chosen. The Storybook login decorator moved to `withLoginPlatform.tsx` (shared by both pages). |
 | 24 Nov 2026 | 0.2 | **FinSideNav `profile.menuDensity`** (code only, §9.57): `default` / `compact` for the account menu's rows (items and the Theme row), so developers can make them compact from props. Story: Account menu, compact. |
 | 24 Nov 2026 | 0.2 | **Released v0.10.0** (both packages; what's in it: CHANGELOG.md). |
+| 25 Nov 2026 | 0.2 | **Scrollbars** (§4.6, code only, decided by design): the system's own on every scroll area, 8 thick, a `border-subtle` thumb (`border-default` on hover), fully rounded, transparent track; exempt from contrast. In `reset.css`. |
