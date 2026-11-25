@@ -404,3 +404,21 @@ states). One flow at a time, in this order, each approved before the next.
   Many organisations, Long names and Chosen frames were built too and then removed by design (19 Nov 2026): the
   section keeps Default only (2120 wide).
 
+
+### S10a · Edit system user: Reset password panel states: 25 Nov 2026
+
+- **Asked by design** (25 Nov 2026): the Edit system user sheet's "Panel / Reset password" (`1101:80525`) through
+  its states, in a **separate section** `1358:54449` "System users / Reset password states", to the right of System
+  users (x 12420, y 18163; System users' variable modes and fill). Each frame is a copy of the sheet's panel
+  (bg-secondary, Radius-L, Space-XL padding and gap), 584 wide:
+
+  | Frame | Node | Content |
+  |---|---|---|
+  | Default | `1358:54450` | As the sheet: Text Box `Headline Small-H6` "Reset password" / "Send password reset email.", all-button Primary Small "Send email" |
+  | Sending | `1358:54453` | all-button Primary Small `Disabled` "Sending…"; the library **Spinner** `Pregress=25%` scaled to 24, just before it (see gap below) |
+  | Sent | `1358:54456` | Text Box heading only; a "Content" column (gap **Space-M**): **Helper text content** `Success` "Reset link sent to fatimakhar@email.com", `Default` without icon "Didn't receive it? Resend in 0:30"; all-button **Secondary** Small `Disabled` "Resend" |
+  | Sent / Resend available | `1358:54459` | As Sent, "Didn't receive it?" and "Resend" `Enabled` (after the countdown; added to show the end of the 0:30) |
+
+- **Gap for design:** neither the library nor code has a **loading button** (all-button has no Loading state, and
+  Spinner is 48 only), so the spinner can't sit inside the button; Sending shows it beside the disabled button.
+  A Loading state on all-button (a 20 spinner in the leading icon's place) and a FinButton `loading` prop would close it.
