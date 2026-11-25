@@ -52,6 +52,42 @@ h6 {
   overflow-wrap: break-word;
 }
 
+/*
+ * Scrollbars (decided by design 25 Nov 2026): the system's own, on every scroll area (the window, the table, the
+ * app shell, the side nav, menus, sheets, dialogs, text areas). 8 thick (Size-8), fully rounded, a light thumb
+ * (border-subtle) on a transparent track, border-default on hover. Light on purpose: no contrast requirement.
+ * Chrome, Edge and Safari draw it always visible from the ::-webkit-scrollbar rules. Firefox only takes the colours
+ * and `thin` (on a Mac it still hides when not scrolling). Touch devices keep their own. The standard properties are
+ * for Firefox only: Chrome ignores ::-webkit-scrollbar once scrollbar-color or scrollbar-width is set.
+ * App CSS overrides it (unlayered beats fin.base).
+ */
+::-webkit-scrollbar {
+  width: var(--fin-size-8);
+  height: var(--fin-size-8);
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: var(--fin-radius-full);
+  background-color: var(--fin-border-subtle);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--fin-border-default);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--fin-border-subtle) transparent;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

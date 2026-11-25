@@ -8,6 +8,8 @@ Sections: **Added** · **Changed** · **Fixed** · **Breaking** (with what devel
 
 ### Added
 
+- **Scrollbars:** the design system now styles every scrollbar (tables, the app shell content, the side nav, menus, sheets, dialogs, text areas and the page): 8px thick, a light rounded thumb (`border-subtle`, `border-default` on hover) on a transparent track, in Light and Dark. Comes with `styles.css` / `index.css`; nothing to change. Always visible in Chrome, Edge and Safari; Firefox takes the colours and a thin bar; touch devices keep their own (DESIGN.md §4.6). On macOS, scroll areas now give 8px to the bar where the system used to overlay it. To use the browser's default in one area, override the scrollbar styles in your own CSS (ours are in a layer, so yours win).
+
 ### Changed
 
 ### Fixed
